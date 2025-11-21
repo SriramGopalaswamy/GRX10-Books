@@ -1,3 +1,4 @@
+
 export enum InvoiceStatus {
   DRAFT = 'Draft',
   SENT = 'Sent',
@@ -77,4 +78,22 @@ export enum View {
   ASSISTANT = 'ASSISTANT',
   REPORTS = 'REPORTS',
   DOCUMENTS = 'DOCUMENTS'
+}
+
+export type AgreementStatus = 'Sent' | 'Viewed' | 'Signed' | 'Expired';
+
+export interface Agreement {
+  id: string;
+  customerName: string;
+  type: 'MSA' | 'NDA' | 'Service Contract';
+  sentDate: string;
+  status: AgreementStatus;
+  lastActivity: string;
+}
+
+export interface InvoiceTemplate {
+  id: string;
+  name: string;
+  thumbnailColor: string;
+  tags: string[];
 }
