@@ -65,6 +65,7 @@ export interface DocumentItem {
     invoice_date?: string;
     total_amount?: number;
     gst_amount?: number;
+    summary?: string; // Brief text content extracted from the document
   };
 }
 

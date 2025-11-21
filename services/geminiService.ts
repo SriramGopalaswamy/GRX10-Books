@@ -148,7 +148,7 @@ export class GeminiService {
             contents: {
                 parts: [
                     { inlineData: { data: base64Data, mimeType } },
-                    { text: "Analyze this image. Identify if it is a financial document (invoice, receipt, bill). Extract the following fields: vendor_name, invoice_date (YYYY-MM-DD), total_amount (number), gst_amount (number). Return a JSON object with these keys. If a field is not found, use null." }
+                    { text: "Analyze this document (image or PDF). Identify if it is a financial document (invoice, receipt, bill). Extract the following fields: vendor_name, invoice_date (YYYY-MM-DD), total_amount (number), gst_amount (number), summary (string - a concise summary of the line items or services provided). Return a JSON object with these keys. If a field is not found, use null." }
                 ]
             },
             config: {

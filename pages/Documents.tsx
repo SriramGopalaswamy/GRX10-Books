@@ -45,7 +45,7 @@ const Documents: React.FC = () => {
       reader.readAsDataURL(file);
       reader.onload = () => {
         const result = reader.result as string;
-        // Remove data url prefix (e.g. "data:image/png;base64,")
+        // Remove data url prefix (e.g. "data:image/png;base64," or "data:application/pdf;base64,")
         const base64 = result.split(',')[1];
         resolve(base64);
       };
@@ -107,7 +107,7 @@ const Documents: React.FC = () => {
        <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold text-slate-800">Documents & Attachments</h2>
-          <p className="text-slate-500">Manage receipts, bills, and enable Auto-OCR</p>
+          <p className="text-slate-500">Manage receipts, bills, and enable Auto-OCR for PDF & Images</p>
         </div>
         <div className="flex gap-3">
              <span className="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full text-xs font-bold border border-indigo-100 flex items-center gap-1">
@@ -131,8 +131,8 @@ const Documents: React.FC = () => {
             <Upload size={24} />
         </div>
         <p className="font-medium text-slate-700">Click to upload or drag and drop</p>
-        <p className="text-sm text-slate-500 mt-1">Supported: JPEG, PNG, PDF (Image based)</p>
-        <input id="doc-upload" type="file" className="hidden" multiple onChange={handleFileInput} accept="image/jpeg,image/png,image/webp" />
+        <p className="text-sm text-slate-500 mt-1">Supported: JPEG, PNG, PDF</p>
+        <input id="doc-upload" type="file" className="hidden" multiple onChange={handleFileInput} accept="image/jpeg,image/png,image/webp,application/pdf" />
       </div>
 
       {/* Documents List */}
@@ -159,7 +159,7 @@ const Documents: React.FC = () => {
             documents.map((doc) => (
               <div key={doc.id} className="border border-slate-200 rounded-lg p-4 flex gap-4 items-start hover:shadow-sm transition-shadow bg-white">
                  <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0 text-slate-500">
-                    <FileImage size={24} />
+                    {doc.type === 'application/pdf' ? <FileText size={24} /> : <FileImage size={24} />}
                  </div>
                  
                  <div className="flex-1 min-w-0">
@@ -223,6 +223,14 @@ const Documents: React.FC = () => {
                                    <span className="font-semibold text-slate-700">{formatCurrency(doc.extractedData.gst_amount)}</span>
                                 </div>
                              </div>
+                             
+                             {doc.extractedData.summary && (
+                               <div className="mt-3 text-xs bg-white p-2 rounded border border-emerald-100/50">
+                                  <span className="block text-slate-400 mb-1">Content Summary</span>
+                                  <span className="text-slate-700">{doc.extractedData.summary}</span>
+                               </div>
+                             )}
+
                              <div className="mt-2 pt-2 border-t border-emerald-100 flex justify-end">
                                 <button className="text-xs text-indigo-600 font-medium hover:underline">Create Bill from Data</button>
                              </div>
