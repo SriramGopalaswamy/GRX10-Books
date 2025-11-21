@@ -143,22 +143,47 @@ export class GeminiService {
   async parseDocument(base64Data: string, mimeType: string): Promise<any> {
     const model = this.ai.models;
     try {
+        const prompt = `You are an expert financial data extraction AI. 
+        Analyze the provided document (image or PDF) which is expected to be an invoice, receipt, or bill.
+        
+        Extract the following fields with high precision:
+        1. vendor_name: The name of the entity issuing the document.
+        2. invoice_date: The date of the transaction (Format: YYYY-MM-DD).
+        3. total_amount: The final grand total amount (Numeric).
+        4. gst_amount: The total tax/GST amount (Numeric). If not explicitly stated, assume 0.
+        5. summary: A concise (max 20 words) summary of the items or services purchased.
+
+        Return ONLY a valid JSON object with keys: "vendor_name", "invoice_date", "total_amount", "gst_amount", "summary".
+        If a field is not found or the document is not readable, set the value to null.`;
+
         const result = await model.generateContent({
             model: this.modelId,
             contents: {
                 parts: [
                     { inlineData: { data: base64Data, mimeType } },
-                    { text: "Analyze this document (image or PDF). Identify if it is a financial document (invoice, receipt, bill). Extract the following fields: vendor_name, invoice_date (YYYY-MM-DD), total_amount (number), gst_amount (number), summary (string - a concise summary of the line items or services provided). Return a JSON object with these keys. If a field is not found, use null." }
+                    { text: prompt }
                 ]
             },
             config: {
-                responseMimeType: "application/json"
+                responseMimeType: "application/json",
+                temperature: 0.1 // Lower temperature for more deterministic extraction
             }
         });
-        return JSON.parse(result.text || "{}");
+        
+        const text = result.text;
+        if (!text) return { error: "No content generated" };
+        
+        return JSON.parse(text);
     } catch (e) {
         console.error("OCR Failed", e);
-        throw e;
+        // Graceful fallback
+        return {
+            vendor_name: null,
+            invoice_date: null,
+            total_amount: null,
+            gst_amount: null,
+            summary: "Error analyzing document."
+        };
     }
   }
 }
