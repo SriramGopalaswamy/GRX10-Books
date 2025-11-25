@@ -1,8 +1,8 @@
+
 import { GoogleGenAI, FunctionDeclaration, Type } from "@google/genai";
 import { Invoice, InvoiceStatus } from "../types";
 
 // --- Mock Database Access for AI ---
-// In a real app, these would be API calls to the backend
 const getInvoices = (invoices: Invoice[], status?: string): Invoice[] => {
   if (!status) return invoices;
   return invoices.filter(inv => inv.status.toLowerCase() === status.toLowerCase());
@@ -44,7 +44,6 @@ export class GeminiService {
   private modelId: string = 'gemini-2.5-flash';
 
   constructor() {
-    // Assuming process.env.API_KEY is available in the environment
     this.ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   }
 
@@ -61,9 +60,6 @@ export class GeminiService {
     ];
 
     const model = this.ai.models;
-
-    // Construct a specialized prompt with context awareness if needed, 
-    // but relying on function calling is better for data retrieval.
     const systemInstruction = `You are the GRX10 Financial Assistant. 
     You help Indian business owners manage their finances. 
     Currency is INR (₹). 
@@ -75,25 +71,22 @@ export class GeminiService {
       const result = await model.generateContent({
         model: this.modelId,
         contents: [
-          ...history, // Past conversation
+          ...history, 
           { role: 'user', parts: [{ text: message }] }
         ],
         config: {
           systemInstruction: systemInstruction,
           tools: tools,
-          temperature: 0.2, // Low temperature for factual financial data
+          temperature: 0.2, 
         },
       });
 
       const functionCalls = result.functionCalls;
 
       if (functionCalls && functionCalls.length > 0) {
-        // Handle Function Execution
         const functionResponses = [];
-        
         for (const fc of functionCalls) {
           let functionResult: any = {};
-
           if (fc.name === 'listInvoices') {
              const status = fc.args['status'] as string | undefined;
              const data = getInvoices(contextData.invoices, status);
@@ -105,7 +98,6 @@ export class GeminiService {
                 .reduce((acc, curr) => acc + curr.total, 0);
              functionResult = { totalRevenue: total, overdueAmount: overdue };
           }
-
           functionResponses.push({
             functionResponse: {
               name: fc.name,
@@ -115,25 +107,21 @@ export class GeminiService {
           });
         }
 
-        // Send function result back to model for final answer
         const responseContent = result.candidates?.[0]?.content;
-        
         const finalResult = await model.generateContent({
           model: this.modelId,
           contents: [
             ...history,
             { role: 'user', parts: [{ text: message }] },
-            responseContent!, // The model's request to call function
-            { role: 'tool', parts: functionResponses } // The result of the function
+            responseContent!,
+            { role: 'tool', parts: functionResponses }
           ],
           config: { systemInstruction }
         });
 
         return finalResult.text || "Processed data but no summary generated.";
       }
-
       return result.text || "I understood, but have no specific answer.";
-
     } catch (error) {
       console.error("Gemini API Error:", error);
       return "I'm having trouble connecting to the financial brain right now. Please ensure the API Key is valid.";
@@ -143,18 +131,7 @@ export class GeminiService {
   async parseDocument(base64Data: string, mimeType: string): Promise<any> {
     const model = this.ai.models;
     try {
-        const prompt = `Analyze the provided financial document (likely an Indian GST Invoice, Bill, or Receipt).
-        
-        Extract the following specific fields with high accuracy:
-        1. vendor_name: The name of the company/vendor issuing the document.
-        2. invoice_date: The date of issue. Convert to YYYY-MM-DD format if possible.
-        3. total_amount: The final payable amount including taxes (Numeric).
-        4. gst_amount: The total tax amount (CGST+SGST+IGST). If explicitly 0 or missing, return 0.
-        5. summary: A very brief (max 15 words) description of the goods or services purchased (e.g., "Office Supplies", "Cloud Server Hosting", "Consultation Fees").
-
-        If the image is blurry or data is missing, use null for that field.
-        Do not guess values.`;
-
+        const prompt = `Analyze the provided financial document (Invoice/Receipt). Extract: vendor_name, invoice_date (YYYY-MM-DD), total_amount (number), gst_amount (number), summary (max 15 words). Return JSON.`;
         const result = await model.generateContent({
             model: this.modelId,
             contents: {
@@ -175,24 +152,51 @@ export class GeminiService {
                     summary: { type: Type.STRING, nullable: true },
                   }
                 },
-                temperature: 0.1 // Very low temperature for deterministic extraction
+                temperature: 0.1 
             }
         });
         
-        const text = result.text;
-        if (!text) throw new Error("No content generated");
-        
-        return JSON.parse(text);
+        return JSON.parse(result.text || "{}");
     } catch (e) {
         console.error("OCR Failed", e);
-        // Graceful fallback
-        return {
-            vendor_name: null,
-            invoice_date: null,
-            total_amount: null,
-            gst_amount: null,
-            summary: "Failed to analyze document."
-        };
+        return { summary: "Failed to analyze document." };
     }
+  }
+
+  // Parses a Bank Statement to extract transactions
+  async parseBankStatement(base64Data: string, mimeType: string): Promise<any[]> {
+     const model = this.ai.models;
+     try {
+         const prompt = `Extract bank transactions from this statement. Return a JSON array of objects with keys: date (YYYY-MM-DD), description, withdrawal (number, 0 if empty), deposit (number, 0 if empty).`;
+         const result = await model.generateContent({
+             model: this.modelId,
+             contents: {
+                 parts: [
+                     { inlineData: { data: base64Data, mimeType } },
+                     { text: prompt }
+                 ]
+             },
+             config: {
+                 responseMimeType: "application/json",
+                 responseSchema: {
+                    type: Type.ARRAY,
+                    items: {
+                        type: Type.OBJECT,
+                        properties: {
+                            date: { type: Type.STRING },
+                            description: { type: Type.STRING },
+                            withdrawal: { type: Type.NUMBER },
+                            deposit: { type: Type.NUMBER }
+                        }
+                    }
+                 },
+                 temperature: 0.1 
+             }
+         });
+         return JSON.parse(result.text || "[]");
+     } catch (e) {
+         console.error("Bank Parse Failed", e);
+         return [];
+     }
   }
 }

@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { LayoutDashboard, FileText, Briefcase, Upload, MessageSquare, PieChart, Settings, Landmark, LogOut, FileStack } from 'lucide-react';
+import { LayoutDashboard, FileText, Briefcase, Upload, MessageSquare, PieChart, Settings, Landmark, LogOut, FileStack, Users, Calculator, TrendingUp } from 'lucide-react';
 import { View } from '../types';
 
 interface SidebarProps {
@@ -10,16 +11,19 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView }) => {
   const menuItems = [
     { id: View.DASHBOARD, label: 'Dashboard', icon: LayoutDashboard },
-    { id: View.INVOICES, label: 'Sales & Invoices', icon: FileText },
+    { id: View.CUSTOMERS, label: 'Customers', icon: Users },
+    { id: View.INVOICES, label: 'Invoices (GST)', icon: FileText },
+    { id: View.VENDORS, label: 'Vendors & Bills', icon: Briefcase },
     { id: View.BANKING, label: 'Banking', icon: Landmark },
+    { id: View.CASHFLOW, label: 'Cash Flow', icon: TrendingUp },
+    { id: View.ACCOUNTING, label: 'Accounting', icon: Calculator },
     { id: View.DOCUMENTS, label: 'Documents', icon: FileStack },
-    { id: View.REPORTS, label: 'Reports', icon: PieChart },
     { id: View.MIGRATION, label: 'Zoho Migration', icon: Upload },
     { id: View.ASSISTANT, label: 'AI Assistant', icon: MessageSquare },
   ];
 
   return (
-    <div className="w-64 bg-slate-900 text-white h-screen flex flex-col fixed left-0 top-0 shadow-xl z-10">
+    <div className="w-64 bg-slate-900 text-white h-screen flex flex-col fixed left-0 top-0 shadow-xl z-10 overflow-y-auto">
       <div className="p-6 border-b border-slate-800">
         <h1 className="text-2xl font-bold text-emerald-400 tracking-tight">GRX10</h1>
         <p className="text-xs text-slate-400 mt-1">Financial Suite</p>

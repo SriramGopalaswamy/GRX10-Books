@@ -12,6 +12,28 @@ export interface Customer {
   gstin: string;
   email: string;
   balance: number;
+  phone?: string;
+  address?: string;
+}
+
+export interface Vendor {
+  id: string;
+  name: string;
+  gstin?: string;
+  email?: string;
+  balance: number;
+}
+
+export interface Bill {
+  id: string;
+  vendorId: string;
+  vendorName: string;
+  billNumber: string;
+  date: string;
+  dueDate: string;
+  amount: number;
+  status: 'Open' | 'Paid' | 'Overdue';
+  attachmentUrl?: string; // For the PDF/Image
 }
 
 export interface InvoiceItem {
@@ -36,6 +58,7 @@ export interface Invoice {
   subTotal: number;
   taxTotal: number;
   total: number;
+  taxType?: 'INTRA' | 'INTER'; // Intra-state (CGST+SGST) or Inter-state (IGST)
 }
 
 export interface StatMetric {
@@ -59,24 +82,27 @@ export interface DocumentItem {
   size: number;
   type: string;
   uploadDate: string;
-  base64?: string; // Stored for demo purposes to send to API
+  base64?: string; 
   ocrStatus: 'idle' | 'processing' | 'completed' | 'failed';
   extractedData?: {
     vendor_name?: string;
     invoice_date?: string;
     total_amount?: number;
     gst_amount?: number;
-    summary?: string; // Brief text content extracted from the document
+    summary?: string;
   };
 }
 
 export enum View {
   DASHBOARD = 'DASHBOARD',
   INVOICES = 'INVOICES',
+  CUSTOMERS = 'CUSTOMERS',
+  VENDORS = 'VENDORS',
   BANKING = 'BANKING',
+  ACCOUNTING = 'ACCOUNTING',
+  CASHFLOW = 'CASHFLOW',
   MIGRATION = 'MIGRATION',
   ASSISTANT = 'ASSISTANT',
-  REPORTS = 'REPORTS',
   DOCUMENTS = 'DOCUMENTS'
 }
 
@@ -99,6 +125,7 @@ export interface Agreement {
   lastActivity: string;
   uniqueLink: string;
   auditTrail: AuditEvent[];
+  signedDocUrl?: string;
 }
 
 export interface InvoiceTemplate {
@@ -106,4 +133,44 @@ export interface InvoiceTemplate {
   name: string;
   thumbnailColor: string;
   tags: string[];
+}
+
+// --- New Types for Accounting & Banking ---
+
+export interface Account {
+  id: string;
+  code: string;
+  name: string;
+  type: 'Asset' | 'Liability' | 'Equity' | 'Income' | 'Expense';
+  balance: number;
+}
+
+export interface JournalEntry {
+  id: string;
+  date: string;
+  description: string;
+  debits: { accountId: string; amount: number }[];
+  credits: { accountId: string; amount: number }[];
+  total: number;
+}
+
+export interface BankTransaction {
+  id: string;
+  date: string;
+  description: string;
+  withdrawal: number;
+  deposit: number;
+  status: 'Unreconciled' | 'Reconciled';
+}
+
+export interface CashFlowItem {
+  category: string;
+  projected: number;
+  actual: number;
+}
+
+export interface MonthlyCashFlow {
+  month: string;
+  inflows: CashFlowItem[];
+  outflows: CashFlowItem[];
 }
