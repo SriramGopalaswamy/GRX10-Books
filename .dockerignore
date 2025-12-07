@@ -1,9 +1,14 @@
 node_modules
-server/node_modules
+server/
+.vite
 dist
 .git
 .gitignore
 .env
+.env.local
 Dockerfile
 render.yaml
 README.md
+*.log
+*.sqlite
+*.sqlite-journal

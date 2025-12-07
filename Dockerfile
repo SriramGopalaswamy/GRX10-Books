@@ -4,23 +4,27 @@ FROM node:18-alpine
 # Set the working directory to /app
 WORKDIR /app
 
-# Copy the root package.json and package-lock.json
-COPY package*.json ./
-
-# Install root dependencies
+# Copy frontend package files and install dependencies
+COPY frontend/package*.json ./frontend/
+WORKDIR /app/frontend
 RUN npm install
 
-# Copy the rest of the application code
-COPY . .
-
-# Build the React frontend
+# Copy frontend source and build
+COPY frontend/src ./src
+COPY frontend/public ./public
+COPY frontend/vite.config.ts ./vite.config.ts
+COPY frontend/tsconfig.json ./tsconfig.json
 RUN npm run build
 
-# Move to server directory and install dependencies
-WORKDIR /app/server
+# Move to backend and install dependencies
+WORKDIR /app/backend
+COPY backend/package*.json ./
 RUN npm install
 
-# Return to root for final startup command context (optional, but good for clarity)
+# Copy backend source
+COPY backend/ ./
+
+# Return to root
 WORKDIR /app
 
 # Expose port 8080 (Cloud Run default)
@@ -31,4 +35,4 @@ ENV PORT=8080
 ENV NODE_ENV=production
 
 # Start the server
-CMD ["node", "server/index.js"]
+CMD ["node", "backend/src/server.js"]
