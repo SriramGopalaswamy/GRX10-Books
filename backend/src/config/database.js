@@ -199,6 +199,130 @@ const User = sequelize.define('User', {
     lastLogin: { type: DataTypes.DATE }
 });
 
+// HRMS Models
+const Employee = sequelize.define('Employee', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    name: { type: DataTypes.STRING, allowNull: false },
+    email: { type: DataTypes.STRING, allowNull: false, unique: true },
+    role: { type: DataTypes.STRING, allowNull: false }, // 'Employee', 'Manager', 'HR', 'Finance', 'Admin'
+    department: { type: DataTypes.STRING },
+    designation: { type: DataTypes.STRING },
+    joinDate: { type: DataTypes.STRING },
+    avatar: { type: DataTypes.STRING },
+    managerId: { type: DataTypes.STRING },
+    salary: { type: DataTypes.FLOAT }, // Annual CTC
+    status: { type: DataTypes.STRING, defaultValue: 'Active' }, // 'Active', 'Exited'
+    password: { type: DataTypes.STRING }, // For direct login (should be hashed in production)
+    isNewUser: { type: DataTypes.BOOLEAN, defaultValue: false }
+});
+
+const LeaveRequest = sequelize.define('LeaveRequest', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    employeeId: { type: DataTypes.STRING, allowNull: false },
+    type: { type: DataTypes.STRING, allowNull: false }, // 'Sick Leave', 'Casual Leave', 'Earned Leave', 'Loss of Pay'
+    startDate: { type: DataTypes.STRING, allowNull: false },
+    endDate: { type: DataTypes.STRING, allowNull: false },
+    reason: { type: DataTypes.STRING },
+    status: { type: DataTypes.STRING, defaultValue: 'Pending' }, // 'Pending', 'Approved', 'Rejected'
+    appliedOn: { type: DataTypes.STRING, allowNull: false }
+});
+
+const AttendanceRecord = sequelize.define('AttendanceRecord', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    employeeId: { type: DataTypes.STRING, allowNull: false },
+    date: { type: DataTypes.STRING, allowNull: false },
+    checkIn: { type: DataTypes.STRING }, // HH:mm format
+    checkOut: { type: DataTypes.STRING }, // HH:mm format
+    status: { type: DataTypes.STRING, defaultValue: 'Present' }, // 'Present', 'Absent', 'Late', 'Half Day'
+    durationHours: { type: DataTypes.FLOAT }
+});
+
+const RegularizationRequest = sequelize.define('RegularizationRequest', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    employeeId: { type: DataTypes.STRING, allowNull: false },
+    employeeName: { type: DataTypes.STRING, allowNull: false },
+    date: { type: DataTypes.STRING, allowNull: false },
+    type: { type: DataTypes.STRING, allowNull: false }, // 'Missing Punch', 'Incorrect Punch', 'Work From Home'
+    reason: { type: DataTypes.STRING },
+    status: { type: DataTypes.STRING, defaultValue: 'Pending' }, // 'Pending', 'Approved', 'Rejected'
+    appliedOn: { type: DataTypes.STRING, allowNull: false },
+    newCheckIn: { type: DataTypes.STRING },
+    newCheckOut: { type: DataTypes.STRING }
+});
+
+const Payslip = sequelize.define('Payslip', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    employeeId: { type: DataTypes.STRING, allowNull: false },
+    month: { type: DataTypes.STRING, allowNull: false }, // YYYY-MM format
+    basic: { type: DataTypes.FLOAT, defaultValue: 0 },
+    hra: { type: DataTypes.FLOAT, defaultValue: 0 },
+    allowances: { type: DataTypes.FLOAT, defaultValue: 0 },
+    deductions: { type: DataTypes.FLOAT, defaultValue: 0 },
+    netPay: { type: DataTypes.FLOAT, defaultValue: 0 },
+    generatedDate: { type: DataTypes.STRING, allowNull: false }
+});
+
+// OS (Performance OS) Models
+const OSGoal = sequelize.define('OSGoal', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    ownerId: { type: DataTypes.STRING, allowNull: false },
+    title: { type: DataTypes.STRING, allowNull: false },
+    type: { type: DataTypes.STRING, allowNull: false }, // 'Annual', 'Quarterly'
+    metric: { type: DataTypes.STRING, allowNull: false },
+    baseline: { type: DataTypes.FLOAT, allowNull: false },
+    target: { type: DataTypes.FLOAT, allowNull: false },
+    current: { type: DataTypes.FLOAT, defaultValue: 0 },
+    timeline: { type: DataTypes.STRING, allowNull: false }, // ISO Date
+    status: { type: DataTypes.STRING, defaultValue: 'On Track' }, // 'On Track', 'Risk', 'Off Track', 'Completed'
+    score: { type: DataTypes.STRING }, // 'A', 'B', 'C', 'D', 'F'
+    managerFeedback: { type: DataTypes.TEXT }
+});
+
+const OSGoalComment = sequelize.define('OSGoalComment', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    goalId: { type: DataTypes.STRING, allowNull: false },
+    authorId: { type: DataTypes.STRING, allowNull: false },
+    text: { type: DataTypes.TEXT, allowNull: false },
+    timestamp: { type: DataTypes.STRING, allowNull: false }
+});
+
+const OSMemo = sequelize.define('OSMemo', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    fromId: { type: DataTypes.STRING, allowNull: false },
+    toId: { type: DataTypes.STRING, allowNull: false }, // User ID or 'ALL'
+    date: { type: DataTypes.STRING, allowNull: false },
+    subject: { type: DataTypes.STRING, allowNull: false },
+    status: { type: DataTypes.STRING, defaultValue: 'Draft' }, // 'Draft', 'Pending Review', 'Approved', 'Revision Requested'
+    summary: { type: DataTypes.TEXT } // Single summary field
+});
+
+const OSMemoAttachment = sequelize.define('OSMemoAttachment', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    memoId: { type: DataTypes.STRING, allowNull: false },
+    name: { type: DataTypes.STRING, allowNull: false },
+    size: { type: DataTypes.STRING },
+    type: { type: DataTypes.STRING }
+});
+
+const OSMemoComment = sequelize.define('OSMemoComment', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    memoId: { type: DataTypes.STRING, allowNull: false },
+    authorId: { type: DataTypes.STRING, allowNull: false },
+    text: { type: DataTypes.TEXT, allowNull: false },
+    timestamp: { type: DataTypes.STRING, allowNull: false }
+});
+
+const OSNotification = sequelize.define('OSNotification', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    userId: { type: DataTypes.STRING, allowNull: false },
+    title: { type: DataTypes.STRING, allowNull: false },
+    message: { type: DataTypes.TEXT, allowNull: false },
+    type: { type: DataTypes.STRING, defaultValue: 'info' }, // 'alert', 'info'
+    read: { type: DataTypes.BOOLEAN, defaultValue: false },
+    timestamp: { type: DataTypes.STRING, allowNull: false },
+    actionLink: { type: DataTypes.STRING }
+});
+
 // Relationships
 Customer.hasMany(Invoice, { foreignKey: 'customerId' });
 Invoice.belongsTo(Customer, { foreignKey: 'customerId' });
@@ -208,6 +332,33 @@ InvoiceItem.belongsTo(Invoice, { foreignKey: 'invoiceId' });
 
 Ledger.hasMany(Transaction, { foreignKey: 'ledgerId' });
 Transaction.belongsTo(Ledger, { foreignKey: 'ledgerId' });
+
+// HRMS Relationships
+Employee.hasMany(LeaveRequest, { foreignKey: 'employeeId' });
+LeaveRequest.belongsTo(Employee, { foreignKey: 'employeeId' });
+
+Employee.hasMany(AttendanceRecord, { foreignKey: 'employeeId' });
+AttendanceRecord.belongsTo(Employee, { foreignKey: 'employeeId' });
+
+Employee.hasMany(RegularizationRequest, { foreignKey: 'employeeId' });
+RegularizationRequest.belongsTo(Employee, { foreignKey: 'employeeId' });
+
+Employee.hasMany(Payslip, { foreignKey: 'employeeId' });
+Payslip.belongsTo(Employee, { foreignKey: 'employeeId' });
+
+// Self-referential relationship for managers
+Employee.belongsTo(Employee, { foreignKey: 'managerId', as: 'manager' });
+Employee.hasMany(Employee, { foreignKey: 'managerId', as: 'subordinates' });
+
+// OS Relationships
+OSGoal.hasMany(OSGoalComment, { foreignKey: 'goalId', as: 'comments' });
+OSGoalComment.belongsTo(OSGoal, { foreignKey: 'goalId' });
+
+OSMemo.hasMany(OSMemoAttachment, { foreignKey: 'memoId', as: 'attachments' });
+OSMemoAttachment.belongsTo(OSMemo, { foreignKey: 'memoId' });
+
+OSMemo.hasMany(OSMemoComment, { foreignKey: 'memoId', as: 'comments' });
+OSMemoComment.belongsTo(OSMemo, { foreignKey: 'memoId' });
 
 const initDb = async () => {
     try {
@@ -247,4 +398,26 @@ const initDb = async () => {
     }
 };
 
-export { sequelize, initDb, Customer, Invoice, InvoiceItem, Ledger, Transaction, User };
+export { 
+    sequelize, 
+    initDb, 
+    Customer, 
+    Invoice, 
+    InvoiceItem, 
+    Ledger, 
+    Transaction, 
+    User,
+    // HRMS Models
+    Employee,
+    LeaveRequest,
+    AttendanceRecord,
+    RegularizationRequest,
+    Payslip,
+    // OS Models
+    OSGoal,
+    OSGoalComment,
+    OSMemo,
+    OSMemoAttachment,
+    OSMemoComment,
+    OSNotification
+};

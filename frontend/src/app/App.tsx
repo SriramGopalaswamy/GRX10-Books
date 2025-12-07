@@ -12,6 +12,18 @@ import VendorsPage from '../features/vendors/pages/VendorsPage';
 import CustomersPage from '../features/customers/pages/CustomersPage';
 import CashFlowPage from '../features/cashflow/pages/CashFlowPage';
 import Login from '../shared/components/auth/Login';
+// HRMS Pages
+import { Dashboard as HRMSDashboard } from '../features/hrms/pages/Dashboard';
+import { Employees } from '../features/hrms/pages/Employees';
+import { Attendance } from '../features/hrms/pages/Attendance';
+import { Leaves } from '../features/hrms/pages/Leaves';
+import { Payroll } from '../features/hrms/pages/Payroll';
+import { PolicyChat } from '../features/hrms/pages/PolicyChat';
+import { HRMSProvider } from '../features/hrms/components/HRMSProvider';
+// OS Pages
+import { OSDashboardPage } from '../features/os/pages/OSDashboardPage';
+import { GoalsPage } from '../features/os/pages/GoalsPage';
+import { MemosPage } from '../features/os/pages/MemosPage';
 import { View, Invoice } from '../shared/types';
 import { MOCK_INVOICES } from '../shared/constants/app.constants';
 import { Loader2 } from 'lucide-react';
@@ -75,6 +87,17 @@ const App: React.FC = () => {
       case View.VENDORS: return <VendorsPage />;
       case View.CUSTOMERS: return <CustomersPage />;
       case View.CASHFLOW: return <CashFlowPage />;
+      // HRMS Views (wrapped with HRMSProvider for context)
+      case View.HRMS_DASHBOARD: return <HRMSProvider><HRMSDashboard /></HRMSProvider>;
+      case View.EMPLOYEES: return <HRMSProvider><Employees /></HRMSProvider>;
+      case View.ATTENDANCE: return <HRMSProvider><Attendance /></HRMSProvider>;
+      case View.LEAVES: return <HRMSProvider><Leaves /></HRMSProvider>;
+      case View.PAYROLL: return <HRMSProvider><Payroll /></HRMSProvider>;
+      case View.POLICY_CHAT: return <HRMSProvider><PolicyChat /></HRMSProvider>;
+      // OS Views
+      case View.OS_DASHBOARD: return <OSDashboardPage />;
+      case View.GOALS: return <GoalsPage />;
+      case View.MEMOS: return <MemosPage />;
       default: return <DashboardPage invoices={invoices} />;
     }
   };

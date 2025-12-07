@@ -14,6 +14,8 @@ import customerRoutes from './modules/customers/customer.routes.js';
 import aiRoutes from './modules/ai/ai.routes.js';
 import migrationRoutes from './modules/migration/migration.routes.js';
 import authRoutes from './auth/auth.routes.js';
+import hrmsRoutes from './modules/hrms/hrms.routes.js';
+import osRoutes from './modules/os/os.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -57,6 +59,8 @@ app.use('/api/accounting', invoiceRoutes);
 app.use('/api/accounting', customerRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/migration', migrationRoutes);
+app.use('/api/hrms', hrmsRoutes);
+app.use('/api/os', osRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

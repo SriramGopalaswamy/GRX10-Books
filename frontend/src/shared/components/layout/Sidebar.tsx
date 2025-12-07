@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { LayoutDashboard, FileText, Briefcase, Upload, MessageSquare, PieChart, Settings, Landmark, LogOut, FileStack, Users, Calculator, TrendingUp } from 'lucide-react';
+import { LayoutDashboard, FileText, Briefcase, Upload, MessageSquare, PieChart, Settings, Landmark, LogOut, FileStack, Users, Calculator, TrendingUp, CalendarCheck, Banknote, Bot, Target, FileText as MemoIcon } from 'lucide-react';
 import { View } from '../../types';
 
 interface SidebarProps {
@@ -20,6 +20,17 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView }) => {
     { id: View.DOCUMENTS, label: 'Documents', icon: FileStack },
     { id: View.MIGRATION, label: 'Zoho Migration', icon: Upload },
     { id: View.ASSISTANT, label: 'AI Assistant', icon: MessageSquare },
+    // HRMS Modules
+    { id: View.HRMS_DASHBOARD, label: 'HR Dashboard', icon: LayoutDashboard },
+    { id: View.EMPLOYEES, label: 'Employees', icon: Users },
+    { id: View.ATTENDANCE, label: 'Attendance', icon: CalendarCheck },
+    { id: View.LEAVES, label: 'Leaves', icon: Briefcase },
+    { id: View.PAYROLL, label: 'Payroll', icon: Banknote },
+    { id: View.POLICY_CHAT, label: 'HR Assistant', icon: Bot },
+    // OS Modules
+    { id: View.OS_DASHBOARD, label: 'OS Dashboard', icon: LayoutDashboard },
+    { id: View.GOALS, label: 'Goals', icon: Target },
+    { id: View.MEMOS, label: 'Memos', icon: MemoIcon },
   ];
 
   return (
