@@ -91,7 +91,7 @@ export const Payroll: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-slate-900">Payroll & Compensation</h2>
+      <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Payroll & Compensation</h2>
 
       {user?.role === Role.FINANCE && (
          <div className="bg-indigo-900 rounded-xl p-6 text-white mb-8">
@@ -120,35 +120,35 @@ export const Payroll: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Salary Structure Card */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 lg:col-span-1">
-          <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-100 lg:col-span-1">
+          <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
             <DollarSign size={20} className="text-emerald-500" />
             Current Salary Structure
           </h3>
           <div className="space-y-3 text-sm">
              <div className="flex justify-between">
                <span className="text-slate-500">Basic Salary</span>
-               <span className="font-medium text-slate-900">$50,000</span>
+               <span className="font-medium text-slate-900 dark:text-slate-100">$50,000</span>
              </div>
              <div className="flex justify-between">
                <span className="text-slate-500">HRA</span>
-               <span className="font-medium text-slate-900">$20,000</span>
+               <span className="font-medium text-slate-900 dark:text-slate-100">$20,000</span>
              </div>
              <div className="flex justify-between">
                <span className="text-slate-500">Special Allowance</span>
-               <span className="font-medium text-slate-900">$15,000</span>
+               <span className="font-medium text-slate-900 dark:text-slate-100">$15,000</span>
              </div>
              <div className="h-px bg-slate-100 my-2"></div>
              <div className="flex justify-between font-bold">
                <span className="text-slate-700">Gross Salary</span>
-               <span className="text-slate-900">$85,000</span>
+               <span className="text-slate-900 dark:text-slate-100">$85,000</span>
              </div>
           </div>
         </div>
 
         {/* Payslips List */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-100 lg:col-span-2 overflow-hidden">
-          <div className="p-6 border-b border-slate-100 font-semibold text-slate-900">Recent Payslips</div>
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 lg:col-span-2 overflow-hidden">
+          <div className="p-6 border-b border-slate-100 dark:border-slate-700 font-semibold text-slate-900 dark:text-slate-100">Recent Payslips</div>
           <div className="divide-y divide-slate-100">
             {mockPayslips.map((slip, idx) => (
               <div key={idx} className="p-4 flex items-center justify-between hover:bg-slate-50 transition-colors">

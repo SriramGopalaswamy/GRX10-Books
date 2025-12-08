@@ -9,7 +9,7 @@ export const Leaves: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-slate-900">Leave Management</h2>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Leave Management</h2>
         <button 
           onClick={() => setShowModal(true)}
           className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2 transition-colors"
@@ -21,32 +21,32 @@ export const Leaves: React.FC = () => {
 
       {/* Balance Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-          <p className="text-slate-500 text-sm mb-1">Sick Leave</p>
-          <p className="text-2xl font-bold text-slate-900">5 <span className="text-sm font-normal text-slate-400">/ 12</span></p>
-          <div className="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm">
+          <p className="text-slate-500 dark:text-slate-400 text-sm mb-1">Sick Leave</p>
+          <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">5 <span className="text-sm font-normal text-slate-400">/ 12</span></p>
+          <div className="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full mt-3 overflow-hidden">
             <div className="bg-rose-500 h-full" style={{width: '41%'}}></div>
           </div>
         </div>
-        <div className="bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-          <p className="text-slate-500 text-sm mb-1">Casual Leave</p>
-          <p className="text-2xl font-bold text-slate-900">8 <span className="text-sm font-normal text-slate-400">/ 12</span></p>
-          <div className="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm">
+          <p className="text-slate-500 dark:text-slate-400 text-sm mb-1">Casual Leave</p>
+          <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">8 <span className="text-sm font-normal text-slate-400">/ 12</span></p>
+          <div className="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full mt-3 overflow-hidden">
             <div className="bg-blue-500 h-full" style={{width: '66%'}}></div>
           </div>
         </div>
-        <div className="bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-          <p className="text-slate-500 text-sm mb-1">Earned Leave</p>
-          <p className="text-2xl font-bold text-slate-900">3 <span className="text-sm font-normal text-slate-400">/ 15</span></p>
-          <div className="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm">
+          <p className="text-slate-500 dark:text-slate-400 text-sm mb-1">Earned Leave</p>
+          <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">3 <span className="text-sm font-normal text-slate-400">/ 15</span></p>
+          <div className="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full mt-3 overflow-hidden">
             <div className="bg-emerald-500 h-full" style={{width: '20%'}}></div>
           </div>
         </div>
       </div>
 
       {/* Leave History */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
-        <div className="p-4 border-b border-slate-100 font-medium text-slate-700">Request History</div>
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
+        <div className="p-4 border-b border-slate-100 dark:border-slate-700 font-medium text-slate-700 dark:text-slate-300">Request History</div>
         <table className="w-full text-left">
           <thead>
              <tr className="bg-slate-50 text-slate-500 text-sm">

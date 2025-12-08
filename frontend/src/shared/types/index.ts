@@ -107,6 +107,7 @@ export enum View {
   // HRMS Views
   HRMS_DASHBOARD = 'HRMS_DASHBOARD',
   EMPLOYEES = 'EMPLOYEES',
+  EMPLOYEE_DETAILS = 'EMPLOYEE_DETAILS',
   ATTENDANCE = 'ATTENDANCE',
   LEAVES = 'LEAVES',
   PAYROLL = 'PAYROLL',
@@ -114,7 +115,25 @@ export enum View {
   // OS Views
   OS_DASHBOARD = 'OS_DASHBOARD',
   GOALS = 'GOALS',
-  MEMOS = 'MEMOS'
+  MEMOS = 'MEMOS',
+  // Configuration Views
+  CONFIG_ORGANIZATIONS = 'CONFIG_ORGANIZATIONS',
+  CONFIG_DEPARTMENTS = 'CONFIG_DEPARTMENTS',
+  CONFIG_POSITIONS = 'CONFIG_POSITIONS',
+  CONFIG_ROLES = 'CONFIG_ROLES',
+  CONFIG_EMPLOYEE_TYPES = 'CONFIG_EMPLOYEE_TYPES',
+  CONFIG_HOLIDAYS = 'CONFIG_HOLIDAYS',
+  CONFIG_LEAVE_TYPES = 'CONFIG_LEAVE_TYPES',
+  CONFIG_WORK_LOCATIONS = 'CONFIG_WORK_LOCATIONS',
+  CONFIG_SKILLS = 'CONFIG_SKILLS',
+  CONFIG_LANGUAGES = 'CONFIG_LANGUAGES',
+  CONFIG_CHART_OF_ACCOUNTS = 'CONFIG_CHART_OF_ACCOUNTS',
+  // Security & Role Management Views
+  SECURITY_ROLES = 'SECURITY_ROLES',
+  SECURITY_PERMISSIONS = 'SECURITY_PERMISSIONS',
+  SECURITY_USER_ROLES = 'SECURITY_USER_ROLES',
+  SECURITY_APPROVAL_WORKFLOWS = 'SECURITY_APPROVAL_WORKFLOWS',
+  SECURITY_APPROVAL_REQUESTS = 'SECURITY_APPROVAL_REQUESTS'
 }
 
 // HRMS Types
@@ -126,20 +145,144 @@ export enum HRMSRole {
   ADMIN = 'Admin'
 }
 
+export interface EducationDetail {
+  level: '10th' | '12th' | 'Degree' | 'Post Graduate' | 'Other';
+  institution: string;
+  field: string;
+  year: string;
+  percentage?: number;
+  grade?: string;
+}
+
+export interface ExperienceDetail {
+  company: string;
+  position: string;
+  startDate: string;
+  endDate: string;
+  responsibilities?: string;
+  achievements?: string;
+}
+
+export interface SalaryBreakdown {
+  base: number;
+  hra: number;
+  specialAllowance: number;
+  pf: number;
+  esi?: number;
+  professionalTax?: number;
+  otherDeductions?: number;
+  grossSalary: number;
+  netSalary: number;
+}
+
+export interface LeaveEntitlement {
+  casual: number;
+  sick: number;
+  earned: number;
+  maternity?: number;
+  paternity?: number;
+  compOff?: number;
+  lop?: number;
+}
+
+export interface Certification {
+  name: string;
+  issuer: string;
+  issueDate: string;
+  expiryDate?: string;
+  certificateNumber?: string;
+  isMandatory: boolean;
+}
+
+export interface Dependent {
+  name: string;
+  relationship: string; // 'Spouse', 'Child', 'Parent', etc.
+  dateOfBirth?: string;
+}
+
+export interface TaxDeclaration {
+  section80C?: number; // Investments
+  section80D?: number; // Health Insurance
+  hra?: number; // House Rent Allowance
+  lta?: number; // Leave Travel Allowance
+  other?: number;
+}
+
+export interface HiringHistory {
+  id: string;
+  employeeId: string;
+  hireDate: string;
+  terminationDate?: string;
+  employeeType: 'Full Time' | 'Part Time' | 'Contract';
+  department: string;
+  employeePosition: string;
+  designation: string;
+  salary?: number;
+  managerId?: string;
+  reasonForTermination?: string;
+  isRehire: boolean;
+  previousEmployeeId?: string;
+}
+
 export interface Employee {
   id: string;
   name: string;
   email: string;
   role: HRMSRole;
   department: string;
+  employeePosition?: string; // Employee Role/Position
   designation: string;
   joinDate: string;
+  terminationDate?: string;
+  employeeType: 'Full Time' | 'Part Time' | 'Contract';
+  status: 'Active' | 'Terminated';
+  isRehired?: boolean;
+  previousEmployeeId?: string; // For rehired employees
   avatar: string;
   managerId?: string;
   salary?: number; // Annual CTC
-  status: 'Active' | 'Exited';
   password?: string; // Mock password for direct login
   isNewUser?: boolean;
+  // Additional Traditional HR Fields
+  workLocation?: string;
+  probationEndDate?: string;
+  noticePeriod?: number; // Days
+  lastWorkingDay?: string;
+  exitInterviewDate?: string;
+  employeeReferralId?: string;
+  bloodGroup?: string;
+  maritalStatus?: 'Single' | 'Married' | 'Divorced' | 'Widowed';
+  spouseName?: string;
+  emergencyContactName?: string;
+  emergencyContactRelation?: string;
+  emergencyContactPhone?: string;
+  bankAccountNumber?: string;
+  bankIFSC?: string;
+  bankName?: string;
+  bankBranch?: string;
+  skills?: string[]; // Array of skills
+  languages?: string[]; // Array of languages known
+  dependents?: Dependent[];
+  taxDeclarations?: TaxDeclaration;
+  // Personal Details
+  dateOfBirth?: string;
+  phone?: string;
+  address?: string;
+  pan?: string;
+  aadhar?: string;
+  pfNumber?: string;
+  // Education Details
+  educationDetails?: EducationDetail[];
+  // Experience Details
+  experienceDetails?: ExperienceDetail[];
+  // Salary Breakdown
+  salaryBreakdown?: SalaryBreakdown;
+  // Leave Entitlements
+  leaveEntitlements?: LeaveEntitlement;
+  // Certifications
+  certifications?: Certification[];
+  // Hiring History (from related table)
+  hiringHistory?: HiringHistory[];
 }
 
 export enum LeaveType {

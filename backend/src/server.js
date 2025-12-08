@@ -16,6 +16,8 @@ import migrationRoutes from './modules/migration/migration.routes.js';
 import authRoutes from './auth/auth.routes.js';
 import hrmsRoutes from './modules/hrms/hrms.routes.js';
 import osRoutes from './modules/os/os.routes.js';
+import configRoutes from './modules/config/config.routes.js';
+import securityRoutes from './modules/security/security.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -61,6 +63,8 @@ app.use('/api/ai', aiRoutes);
 app.use('/api/migration', migrationRoutes);
 app.use('/api/hrms', hrmsRoutes);
 app.use('/api/os', osRoutes);
+app.use('/api/config', configRoutes);
+app.use('/api/security', securityRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

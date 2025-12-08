@@ -36,17 +36,17 @@ export const MemoView: React.FC<MemoViewProps> = ({ memo, onBack }) => {
                 <ArrowLeft size={16} /> Back to List
             </button>
 
-            <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-gray-200 dark:border-slate-700 overflow-hidden">
                 {/* Header */}
                 <div className="bg-slate-50 border-b border-gray-200 p-8">
                     <div className="flex justify-between items-start">
                         <div>
-                            <h1 className="text-3xl font-bold text-slate-900 mb-4">{memo.subject}</h1>
+                            <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">{memo.subject}</h1>
                             <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
-                                <div className="text-gray-500">From: <span className="font-medium text-slate-900">{author?.name}</span></div>
-                                <div className="text-gray-500">Date: <span className="font-medium text-slate-900">{memo.date}</span></div>
-                                <div className="text-gray-500">To: <span className="font-medium text-slate-900">Leadership Team</span></div>
-                                <div className="text-gray-500">Status: <span className="font-bold text-slate-900">{memo.status}</span></div>
+                                <div className="text-gray-500 dark:text-gray-400">From: <span className="font-medium text-slate-900 dark:text-slate-100">{author?.name}</span></div>
+                                <div className="text-gray-500 dark:text-gray-400">Date: <span className="font-medium text-slate-900 dark:text-slate-100">{memo.date}</span></div>
+                                <div className="text-gray-500 dark:text-gray-400">To: <span className="font-medium text-slate-900 dark:text-slate-100">Leadership Team</span></div>
+                                <div className="text-gray-500 dark:text-gray-400">Status: <span className="font-bold text-slate-900 dark:text-slate-100">{memo.status}</span></div>
                             </div>
                         </div>
                         <div className="flex flex-col gap-2">
@@ -87,7 +87,7 @@ export const MemoView: React.FC<MemoViewProps> = ({ memo, onBack }) => {
 
                 {/* Content */}
                 <div className="p-8">
-                    <div className="prose max-w-none text-slate-800 whitespace-pre-wrap leading-relaxed mb-8">
+                    <div className="prose max-w-none text-slate-800 dark:text-slate-200 whitespace-pre-wrap leading-relaxed mb-8">
                         {memo.summary}
                     </div>
 
@@ -101,7 +101,7 @@ export const MemoView: React.FC<MemoViewProps> = ({ memo, onBack }) => {
                                 {memo.attachments.map(file => (
                                     <div key={file.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-brand-300 transition-colors">
                                         <div className="flex items-center gap-3 overflow-hidden">
-                                            <div className="w-10 h-10 bg-white rounded-md flex items-center justify-center border border-gray-200 text-brand-600">
+                                            <div className="w-10 h-10 bg-white dark:bg-slate-800 rounded-md flex items-center justify-center border border-gray-200 dark:border-slate-700 text-brand-600 dark:text-brand-500">
                                                 <FileText size={20} />
                                             </div>
                                             <div className="min-w-0">

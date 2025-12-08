@@ -52,39 +52,39 @@ export const Dashboard: React.FC = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Executive Dashboard</h1>
-          <p className="text-slate-500 mt-1">Real-time performance snapshot for GRX10.</p>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Executive Dashboard</h1>
+          <p className="text-slate-500 dark:text-slate-400 mt-1">Real-time performance snapshot for GRX10.</p>
         </div>
         <div className="text-right">
-            <p className="text-sm text-gray-500">Current Quarter</p>
-            <p className="text-2xl font-bold text-brand-600">Q3 2024</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Current Quarter</p>
+            <p className="text-2xl font-bold text-brand-600 dark:text-brand-500">Q3 2024</p>
         </div>
       </div>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {/* Goal Completion */}
-        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm relative overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-gray-200 shadow-sm relative overflow-hidden">
           <div className="flex justify-between items-start">
              <div>
-                <p className="text-sm font-medium text-gray-500">Goal Completion</p>
-                <p className="text-3xl font-bold text-slate-900 mt-2">{completionRate}%</p>
+                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Goal Completion</p>
+                <p className="text-3xl font-bold text-slate-900 dark:text-slate-100 mt-2">{completionRate}%</p>
              </div>
              <div className={`p-2 rounded-lg ${completionRate >= 80 ? 'bg-green-50 text-green-600' : 'bg-yellow-50 text-yellow-600'}`}>
                  <TrendingUp size={20} />
              </div>
           </div>
-          <div className="w-full bg-gray-100 rounded-full h-1.5 mt-4">
+          <div className="w-full bg-gray-100 dark:bg-slate-700 rounded-full h-1.5 mt-4">
             <div className="bg-brand-500 h-1.5 rounded-full" style={{ width: `${completionRate}%` }}></div>
           </div>
         </div>
 
         {/* CAC */}
-        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-gray-200 shadow-sm">
           <div className="flex justify-between items-start">
              <div>
-                <p className="text-sm font-medium text-gray-500">CAC</p>
-                <p className="text-3xl font-bold text-slate-900 mt-2">$142</p>
+                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">CAC</p>
+                <p className="text-3xl font-bold text-slate-900 dark:text-slate-100 mt-2">$142</p>
              </div>
              <div className="p-2 rounded-lg bg-green-50 text-green-600">
                  <TrendingDown size={20} />
@@ -96,11 +96,11 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Solar Installation Rate */}
-        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-gray-200 shadow-sm">
           <div className="flex justify-between items-start">
              <div>
-                <p className="text-sm font-medium text-gray-500">Install Rate</p>
-                <p className="text-3xl font-bold text-slate-900 mt-2">18<span className="text-sm text-gray-400 font-normal">/wk</span></p>
+                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Install Rate</p>
+                <p className="text-3xl font-bold text-slate-900 dark:text-slate-100 mt-2">18<span className="text-sm text-gray-400 font-normal">/wk</span></p>
              </div>
              <div className="p-2 rounded-lg bg-blue-50 text-blue-600">
                  <Zap size={20} />
@@ -112,11 +112,11 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Average Deal Size */}
-        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-gray-200 shadow-sm">
           <div className="flex justify-between items-start">
              <div>
-                <p className="text-sm font-medium text-gray-500">Avg Deal Size</p>
-                <p className="text-3xl font-bold text-slate-900 mt-2">$8.5k</p>
+                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Avg Deal Size</p>
+                <p className="text-3xl font-bold text-slate-900 dark:text-slate-100 mt-2">$8.5k</p>
              </div>
              <div className="p-2 rounded-lg bg-gray-50 text-gray-600">
                  <Minus size={20} />
@@ -130,7 +130,7 @@ export const Dashboard: React.FC = () => {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-gray-200 shadow-sm">
           <h3 className="text-lg font-semibold text-slate-800 mb-4">Goal Status Distribution</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -163,7 +163,7 @@ export const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-gray-200 shadow-sm">
           <h3 className="text-lg font-semibold text-slate-800 mb-4">Revenue: Actual vs Target (k$)</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">

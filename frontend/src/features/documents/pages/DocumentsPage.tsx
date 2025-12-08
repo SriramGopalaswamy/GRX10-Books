@@ -402,7 +402,7 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
       {signingAgreement && (
         <div className="fixed inset-0 bg-slate-900 z-[60] flex flex-col animate-fade-in">
            {/* Header */}
-           <div className="bg-white p-4 flex justify-between items-center shadow-md z-10">
+           <div className="bg-white dark:bg-slate-800 p-4 flex justify-between items-center shadow-md z-10">
               <div className="flex items-center gap-3">
                  <div className="w-8 h-8 bg-indigo-600 rounded text-white flex items-center justify-center font-bold">G</div>
                  <div className="h-6 w-px bg-slate-300"></div>
@@ -416,7 +416,7 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
 
            {/* Document Body (Mock) */}
            <div className="flex-1 bg-slate-100 p-8 overflow-y-auto flex justify-center">
-              <div className="bg-white shadow-xl w-full max-w-3xl min-h-[800px] p-12 text-slate-800 relative">
+              <div className="bg-white dark:bg-slate-800 shadow-xl w-full max-w-3xl min-h-[800px] p-12 text-slate-800 relative">
                   <h1 className="text-2xl font-bold uppercase text-center mb-8 border-b pb-4">{signingAgreement.type}</h1>
                   <div className="space-y-6 text-justify text-sm leading-relaxed">
                      <p>This Agreement is made on <strong>{new Date().toLocaleDateString()}</strong> between GRX10 Solutions and <strong>{signingAgreement.customerName}</strong>.</p>
@@ -447,7 +447,7 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
            </div>
 
            {/* Footer Action */}
-           <div className="bg-white p-4 border-t border-slate-200 flex justify-end gap-4">
+           <div className="bg-white dark:bg-slate-800 p-4 border-t border-slate-200 flex justify-end gap-4">
               <button onClick={() => setSigningAgreement(null)} className="px-6 py-2 text-slate-600 font-medium hover:bg-slate-50 rounded-lg">Decline</button>
               <button 
                  onClick={handleSignAgreement} 
@@ -463,7 +463,7 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
       {/* Audit Trail Modal */}
       {viewingAudit && (
         <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-           <div className="bg-white rounded-xl shadow-xl max-w-lg w-full overflow-hidden animate-scale-in">
+           <div className="bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-lg w-full overflow-hidden animate-scale-in">
               <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                  <div>
                    <h3 className="font-bold text-slate-800 flex items-center gap-2"><History size={18} className="text-indigo-600"/> Audit Trail</h3>
@@ -491,7 +491,7 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
       {/* Send Modal */}
       {isSendModalOpen && (
          <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6 animate-scale-in">
+            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-md w-full p-6 animate-scale-in">
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-bold text-slate-800">Send Agreement</h3>
                     <button onClick={() => setIsSendModalOpen(false)} className="text-slate-400 hover:text-slate-600"><X size={20}/></button>
@@ -626,14 +626,14 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
     <div className="space-y-6 h-full flex flex-col">
        <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800">Document Hub</h2>
-          <p className="text-slate-500">Central repository for receipts, templates, and legal agreements.</p>
+          <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Document Hub</h2>
+          <p className="text-slate-500 dark:text-slate-400">Central repository for receipts, templates, and legal agreements.</p>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 bg-slate-100 p-1 rounded-xl w-fit">
-         <button onClick={() => setActiveTab('uploads')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'uploads' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}><Upload size={16}/> Uploads & OCR</button>
+      <div className="flex gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl w-fit">
+         <button onClick={() => setActiveTab('uploads')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'uploads' ? 'bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'}`}><Upload size={16}/> Uploads & OCR</button>
          <button onClick={() => setActiveTab('templates')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'templates' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}><LayoutTemplate size={16}/> Invoice Templates</button>
          <button onClick={() => setActiveTab('agreements')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'agreements' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}><PenTool size={16}/> Agreements & E-Sign</button>
          <button onClick={() => setActiveTab('msa')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'msa' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}><BookOpen size={16}/> MSA Reference</button>

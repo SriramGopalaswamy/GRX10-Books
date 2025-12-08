@@ -214,13 +214,13 @@ export const PolicyChat: React.FC = () => {
 
   return (
     <>
-      <div className="flex flex-col h-[calc(100vh-140px)] bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="flex flex-col h-[calc(100vh-140px)] bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
         <div className="p-4 border-b border-slate-100 bg-indigo-50 flex items-center gap-3">
           <div className="p-2 bg-indigo-100 rounded-full text-indigo-600">
             <Bot size={24} />
           </div>
           <div>
-            <h3 className="font-semibold text-slate-900">HR Assistant (Powered by Gemini)</h3>
+            <h3 className="font-semibold text-slate-900 dark:text-slate-100">HR Assistant (Powered by Gemini)</h3>
             <p className="text-xs text-slate-500">Instant answers & actions</p>
           </div>
         </div>
@@ -248,7 +248,7 @@ export const PolicyChat: React.FC = () => {
                   
                   {/* Action Bubbles */}
                   {msg.payslip && (
-                    <div className="max-w-xs bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden mt-1">
+                    <div className="max-w-xs bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden mt-1">
                       <div className="p-3 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <div className="p-1.5 bg-emerald-100 text-emerald-600 rounded-lg">
@@ -260,7 +260,7 @@ export const PolicyChat: React.FC = () => {
                       <div className="p-3 flex items-center justify-between gap-4">
                         <div>
                           <p className="text-xs text-slate-500">Net Pay</p>
-                          <p className="text-lg font-bold text-slate-900">${msg.payslip.netPay.toLocaleString()}</p>
+                          <p className="text-lg font-bold text-slate-900 dark:text-slate-100">${msg.payslip.netPay.toLocaleString()}</p>
                         </div>
                         <button 
                           onClick={() => msg.payslip && handleDownload(msg.payslip)}
@@ -294,8 +294,8 @@ export const PolicyChat: React.FC = () => {
                   )}
 
                   {msg.showRegularizationForm && (
-                    <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm mt-1 w-full min-w-[280px]">
-                      <h4 className="text-sm font-bold text-slate-800 mb-3">New Regularization Request</h4>
+                    <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 shadow-sm mt-1 w-full min-w-[280px]">
+                      <h4 className="text-sm font-bold text-slate-800 dark:text-slate-100 mb-3">New Regularization Request</h4>
                       <div className="space-y-3">
                         <div>
                           <label className="block text-xs font-medium text-slate-500 mb-1">Date</label>
@@ -337,7 +337,7 @@ export const PolicyChat: React.FC = () => {
                   )}
 
                   {msg.regularizationList && msg.regularizationList.length > 0 && (
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm mt-1 overflow-hidden w-full">
+                    <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 shadow-sm mt-1 overflow-hidden w-full">
                       <div className="overflow-x-auto">
                         <table className="w-full text-left text-sm">
                           <thead className="bg-slate-50 text-slate-500">
@@ -352,12 +352,12 @@ export const PolicyChat: React.FC = () => {
                           <tbody className="divide-y divide-slate-100">
                             {msg.regularizationList.map(req => (
                               <tr key={req.id}>
-                                <td className="px-4 py-3 text-slate-900 whitespace-nowrap">{req.date}</td>
+                                <td className="px-4 py-3 text-slate-900 dark:text-slate-100 whitespace-nowrap">{req.date}</td>
                                 <td className="px-4 py-3 text-slate-600">
                                   <span className="text-xs bg-slate-100 px-2 py-1 rounded">{req.type}</span>
                                 </td>
                                 {msg.isApprovalList && (
-                                  <td className="px-4 py-3 text-slate-900">{req.employeeName}</td>
+                                  <td className="px-4 py-3 text-slate-900 dark:text-slate-100">{req.employeeName}</td>
                                 )}
                                 <td className="px-4 py-3">
                                   <span className={`flex items-center gap-1 text-xs font-medium ${

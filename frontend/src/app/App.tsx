@@ -15,6 +15,7 @@ import Login from '../shared/components/auth/Login';
 // HRMS Pages
 import { Dashboard as HRMSDashboard } from '../features/hrms/pages/Dashboard';
 import { Employees } from '../features/hrms/pages/Employees';
+import { EmployeeDetails } from '../features/hrms/pages/EmployeeDetails';
 import { Attendance } from '../features/hrms/pages/Attendance';
 import { Leaves } from '../features/hrms/pages/Leaves';
 import { Payroll } from '../features/hrms/pages/Payroll';
@@ -24,14 +25,35 @@ import { HRMSProvider } from '../features/hrms/components/HRMSProvider';
 import { OSDashboardPage } from '../features/os/pages/OSDashboardPage';
 import { GoalsPage } from '../features/os/pages/GoalsPage';
 import { MemosPage } from '../features/os/pages/MemosPage';
+// Configuration Pages
+import { OrganizationsPage } from '../features/config/pages/OrganizationsPage';
+import { DepartmentsPage } from '../features/config/pages/DepartmentsPage';
+import { PositionsPage } from '../features/config/pages/PositionsPage';
+import { RolesPage as ConfigRolesPage } from '../features/config/pages/RolesPage';
+import { EmployeeTypesPage } from '../features/config/pages/EmployeeTypesPage';
+import { HolidaysPage } from '../features/config/pages/HolidaysPage';
+import { LeaveTypesPage } from '../features/config/pages/LeaveTypesPage';
+import { WorkLocationsPage } from '../features/config/pages/WorkLocationsPage';
+import { SkillsPage } from '../features/config/pages/SkillsPage';
+import { LanguagesPage } from '../features/config/pages/LanguagesPage';
+import { ChartOfAccountsPage } from '../features/config/pages/ChartOfAccountsPage';
+// Security Pages
+import { RolesPage } from '../features/security/pages/RolesPage';
+import { PermissionsPage } from '../features/security/pages/PermissionsPage';
+import { UserRolesPage } from '../features/security/pages/UserRolesPage';
+import { ApprovalWorkflowsPage } from '../features/security/pages/ApprovalWorkflowsPage';
 import { View, Invoice } from '../shared/types';
 import { MOCK_INVOICES } from '../shared/constants/app.constants';
 import { Loader2 } from 'lucide-react';
+import { ConfigurationProvider } from '../shared/contexts/ConfigurationContext';
+import { ThemeProvider } from '../shared/contexts/ThemeContext';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>(View.DASHBOARD);
   const [invoices, setInvoices] = useState<Invoice[]>(MOCK_INVOICES);
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState<string | null>(null);
 
   // Auth State
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -75,6 +97,20 @@ const App: React.FC = () => {
     setCurrentView(View.INVOICES);
   };
 
+  const handleViewChange = (view: View, employeeId?: string) => {
+    setCurrentView(view);
+    if (employeeId) {
+      setSelectedEmployeeId(employeeId);
+    } else {
+      setSelectedEmployeeId(null);
+    }
+  };
+
+  const handleBackToEmployees = () => {
+    setCurrentView(View.EMPLOYEES);
+    setSelectedEmployeeId(null);
+  };
+
   const renderContent = () => {
     switch (currentView) {
       case View.DASHBOARD: return <DashboardPage invoices={invoices} />;
@@ -89,7 +125,18 @@ const App: React.FC = () => {
       case View.CASHFLOW: return <CashFlowPage />;
       // HRMS Views (wrapped with HRMSProvider for context)
       case View.HRMS_DASHBOARD: return <HRMSProvider><HRMSDashboard /></HRMSProvider>;
-      case View.EMPLOYEES: return <HRMSProvider><Employees /></HRMSProvider>;
+      case View.EMPLOYEES: return <HRMSProvider><Employees onViewChange={handleViewChange} /></HRMSProvider>;
+      case View.EMPLOYEE_DETAILS: return selectedEmployeeId ? (
+        <HRMSProvider>
+          <EmployeeDetails 
+            employeeId={selectedEmployeeId} 
+            onBack={handleBackToEmployees}
+            onViewChange={handleViewChange}
+          />
+        </HRMSProvider>
+      ) : (
+        <HRMSProvider><Employees onViewChange={handleViewChange} /></HRMSProvider>
+      );
       case View.ATTENDANCE: return <HRMSProvider><Attendance /></HRMSProvider>;
       case View.LEAVES: return <HRMSProvider><Leaves /></HRMSProvider>;
       case View.PAYROLL: return <HRMSProvider><Payroll /></HRMSProvider>;
@@ -98,29 +145,61 @@ const App: React.FC = () => {
       case View.OS_DASHBOARD: return <OSDashboardPage />;
       case View.GOALS: return <GoalsPage />;
       case View.MEMOS: return <MemosPage />;
+      // Configuration Views
+      case View.CONFIG_ORGANIZATIONS: return <OrganizationsPage />;
+      case View.CONFIG_DEPARTMENTS: return <DepartmentsPage />;
+      case View.CONFIG_POSITIONS: return <PositionsPage />;
+      case View.CONFIG_ROLES: return <RolesPage />;
+      case View.CONFIG_EMPLOYEE_TYPES: return <EmployeeTypesPage />;
+      case View.CONFIG_HOLIDAYS: return <HolidaysPage />;
+      case View.CONFIG_LEAVE_TYPES: return <LeaveTypesPage />;
+      case View.CONFIG_WORK_LOCATIONS: return <WorkLocationsPage />;
+      case View.CONFIG_SKILLS: return <SkillsPage />;
+      case View.CONFIG_LANGUAGES: return <LanguagesPage />;
+      case View.CONFIG_CHART_OF_ACCOUNTS: return <ChartOfAccountsPage />;
+      // Security Views
+      case View.SECURITY_ROLES: return <RolesPage />;
+      case View.SECURITY_PERMISSIONS: return <PermissionsPage />;
+      case View.SECURITY_USER_ROLES: return <UserRolesPage />;
+      case View.SECURITY_APPROVAL_WORKFLOWS: return <ApprovalWorkflowsPage />;
+      case View.SECURITY_APPROVAL_REQUESTS: return <div className="p-8"><h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Approval Requests</h2><p className="text-slate-600 dark:text-slate-400 mt-2">Approval requests page coming soon...</p></div>;
       default: return <DashboardPage invoices={invoices} />;
     }
   };
 
   if (isAuthLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <Loader2 className="animate-spin text-indigo-600" size={48} />
-      </div>
+      <ThemeProvider>
+        <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">
+          <Loader2 className="animate-spin text-indigo-600 dark:text-indigo-400" size={48} />
+        </div>
+      </ThemeProvider>
     );
   }
 
   if (!isAuthenticated) {
-    return <Login />;
+    return (
+      <ThemeProvider>
+        <Login />
+      </ThemeProvider>
+    );
   }
 
   return (
-    <div className="flex min-h-screen bg-[#f8fafc]">
-      <Sidebar currentView={currentView} onChangeView={setCurrentView} />
-      <main className="flex-1 ml-64 p-8">
-        {renderContent()}
-      </main>
-    </div>
+    <ThemeProvider>
+      <ConfigurationProvider>
+        <div className="flex min-h-screen bg-[#f8fafc] dark:bg-slate-900">
+          <Sidebar 
+            currentView={currentView} 
+            onChangeView={setCurrentView}
+            onCollapseChange={setIsSidebarCollapsed}
+          />
+          <main className={`flex-1 p-8 transition-all duration-300 bg-slate-50 dark:bg-slate-900 ${isSidebarCollapsed ? 'ml-16' : 'ml-64'}`}>
+            {renderContent()}
+          </main>
+        </div>
+      </ConfigurationProvider>
+    </ThemeProvider>
   );
 };
 

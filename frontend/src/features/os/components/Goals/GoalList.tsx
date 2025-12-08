@@ -82,8 +82,8 @@ export const GoalList: React.FC = () => {
     <div>
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Goals & OKRs</h1>
-          <p className="text-slate-500">Quantifiable performance tracking for {currentUser.team}</p>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Goals & OKRs</h1>
+          <p className="text-slate-500 dark:text-slate-400">Quantifiable performance tracking for {currentUser.team}</p>
         </div>
         <button 
           onClick={handleCreate}
@@ -94,9 +94,9 @@ export const GoalList: React.FC = () => {
         </button>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 overflow-hidden">
+        <table className="min-w-full divide-y divide-gray-200 dark:divide-slate-700">
+          <thead className="bg-gray-50 dark:bg-slate-900">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Goal Title</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Metric</th>

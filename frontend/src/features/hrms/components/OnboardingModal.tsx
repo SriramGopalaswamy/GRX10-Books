@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { HRMSRole as Role, Employee } from '../../../shared/types';
 import { X, Upload, UserPlus, Check, ChevronRight, ChevronLeft } from 'lucide-react';
 import { useEmployees } from '../../../shared/contexts/EmployeeContext';
+import { useConfiguration } from '../../../shared/contexts/ConfigurationContext';
 
 interface OnboardingModalProps {
   isOpen: boolean;
@@ -11,6 +12,7 @@ interface OnboardingModalProps {
 
 export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose, initialData }) => {
   const { addEmployee, employees } = useEmployees();
+  const { getActiveDepartments, getActivePositions, getActiveEmployeeTypes, getActiveRoles } = useConfiguration();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<Partial<Employee>>({
     name: '',
@@ -31,28 +33,32 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = () => {
-    const newEmployee: Employee = {
-      id: `EMP${Math.floor(Math.random() * 10000)}`,
-      avatar: `https://ui-avatars.com/api/?name=${formData.name}&background=random`,
-      status: 'Active', // Ensure status is set
-      ...formData as Employee
-    };
-    addEmployee(newEmployee);
-    onClose();
-    // Reset form
-    setStep(1);
-    setFormData({
-      name: '',
-      email: '',
-      designation: '',
-      department: '',
-      role: Role.EMPLOYEE,
-      salary: 0,
-      joinDate: new Date().toISOString().split('T')[0],
-      managerId: ''
-    });
-    setOfferLetter(null);
+  const handleSubmit = async () => {
+    try {
+      const newEmployee: Employee = {
+        id: `EMP${Math.floor(Math.random() * 10000)}`, // Will be replaced by backend
+        avatar: `https://ui-avatars.com/api/?name=${formData.name}&background=random`,
+        status: 'Active', // Ensure status is set
+        ...formData as Employee
+      };
+      await addEmployee(newEmployee);
+      onClose();
+      // Reset form
+      setStep(1);
+      setFormData({
+        name: '',
+        email: '',
+        designation: '',
+        department: '',
+        role: Role.EMPLOYEE,
+        salary: 0,
+        joinDate: new Date().toISOString().split('T')[0],
+        managerId: ''
+      });
+      setOfferLetter(null);
+    } catch (error: any) {
+      alert(error.message || 'Failed to create employee. Please try again.');
+    }
   };
 
   // Refined manager filtering: Active status AND (Manager OR HR OR Admin)
@@ -136,11 +142,9 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
                     onChange={e => handleChange('department', e.target.value)}
                   >
                     <option value="">Select Department</option>
-                    <option value="Engineering">Engineering</option>
-                    <option value="Sales">Sales</option>
-                    <option value="Marketing">Marketing</option>
-                    <option value="HR">Human Resources</option>
-                    <option value="Finance">Finance</option>
+                    {getActiveDepartments().map(dept => (
+                      <option key={dept.id} value={dept.name}>{dept.name}</option>
+                    ))}
                   </select>
                 </div>
                 <div>

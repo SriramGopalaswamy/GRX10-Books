@@ -7,6 +7,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Documentation (except README.md)
+userdocs/
+!README.md
+
 # Dependencies
 node_modules
 package-lock.json
@@ -60,3 +64,7 @@ server/
 
 # Reference repositories
 reference/
+
+# Documentation (keep only README.md in git)
+*.md
+!README.md

@@ -5,13 +5,13 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { Clock, Calendar, TrendingUp, Users, AlertCircle } from 'lucide-react';
 
 const StatCard: React.FC<{ title: string; value: string | number; icon: React.ReactNode; color: string }> = ({ title, value, icon, color }) => (
-  <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
+  <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 flex items-center gap-4">
     <div className={`p-3 rounded-lg ${color} text-white`}>
       {icon}
     </div>
     <div>
       <p className="text-sm text-slate-500 font-medium">{title}</p>
-      <h3 className="text-2xl font-bold text-slate-900">{value}</h3>
+      <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{value}</h3>
     </div>
   </div>
 );
@@ -40,7 +40,7 @@ export const Dashboard: React.FC = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-bold text-slate-900">Welcome back, {user.name.split(' ')[0]} 👋</h2>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Welcome back, {user.name.split(' ')[0]} 👋</h2>
         <p className="text-slate-500">Here's what's happening today.</p>
       </div>
 
@@ -94,8 +94,8 @@ export const Dashboard: React.FC = () => {
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Attendance Chart */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-          <h3 className="text-lg font-semibold text-slate-900 mb-6">Weekly Attendance Trend</h3>
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-6">Weekly Attendance Trend</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={attendanceData}>
@@ -110,8 +110,8 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Leave Chart or Team Status */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-          <h3 className="text-lg font-semibold text-slate-900 mb-6">Leave Balance Distribution</h3>
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-6">Leave Balance Distribution</h3>
           <div className="h-64 flex items-center justify-center">
              <ResponsiveContainer width="100%" height="100%">
               <PieChart>

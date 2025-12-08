@@ -83,49 +83,49 @@ const AiAssistant: React.FC<AiAssistantProps> = ({ invoices }) => {
   };
 
   return (
-    <div className="h-[calc(100vh-2rem)] flex flex-col bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+    <div className="h-[calc(100vh-2rem)] flex flex-col bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
       {/* Header */}
-      <div className="p-4 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+      <div className="p-4 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/50 flex justify-between items-center">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center text-white">
             <Sparkles size={20} />
           </div>
           <div>
-            <h3 className="font-bold text-slate-800">Gemini Finance Assistant</h3>
-            <p className="text-xs text-slate-500 flex items-center gap-1">
+            <h3 className="font-bold text-slate-800 dark:text-slate-100">Gemini Finance Assistant</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               Online • Powered by Google Gemini
             </p>
           </div>
         </div>
-        <div className="text-xs px-2 py-1 bg-slate-100 rounded text-slate-500 border border-slate-200">
+        <div className="text-xs px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-600">
           Context: {invoices.length} Invoices Loaded
         </div>
       </div>
 
       {/* Chat Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-6 bg-slate-50/30">
+      <div className="flex-1 overflow-y-auto p-4 space-y-6 bg-slate-50/30 dark:bg-slate-900/30">
         {messages.map((msg) => (
           <div
             key={msg.id}
             className={`flex gap-4 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
           >
             <div className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center mt-1 
-              ${msg.role === 'user' ? 'bg-slate-200 text-slate-600' : 'bg-indigo-100 text-indigo-600'}`}>
+              ${msg.role === 'user' ? 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300' : 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400'}`}>
               {msg.role === 'user' ? <User size={16} /> : <Bot size={18} />}
             </div>
 
             <div className={`max-w-[80%] space-y-1`}>
               <div className={`p-4 rounded-2xl text-sm leading-relaxed shadow-sm
                  ${msg.role === 'user'
-                  ? 'bg-slate-900 text-white rounded-tr-sm'
-                  : 'bg-white text-slate-700 border border-slate-200 rounded-tl-sm'
+                  ? 'bg-slate-900 dark:bg-slate-700 text-white rounded-tr-sm'
+                  : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-tl-sm'
                 }`}>
                 {msg.text.split('\n').map((line, i) => (
                   <p key={i} className="min-h-[1.2em]">{line}</p>
                 ))}
               </div>
-              <p className={`text-[10px] text-slate-400 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
+              <p className={`text-[10px] text-slate-400 dark:text-slate-500 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
                 {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </p>
             </div>
@@ -137,9 +137,9 @@ const AiAssistant: React.FC<AiAssistantProps> = ({ invoices }) => {
             <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex-shrink-0 flex items-center justify-center mt-1">
               <Bot size={18} />
             </div>
-            <div className="bg-white border border-slate-200 px-4 py-3 rounded-2xl rounded-tl-sm shadow-sm flex items-center gap-2">
-              <Loader2 className="animate-spin text-indigo-500" size={16} />
-              <span className="text-xs text-slate-500 font-medium">Analyzing financial data...</span>
+            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 py-3 rounded-2xl rounded-tl-sm shadow-sm flex items-center gap-2">
+              <Loader2 className="animate-spin text-indigo-500 dark:text-indigo-400" size={16} />
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Analyzing financial data...</span>
             </div>
           </div>
         )}
@@ -147,14 +147,14 @@ const AiAssistant: React.FC<AiAssistantProps> = ({ invoices }) => {
       </div>
 
       {/* Input Area */}
-      <div className="p-4 bg-white border-t border-slate-100">
-        <div className="relative flex items-end gap-2 bg-slate-50 border border-slate-200 rounded-xl p-2 focus-within:ring-2 focus-within:ring-indigo-100 focus-within:border-indigo-400 transition-all">
+      <div className="p-4 bg-white dark:bg-slate-800 border-t border-slate-100 dark:border-slate-700">
+        <div className="relative flex items-end gap-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-2 focus-within:ring-2 focus-within:ring-indigo-100 dark:focus-within:ring-indigo-900/50 focus-within:border-indigo-400 dark:focus-within:border-indigo-500 transition-all">
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Ask about your finances (e.g., 'List overdue invoices over ₹50,000')..."
-            className="w-full bg-transparent border-none outline-none text-sm text-slate-800 resize-none max-h-32 py-2 px-2"
+            className="w-full bg-transparent border-none outline-none text-sm text-slate-800 dark:text-slate-100 resize-none max-h-32 py-2 px-2"
             rows={1}
             style={{ minHeight: '44px' }}
           />
@@ -166,7 +166,7 @@ const AiAssistant: React.FC<AiAssistantProps> = ({ invoices }) => {
             <Send size={18} />
           </button>
         </div>
-        <p className="text-[10px] text-center text-slate-400 mt-2">
+        <p className="text-[10px] text-center text-slate-400 dark:text-slate-500 mt-2">
           AI can make mistakes. Please verify critical financial data.
         </p>
       </div>

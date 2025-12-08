@@ -2,9 +2,20 @@
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
 
-# GRX10 Financial Suite
+# GRX10 Business Suite
 
-A comprehensive financial management application with invoice management, customer tracking, accounting, banking, and AI-powered assistance.
+A comprehensive business management application with three main modules:
+- **Financial Suite**: Accounting, Invoicing, Banking, Cash Flow Management
+- **HRMS**: Human Resource Management System with Employee Management, Attendance, Leaves, and Payroll
+- **Performance OS**: Goals and Memos Management System
+
+## 📚 Documentation
+
+All documentation is available in the `userdocs/` folder:
+
+- **[Implementation Guide](./userdocs/IMPLEMENTATION_GUIDE.md)** - Complete setup and implementation guide
+- **[TODO List](./userdocs/TODO.md)** - Current status and remaining tasks
+- **[Security Implementation](./userdocs/SECURITY_IMPLEMENTATION.md)** - Role management, security (RBAC), and approval workflows
 
 ## 🏗️ Architecture
 
@@ -155,15 +166,56 @@ Frontend will be available at `http://localhost:8100`
 
 ## 📊 Database Schema
 
-### Tables
+### Financial Tables
 - **Customers** - Customer information (name, GSTIN, email, balance)
 - **Invoices** - Invoice headers (number, date, customer, totals, status)
 - **InvoiceItems** - Invoice line items (description, HSN, quantity, rate, tax, amount)
 - **Ledgers** - Chart of accounts (name, type, balance)
 - **Transactions** - Accounting transactions (date, description, amount, type, ledger)
+
+### HRMS Tables
+- **Employees** - Employee information with comprehensive fields
+- **LeaveRequests** - Leave request management
+- **AttendanceRecords** - Attendance tracking
+- **RegularizationRequests** - Attendance regularization
+- **Payslips** - Payroll processing
+- **EmployeeHiringHistory** - Employee rehire tracking
+
+### OS Tables
+- **OSGoals** - Goals management
+- **OSGoalComments** - Goal comments
+- **OSMemos** - Memos system
+- **OSMemoAttachments** - Memo attachments
+- **OSMemoComments** - Memo comments
+- **OSNotifications** - Notifications
+
+### Configuration Tables
+- **Organizations** - Organization setup
+- **Departments** - Department management
+- **Positions** - Position management
+- **HRMSRoles** - HRMS role management
+- **EmployeeTypes** - Employee type management
+- **Holidays** - Holiday calendar
+- **LeaveTypes** - Leave type configuration
+- **WorkLocations** - Work location management
+- **Skills** - Skills catalog
+- **Languages** - Languages catalog
+- **ChartOfAccounts** - Chart of Accounts management
+
+### Security & Role Management Tables
+- **Roles** - System roles
+- **Permissions** - Granular permissions (module/resource/action)
+- **RolePermissions** - Role-Permission mapping
+- **UserRoles** - User-Role assignments
+- **ApprovalWorkflows** - Approval workflow definitions
+- **ApprovalWorkflowSteps** - Workflow step configuration
+- **ApprovalRequests** - Approval requests
+- **ApprovalHistory** - Approval audit trail
+
+### System Tables
 - **Users** - User accounts (username, email, password, role)
 
-See `backend/database/README.md` for detailed schema documentation.
+See `backend/database/setup.sql` for complete schema.
 
 ## 🔐 Authentication
 
@@ -263,11 +315,40 @@ Set all required environment variables in your deployment platform:
 - `MICROSOFT_CLIENT_ID` / `MICROSOFT_CLIENT_SECRET` (optional)
 - `GEMINI_API_KEY` (optional)
 
+## ⚙️ Configuration System
+
+The application includes a comprehensive configuration system accessible via the sidebar. Before using the application, you must set up:
+
+1. **Organizations** - At least one organization
+2. **Departments** - Company departments
+3. **Positions** - Job positions
+4. **Roles** - HRMS roles
+5. **Employee Types** - Full Time, Part Time, Contract
+6. **Work Locations** - Office locations
+7. **Holidays** - Company holiday calendar
+8. **Leave Types** - Leave type definitions
+9. **Chart of Accounts** - Financial account structure
+
+All dropdowns throughout the application use these configurations. See [Implementation Guide](./userdocs/IMPLEMENTATION_GUIDE.md) for detailed setup instructions.
+
+## 🔐 Security & Role Management
+
+The application includes a comprehensive role-based access control (RBAC) system:
+
+1. **System Roles** - Create and manage system roles (Admin, Manager, Employee, HR, Finance)
+2. **Permissions** - Granular permissions by module/resource/action
+3. **User Roles** - Assign roles to users
+4. **Approval Workflows** - Multi-step approval workflows for leaves, expenses, invoices
+5. **Approval Requests** - Track and process approval requests
+
+See [Security Implementation Guide](./userdocs/SECURITY_IMPLEMENTATION.md) for detailed setup and usage instructions.
+
 ## 📝 Notes
 
 - Passwords are currently stored as plain text. For production, implement bcrypt hashing (marked with `TODO` in code).
 - The application uses session-based authentication with Passport.js.
 - Database tables are auto-created via `sequelize.sync({ alter: true })` on server start.
+- Configuration items must be set up before creating employees or invoices.
 
 ## 📄 License
 

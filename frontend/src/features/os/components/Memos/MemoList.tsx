@@ -37,8 +37,8 @@ export const MemoList: React.FC = () => {
     <div>
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Internal Memos</h1>
-          <p className="text-slate-500">Structured decision making documents.</p>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Internal Memos</h1>
+          <p className="text-slate-500 dark:text-slate-400">Structured decision making documents.</p>
         </div>
         <button 
           onClick={() => setViewMode('create')}
@@ -54,12 +54,12 @@ export const MemoList: React.FC = () => {
             <div 
                 key={memo.id} 
                 onClick={() => handleOpenMemo(memo)}
-                className="bg-white p-5 rounded-xl border border-gray-200 hover:border-brand-400 hover:shadow-md transition-all cursor-pointer group"
+                className="bg-white dark:bg-slate-800 p-5 rounded-xl border border-gray-200 dark:border-slate-700 hover:border-brand-400 dark:hover:border-brand-500 hover:shadow-md transition-all cursor-pointer group"
             >
                 <div className="flex justify-between items-start">
                     <div>
-                        <h3 className="text-lg font-bold text-slate-800 group-hover:text-brand-700">{memo.subject}</h3>
-                        <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
+                        <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 group-hover:text-brand-700 dark:group-hover:text-brand-500">{memo.subject}</h3>
+                        <div className="flex items-center gap-4 mt-2 text-sm text-gray-500 dark:text-gray-400">
                             <span className="flex items-center gap-1"><UserIcon size={14}/> {getAuthorName(memo.fromId)}</span>
                             <span>•</span>
                             <span>{memo.date}</span>
@@ -69,7 +69,7 @@ export const MemoList: React.FC = () => {
                         {memo.status}
                     </span>
                 </div>
-                <p className="mt-3 text-gray-600 text-sm line-clamp-2">
+                <p className="mt-3 text-gray-600 dark:text-gray-300 text-sm line-clamp-2">
                     {memo.sections.problem}
                 </p>
             </div>

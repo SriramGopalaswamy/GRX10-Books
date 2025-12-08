@@ -206,14 +206,69 @@ const Employee = sequelize.define('Employee', {
     email: { type: DataTypes.STRING, allowNull: false, unique: true },
     role: { type: DataTypes.STRING, allowNull: false }, // 'Employee', 'Manager', 'HR', 'Finance', 'Admin'
     department: { type: DataTypes.STRING },
+    employeePosition: { type: DataTypes.STRING }, // Employee Role/Position
     designation: { type: DataTypes.STRING },
     joinDate: { type: DataTypes.STRING },
+    terminationDate: { type: DataTypes.STRING },
+    employeeType: { type: DataTypes.STRING, defaultValue: 'Full Time' }, // 'Full Time', 'Part Time', 'Contract'
+    status: { type: DataTypes.STRING, defaultValue: 'Active' }, // 'Active', 'Terminated'
+    isRehired: { type: DataTypes.BOOLEAN, defaultValue: false },
+    previousEmployeeId: { type: DataTypes.STRING }, // For rehired employees
     avatar: { type: DataTypes.STRING },
     managerId: { type: DataTypes.STRING },
     salary: { type: DataTypes.FLOAT }, // Annual CTC
-    status: { type: DataTypes.STRING, defaultValue: 'Active' }, // 'Active', 'Exited'
     password: { type: DataTypes.STRING }, // For direct login (should be hashed in production)
-    isNewUser: { type: DataTypes.BOOLEAN, defaultValue: false }
+    isNewUser: { type: DataTypes.BOOLEAN, defaultValue: false },
+    // Additional Traditional HR Fields
+    workLocation: { type: DataTypes.STRING },
+    probationEndDate: { type: DataTypes.STRING },
+    noticePeriod: { type: DataTypes.INTEGER, defaultValue: 30 },
+    lastWorkingDay: { type: DataTypes.STRING },
+    exitInterviewDate: { type: DataTypes.STRING },
+    employeeReferralId: { type: DataTypes.STRING },
+    bloodGroup: { type: DataTypes.STRING },
+    maritalStatus: { type: DataTypes.STRING },
+    spouseName: { type: DataTypes.STRING },
+    emergencyContactName: { type: DataTypes.STRING },
+    emergencyContactRelation: { type: DataTypes.STRING },
+    emergencyContactPhone: { type: DataTypes.STRING },
+    bankAccountNumber: { type: DataTypes.STRING },
+    bankIFSC: { type: DataTypes.STRING },
+    bankName: { type: DataTypes.STRING },
+    bankBranch: { type: DataTypes.STRING },
+    skills: { type: DataTypes.TEXT }, // JSON array
+    languages: { type: DataTypes.TEXT }, // JSON array
+    dependents: { type: DataTypes.TEXT }, // JSON array
+    taxDeclarations: { type: DataTypes.TEXT }, // JSON object
+    // Personal Details
+    dateOfBirth: { type: DataTypes.STRING },
+    phone: { type: DataTypes.STRING },
+    address: { type: DataTypes.TEXT },
+    pan: { type: DataTypes.STRING },
+    aadhar: { type: DataTypes.STRING },
+    pfNumber: { type: DataTypes.STRING },
+    // JSON fields for complex data
+    educationDetails: { type: DataTypes.TEXT }, // JSON array
+    experienceDetails: { type: DataTypes.TEXT }, // JSON array
+    salaryBreakdown: { type: DataTypes.TEXT }, // JSON object
+    leaveEntitlements: { type: DataTypes.TEXT }, // JSON object
+    certifications: { type: DataTypes.TEXT } // JSON array
+});
+
+const EmployeeHiringHistory = sequelize.define('EmployeeHiringHistory', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    employeeId: { type: DataTypes.STRING, allowNull: false },
+    hireDate: { type: DataTypes.STRING, allowNull: false },
+    terminationDate: { type: DataTypes.STRING },
+    employeeType: { type: DataTypes.STRING },
+    department: { type: DataTypes.STRING },
+    employeePosition: { type: DataTypes.STRING },
+    designation: { type: DataTypes.STRING },
+    salary: { type: DataTypes.FLOAT },
+    managerId: { type: DataTypes.STRING },
+    reasonForTermination: { type: DataTypes.TEXT },
+    isRehire: { type: DataTypes.BOOLEAN, defaultValue: false },
+    previousEmployeeId: { type: DataTypes.STRING }
 });
 
 const LeaveRequest = sequelize.define('LeaveRequest', {
@@ -323,6 +378,189 @@ const OSNotification = sequelize.define('OSNotification', {
     actionLink: { type: DataTypes.STRING }
 });
 
+// Configuration Models
+const Organization = sequelize.define('Organization', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    name: { type: DataTypes.STRING, allowNull: false },
+    code: { type: DataTypes.STRING, unique: true },
+    address: { type: DataTypes.TEXT },
+    phone: { type: DataTypes.STRING },
+    email: { type: DataTypes.STRING },
+    website: { type: DataTypes.STRING },
+    taxId: { type: DataTypes.STRING },
+    isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
+});
+
+const Department = sequelize.define('Department', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    name: { type: DataTypes.STRING, allowNull: false, unique: true },
+    code: { type: DataTypes.STRING },
+    description: { type: DataTypes.TEXT },
+    isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
+});
+
+const Position = sequelize.define('Position', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    name: { type: DataTypes.STRING, allowNull: false, unique: true },
+    code: { type: DataTypes.STRING },
+    description: { type: DataTypes.TEXT },
+    isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
+});
+
+const HRMSRole = sequelize.define('HRMSRole', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    name: { type: DataTypes.STRING, allowNull: false, unique: true },
+    code: { type: DataTypes.STRING },
+    description: { type: DataTypes.TEXT },
+    permissions: { type: DataTypes.TEXT }, // JSON array
+    isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
+});
+
+const EmployeeType = sequelize.define('EmployeeType', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    name: { type: DataTypes.STRING, allowNull: false, unique: true },
+    code: { type: DataTypes.STRING },
+    description: { type: DataTypes.TEXT },
+    isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
+});
+
+const Holiday = sequelize.define('Holiday', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    name: { type: DataTypes.STRING, allowNull: false },
+    date: { type: DataTypes.STRING, allowNull: false },
+    type: { type: DataTypes.STRING }, // 'National', 'Regional', 'Company', 'Optional'
+    description: { type: DataTypes.TEXT },
+    isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
+});
+
+const LeaveType = sequelize.define('LeaveType', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    name: { type: DataTypes.STRING, allowNull: false, unique: true },
+    code: { type: DataTypes.STRING },
+    description: { type: DataTypes.TEXT },
+    maxDays: { type: DataTypes.INTEGER },
+    isPaid: { type: DataTypes.BOOLEAN, defaultValue: true },
+    requiresApproval: { type: DataTypes.BOOLEAN, defaultValue: true },
+    isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
+});
+
+const WorkLocation = sequelize.define('WorkLocation', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    name: { type: DataTypes.STRING, allowNull: false, unique: true },
+    code: { type: DataTypes.STRING },
+    address: { type: DataTypes.TEXT },
+    city: { type: DataTypes.STRING },
+    state: { type: DataTypes.STRING },
+    country: { type: DataTypes.STRING },
+    isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
+});
+
+const Skill = sequelize.define('Skill', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    name: { type: DataTypes.STRING, allowNull: false, unique: true },
+    category: { type: DataTypes.STRING },
+    description: { type: DataTypes.TEXT },
+    isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
+});
+
+const Language = sequelize.define('Language', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    name: { type: DataTypes.STRING, allowNull: false, unique: true },
+    code: { type: DataTypes.STRING },
+    isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
+});
+
+const ChartOfAccount = sequelize.define('ChartOfAccount', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    code: { type: DataTypes.STRING, allowNull: false, unique: true },
+    name: { type: DataTypes.STRING, allowNull: false },
+    type: { type: DataTypes.STRING, allowNull: false }, // 'Asset', 'Liability', 'Income', 'Expense', 'Equity'
+    parentId: { type: DataTypes.STRING },
+    description: { type: DataTypes.TEXT },
+    isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
+});
+
+// Security & Role Management Models
+const Role = sequelize.define('Role', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    name: { type: DataTypes.STRING, allowNull: false, unique: true },
+    code: { type: DataTypes.STRING, unique: true },
+    description: { type: DataTypes.TEXT },
+    isSystemRole: { type: DataTypes.BOOLEAN, defaultValue: false },
+    isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
+});
+
+const Permission = sequelize.define('Permission', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    name: { type: DataTypes.STRING, allowNull: false, unique: true },
+    code: { type: DataTypes.STRING, unique: true, allowNull: false },
+    module: { type: DataTypes.STRING, allowNull: false }, // 'hrms', 'financial', 'os', 'config', 'admin'
+    resource: { type: DataTypes.STRING, allowNull: false }, // 'employees', 'invoices', 'leaves', etc.
+    action: { type: DataTypes.STRING, allowNull: false }, // 'create', 'read', 'update', 'delete', 'approve'
+    description: { type: DataTypes.TEXT },
+    isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
+});
+
+const RolePermission = sequelize.define('RolePermission', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    roleId: { type: DataTypes.STRING, allowNull: false },
+    permissionId: { type: DataTypes.STRING, allowNull: false }
+});
+
+const UserRole = sequelize.define('UserRole', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    userId: { type: DataTypes.STRING, allowNull: false },
+    roleId: { type: DataTypes.STRING, allowNull: false },
+    assignedBy: { type: DataTypes.STRING },
+    assignedAt: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+    isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
+});
+
+const ApprovalWorkflow = sequelize.define('ApprovalWorkflow', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    name: { type: DataTypes.STRING, allowNull: false },
+    module: { type: DataTypes.STRING, allowNull: false }, // 'hrms', 'financial', 'os'
+    resource: { type: DataTypes.STRING, allowNull: false }, // 'leave', 'expense', 'invoice', 'memo'
+    workflowType: { type: DataTypes.STRING, allowNull: false }, // 'sequential', 'parallel', 'any'
+    isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
+});
+
+const ApprovalWorkflowStep = sequelize.define('ApprovalWorkflowStep', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    workflowId: { type: DataTypes.STRING, allowNull: false },
+    stepOrder: { type: DataTypes.INTEGER, allowNull: false },
+    approverType: { type: DataTypes.STRING, allowNull: false }, // 'role', 'user', 'manager', 'department_head'
+    approverId: { type: DataTypes.STRING },
+    isRequired: { type: DataTypes.BOOLEAN, defaultValue: true },
+    canDelegate: { type: DataTypes.BOOLEAN, defaultValue: false },
+    timeoutHours: { type: DataTypes.INTEGER }
+});
+
+const ApprovalRequest = sequelize.define('ApprovalRequest', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    workflowId: { type: DataTypes.STRING, allowNull: false },
+    module: { type: DataTypes.STRING, allowNull: false },
+    resource: { type: DataTypes.STRING, allowNull: false },
+    resourceId: { type: DataTypes.STRING, allowNull: false },
+    requestedBy: { type: DataTypes.STRING, allowNull: false },
+    currentStep: { type: DataTypes.INTEGER, defaultValue: 1 },
+    status: { type: DataTypes.STRING, defaultValue: 'Pending' }, // 'Pending', 'Approved', 'Rejected', 'Cancelled'
+    priority: { type: DataTypes.STRING, defaultValue: 'Normal' }, // 'Low', 'Normal', 'High', 'Urgent'
+    requestData: { type: DataTypes.TEXT }, // JSON
+    comments: { type: DataTypes.TEXT },
+    completedAt: { type: DataTypes.DATE }
+});
+
+const ApprovalHistory = sequelize.define('ApprovalHistory', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    requestId: { type: DataTypes.STRING, allowNull: false },
+    stepOrder: { type: DataTypes.INTEGER, allowNull: false },
+    approverId: { type: DataTypes.STRING, allowNull: false },
+    action: { type: DataTypes.STRING, allowNull: false }, // 'Approved', 'Rejected', 'Delegated', 'Returned'
+    comments: { type: DataTypes.TEXT },
+    actionDate: { type: DataTypes.DATE, defaultValue: DataTypes.NOW }
+});
+
 // Relationships
 Customer.hasMany(Invoice, { foreignKey: 'customerId' });
 Invoice.belongsTo(Customer, { foreignKey: 'customerId' });
@@ -349,6 +587,46 @@ Payslip.belongsTo(Employee, { foreignKey: 'employeeId' });
 // Self-referential relationship for managers
 Employee.belongsTo(Employee, { foreignKey: 'managerId', as: 'manager' });
 Employee.hasMany(Employee, { foreignKey: 'managerId', as: 'subordinates' });
+
+// Employee rehire relationships
+Employee.belongsTo(Employee, { foreignKey: 'previousEmployeeId', as: 'previousEmployee' });
+Employee.hasMany(Employee, { foreignKey: 'previousEmployeeId', as: 'rehiredVersions' });
+
+// Employee referral relationship
+Employee.belongsTo(Employee, { foreignKey: 'employeeReferralId', as: 'referredBy' });
+Employee.hasMany(Employee, { foreignKey: 'employeeReferralId', as: 'referredEmployees' });
+
+// Employee Hiring History
+Employee.hasMany(EmployeeHiringHistory, { foreignKey: 'employeeId', as: 'hiringHistory' });
+EmployeeHiringHistory.belongsTo(Employee, { foreignKey: 'employeeId' });
+EmployeeHiringHistory.belongsTo(Employee, { foreignKey: 'previousEmployeeId', as: 'previousEmployee' });
+
+// Chart of Accounts self-referential
+ChartOfAccount.belongsTo(ChartOfAccount, { foreignKey: 'parentId', as: 'parent' });
+ChartOfAccount.hasMany(ChartOfAccount, { foreignKey: 'parentId', as: 'children' });
+
+// Security & Role Management Relationships
+Role.belongsToMany(Permission, { through: RolePermission, foreignKey: 'roleId', as: 'permissions' });
+Permission.belongsToMany(Role, { through: RolePermission, foreignKey: 'permissionId', as: 'roles' });
+
+User.belongsToMany(Role, { through: UserRole, foreignKey: 'userId', as: 'roles' });
+Role.belongsToMany(User, { through: UserRole, foreignKey: 'roleId', as: 'users' });
+
+UserRole.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+UserRole.belongsTo(Role, { foreignKey: 'roleId', as: 'role' });
+UserRole.belongsTo(User, { foreignKey: 'assignedBy', as: 'assigner' });
+
+ApprovalWorkflow.hasMany(ApprovalWorkflowStep, { foreignKey: 'workflowId', as: 'steps' });
+ApprovalWorkflowStep.belongsTo(ApprovalWorkflow, { foreignKey: 'workflowId' });
+
+ApprovalWorkflow.hasMany(ApprovalRequest, { foreignKey: 'workflowId', as: 'requests' });
+ApprovalRequest.belongsTo(ApprovalWorkflow, { foreignKey: 'workflowId' });
+
+ApprovalRequest.belongsTo(User, { foreignKey: 'requestedBy', as: 'requester' });
+ApprovalRequest.hasMany(ApprovalHistory, { foreignKey: 'requestId', as: 'history' });
+
+ApprovalHistory.belongsTo(ApprovalRequest, { foreignKey: 'requestId' });
+ApprovalHistory.belongsTo(User, { foreignKey: 'approverId', as: 'approver' });
 
 // OS Relationships
 OSGoal.hasMany(OSGoalComment, { foreignKey: 'goalId', as: 'comments' });
@@ -409,6 +687,7 @@ export {
     User,
     // HRMS Models
     Employee,
+    EmployeeHiringHistory,
     LeaveRequest,
     AttendanceRecord,
     RegularizationRequest,
@@ -419,5 +698,26 @@ export {
     OSMemo,
     OSMemoAttachment,
     OSMemoComment,
-    OSNotification
+    OSNotification,
+    // Configuration Models
+    Organization,
+    Department,
+    Position,
+    HRMSRole,
+    EmployeeType,
+    Holiday,
+    LeaveType,
+    WorkLocation,
+    Skill,
+    Language,
+    ChartOfAccount,
+    // Security & Role Management Models
+    Role,
+    Permission,
+    RolePermission,
+    UserRole,
+    ApprovalWorkflow,
+    ApprovalWorkflowStep,
+    ApprovalRequest,
+    ApprovalHistory
 };

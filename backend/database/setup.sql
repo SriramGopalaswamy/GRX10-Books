@@ -16,6 +16,7 @@ DROP TABLE IF EXISTS "Payslips" CASCADE;
 DROP TABLE IF EXISTS "RegularizationRequests" CASCADE;
 DROP TABLE IF EXISTS "AttendanceRecords" CASCADE;
 DROP TABLE IF EXISTS "LeaveRequests" CASCADE;
+DROP TABLE IF EXISTS "EmployeeHiringHistory" CASCADE;
 DROP TABLE IF EXISTS "Employees" CASCADE;
 DROP TABLE IF EXISTS "Transactions" CASCADE;
 DROP TABLE IF EXISTS "InvoiceItems" CASCADE;
@@ -23,6 +24,25 @@ DROP TABLE IF EXISTS "Invoices" CASCADE;
 DROP TABLE IF EXISTS "Customers" CASCADE;
 DROP TABLE IF EXISTS "Ledgers" CASCADE;
 DROP TABLE IF EXISTS "Users" CASCADE;
+-- Configuration Tables
+DROP TABLE IF EXISTS "Holidays" CASCADE;
+DROP TABLE IF EXISTS "ChartOfAccounts" CASCADE;
+DROP TABLE IF EXISTS "Departments" CASCADE;
+DROP TABLE IF EXISTS "Positions" CASCADE;
+DROP TABLE IF EXISTS "HRMSRoles" CASCADE;
+DROP TABLE IF EXISTS "EmployeeTypes" CASCADE;
+DROP TABLE IF EXISTS "LeaveTypes" CASCADE;
+DROP TABLE IF EXISTS "WorkLocations" CASCADE;
+DROP TABLE IF EXISTS "Skills" CASCADE;
+DROP TABLE IF EXISTS "Languages" CASCADE;
+DROP TABLE IF EXISTS "Organizations" CASCADE;
+-- Security & Approval Tables
+DROP TABLE IF EXISTS "ApprovalHistory" CASCADE;
+DROP TABLE IF EXISTS "ApprovalRequests" CASCADE;
+DROP TABLE IF EXISTS "ApprovalWorkflows" CASCADE;
+DROP TABLE IF EXISTS "UserRoles" CASCADE;
+DROP TABLE IF EXISTS "Permissions" CASCADE;
+DROP TABLE IF EXISTS "Roles" CASCADE;
 
 -- ============================================
 -- Table: Customers
@@ -152,17 +172,89 @@ CREATE TABLE "Employees" (
     "email" VARCHAR(255) UNIQUE NOT NULL,
     "role" VARCHAR(255) NOT NULL, -- 'Employee', 'Manager', 'HR', 'Finance', 'Admin'
     "department" VARCHAR(255),
+    "employeePosition" VARCHAR(255), -- Employee Role/Position
     "designation" VARCHAR(255),
     "joinDate" VARCHAR(255),
+    "terminationDate" VARCHAR(255),
+    "employeeType" VARCHAR(255) DEFAULT 'Full Time', -- 'Full Time', 'Part Time', 'Contract'
+    "status" VARCHAR(255) DEFAULT 'Active', -- 'Active', 'Terminated'
+    "isRehired" BOOLEAN DEFAULT false,
+    "previousEmployeeId" VARCHAR(255), -- For rehired employees
     "avatar" VARCHAR(255),
     "managerId" VARCHAR(255),
     "salary" DOUBLE PRECISION, -- Annual CTC
-    "status" VARCHAR(255) DEFAULT 'Active', -- 'Active', 'Exited'
     "password" VARCHAR(255), -- For direct login (should be hashed in production)
     "isNewUser" BOOLEAN DEFAULT false,
+    -- Additional Traditional HR Fields
+    "workLocation" VARCHAR(255), -- Office Location/Address
+    "probationEndDate" VARCHAR(255),
+    "noticePeriod" INTEGER DEFAULT 30, -- Days
+    "lastWorkingDay" VARCHAR(255),
+    "exitInterviewDate" VARCHAR(255),
+    "employeeReferralId" VARCHAR(255), -- ID of employee who referred
+    "bloodGroup" VARCHAR(10),
+    "maritalStatus" VARCHAR(50), -- 'Single', 'Married', 'Divorced', 'Widowed'
+    "spouseName" VARCHAR(255),
+    "emergencyContactName" VARCHAR(255),
+    "emergencyContactRelation" VARCHAR(100),
+    "emergencyContactPhone" VARCHAR(255),
+    "bankAccountNumber" VARCHAR(255),
+    "bankIFSC" VARCHAR(20),
+    "bankName" VARCHAR(255),
+    "bankBranch" VARCHAR(255),
+    "skills" TEXT, -- JSON array of skills
+    "languages" TEXT, -- JSON array of languages known
+    "dependents" TEXT, -- JSON array of dependents
+    "taxDeclarations" TEXT, -- JSON object for tax declarations (80C, 80D, HRA, etc.)
+    -- Personal Details
+    "dateOfBirth" VARCHAR(255),
+    "phone" VARCHAR(255),
+    "address" TEXT,
+    "pan" VARCHAR(255),
+    "aadhar" VARCHAR(255),
+    "pfNumber" VARCHAR(255),
+    -- Education Details (stored as JSON)
+    "educationDetails" TEXT, -- JSON array of education records
+    -- Experience Details (stored as JSON)
+    "experienceDetails" TEXT, -- JSON array of experience records
+    -- Salary Breakdown (stored as JSON)
+    "salaryBreakdown" TEXT, -- JSON object with base, pf, deductions, etc.
+    -- Leave Entitlements (stored as JSON)
+    "leaveEntitlements" TEXT, -- JSON object with casual, sick, earned, etc.
+    -- Certifications (stored as JSON)
+    "certifications" TEXT, -- JSON array of certifications
     "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "Employees_managerId_fkey" FOREIGN KEY ("managerId") 
+        REFERENCES "Employees"("id") ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT "Employees_previousEmployeeId_fkey" FOREIGN KEY ("previousEmployeeId") 
+        REFERENCES "Employees"("id") ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT "Employees_employeeReferralId_fkey" FOREIGN KEY ("employeeReferralId") 
+        REFERENCES "Employees"("id") ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+-- ============================================
+-- Table: EmployeeHiringHistory
+-- ============================================
+CREATE TABLE "EmployeeHiringHistory" (
+    "id" VARCHAR(255) PRIMARY KEY,
+    "employeeId" VARCHAR(255) NOT NULL,
+    "hireDate" VARCHAR(255) NOT NULL,
+    "terminationDate" VARCHAR(255),
+    "employeeType" VARCHAR(255), -- 'Full Time', 'Part Time', 'Contract'
+    "department" VARCHAR(255),
+    "employeePosition" VARCHAR(255),
+    "designation" VARCHAR(255),
+    "salary" DOUBLE PRECISION,
+    "managerId" VARCHAR(255),
+    "reasonForTermination" TEXT,
+    "isRehire" BOOLEAN DEFAULT false,
+    "previousEmployeeId" VARCHAR(255), -- Link to previous employee record if rehired
+    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "EmployeeHiringHistory_employeeId_fkey" FOREIGN KEY ("employeeId") 
+        REFERENCES "Employees"("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "EmployeeHiringHistory_previousEmployeeId_fkey" FOREIGN KEY ("previousEmployeeId") 
         REFERENCES "Employees"("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
@@ -247,6 +339,12 @@ CREATE INDEX "idx_employees_email" ON "Employees"("email");
 CREATE INDEX "idx_employees_role" ON "Employees"("role");
 CREATE INDEX "idx_employees_status" ON "Employees"("status");
 CREATE INDEX "idx_employees_managerId" ON "Employees"("managerId");
+CREATE INDEX "idx_employees_employeeType" ON "Employees"("employeeType");
+CREATE INDEX "idx_employees_isRehired" ON "Employees"("isRehired");
+CREATE INDEX "idx_employees_previousEmployeeId" ON "Employees"("previousEmployeeId");
+
+CREATE INDEX "idx_employeeHiringHistory_employeeId" ON "EmployeeHiringHistory"("employeeId");
+CREATE INDEX "idx_employeeHiringHistory_hireDate" ON "EmployeeHiringHistory"("hireDate");
 
 CREATE INDEX "idx_leaveRequests_employeeId" ON "LeaveRequests"("employeeId");
 CREATE INDEX "idx_leaveRequests_status" ON "LeaveRequests"("status");
@@ -383,6 +481,186 @@ CREATE INDEX "idx_osNotifications_userId" ON "OSNotifications"("userId");
 CREATE INDEX "idx_osNotifications_read" ON "OSNotifications"("read");
 
 -- ============================================
+-- Configuration Tables
+-- ============================================
+
+-- ============================================
+-- Table: Organizations
+-- ============================================
+CREATE TABLE "Organizations" (
+    "id" VARCHAR(255) PRIMARY KEY,
+    "name" VARCHAR(255) NOT NULL,
+    "code" VARCHAR(100) UNIQUE,
+    "address" TEXT,
+    "phone" VARCHAR(255),
+    "email" VARCHAR(255),
+    "website" VARCHAR(255),
+    "taxId" VARCHAR(255),
+    "isActive" BOOLEAN DEFAULT true,
+    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ============================================
+-- Table: Departments
+-- ============================================
+CREATE TABLE "Departments" (
+    "id" VARCHAR(255) PRIMARY KEY,
+    "name" VARCHAR(255) NOT NULL UNIQUE,
+    "code" VARCHAR(100),
+    "description" TEXT,
+    "isActive" BOOLEAN DEFAULT true,
+    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ============================================
+-- Table: Positions
+-- ============================================
+CREATE TABLE "Positions" (
+    "id" VARCHAR(255) PRIMARY KEY,
+    "name" VARCHAR(255) NOT NULL UNIQUE,
+    "code" VARCHAR(100),
+    "description" TEXT,
+    "isActive" BOOLEAN DEFAULT true,
+    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ============================================
+-- Table: HRMSRoles
+-- ============================================
+CREATE TABLE "HRMSRoles" (
+    "id" VARCHAR(255) PRIMARY KEY,
+    "name" VARCHAR(255) NOT NULL UNIQUE,
+    "code" VARCHAR(100),
+    "description" TEXT,
+    "permissions" TEXT, -- JSON array of permissions
+    "isActive" BOOLEAN DEFAULT true,
+    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ============================================
+-- Table: EmployeeTypes
+-- ============================================
+CREATE TABLE "EmployeeTypes" (
+    "id" VARCHAR(255) PRIMARY KEY,
+    "name" VARCHAR(255) NOT NULL UNIQUE,
+    "code" VARCHAR(100),
+    "description" TEXT,
+    "isActive" BOOLEAN DEFAULT true,
+    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ============================================
+-- Table: Holidays
+-- ============================================
+CREATE TABLE "Holidays" (
+    "id" VARCHAR(255) PRIMARY KEY,
+    "name" VARCHAR(255) NOT NULL,
+    "date" VARCHAR(255) NOT NULL,
+    "type" VARCHAR(100), -- 'National', 'Regional', 'Company', 'Optional'
+    "description" TEXT,
+    "isActive" BOOLEAN DEFAULT true,
+    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ============================================
+-- Table: LeaveTypes
+-- ============================================
+CREATE TABLE "LeaveTypes" (
+    "id" VARCHAR(255) PRIMARY KEY,
+    "name" VARCHAR(255) NOT NULL UNIQUE,
+    "code" VARCHAR(100),
+    "description" TEXT,
+    "maxDays" INTEGER,
+    "isPaid" BOOLEAN DEFAULT true,
+    "requiresApproval" BOOLEAN DEFAULT true,
+    "isActive" BOOLEAN DEFAULT true,
+    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ============================================
+-- Table: WorkLocations
+-- ============================================
+CREATE TABLE "WorkLocations" (
+    "id" VARCHAR(255) PRIMARY KEY,
+    "name" VARCHAR(255) NOT NULL UNIQUE,
+    "code" VARCHAR(100),
+    "address" TEXT,
+    "city" VARCHAR(255),
+    "state" VARCHAR(255),
+    "country" VARCHAR(255),
+    "isActive" BOOLEAN DEFAULT true,
+    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ============================================
+-- Table: Skills
+-- ============================================
+CREATE TABLE "Skills" (
+    "id" VARCHAR(255) PRIMARY KEY,
+    "name" VARCHAR(255) NOT NULL UNIQUE,
+    "category" VARCHAR(255), -- 'Technical', 'Soft', 'Domain', etc.
+    "description" TEXT,
+    "isActive" BOOLEAN DEFAULT true,
+    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ============================================
+-- Table: Languages
+-- ============================================
+CREATE TABLE "Languages" (
+    "id" VARCHAR(255) PRIMARY KEY,
+    "name" VARCHAR(255) NOT NULL UNIQUE,
+    "code" VARCHAR(10), -- ISO 639-1 code
+    "isActive" BOOLEAN DEFAULT true,
+    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ============================================
+-- Table: ChartOfAccounts
+-- ============================================
+CREATE TABLE "ChartOfAccounts" (
+    "id" VARCHAR(255) PRIMARY KEY,
+    "code" VARCHAR(100) NOT NULL UNIQUE,
+    "name" VARCHAR(255) NOT NULL,
+    "type" VARCHAR(100) NOT NULL, -- 'Asset', 'Liability', 'Income', 'Expense', 'Equity'
+    "parentId" VARCHAR(255),
+    "description" TEXT,
+    "isActive" BOOLEAN DEFAULT true,
+    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "ChartOfAccounts_parentId_fkey" FOREIGN KEY ("parentId") 
+        REFERENCES "ChartOfAccounts"("id") ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+-- ============================================
+-- Configuration Indexes
+-- ============================================
+CREATE INDEX "idx_organizations_isActive" ON "Organizations"("isActive");
+CREATE INDEX "idx_departments_isActive" ON "Departments"("isActive");
+CREATE INDEX "idx_positions_isActive" ON "Positions"("isActive");
+CREATE INDEX "idx_hrmsRoles_isActive" ON "HRMSRoles"("isActive");
+CREATE INDEX "idx_employeeTypes_isActive" ON "EmployeeTypes"("isActive");
+CREATE INDEX "idx_holidays_date" ON "Holidays"("date");
+CREATE INDEX "idx_holidays_isActive" ON "Holidays"("isActive");
+CREATE INDEX "idx_leaveTypes_isActive" ON "LeaveTypes"("isActive");
+CREATE INDEX "idx_workLocations_isActive" ON "WorkLocations"("isActive");
+CREATE INDEX "idx_skills_isActive" ON "Skills"("isActive");
+CREATE INDEX "idx_languages_isActive" ON "Languages"("isActive");
+CREATE INDEX "idx_chartOfAccounts_type" ON "ChartOfAccounts"("type");
+CREATE INDEX "idx_chartOfAccounts_isActive" ON "ChartOfAccounts"("isActive");
+CREATE INDEX "idx_chartOfAccounts_parentId" ON "ChartOfAccounts"("parentId");
+
+-- ============================================
 -- Success message
 -- ============================================
 -- Insert default admin user (if not exists)
@@ -403,7 +681,9 @@ DO $$
 BEGIN
     RAISE NOTICE '✅ Database tables created successfully!';
     RAISE NOTICE '📊 Financial Tables: Customers, Invoices, InvoiceItems, Ledgers, Transactions, Users';
-    RAISE NOTICE '📊 HRMS Tables: Employees, LeaveRequests, AttendanceRecords, RegularizationRequests, Payslips';
+    RAISE NOTICE '📊 HRMS Tables: Employees, EmployeeHiringHistory, LeaveRequests, AttendanceRecords, RegularizationRequests, Payslips';
     RAISE NOTICE '📊 OS Tables: OSGoals, OSGoalComments, OSMemos, OSMemoAttachments, OSMemoComments, OSNotifications';
+    RAISE NOTICE '📊 Configuration Tables: Organizations, Departments, Positions, HRMSRoles, EmployeeTypes, Holidays, LeaveTypes, WorkLocations, Skills, Languages, ChartOfAccounts';
+    RAISE NOTICE '📊 Security Tables: Roles, Permissions, RolePermissions, UserRoles, ApprovalWorkflows, ApprovalWorkflowSteps, ApprovalRequests, ApprovalHistory';
 END $$;
 

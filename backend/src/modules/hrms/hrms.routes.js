@@ -2,6 +2,7 @@ import express from 'express';
 import { Op } from 'sequelize';
 import { 
     Employee, 
+    EmployeeHiringHistory,
     LeaveRequest, 
     AttendanceRecord, 
     RegularizationRequest, 
@@ -25,7 +26,23 @@ router.get('/employees', async (req, res) => {
             ],
             order: [['name', 'ASC']]
         });
-        res.json(employees);
+        
+        // Parse JSON fields in response
+        const parsedEmployees = employees.map(emp => {
+            const data = emp.toJSON();
+            if (data.educationDetails) data.educationDetails = JSON.parse(data.educationDetails);
+            if (data.experienceDetails) data.experienceDetails = JSON.parse(data.experienceDetails);
+            if (data.salaryBreakdown) data.salaryBreakdown = JSON.parse(data.salaryBreakdown);
+            if (data.leaveEntitlements) data.leaveEntitlements = JSON.parse(data.leaveEntitlements);
+            if (data.certifications) data.certifications = JSON.parse(data.certifications);
+            if (data.skills) data.skills = JSON.parse(data.skills);
+            if (data.languages) data.languages = JSON.parse(data.languages);
+            if (data.dependents) data.dependents = JSON.parse(data.dependents);
+            if (data.taxDeclarations) data.taxDeclarations = JSON.parse(data.taxDeclarations);
+            return data;
+        });
+        
+        res.json(parsedEmployees);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -43,7 +60,16 @@ router.get('/employees/:id', async (req, res) => {
         if (!employee) {
             return res.status(404).json({ error: 'Employee not found' });
         }
-        res.json(employee);
+        
+        // Parse JSON fields in response
+        const data = employee.toJSON();
+        if (data.educationDetails) data.educationDetails = JSON.parse(data.educationDetails);
+        if (data.experienceDetails) data.experienceDetails = JSON.parse(data.experienceDetails);
+        if (data.salaryBreakdown) data.salaryBreakdown = JSON.parse(data.salaryBreakdown);
+        if (data.leaveEntitlements) data.leaveEntitlements = JSON.parse(data.leaveEntitlements);
+        if (data.certifications) data.certifications = JSON.parse(data.certifications);
+        
+        res.json(data);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -64,7 +90,20 @@ router.post('/employees', async (req, res) => {
             salary,
             status,
             password,
-            isNewUser
+            isNewUser,
+            // Personal Details
+            dateOfBirth,
+            phone,
+            address,
+            pan,
+            aadhar,
+            pfNumber,
+            // JSON fields
+            educationDetails,
+            experienceDetails,
+            salaryBreakdown,
+            leaveEntitlements,
+            certifications
         } = req.body;
 
         const employee = await Employee.create({
@@ -80,10 +119,56 @@ router.post('/employees', async (req, res) => {
             salary,
             status: status || 'Active',
             password,
-            isNewUser: isNewUser || false
+            isNewUser: isNewUser || false,
+            // Personal Details
+            dateOfBirth,
+            phone,
+            address,
+            pan,
+            aadhar,
+            pfNumber,
+            // Additional Traditional HR Fields
+            workLocation,
+            probationEndDate,
+            noticePeriod,
+            lastWorkingDay,
+            exitInterviewDate,
+            employeeReferralId,
+            bloodGroup,
+            maritalStatus,
+            spouseName,
+            emergencyContactName,
+            emergencyContactRelation,
+            emergencyContactPhone,
+            bankAccountNumber,
+            bankIFSC,
+            bankName,
+            bankBranch,
+            // JSON fields - stringify if they're objects
+            educationDetails: educationDetails ? (typeof educationDetails === 'string' ? educationDetails : JSON.stringify(educationDetails)) : null,
+            experienceDetails: experienceDetails ? (typeof experienceDetails === 'string' ? experienceDetails : JSON.stringify(experienceDetails)) : null,
+            salaryBreakdown: salaryBreakdown ? (typeof salaryBreakdown === 'string' ? salaryBreakdown : JSON.stringify(salaryBreakdown)) : null,
+            leaveEntitlements: leaveEntitlements ? (typeof leaveEntitlements === 'string' ? leaveEntitlements : JSON.stringify(leaveEntitlements)) : null,
+            certifications: certifications ? (typeof certifications === 'string' ? certifications : JSON.stringify(certifications)) : null,
+            skills: req.body.skills ? (typeof req.body.skills === 'string' ? req.body.skills : JSON.stringify(req.body.skills)) : null,
+            languages: req.body.languages ? (typeof req.body.languages === 'string' ? req.body.languages : JSON.stringify(req.body.languages)) : null,
+            dependents: req.body.dependents ? (typeof req.body.dependents === 'string' ? req.body.dependents : JSON.stringify(req.body.dependents)) : null,
+            taxDeclarations: req.body.taxDeclarations ? (typeof req.body.taxDeclarations === 'string' ? req.body.taxDeclarations : JSON.stringify(req.body.taxDeclarations)) : null
         });
 
-        res.status(201).json(employee);
+        // Parse JSON fields in response
+        const response = employee.toJSON();
+        if (response.educationDetails) response.educationDetails = JSON.parse(response.educationDetails);
+        if (response.experienceDetails) response.experienceDetails = JSON.parse(response.experienceDetails);
+        if (response.salaryBreakdown) response.salaryBreakdown = JSON.parse(response.salaryBreakdown);
+        if (response.leaveEntitlements) response.leaveEntitlements = JSON.parse(response.leaveEntitlements);
+        if (response.certifications) response.certifications = JSON.parse(response.certifications);
+        if (response.skills) response.skills = JSON.parse(response.skills);
+        if (response.languages) response.languages = JSON.parse(response.languages);
+        if (response.dependents) response.dependents = JSON.parse(response.dependents);
+        if (response.taxDeclarations) response.taxDeclarations = JSON.parse(response.taxDeclarations);
+
+        res.status(201).json(response);
     } catch (error) {
         if (error.name === 'SequelizeUniqueConstraintError') {
             res.status(400).json({ error: 'Email already exists' });
@@ -101,14 +186,53 @@ router.put('/employees/:id', async (req, res) => {
             return res.status(404).json({ error: 'Employee not found' });
         }
 
-        await employee.update(req.body);
-        res.json(employee);
+        // Handle JSON fields - stringify if they're objects
+        const updateData = { ...req.body };
+        if (updateData.educationDetails && typeof updateData.educationDetails !== 'string') {
+            updateData.educationDetails = JSON.stringify(updateData.educationDetails);
+        }
+        if (updateData.experienceDetails && typeof updateData.experienceDetails !== 'string') {
+            updateData.experienceDetails = JSON.stringify(updateData.experienceDetails);
+        }
+        if (updateData.salaryBreakdown && typeof updateData.salaryBreakdown !== 'string') {
+            updateData.salaryBreakdown = JSON.stringify(updateData.salaryBreakdown);
+        }
+        if (updateData.leaveEntitlements && typeof updateData.leaveEntitlements !== 'string') {
+            updateData.leaveEntitlements = JSON.stringify(updateData.leaveEntitlements);
+        }
+        if (updateData.certifications && typeof updateData.certifications !== 'string') {
+            updateData.certifications = JSON.stringify(updateData.certifications);
+        }
+        if (updateData.skills && typeof updateData.skills !== 'string') {
+            updateData.skills = JSON.stringify(updateData.skills);
+        }
+        if (updateData.languages && typeof updateData.languages !== 'string') {
+            updateData.languages = JSON.stringify(updateData.languages);
+        }
+        if (updateData.dependents && typeof updateData.dependents !== 'string') {
+            updateData.dependents = JSON.stringify(updateData.dependents);
+        }
+        if (updateData.taxDeclarations && typeof updateData.taxDeclarations !== 'string') {
+            updateData.taxDeclarations = JSON.stringify(updateData.taxDeclarations);
+        }
+
+        await employee.update(updateData);
+        
+        // Parse JSON fields in response
+        const data = employee.toJSON();
+        if (data.educationDetails) data.educationDetails = JSON.parse(data.educationDetails);
+        if (data.experienceDetails) data.experienceDetails = JSON.parse(data.experienceDetails);
+        if (data.salaryBreakdown) data.salaryBreakdown = JSON.parse(data.salaryBreakdown);
+        if (data.leaveEntitlements) data.leaveEntitlements = JSON.parse(data.leaveEntitlements);
+        if (data.certifications) data.certifications = JSON.parse(data.certifications);
+        
+        res.json(data);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
 
-// Delete employee (soft delete - set status to 'Exited')
+// Delete employee (soft delete - set status to 'Terminated')
 router.delete('/employees/:id', async (req, res) => {
     try {
         const employee = await Employee.findByPk(req.params.id);
@@ -116,8 +240,71 @@ router.delete('/employees/:id', async (req, res) => {
             return res.status(404).json({ error: 'Employee not found' });
         }
 
-        await employee.update({ status: 'Exited' });
-        res.json({ message: 'Employee offboarded successfully' });
+        // Create hiring history record before termination
+        await EmployeeHiringHistory.create({
+            id: uuidv4(),
+            employeeId: employee.id,
+            hireDate: employee.joinDate,
+            terminationDate: new Date().toISOString().split('T')[0],
+            employeeType: employee.employeeType,
+            department: employee.department,
+            employeePosition: employee.employeePosition,
+            designation: employee.designation,
+            salary: employee.salary,
+            managerId: employee.managerId,
+            reasonForTermination: req.body.reasonForTermination || 'Not specified',
+            isRehire: false
+        });
+
+        await employee.update({ 
+            status: 'Terminated',
+            terminationDate: new Date().toISOString().split('T')[0]
+        });
+        res.json({ message: 'Employee terminated successfully' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// ============================================
+// EMPLOYEE HIRING HISTORY
+// ============================================
+
+// Get hiring history for an employee
+router.get('/employees/:id/hiring-history', async (req, res) => {
+    try {
+        const history = await EmployeeHiringHistory.findAll({
+            where: { employeeId: req.params.id },
+            order: [['hireDate', 'DESC']]
+        });
+        res.json(history);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Create hiring history entry (for rehires)
+router.post('/employees/:id/hiring-history', async (req, res) => {
+    try {
+        const { hireDate, terminationDate, employeeType, department, employeePosition, designation, salary, managerId, reasonForTermination, isRehire, previousEmployeeId } = req.body;
+        
+        const history = await EmployeeHiringHistory.create({
+            id: uuidv4(),
+            employeeId: req.params.id,
+            hireDate,
+            terminationDate,
+            employeeType,
+            department,
+            employeePosition,
+            designation,
+            salary,
+            managerId,
+            reasonForTermination,
+            isRehire: isRehire || false,
+            previousEmployeeId
+        });
+
+        res.status(201).json(history);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

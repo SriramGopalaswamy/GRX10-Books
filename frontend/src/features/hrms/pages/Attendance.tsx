@@ -74,14 +74,14 @@ export const Attendance: React.FC = () => {
       {/* Header & Actions */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900">Attendance Management</h2>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Attendance Management</h2>
           <p className="text-slate-500">Track attendance and manage regularization</p>
         </div>
         
-        <div className="bg-white px-5 py-3 rounded-xl shadow-sm border border-slate-100 flex items-center gap-6">
+        <div className="bg-white dark:bg-slate-800 px-5 py-3 rounded-xl shadow-sm border border-slate-100 flex items-center gap-6">
           <div>
              <p className="text-xs text-slate-500 uppercase font-semibold tracking-wide">Current Time</p>
-             <p className="text-xl font-mono font-bold text-slate-900 leading-none mt-1">
+             <p className="text-xl font-mono font-bold text-slate-900 dark:text-slate-100 leading-none mt-1">
                {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
              </p>
           </div>
@@ -137,7 +137,7 @@ export const Attendance: React.FC = () => {
 
       {/* Tab Content: My Attendance Logs */}
       {activeTab === 'logs' && (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
@@ -152,7 +152,7 @@ export const Attendance: React.FC = () => {
               <tbody className="divide-y divide-slate-100">
                 {MOCK_ATTENDANCE.map((record) => (
                   <tr key={record.id} className="hover:bg-slate-50">
-                    <td className="px-6 py-4 flex items-center gap-2 text-sm text-slate-900">
+                    <td className="px-6 py-4 flex items-center gap-2 text-sm text-slate-900 dark:text-slate-100">
                       <CalendarIcon size={16} className="text-slate-400" />
                       {record.date}
                     </td>
@@ -195,7 +195,7 @@ export const Attendance: React.FC = () => {
             </button>
           </div>
           
-          <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 overflow-hidden">
             {myRequests.length === 0 ? (
               <div className="p-8 text-center text-slate-500">No regularization requests found.</div>
             ) : (
@@ -213,8 +213,8 @@ export const Attendance: React.FC = () => {
                   <tbody className="divide-y divide-slate-100">
                     {myRequests.map((req) => (
                       <tr key={req.id} className="hover:bg-slate-50">
-                        <td className="px-6 py-4 text-sm text-slate-900">{req.date}</td>
-                        <td className="px-6 py-4 text-sm text-slate-900">
+                        <td className="px-6 py-4 text-sm text-slate-900 dark:text-slate-100">{req.date}</td>
+                        <td className="px-6 py-4 text-sm text-slate-900 dark:text-slate-100">
                           <span className="bg-slate-100 px-2 py-1 rounded text-xs font-medium">{req.type}</span>
                         </td>
                         <td className="px-6 py-4 text-sm text-slate-600 font-mono">
@@ -242,7 +242,7 @@ export const Attendance: React.FC = () => {
 
       {/* Tab Content: Approvals */}
       {activeTab === 'approvals' && (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 overflow-hidden">
           {pendingApprovals.length === 0 ? (
             <div className="p-8 text-center text-slate-500">No pending approvals. Good job!</div>
           ) : (
@@ -300,7 +300,7 @@ export const Attendance: React.FC = () => {
       {/* Modal */}
       {showRegModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl w-full max-w-lg p-6 shadow-2xl">
+          <div className="bg-white dark:bg-slate-800 rounded-xl w-full max-w-lg p-6 shadow-2xl">
             <h3 className="text-lg font-bold mb-4 text-slate-900">Request Regularization</h3>
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
