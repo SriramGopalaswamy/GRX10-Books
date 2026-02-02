@@ -1,6 +1,5 @@
 
 import express from 'express';
-import { Op } from 'sequelize';
 import {
     Organization,
     Department,
@@ -13,7 +12,7 @@ import {
     Skill,
     Language,
     ChartOfAccount
-} from '../../config/database.js';
+} from '../../services/sheetsModels.js';
 import { v4 as uuidv4 } from 'uuid';
 
 const router = express.Router();
@@ -149,7 +148,7 @@ router.get('/holidays/year/:year', async (req, res) => {
     try {
         const { activeOnly } = req.query;
         const where = {
-            date: { [Op.like]: `${req.params.year}-%` }
+            date: { like: `${req.params.year}-%` }
         };
         if (activeOnly === 'true') {
             where.isActive = true;

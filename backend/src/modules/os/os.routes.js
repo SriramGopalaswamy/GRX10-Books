@@ -1,13 +1,12 @@
 import express from 'express';
-import { Op } from 'sequelize';
-import { 
-    OSGoal, 
+import {
+    OSGoal,
     OSGoalComment,
     OSMemo,
     OSMemoAttachment,
     OSMemoComment,
     OSNotification
-} from '../../config/database.js';
+} from '../../services/sheetsModels.js';
 import { v4 as uuidv4 } from 'uuid';
 
 const router = express.Router();

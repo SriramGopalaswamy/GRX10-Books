@@ -1,6 +1,5 @@
 import express from 'express';
-import { Op } from 'sequelize';
-import { 
+import {
     Employee,
     LeaveRequest,
     AttendanceRecord,
@@ -8,7 +7,7 @@ import {
     Invoice,
     OSGoal,
     OSMemo
-} from '../../config/database.js';
+} from '../../services/sheetsModels.js';
 
 const router = express.Router();
 
@@ -39,7 +38,7 @@ router.get('/summary', async (req, res) => {
                 attributes: ['id']
             });
             const reporteeIds = reportees.map(r => r.id);
-            employeeFilter = { id: { [Op.in]: [user.id, ...reporteeIds] } };
+            employeeFilter = { id: { in: [user.id, ...reporteeIds] } };
         }
         // Admin/HR/Finance see all (no filter)
 
@@ -52,13 +51,13 @@ router.get('/summary', async (req, res) => {
 
         const newEmployeesThisMonth = await Employee.count({
             where: {
-                joinDate: { [Op.between]: [startOfMonth, endOfMonth] }
+                joinDate: { between: [startOfMonth, endOfMonth] }
             }
         });
 
         // Attendance stats (current month)
         const attendanceWhere = {
-            date: { [Op.between]: [startOfMonth, endOfMonth] }
+            date: { between: [startOfMonth, endOfMonth] }
         };
         if (user.role === 'Employee') {
             attendanceWhere.employeeId = user.id;
@@ -67,7 +66,7 @@ router.get('/summary', async (req, res) => {
                 where: { managerId: user.id },
                 attributes: ['id']
             });
-            attendanceWhere.employeeId = { [Op.in]: reportees.map(r => r.id) };
+            attendanceWhere.employeeId = { in: reportees.map(r => r.id) };
         }
 
         const attendanceRecords = await AttendanceRecord.findAll({ where: attendanceWhere });
@@ -86,7 +85,7 @@ router.get('/summary', async (req, res) => {
                 where: { managerId: user.id },
                 attributes: ['id']
             });
-            leaveWhere.employeeId = { [Op.in]: reportees.map(r => r.id) };
+            leaveWhere.employeeId = { in: reportees.map(r => r.id) };
         }
 
         const pendingLeaves = await LeaveRequest.count({ where: leaveWhere });
@@ -104,7 +103,7 @@ router.get('/summary', async (req, res) => {
                 where: { managerId: user.id },
                 attributes: ['id']
             });
-            payrollWhere.employeeId = { [Op.in]: reportees.map(r => r.id) };
+            payrollWhere.employeeId = { in: reportees.map(r => r.id) };
         }
 
         const payslips = await Payslip.findAll({ where: payrollWhere });
@@ -121,12 +120,12 @@ router.get('/summary', async (req, res) => {
         // ============================================
         const totalInvoices = await Invoice.count();
         const paidInvoices = await Invoice.count({ where: { status: 'Paid' } });
-        const pendingInvoices = await Invoice.count({ where: { status: { [Op.in]: ['Pending', 'Sent'] } } });
+        const pendingInvoices = await Invoice.count({ where: { status: { in: ['Pending', 'Sent'] } } });
         const overdueInvoices = await Invoice.count({ where: { status: 'Overdue' } });
 
         // Calculate total receivables
         const unpaidInvoices = await Invoice.findAll({
-            where: { status: { [Op.ne]: 'Paid' } }
+            where: { status: { ne: 'Paid' } }
         });
         const totalReceivables = unpaidInvoices.reduce((sum, inv) => {
             return sum + (inv.total || 0);
@@ -136,7 +135,7 @@ router.get('/summary', async (req, res) => {
         const paidThisMonth = await Invoice.findAll({
             where: {
                 status: 'Paid',
-                date: { [Op.between]: [startOfMonth, endOfMonth] }
+                date: { between: [startOfMonth, endOfMonth] }
             }
         });
         const revenueThisMonth = paidThisMonth.reduce((sum, inv) => {
@@ -154,7 +153,7 @@ router.get('/summary', async (req, res) => {
                 where: { managerId: user.id },
                 attributes: ['id']
             });
-            goalWhere.employeeId = { [Op.in]: [user.id, ...reportees.map(r => r.id)] };
+            goalWhere.employeeId = { in: [user.id, ...reportees.map(r => r.id)] };
         }
 
         const totalGoals = await OSGoal.count({ where: goalWhere });
@@ -176,7 +175,7 @@ router.get('/summary', async (req, res) => {
                 where: { managerId: user.id },
                 attributes: ['id']
             });
-            memoWhere.createdBy = { [Op.in]: [user.id, ...reportees.map(r => r.id)] };
+            memoWhere.createdBy = { in: [user.id, ...reportees.map(r => r.id)] };
         }
 
         const totalMemos = await OSMemo.count({ where: memoWhere });
@@ -192,7 +191,7 @@ router.get('/summary', async (req, res) => {
 
         const recentLeaves = await LeaveRequest.findAll({
             where: {
-                createdAt: { [Op.gte]: sevenDaysAgo }
+                createdAt: { gte: sevenDaysAgo }
             },
             include: [{ 
                 model: Employee, 
@@ -204,7 +203,7 @@ router.get('/summary', async (req, res) => {
 
         const recentAttendance = await AttendanceRecord.findAll({
             where: {
-                date: { [Op.gte]: sevenDaysAgo }
+                date: { gte: sevenDaysAgo }
             },
             include: [{ 
                 model: Employee, 

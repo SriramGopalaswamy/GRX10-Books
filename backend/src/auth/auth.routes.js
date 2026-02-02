@@ -2,8 +2,7 @@ import express from 'express';
 import passport from 'passport';
 import { Strategy as MicrosoftStrategy } from 'passport-microsoft';
 import dotenv from 'dotenv';
-import { Op } from 'sequelize';
-import { User, Employee } from '../config/database.js';
+import { User, Employee } from '../services/sheetsModels.js';
 
 dotenv.config();
 
@@ -124,14 +123,14 @@ router.post('/admin/login', async (req, res) => {
         }
 
         // Find employee by email or ID (email is preferred)
-        const employee = await Employee.findOne({ 
-            where: { 
-                [Op.or]: [
+        const employee = await Employee.findOne({
+            where: {
+                $or: [
                     { email: username },
                     { id: username }
                 ],
                 status: 'Active'
-            } 
+            }
         });
 
         if (!employee) {

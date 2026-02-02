@@ -8,7 +8,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import session from 'express-session';
 import passport from 'passport';
-import { sequelize, initDb } from './config/database.js';
+import { sequelize, initDb } from './services/sheetsModels.js';
 import invoiceRoutes from './modules/invoices/invoice.routes.js';
 import customerRoutes from './modules/customers/customer.routes.js';
 import aiRoutes from './modules/ai/ai.routes.js';

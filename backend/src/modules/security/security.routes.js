@@ -1,6 +1,5 @@
 
 import express from 'express';
-import { Op } from 'sequelize';
 import {
     Role,
     Permission,
@@ -11,7 +10,7 @@ import {
     ApprovalWorkflowStep,
     ApprovalRequest,
     ApprovalHistory
-} from '../../config/database.js';
+} from '../../services/sheetsModels.js';
 import { v4 as uuidv4 } from 'uuid';
 
 const router = express.Router();

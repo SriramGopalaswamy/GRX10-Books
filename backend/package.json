@@ -8,7 +8,8 @@
         "start": "node src/server.js",
         "dev": "node --watch src/server.js",
         "db:setup": "node database/setup.js",
-        "db:seed": "node database/seed.js"
+        "db:seed": "node database/seed.js",
+        "sheets:setup": "node src/services/sheetsSetup.js"
     },
     "dependencies": {
         "@google/generative-ai": "^0.24.1",
@@ -16,6 +17,7 @@
         "dotenv": "^16.3.1",
         "express": "^4.18.2",
         "express-session": "^1.18.2",
+        "googleapis": "^171.0.0",
         "passport": "^0.7.0",
         "passport-microsoft": "^2.1.0",
         "pg": "^8.16.3",

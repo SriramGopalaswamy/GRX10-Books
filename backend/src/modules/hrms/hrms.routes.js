@@ -1,14 +1,13 @@
 import express from 'express';
-import { Op } from 'sequelize';
-import { 
-    Employee, 
+import {
+    Employee,
     EmployeeHiringHistory,
-    LeaveRequest, 
-    AttendanceRecord, 
-    RegularizationRequest, 
+    LeaveRequest,
+    AttendanceRecord,
+    RegularizationRequest,
     Payslip,
     LeaveType
-} from '../../config/database.js';
+} from '../../services/sheetsModels.js';
 import { v4 as uuidv4 } from 'uuid';
 
 const router = express.Router();
@@ -329,7 +328,7 @@ router.get('/leaves', async (req, res) => {
             });
             const reporteeIds = reportees.map(emp => emp.id);
             if (reporteeIds.length > 0) {
-                where.employeeId = { [Op.in]: reporteeIds };
+                where.employeeId = { in: reporteeIds };
             } else {
                 // Manager has no reportees, return empty array
                 return res.json([]);
@@ -436,8 +435,8 @@ router.get('/leaves/balance/:employeeId', async (req, res) => {
             where: {
                 employeeId,
                 status: 'Approved',
-                startDate: { [Op.gte]: startOfYear },
-                endDate: { [Op.lte]: endOfYear }
+                startDate: { gte: startOfYear },
+                endDate: { lte: endOfYear }
             }
         });
 
@@ -569,7 +568,7 @@ router.get('/attendance', async (req, res) => {
             });
             const reporteeIds = reportees.map(emp => emp.id);
             if (reporteeIds.length > 0) {
-                where.employeeId = { [Op.in]: reporteeIds };
+                where.employeeId = { in: reporteeIds };
             } else {
                 // Manager has no reportees, return empty array
                 return res.json([]);
@@ -580,7 +579,7 @@ router.get('/attendance', async (req, res) => {
         
         if (date) where.date = date;
         if (startDate && endDate) {
-            where.date = { [Op.between]: [startDate, endDate] };
+            where.date = { between: [startDate, endDate] };
         }
 
         const attendance = await AttendanceRecord.findAll({
@@ -845,7 +844,7 @@ router.get('/payslips', async (req, res) => {
             });
             const reporteeIds = reportees.map(emp => emp.id);
             if (reporteeIds.length > 0) {
-                where.employeeId = { [Op.in]: reporteeIds };
+                where.employeeId = { in: reporteeIds };
             } else {
                 // Manager has no reportees, return empty array
                 return res.json([]);

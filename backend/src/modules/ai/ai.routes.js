@@ -1,6 +1,6 @@
 import express from 'express';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { sequelize } from '../../config/database.js';
+import { Invoice, Customer } from '../../services/sheetsModels.js';
 
 const router = express.Router();
 
@@ -22,21 +22,21 @@ router.post('/chat', async (req, res) => {
 
         // Simple RAG / Tool Use Simulation
         // 1. Fetch relevant context from DB (e.g. recent invoices, total revenue)
-        // For a real "Expert" system, we would use function calling. 
+        // For a real "Expert" system, we would use function calling.
         // Here we will do a "Context Injection" approach for simplicity and reliability first.
 
-        const [results] = await sequelize.query(`
-      SELECT 
-        (SELECT COUNT(*) FROM Invoices) as invoice_count,
-        (SELECT SUM(total) FROM Invoices) as total_revenue,
-        (SELECT COUNT(*) FROM Customers) as customer_count
-    `);
+        const invoices = await Invoice.findAll();
+        const customers = await Customer.findAll();
+
+        const invoiceCount = invoices.length;
+        const totalRevenue = invoices.reduce((sum, inv) => sum + (parseFloat(inv.total) || 0), 0);
+        const customerCount = customers.length;
 
         const context = `
       Current Financial Data:
-      - Total Invoices: ${results[0].invoice_count}
-      - Total Revenue: ${results[0].total_revenue || 0}
-      - Total Customers: ${results[0].customer_count}
+      - Total Invoices: ${invoiceCount}
+      - Total Revenue: ${totalRevenue}
+      - Total Customers: ${customerCount}
     `;
 
         const genAI = new GoogleGenerativeAI(apiKey);

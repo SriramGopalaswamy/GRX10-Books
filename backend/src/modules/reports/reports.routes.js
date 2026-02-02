@@ -1,8 +1,7 @@
 import express from 'express';
-import { Op } from 'sequelize';
-import { 
-    Transaction, 
-    Ledger, 
+import {
+    Transaction,
+    Ledger,
     ChartOfAccount,
     Invoice,
     InvoiceItem,
@@ -10,7 +9,7 @@ import {
     LeaveRequest,
     AttendanceRecord,
     Payslip
-} from '../../config/database.js';
+} from '../../services/sheetsModels.js';
 
 const router = express.Router();
 
@@ -22,7 +21,7 @@ const router = express.Router();
 router.get('/trial-balance', async (req, res) => {
     try {
         const { asOfDate } = req.query;
-        const dateFilter = asOfDate ? { date: { [Op.lte]: asOfDate } } : {};
+        const dateFilter = asOfDate ? { date: { lte: asOfDate } } : {};
 
         // Get all chart of accounts
         const accounts = await ChartOfAccount.findAll({
@@ -90,7 +89,7 @@ router.get('/trial-balance', async (req, res) => {
 router.get('/balance-sheet', async (req, res) => {
     try {
         const { asOfDate } = req.query;
-        const dateFilter = asOfDate ? { date: { [Op.lte]: asOfDate } } : {};
+        const dateFilter = asOfDate ? { date: { lte: asOfDate } } : {};
 
         // Assets
         const assetAccounts = await ChartOfAccount.findAll({
@@ -268,7 +267,7 @@ router.get('/profit-loss', async (req, res) => {
         }
 
         const dateFilter = {
-            date: { [Op.between]: [startDate, endDate] }
+            date: { between: [startDate, endDate] }
         };
 
         // Income
@@ -411,7 +410,7 @@ router.get('/hr/attendance', async (req, res) => {
         }
 
         const where = {
-            date: { [Op.between]: [startDate, endDate] }
+            date: { between: [startDate, endDate] }
         };
 
         if (employeeId) {
@@ -422,7 +421,7 @@ router.get('/hr/attendance', async (req, res) => {
                 where: { department },
                 attributes: ['id']
             });
-            where.employeeId = { [Op.in]: employees.map(e => e.id) };
+            where.employeeId = { in: employees.map(e => e.id) };
         }
 
         const attendance = await AttendanceRecord.findAll({
@@ -464,8 +463,8 @@ router.get('/hr/leaves', async (req, res) => {
         }
 
         const where = {
-            startDate: { [Op.lte]: endDate },
-            endDate: { [Op.gte]: startDate }
+            startDate: { lte: endDate },
+            endDate: { gte: startDate }
         };
 
         if (employeeId) {
@@ -475,7 +474,7 @@ router.get('/hr/leaves', async (req, res) => {
                 where: { department },
                 attributes: ['id']
             });
-            where.employeeId = { [Op.in]: employees.map(e => e.id) };
+            where.employeeId = { in: employees.map(e => e.id) };
         }
 
         if (status) where.status = status;
@@ -559,7 +558,7 @@ router.get('/hr/payroll', async (req, res) => {
                 where: { department },
                 attributes: ['id']
             });
-            where.employeeId = { [Op.in]: employees.map(e => e.id) };
+            where.employeeId = { in: employees.map(e => e.id) };
         }
 
         const payslips = await Payslip.findAll({
