@@ -26,7 +26,7 @@ RUN npm install
 COPY backend/ ./
 
 # Return to root
-WORKDIR /app
+# WORKDIR /app
 
 # Expose port 8080 (Cloud Run default)
 EXPOSE 8080
@@ -36,4 +36,4 @@ ENV PORT=8080
 ENV NODE_ENV=production
 
 # Start the server
-CMD ["node", "backend/src/server.js"]
+CMD ["node", "src/server.js"]
