@@ -11,7 +11,7 @@ RUN npm install
 
 # Copy frontend source and build
 COPY frontend/src ./src
-COPY frontend/public ./public
+# COPY frontend/public ./public
 COPY frontend/vite.config.ts ./vite.config.ts
 COPY frontend/tsconfig.json ./tsconfig.json
 RUN npm run build
