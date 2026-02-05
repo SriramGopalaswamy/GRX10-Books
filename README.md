@@ -409,7 +409,7 @@ See [Security Implementation Guide](./userdocs/SECURITY_IMPLEMENTATION.md) for d
 - Session-based authentication with Passport.js
 
 ### Security
-- **Passwords:** Currently stored as plain text. For production, implement bcrypt hashing (marked with `TODO` in code).
+- **Passwords:** Stored as bcrypt hashes. Passwords are hashed on creation and updates, and verified using `bcrypt.compare()`.
 - **Role-Based Access:** Data is automatically filtered based on user role (Admin/HR see all, Manager sees reportees, Employee sees own)
 
 ### Database

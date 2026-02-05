@@ -7,12 +7,15 @@
  */
 
 import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
 import { sequelize, Customer, Ledger, User, Employee, LeaveRequest, AttendanceRecord, RegularizationRequest, Payslip, Organization, Department, Position, HRMSRole, EmployeeType, Holiday, LeaveType, WorkLocation, Skill, Language, ChartOfAccount } from '../src/config/database.js';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
 dotenv.config();
+
+const BCRYPT_SALT_ROUNDS = 10;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -66,13 +69,14 @@ async function seedDatabase() {
 
         // Seed Admin User (if not exists)
         console.log('📝 Seeding Admin User...');
+        const adminPasswordHash = await bcrypt.hash('admin123', BCRYPT_SALT_ROUNDS);
         const adminUser = await User.findOrCreate({
             where: { username: 'admin' },
             defaults: {
                 id: 'admin-001',
                 username: 'admin',
                 email: 'admin@grx10.com',
-                passwordHash: 'admin123', // TODO: Hash with bcrypt in production
+                passwordHash: adminPasswordHash,
                 displayName: 'Administrator',
                 role: 'admin',
                 isActive: true
@@ -82,15 +86,19 @@ async function seedDatabase() {
 
         // Seed HRMS Employees
         console.log('📝 Seeding HRMS Employees...');
+        // Pre-hash passwords for seeding
+        const adminHash = await bcrypt.hash('admin123', BCRYPT_SALT_ROUNDS);
+        const defaultHash = await bcrypt.hash('password123', BCRYPT_SALT_ROUNDS);
+
         const employees = [
-            { id: 'admin-001', name: 'Administrator', email: 'admin@grx10.com', role: 'Admin', department: 'Administration', designation: 'System Administrator', joinDate: '2020-01-01', avatar: 'https://picsum.photos/199', salary: 150000, status: 'Active', password: 'admin123', enableEmailLogin: true, isNewUser: false, managerId: null },
-            { id: 'EMP001', name: 'Alice Carter', email: 'alice@grx10.com', role: 'HR', department: 'Human Resources', designation: 'HR Manager', joinDate: '2022-01-15', avatar: 'https://picsum.photos/200', salary: 85000, status: 'Active', password: 'password123', isNewUser: false, managerId: 'admin-001' },
-            { id: 'EMP002', name: 'Bob Smith', email: 'bob@grx10.com', role: 'Manager', department: 'Engineering', designation: 'Tech Lead', joinDate: '2021-05-20', avatar: 'https://picsum.photos/201', salary: 120000, status: 'Active', password: 'password123', isNewUser: false, managerId: 'admin-001' },
-            { id: 'EMP003', name: 'Charlie Davis', email: 'charlie@grx10.com', role: 'Employee', department: 'Engineering', designation: 'Frontend Engineer', joinDate: '2023-02-10', managerId: 'EMP002', avatar: 'https://picsum.photos/202', salary: 90000, status: 'Active', password: 'password123', isNewUser: false },
-            { id: 'EMP004', name: 'Diana Evans', email: 'diana@grx10.com', role: 'Finance', department: 'Finance', designation: 'Payroll Specialist', joinDate: '2022-08-01', avatar: 'https://picsum.photos/203', salary: 75000, status: 'Active', password: 'password123', isNewUser: false, managerId: 'admin-001' },
-            { id: 'EMP005', name: 'Ethan Hunt', email: 'ethan@grx10.com', role: 'Employee', department: 'Sales', designation: 'Sales Executive', joinDate: '2023-06-15', avatar: 'https://picsum.photos/204', salary: 60000, status: 'Active', password: 'password123', isNewUser: false, managerId: 'admin-001' }
+            { id: 'admin-001', name: 'Administrator', email: 'admin@grx10.com', role: 'Admin', department: 'Administration', designation: 'System Administrator', joinDate: '2020-01-01', avatar: 'https://picsum.photos/199', salary: 150000, status: 'Active', password: adminHash, enableEmailLogin: true, isNewUser: false, managerId: null },
+            { id: 'EMP001', name: 'Alice Carter', email: 'alice@grx10.com', role: 'HR', department: 'Human Resources', designation: 'HR Manager', joinDate: '2022-01-15', avatar: 'https://picsum.photos/200', salary: 85000, status: 'Active', password: defaultHash, isNewUser: false, managerId: 'admin-001' },
+            { id: 'EMP002', name: 'Bob Smith', email: 'bob@grx10.com', role: 'Manager', department: 'Engineering', designation: 'Tech Lead', joinDate: '2021-05-20', avatar: 'https://picsum.photos/201', salary: 120000, status: 'Active', password: defaultHash, isNewUser: false, managerId: 'admin-001' },
+            { id: 'EMP003', name: 'Charlie Davis', email: 'charlie@grx10.com', role: 'Employee', department: 'Engineering', designation: 'Frontend Engineer', joinDate: '2023-02-10', managerId: 'EMP002', avatar: 'https://picsum.photos/202', salary: 90000, status: 'Active', password: defaultHash, isNewUser: false },
+            { id: 'EMP004', name: 'Diana Evans', email: 'diana@grx10.com', role: 'Finance', department: 'Finance', designation: 'Payroll Specialist', joinDate: '2022-08-01', avatar: 'https://picsum.photos/203', salary: 75000, status: 'Active', password: defaultHash, isNewUser: false, managerId: 'admin-001' },
+            { id: 'EMP005', name: 'Ethan Hunt', email: 'ethan@grx10.com', role: 'Employee', department: 'Sales', designation: 'Sales Executive', joinDate: '2023-06-15', avatar: 'https://picsum.photos/204', salary: 60000, status: 'Active', password: defaultHash, isNewUser: false, managerId: 'admin-001' }
         ];
-        
+
         for (const employee of employees) {
             await Employee.findOrCreate({
                 where: { id: employee.id },

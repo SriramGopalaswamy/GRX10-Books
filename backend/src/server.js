@@ -25,7 +25,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 8101;
+const PORT = process.env.PORT || 8080;
 
 console.log(`Starting server. NODE_ENV: ${process.env.NODE_ENV}`);
 console.log(`Current directory: ${__dirname}`);
@@ -70,9 +70,14 @@ app.use('/api/security', securityRoutes);
 app.use('/api/reports', reportsRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
-// Health check
+// Health check endpoints
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date() });
+});
+
+// Root health check for Cloud Run (responds before static file serving)
+app.get('/healthz', (req, res) => {
+  res.status(200).send('OK');
 });
 
 // The "catchall" handler: for any request that doesn't
@@ -84,10 +89,15 @@ app.get('*', (req, res, next) => {
     return res.status(404).json({ error: 'API endpoint not found' });
   }
   console.log(`Catchall: serving index.html for ${req.url}`);
-  res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'), (err) => {
+  const indexPath = path.join(__dirname, '../../frontend/dist/index.html');
+  res.sendFile(indexPath, (err) => {
     if (err) {
+      // If index.html doesn't exist, return OK for health checks on root
+      if (req.path === '/') {
+        return res.status(200).send('GRX10 Books API Server - OK');
+      }
       console.error('Error serving index.html:', err);
-      res.status(500).send(err);
+      res.status(500).send('Frontend not available');
     }
   });
 });

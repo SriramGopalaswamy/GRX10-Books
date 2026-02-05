@@ -1,17 +1,19 @@
 import express from 'express';
 import { Op } from 'sequelize';
-import { 
-    Employee, 
+import bcrypt from 'bcrypt';
+import {
+    Employee,
     EmployeeHiringHistory,
-    LeaveRequest, 
-    AttendanceRecord, 
-    RegularizationRequest, 
+    LeaveRequest,
+    AttendanceRecord,
+    RegularizationRequest,
     Payslip,
     LeaveType
 } from '../../config/database.js';
 import { v4 as uuidv4 } from 'uuid';
 
 const router = express.Router();
+const BCRYPT_SALT_ROUNDS = 10;
 
 // ============================================
 // EMPLOYEES
@@ -119,7 +121,7 @@ router.post('/employees', async (req, res) => {
             managerId,
             salary,
             status: status || 'Active',
-            password,
+            password: password ? await bcrypt.hash(password, BCRYPT_SALT_ROUNDS) : null,
             isNewUser: isNewUser || false,
             // Personal Details
             dateOfBirth,
@@ -189,6 +191,12 @@ router.put('/employees/:id', async (req, res) => {
 
         // Handle JSON fields - stringify if they're objects
         const updateData = { ...req.body };
+
+        // Hash password if being updated
+        if (updateData.password) {
+            updateData.password = await bcrypt.hash(updateData.password, BCRYPT_SALT_ROUNDS);
+        }
+
         if (updateData.educationDetails && typeof updateData.educationDetails !== 'string') {
             updateData.educationDetails = JSON.stringify(updateData.educationDetails);
         }

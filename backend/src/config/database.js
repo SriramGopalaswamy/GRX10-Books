@@ -132,8 +132,15 @@ const getDatabaseConfig = () => {
     });
   }
   
-  // If we reach here, SUPABASE_PWD is required
-  throw new Error('SUPABASE_PWD environment variable is required for database connection');
+  // Fallback: Use SQLite for local development
+  console.log('📦 No PostgreSQL credentials found - using SQLite for local development');
+  console.log('   Set SUPABASE_PWD or DATABASE_URL for production PostgreSQL');
+  const sqlitePath = path.join(__dirname, '../../database/grx10.sqlite');
+  return new Sequelize({
+    dialect: 'sqlite',
+    storage: sqlitePath,
+    logging: process.env.DB_LOGGING === 'true' ? console.log : false
+  });
 };
 
 const sequelize = getDatabaseConfig();

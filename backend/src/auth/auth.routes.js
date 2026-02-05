@@ -2,6 +2,7 @@ import express from 'express';
 import passport from 'passport';
 import { Strategy as MicrosoftStrategy } from 'passport-microsoft';
 import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
 import { Op } from 'sequelize';
 import { User, Employee } from '../config/database.js';
 
@@ -143,8 +144,9 @@ router.post('/admin/login', async (req, res) => {
             return res.status(403).json({ error: 'Email/password login is disabled for this account. Please use SSO login.' });
         }
 
-        // Check password (for now, compare plain text - TODO: implement bcrypt hashing)
-        if (employee.password !== password) {
+        // Check password using bcrypt
+        const isValidPassword = await bcrypt.compare(password, employee.password);
+        if (!isValidPassword) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
