@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url';
 import session from 'express-session';
 import passport from 'passport';
 import { sequelize, initDb } from './config/database.js';
+import { bootstrapAdminUser } from './config/bootstrap.js';
 import invoiceRoutes from './modules/invoices/invoice.routes.js';
 import customerRoutes from './modules/customers/customer.routes.js';
 import aiRoutes from './modules/ai/ai.routes.js';
@@ -102,10 +103,17 @@ app.get('*', (req, res, next) => {
   });
 });
 
-// Initialize DB and start server
-// Initialize DB
-initDb().then(() => {
+// Initialize DB and bootstrap admin user
+initDb().then(async () => {
   console.log('Database initialized successfully');
+
+  // Bootstrap initial admin user if none exists
+  try {
+    await bootstrapAdminUser();
+  } catch (err) {
+    console.error('Bootstrap warning:', err.message);
+    // Don't fail startup if bootstrap fails
+  }
 }).catch(err => {
   console.error('Failed to initialize database:', err);
 });
