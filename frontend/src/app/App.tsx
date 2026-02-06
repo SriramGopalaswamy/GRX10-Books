@@ -14,6 +14,21 @@ import VendorsPage from '../features/vendors/pages/VendorsPage';
 import CustomersPage from '../features/customers/pages/CustomersPage';
 import CashFlowPage from '../features/cashflow/pages/CashFlowPage';
 import Login from '../shared/components/auth/Login';
+// Finance Module Pages
+import JournalEntriesPage from '../features/accounting/pages/JournalEntriesPage';
+import FiscalYearsPage from '../features/accounting/pages/FiscalYearsPage';
+import AuditLogPage from '../features/accounting/pages/AuditLogPage';
+import BudgetsPage from '../features/accounting/pages/BudgetsPage';
+import BillsPage from '../features/billing/pages/BillsPage';
+import PaymentsPage from '../features/payments/pages/PaymentsPage';
+import EstimatesPage from '../features/invoices/pages/EstimatesPage';
+import SalesOrdersPage from '../features/invoices/pages/SalesOrdersPage';
+import CreditNotesPage from '../features/invoices/pages/CreditNotesPage';
+import VendorCreditsPage from '../features/billing/pages/VendorCreditsPage';
+import BankReconciliationPage from '../features/banking/pages/BankReconciliationPage';
+import CashFlowReportPage from '../features/reports/pages/CashFlowReportPage';
+import BudgetVsActualPage from '../features/reports/pages/BudgetVsActualPage';
+import VarianceReportPage from '../features/reports/pages/VarianceReportPage';
 // HRMS Pages
 import { Dashboard as HRMSDashboard } from '../features/hrms/pages/Dashboard';
 import { Employees } from '../features/hrms/pages/Employees';
@@ -141,6 +156,18 @@ const App: React.FC = () => {
       case View.VENDORS: return <VendorsPage />;
       case View.CUSTOMERS: return <CustomersPage />;
       case View.CASHFLOW: return <CashFlowPage />;
+      // Finance Module Views
+      case View.ESTIMATES: return <EstimatesPage />;
+      case View.SALES_ORDERS: return <SalesOrdersPage />;
+      case View.CREDIT_NOTES: return <CreditNotesPage />;
+      case View.BILLS: return <BillsPage />;
+      case View.VENDOR_CREDITS: return <VendorCreditsPage />;
+      case View.PAYMENTS: return <PaymentsPage />;
+      case View.JOURNAL_ENTRIES: return <JournalEntriesPage />;
+      case View.BANK_RECONCILIATION: return <BankReconciliationPage />;
+      case View.FISCAL_YEARS: return <FiscalYearsPage />;
+      case View.BUDGETS: return <BudgetsPage />;
+      case View.AUDIT_LOG: return <AuditLogPage />;
       // HRMS Views (wrapped with HRMSProvider for context)
       case View.HRMS_DASHBOARD: return <HRMSProvider><HRMSDashboard /></HRMSProvider>;
       case View.EMPLOYEES: return <HRMSProvider><Employees onViewChange={handleViewChange} /></HRMSProvider>;
@@ -189,6 +216,9 @@ const App: React.FC = () => {
       case View.REPORT_ATTENDANCE: return <AttendanceReportPage />;
       case View.REPORT_LEAVES: return <LeaveReportPage />;
       case View.REPORT_PAYROLL: return <PayrollReportPage />;
+      case View.REPORT_CASHFLOW: return <CashFlowReportPage />;
+      case View.REPORT_BUDGET_VS_ACTUAL: return <BudgetVsActualPage />;
+      case View.REPORT_VARIANCE: return <VarianceReportPage />;
       default: return <DashboardPage invoices={invoices} />;
     }
   };

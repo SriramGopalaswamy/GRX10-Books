@@ -5,6 +5,7 @@ dotenv.config();
 import { Sequelize, DataTypes } from 'sequelize';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { defineFinanceModels } from './finance-models.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -149,10 +150,21 @@ const sequelize = getDatabaseConfig();
 
 const Customer = sequelize.define('Customer', {
     id: { type: DataTypes.STRING, primaryKey: true },
+    code: { type: DataTypes.STRING },
     name: { type: DataTypes.STRING, allowNull: false },
     gstin: { type: DataTypes.STRING },
+    pan: { type: DataTypes.STRING },
     email: { type: DataTypes.STRING },
-    balance: { type: DataTypes.FLOAT, defaultValue: 0 }
+    phone: { type: DataTypes.STRING },
+    address: { type: DataTypes.TEXT },
+    city: { type: DataTypes.STRING },
+    state: { type: DataTypes.STRING },
+    pincode: { type: DataTypes.STRING },
+    country: { type: DataTypes.STRING, defaultValue: 'India' },
+    paymentTermsDays: { type: DataTypes.INTEGER, defaultValue: 30 },
+    creditLimit: { type: DataTypes.DECIMAL(20, 6), defaultValue: 0 },
+    balance: { type: DataTypes.DECIMAL(20, 6), defaultValue: 0 },
+    isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
 });
 
 const Invoice = sequelize.define('Invoice', {
@@ -162,10 +174,23 @@ const Invoice = sequelize.define('Invoice', {
     dueDate: { type: DataTypes.STRING },
     customerId: { type: DataTypes.STRING, allowNull: false },
     customerName: { type: DataTypes.STRING },
-    status: { type: DataTypes.STRING, defaultValue: 'Draft' },
-    subTotal: { type: DataTypes.FLOAT, defaultValue: 0 },
-    taxTotal: { type: DataTypes.FLOAT, defaultValue: 0 },
-    total: { type: DataTypes.FLOAT, defaultValue: 0 }
+    salesOrderId: { type: DataTypes.STRING }, // Link to source sales order
+    status: {
+        type: DataTypes.STRING,
+        defaultValue: 'Draft'
+        // Draft, Sent, Approved, PartiallyPaid, Paid, Overdue, Void
+    },
+    subTotal: { type: DataTypes.DECIMAL(20, 6), defaultValue: 0 },
+    taxTotal: { type: DataTypes.DECIMAL(20, 6), defaultValue: 0 },
+    total: { type: DataTypes.DECIMAL(20, 6), defaultValue: 0 },
+    amountPaid: { type: DataTypes.DECIMAL(20, 6), defaultValue: 0 },
+    balanceDue: { type: DataTypes.DECIMAL(20, 6), defaultValue: 0 },
+    // GL linkage
+    journalEntryId: { type: DataTypes.STRING },
+    // Notes
+    notes: { type: DataTypes.TEXT },
+    termsAndConditions: { type: DataTypes.TEXT },
+    createdBy: { type: DataTypes.STRING }
 });
 
 const InvoiceItem = sequelize.define('InvoiceItem', {
@@ -173,10 +198,13 @@ const InvoiceItem = sequelize.define('InvoiceItem', {
     invoiceId: { type: DataTypes.STRING, allowNull: false },
     description: { type: DataTypes.STRING },
     hsn: { type: DataTypes.STRING },
-    quantity: { type: DataTypes.FLOAT },
-    rate: { type: DataTypes.FLOAT },
-    taxRate: { type: DataTypes.FLOAT },
-    amount: { type: DataTypes.FLOAT }
+    accountId: { type: DataTypes.STRING }, // Income account
+    quantity: { type: DataTypes.DECIMAL(20, 6), defaultValue: 1 },
+    rate: { type: DataTypes.DECIMAL(20, 6), defaultValue: 0 },
+    taxCodeId: { type: DataTypes.STRING },
+    taxRate: { type: DataTypes.DECIMAL(10, 4), defaultValue: 0 },
+    taxAmount: { type: DataTypes.DECIMAL(20, 6), defaultValue: 0 },
+    amount: { type: DataTypes.DECIMAL(20, 6), defaultValue: 0 }
 });
 
 const Ledger = sequelize.define('Ledger', {
@@ -537,8 +565,13 @@ const ChartOfAccount = sequelize.define('ChartOfAccount', {
     code: { type: DataTypes.STRING, allowNull: false, unique: true },
     name: { type: DataTypes.STRING, allowNull: false },
     type: { type: DataTypes.STRING, allowNull: false }, // 'Asset', 'Liability', 'Income', 'Expense', 'Equity'
+    subType: { type: DataTypes.STRING }, // 'CurrentAsset', 'FixedAsset', 'CurrentLiability', etc.
     parentId: { type: DataTypes.STRING },
     description: { type: DataTypes.TEXT },
+    normalBalance: { type: DataTypes.STRING, defaultValue: 'Debit' }, // 'Debit' or 'Credit'
+    isSystemAccount: { type: DataTypes.BOOLEAN, defaultValue: false }, // Cannot be deleted
+    isCashFlowRelevant: { type: DataTypes.BOOLEAN, defaultValue: false },
+    cashFlowCategory: { type: DataTypes.STRING }, // 'Operating', 'Investing', 'Financing'
     isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
 });
 
@@ -700,6 +733,66 @@ OSMemoAttachment.belongsTo(OSMemo, { foreignKey: 'memoId' });
 OSMemo.hasMany(OSMemoComment, { foreignKey: 'memoId', as: 'comments' });
 OSMemoComment.belongsTo(OSMemo, { foreignKey: 'memoId' });
 
+// ============================================
+// Initialize Finance Models
+// ============================================
+const financeModels = defineFinanceModels(sequelize);
+
+const {
+    FiscalYear, AccountingPeriod,
+    JournalEntry, JournalEntryLine,
+    CostCenter, Project,
+    Vendor,
+    Estimate, EstimateItem,
+    SalesOrder, SalesOrderItem,
+    CreditNote, CreditNoteItem,
+    Bill, BillItem,
+    VendorCredit, VendorCreditItem,
+    Payment, PaymentAllocation,
+    TaxGroup, TaxCode, TaxGroupTax,
+    BankAccount, BankStatement, BankTransaction,
+    Budget, BudgetLine,
+    AuditLog, DocumentAttachment, SequenceCounter
+} = financeModels;
+
+// Cross-module relationships (linking existing models to finance models)
+
+// Invoice ↔ JournalEntry
+Invoice.belongsTo(JournalEntry, { foreignKey: 'journalEntryId', as: 'journalEntry' });
+
+// Invoice ↔ SalesOrder
+Invoice.belongsTo(SalesOrder, { foreignKey: 'salesOrderId', as: 'salesOrder' });
+
+// Customer ↔ Estimate, SalesOrder, CreditNote, Payment
+Customer.hasMany(Estimate, { foreignKey: 'customerId', as: 'estimates' });
+Estimate.belongsTo(Customer, { foreignKey: 'customerId' });
+Customer.hasMany(SalesOrder, { foreignKey: 'customerId', as: 'salesOrders' });
+SalesOrder.belongsTo(Customer, { foreignKey: 'customerId' });
+Customer.hasMany(CreditNote, { foreignKey: 'customerId', as: 'creditNotes' });
+CreditNote.belongsTo(Customer, { foreignKey: 'customerId' });
+Customer.hasMany(Payment, { foreignKey: 'customerId', as: 'payments' });
+Payment.belongsTo(Customer, { foreignKey: 'customerId' });
+
+// JournalEntryLine ↔ ChartOfAccount
+JournalEntryLine.belongsTo(ChartOfAccount, { foreignKey: 'accountId', as: 'account' });
+
+// JournalEntryLine ↔ CostCenter, Project
+JournalEntryLine.belongsTo(CostCenter, { foreignKey: 'costCenterId', as: 'costCenter' });
+JournalEntryLine.belongsTo(Project, { foreignKey: 'projectId', as: 'project' });
+
+// BankAccount ↔ ChartOfAccount
+BankAccount.belongsTo(ChartOfAccount, { foreignKey: 'chartOfAccountId', as: 'account' });
+
+// Payment ↔ BankAccount
+Payment.belongsTo(BankAccount, { foreignKey: 'bankAccountId', as: 'bankAccount' });
+
+// BudgetLine ↔ ChartOfAccount
+BudgetLine.belongsTo(ChartOfAccount, { foreignKey: 'accountId', as: 'account' });
+
+// TaxCode ↔ ChartOfAccount (sales/purchase tax liability accounts)
+TaxCode.belongsTo(ChartOfAccount, { foreignKey: 'salesAccountId', as: 'salesAccount' });
+TaxCode.belongsTo(ChartOfAccount, { foreignKey: 'purchaseAccountId', as: 'purchaseAccount' });
+
 const initDb = async () => {
     try {
         await sequelize.authenticate();
@@ -738,14 +831,14 @@ const initDb = async () => {
     }
 };
 
-export { 
-    sequelize, 
-    initDb, 
-    Customer, 
-    Invoice, 
-    InvoiceItem, 
-    Ledger, 
-    Transaction, 
+export {
+    sequelize,
+    initDb,
+    Customer,
+    Invoice,
+    InvoiceItem,
+    Ledger,
+    Transaction,
     User,
     // HRMS Models
     Employee,
@@ -783,5 +876,48 @@ export {
     ApprovalWorkflow,
     ApprovalWorkflowStep,
     ApprovalRequest,
-    ApprovalHistory
+    ApprovalHistory,
+    // ============================================
+    // Finance Module Models
+    // ============================================
+    // Fiscal Periods
+    FiscalYear,
+    AccountingPeriod,
+    // Double-Entry General Ledger
+    JournalEntry,
+    JournalEntryLine,
+    // Dimensions
+    CostCenter,
+    Project,
+    // Procure-to-Pay
+    Vendor,
+    Bill,
+    BillItem,
+    VendorCredit,
+    VendorCreditItem,
+    // Order-to-Cash
+    Estimate,
+    EstimateItem,
+    SalesOrder,
+    SalesOrderItem,
+    CreditNote,
+    CreditNoteItem,
+    // Payments
+    Payment,
+    PaymentAllocation,
+    // Tax Engine
+    TaxGroup,
+    TaxCode,
+    TaxGroupTax,
+    // Banking & Reconciliation
+    BankAccount,
+    BankStatement,
+    BankTransaction,
+    // Budgets
+    Budget,
+    BudgetLine,
+    // Audit & Controls
+    AuditLog,
+    DocumentAttachment,
+    SequenceCounter
 };

@@ -21,6 +21,11 @@ import configRoutes from './modules/config/config.routes.js';
 import securityRoutes from './modules/security/security.routes.js';
 import reportsRoutes from './modules/reports/reports.routes.js';
 import dashboardRoutes from './modules/dashboard/dashboard.routes.js';
+import accountingRoutes from './modules/accounting/accounting.routes.js';
+import billingRoutes from './modules/billing/billing.routes.js';
+import paymentsRoutes from './modules/payments/payments.routes.js';
+import taxRoutes from './modules/tax/tax.routes.js';
+import bankingRoutes from './modules/banking/banking.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -70,6 +75,12 @@ app.use('/api/config', configRoutes);
 app.use('/api/security', securityRoutes);
 app.use('/api/reports', reportsRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+// Finance module routes
+app.use('/api/accounting', accountingRoutes);
+app.use('/api/billing', billingRoutes);
+app.use('/api/payments', paymentsRoutes);
+app.use('/api/tax', taxRoutes);
+app.use('/api/banking', bankingRoutes);
 
 // Health check endpoints
 app.get('/api/health', (req, res) => {
