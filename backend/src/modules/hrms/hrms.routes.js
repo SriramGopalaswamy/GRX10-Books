@@ -15,7 +15,8 @@ import {
     ProfessionalTaxSlab,
     Holiday,
     SalaryChangeLog,
-    AuditLog
+    AuditLog,
+    HRMSNotification
 } from '../../config/database.js';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -32,6 +33,65 @@ import {
 
 const router = express.Router();
 const BCRYPT_SALT_ROUNDS = 10;
+
+// ============================================
+// NOTIFICATION HELPER (P1-05)
+// ============================================
+const createNotification = async ({ recipientId, type, title, message, relatedModule, relatedId }) => {
+    try {
+        await HRMSNotification.create({
+            id: uuidv4(),
+            recipientId,
+            type,
+            title,
+            message,
+            relatedModule,
+            relatedId,
+            createdAt: new Date().toISOString()
+        });
+    } catch (err) {
+        console.error('Failed to create notification:', err.message);
+    }
+};
+
+// Helper to get all manager IDs up the chain for an employee (P1-07)
+const getManagerChain = async (employeeId) => {
+    const managerIds = [];
+    let currentId = employeeId;
+    const visited = new Set();
+    while (currentId && !visited.has(currentId)) {
+        visited.add(currentId);
+        const emp = await Employee.findByPk(currentId, { attributes: ['id', 'managerId'] });
+        if (emp && emp.managerId) {
+            managerIds.push(emp.managerId);
+            currentId = emp.managerId;
+        } else {
+            break;
+        }
+    }
+    return managerIds;
+};
+
+// Helper to get all subordinates recursively (P1-07)
+const getAllSubordinates = async (managerId) => {
+    const allIds = [];
+    const queue = [managerId];
+    const visited = new Set();
+    while (queue.length > 0) {
+        const currentId = queue.shift();
+        if (visited.has(currentId)) continue;
+        visited.add(currentId);
+        const directReports = await Employee.findAll({
+            where: { managerId: currentId, status: 'Active' },
+            attributes: ['id']
+        });
+        for (const report of directReports) {
+            allIds.push(report.id);
+            queue.push(report.id);
+        }
+    }
+    return allIds;
+};
 
 // Apply authentication to all HRMS routes
 router.use(requireAuth);
@@ -1121,6 +1181,18 @@ router.post('/leaves', async (req, res) => {
             workingDays: requestedDays
         });
 
+        // P1-05: Notify manager about new leave request
+        if (employee.managerId) {
+            createNotification({
+                recipientId: employee.managerId,
+                type: 'leave_applied',
+                title: 'New Leave Request',
+                message: `${employee.name} has applied for ${type} from ${startDate} to ${endDate} (${requestedDays} days).`,
+                relatedModule: 'leave',
+                relatedId: leave.id
+            });
+        }
+
         const response = {
             ...leave.toJSON(),
             requestedDays,
@@ -1218,6 +1290,18 @@ router.put('/leaves/:id', async (req, res) => {
         }
 
         await leave.update(updateData);
+
+        // P1-05: Notify employee about leave approval/rejection
+        if (status && ['Approved', 'Rejected'].includes(status) && status !== leave.status) {
+            createNotification({
+                recipientId: leave.employeeId,
+                type: status === 'Approved' ? 'leave_approved' : 'leave_rejected',
+                title: `Leave ${status}`,
+                message: `Your ${leave.type} request (${leave.startDate} to ${leave.endDate}) has been ${status.toLowerCase()}.${approverComments ? ' Comment: ' + approverComments : ''}`,
+                relatedModule: 'leave',
+                relatedId: leave.id
+            });
+        }
 
         // Fetch updated leave with relationships
         const updatedLeave = await LeaveRequest.findByPk(req.params.id, {
@@ -1691,6 +1775,31 @@ router.post('/attendance/checkin', async (req, res) => {
                 status: initialStatus,
                 durationHours: null
             });
+
+            // P1-05: Notify employee and manager about late check-in
+            if (initialStatus === 'Late') {
+                createNotification({
+                    recipientId: targetEmployeeId,
+                    type: 'attendance_anomaly',
+                    title: 'Late Check-in Recorded',
+                    message: `You checked in at ${currentTime} (shift starts at ${shiftConfig.startTime}, grace: ${shiftConfig.graceMinutes || 15} min).`,
+                    relatedModule: 'attendance',
+                    relatedId: attendance.id
+                });
+                // Also notify manager
+                const emp = await Employee.findByPk(targetEmployeeId, { attributes: ['managerId', 'name'] });
+                if (emp?.managerId) {
+                    createNotification({
+                        recipientId: emp.managerId,
+                        type: 'attendance_anomaly',
+                        title: 'Team Member Late',
+                        message: `${emp.name} checked in late at ${currentTime} on ${today}.`,
+                        relatedModule: 'attendance',
+                        relatedId: attendance.id
+                    });
+                }
+            }
+
             res.status(201).json({
                 attendance,
                 action: 'checked-in',
@@ -2771,6 +2880,16 @@ router.put('/payslips/:id/finalize', requireHRMSRole(RoleGroups.PAYROLL_ACCESS),
             finalizedOn: new Date().toISOString().split('T')[0]
         });
 
+        // P1-05: Notify employee about payslip
+        createNotification({
+            recipientId: payslip.employeeId,
+            type: 'payslip_generated',
+            title: 'Payslip Available',
+            message: `Your payslip for ${payslip.month} has been finalized. Net pay: ₹${payslip.netPay?.toLocaleString('en-IN') || payslip.netPay}.`,
+            relatedModule: 'payslip',
+            relatedId: payslip.id
+        });
+
         res.json({
             message: 'Payslip finalized successfully',
             payslip
@@ -3126,6 +3245,191 @@ router.get('/audit-logs', requireHRMSRole(RoleGroups.FULL_ACCESS), async (req, r
     } catch (error) {
         console.error('Error fetching audit logs:', error);
         res.status(500).json({ error: 'Failed to fetch audit logs' });
+    }
+});
+
+// ============================================
+// PT SLAB RETROACTIVE DETECTION (P1-12)
+// ============================================
+
+// Check impact of PT slab changes on existing payslips
+router.post('/pt-slabs/impact-check', requireHRMSRole(RoleGroups.PAYROLL_ACCESS), async (req, res) => {
+    try {
+        const { state, stateCode } = req.body;
+        if (!state && !stateCode) {
+            return res.status(400).json({ error: 'State or stateCode is required' });
+        }
+
+        // Find all current PT slabs for this state
+        const stateFilter = state ? { state } : { stateCode };
+        const currentSlabs = await ProfessionalTaxSlab.findAll({
+            where: { ...stateFilter, isActive: true }
+        });
+
+        if (currentSlabs.length === 0) {
+            return res.json({ affectedPayslips: [], message: 'No active PT slabs found for this state.' });
+        }
+
+        // Find employees in locations mapped to this state
+        const stateLocations = await WorkLocation.findAll({
+            where: { state: state || stateCode, isActive: true },
+            attributes: ['name', 'code']
+        });
+        const locationNames = stateLocations.map(l => l.name);
+        const locationCodes = stateLocations.map(l => l.code).filter(Boolean);
+        const allLocationIds = [...locationNames, ...locationCodes];
+
+        if (allLocationIds.length === 0) {
+            return res.json({ affectedPayslips: [], message: 'No work locations mapped to this state.' });
+        }
+
+        // Find employees at these locations
+        const employees = await Employee.findAll({
+            where: {
+                workLocation: { [Op.in]: allLocationIds },
+                status: 'Active'
+            },
+            attributes: ['id', 'name', 'workLocation']
+        });
+        const employeeIds = employees.map(e => e.id);
+
+        if (employeeIds.length === 0) {
+            return res.json({ affectedPayslips: [], message: 'No active employees at locations in this state.' });
+        }
+
+        // Find Finalized/Paid payslips for these employees
+        const affectedPayslips = await Payslip.findAll({
+            where: {
+                employeeId: { [Op.in]: employeeIds },
+                status: { [Op.in]: ['Finalized', 'Paid'] }
+            },
+            include: [{ model: Employee, attributes: ['id', 'name', 'workLocation'] }],
+            order: [['month', 'DESC']],
+            attributes: ['id', 'employeeId', 'month', 'deductions', 'netPay', 'status', 'breakdown']
+        });
+
+        // For each payslip, check if the PT amount would differ under current slabs
+        const discrepancies = [];
+        for (const payslip of affectedPayslips) {
+            let breakdownData = {};
+            if (payslip.breakdown) {
+                try { breakdownData = JSON.parse(payslip.breakdown); } catch (e) { /* ignore */ }
+            }
+            const oldPT = breakdownData?.deductions?.professionalTax || 0;
+            const grossSalary = (breakdownData?.earnings?.grossSalary) || (payslip.deductions + payslip.netPay);
+
+            // Find applicable current slab
+            const applicableSlab = currentSlabs.find(s =>
+                grossSalary >= s.minSalary && (s.maxSalary === null || grossSalary <= s.maxSalary)
+            );
+            const newPT = applicableSlab ? applicableSlab.taxAmount : 0;
+
+            if (oldPT !== newPT) {
+                discrepancies.push({
+                    payslipId: payslip.id,
+                    employeeId: payslip.employeeId,
+                    employeeName: payslip.Employee?.name,
+                    month: payslip.month,
+                    status: payslip.status,
+                    oldPT,
+                    newPT,
+                    difference: newPT - oldPT
+                });
+            }
+        }
+
+        // If there are discrepancies, notify HR/Admin
+        if (discrepancies.length > 0) {
+            const hrAdmins = await Employee.findAll({
+                where: { role: { [Op.in]: ['HR', 'Admin'] }, status: 'Active' },
+                attributes: ['id']
+            });
+            for (const hr of hrAdmins) {
+                createNotification({
+                    recipientId: hr.id,
+                    type: 'pt_slab_change',
+                    title: 'PT Slab Change Impact',
+                    message: `PT slab change for ${state || stateCode} affects ${discrepancies.length} payslip(s). Review required.`,
+                    relatedModule: 'payslip',
+                    relatedId: null
+                });
+            }
+        }
+
+        res.json({
+            state: state || stateCode,
+            totalPayslipsChecked: affectedPayslips.length,
+            discrepancies,
+            affectedCount: discrepancies.length,
+            message: discrepancies.length > 0
+                ? `${discrepancies.length} payslip(s) would have different PT amounts under current slabs. Consider revision.`
+                : 'No discrepancies found. All payslips are consistent with current PT slabs.'
+        });
+    } catch (error) {
+        console.error('Error checking PT slab impact:', error);
+        res.status(500).json({ error: 'Failed to check PT slab impact' });
+    }
+});
+
+// ============================================
+// NOTIFICATIONS (P1-05)
+// ============================================
+
+// Get notifications for the current user
+router.get('/notifications', async (req, res) => {
+    try {
+        const { unreadOnly, limit: queryLimit } = req.query;
+        const where = { recipientId: req.user.id };
+        if (unreadOnly === 'true') {
+            where.isRead = false;
+        }
+
+        const notifications = await HRMSNotification.findAll({
+            where,
+            order: [['createdAt', 'DESC']],
+            limit: parseInt(queryLimit) || 50
+        });
+
+        const unreadCount = await HRMSNotification.count({
+            where: { recipientId: req.user.id, isRead: false }
+        });
+
+        res.json({ notifications, unreadCount });
+    } catch (error) {
+        console.error('Error fetching notifications:', error);
+        res.status(500).json({ error: 'Failed to fetch notifications' });
+    }
+});
+
+// Mark a notification as read
+router.put('/notifications/:id/read', async (req, res) => {
+    try {
+        const notification = await HRMSNotification.findByPk(req.params.id);
+        if (!notification) {
+            return res.status(404).json({ error: 'Notification not found' });
+        }
+        if (notification.recipientId !== req.user.id) {
+            return res.status(403).json({ error: 'Access denied' });
+        }
+        await notification.update({ isRead: true });
+        res.json(notification);
+    } catch (error) {
+        console.error('Error marking notification as read:', error);
+        res.status(500).json({ error: 'Failed to update notification' });
+    }
+});
+
+// Mark all notifications as read
+router.put('/notifications/read-all', async (req, res) => {
+    try {
+        await HRMSNotification.update(
+            { isRead: true },
+            { where: { recipientId: req.user.id, isRead: false } }
+        );
+        res.json({ message: 'All notifications marked as read' });
+    } catch (error) {
+        console.error('Error marking all notifications as read:', error);
+        res.status(500).json({ error: 'Failed to update notifications' });
     }
 });
 

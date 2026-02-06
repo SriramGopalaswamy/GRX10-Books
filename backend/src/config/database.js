@@ -613,6 +613,19 @@ const ApprovalRequest = sequelize.define('ApprovalRequest', {
     completedAt: { type: DataTypes.DATE }
 });
 
+// HRMS Notification - in-app notifications for HRMS events (P1-05)
+const HRMSNotification = sequelize.define('HRMSNotification', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    recipientId: { type: DataTypes.STRING, allowNull: false }, // Employee ID who should see this
+    type: { type: DataTypes.STRING, allowNull: false }, // 'leave_applied', 'leave_approved', 'leave_rejected', 'payslip_generated', 'attendance_anomaly', 'regularization_update'
+    title: { type: DataTypes.STRING, allowNull: false },
+    message: { type: DataTypes.TEXT, allowNull: false },
+    isRead: { type: DataTypes.BOOLEAN, defaultValue: false },
+    relatedModule: { type: DataTypes.STRING }, // 'leave', 'payslip', 'attendance', 'regularization'
+    relatedId: { type: DataTypes.STRING }, // ID of the related entity
+    createdAt: { type: DataTypes.STRING, allowNull: false }
+});
+
 // Salary Change Log - tracks every salary modification for audit trail (P0-04)
 const SalaryChangeLog = sequelize.define('SalaryChangeLog', {
     id: { type: DataTypes.STRING, primaryKey: true },
@@ -715,6 +728,10 @@ ApprovalRequest.hasMany(ApprovalHistory, { foreignKey: 'requestId', as: 'history
 ApprovalHistory.belongsTo(ApprovalRequest, { foreignKey: 'requestId' });
 ApprovalHistory.belongsTo(User, { foreignKey: 'approverId', as: 'approver' });
 
+// HRMS Notification Relationships (P1-05)
+Employee.hasMany(HRMSNotification, { foreignKey: 'recipientId', as: 'notifications' });
+HRMSNotification.belongsTo(Employee, { foreignKey: 'recipientId' });
+
 // Salary Change Log Relationships
 Employee.hasMany(SalaryChangeLog, { foreignKey: 'employeeId', as: 'salaryHistory' });
 SalaryChangeLog.belongsTo(Employee, { foreignKey: 'employeeId' });
@@ -815,5 +832,7 @@ export {
     ApprovalHistory,
     // Audit & History Models
     SalaryChangeLog,
-    AuditLog
+    AuditLog,
+    // Notification Model
+    HRMSNotification
 };
