@@ -13,7 +13,9 @@ import {
     ShiftTiming,
     WorkLocation,
     ProfessionalTaxSlab,
-    Holiday
+    Holiday,
+    SalaryChangeLog,
+    AuditLog
 } from '../../config/database.js';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -309,6 +311,23 @@ router.post('/employees', requireHRMSRole(RoleGroups.FULL_ACCESS), validateEmplo
         if (response.dependents) response.dependents = JSON.parse(response.dependents);
         if (response.taxDeclarations) response.taxDeclarations = JSON.parse(response.taxDeclarations);
 
+        // P1-11: Audit log for employee creation
+        try {
+            await AuditLog.create({
+                id: uuidv4(),
+                userId: req.user.id,
+                action: 'EMPLOYEE_CREATE',
+                module: 'hrms',
+                targetId: employee.id,
+                targetType: 'Employee',
+                details: JSON.stringify({ name, email, role, department, designation }),
+                ipAddress: req.ip,
+                timestamp: new Date().toISOString()
+            });
+        } catch (auditErr) {
+            console.error('Audit log failed:', auditErr.message);
+        }
+
         // Filter sensitive data from response
         const filteredResponse = filterSensitiveData(response, req.user);
         res.status(201).json(filteredResponse);
@@ -404,6 +423,62 @@ router.put('/employees/:id', validateEmployeeData, async (req, res) => {
             updateData.taxDeclarations = JSON.stringify(updateData.taxDeclarations);
         }
 
+        // P0-04: Log salary changes for audit trail
+        if (updateData.salary !== undefined && updateData.salary !== employee.salary) {
+            try {
+                await SalaryChangeLog.create({
+                    id: uuidv4(),
+                    employeeId: employee.id,
+                    previousSalary: employee.salary,
+                    newSalary: updateData.salary,
+                    reason: req.body.salaryChangeReason || 'Updated via employee edit',
+                    effectiveDate: req.body.salaryEffectiveDate || new Date().toISOString().split('T')[0],
+                    changedBy: req.user.id,
+                    changedOn: new Date().toISOString()
+                });
+            } catch (logErr) {
+                console.error('Failed to log salary change:', logErr.message);
+            }
+        }
+
+        // P0-06: Warn if joinDate is being changed when finalized/paid payslips exist
+        if (updateData.joinDate && updateData.joinDate !== employee.joinDate) {
+            const existingPayslips = await Payslip.findAll({
+                where: {
+                    employeeId: employee.id,
+                    status: { [Op.in]: ['Finalized', 'Paid'] }
+                },
+                attributes: ['id', 'month', 'status']
+            });
+            if (existingPayslips.length > 0) {
+                // Warn but allow HR/Admin to proceed — return warning in response
+                req._joinDateWarning = `Warning: Changing joinDate while ${existingPayslips.length} finalized/paid payslip(s) exist. Payslip calculations may need revision.`;
+            }
+        }
+
+        // P1-11: Audit log for significant updates
+        if (isHROrAdmin && (updateData.salary !== undefined || updateData.role || updateData.department || updateData.status)) {
+            try {
+                await AuditLog.create({
+                    id: uuidv4(),
+                    userId: req.user.id,
+                    action: 'EMPLOYEE_UPDATE',
+                    module: 'hrms',
+                    targetId: employee.id,
+                    targetType: 'Employee',
+                    details: JSON.stringify({
+                        changedFields: Object.keys(updateData).filter(k => k !== 'password' && k !== 'currentPassword'),
+                        salaryChange: updateData.salary !== undefined ? { from: employee.salary, to: updateData.salary } : undefined,
+                        roleChange: updateData.role ? { from: employee.role, to: updateData.role } : undefined
+                    }),
+                    ipAddress: req.ip,
+                    timestamp: new Date().toISOString()
+                });
+            } catch (auditErr) {
+                console.error('Audit log failed:', auditErr.message);
+            }
+        }
+
         await employee.update(updateData);
 
         // Parse JSON fields in response
@@ -420,7 +495,11 @@ router.put('/employees/:id', validateEmployeeData, async (req, res) => {
 
         // Filter sensitive data based on role
         const filteredData = filterSensitiveData(data, req.user, req.params.id);
-        res.json(filteredData);
+        const response = { ...filteredData };
+        if (req._joinDateWarning) {
+            response._warning = req._joinDateWarning;
+        }
+        res.json(response);
     } catch (error) {
         console.error('Error updating employee:', error);
         res.status(500).json({ error: 'Failed to update employee' });
@@ -2889,6 +2968,164 @@ router.put('/payslips/:id', requireHRMSRole(RoleGroups.PAYROLL_ACCESS), async (r
     } catch (error) {
         console.error('Error updating payslip:', error);
         res.status(500).json({ error: 'Failed to update payslip' });
+    }
+});
+
+// ============================================
+// SALARY CHANGE HISTORY (P0-04)
+// ============================================
+
+// Get salary change history for an employee
+router.get('/employees/:id/salary-history', requireEmployeeAccess(req => req.params.id), async (req, res) => {
+    try {
+        const history = await SalaryChangeLog.findAll({
+            where: { employeeId: req.params.id },
+            order: [['changedOn', 'DESC']]
+        });
+        res.json(history);
+    } catch (error) {
+        console.error('Error fetching salary history:', error);
+        res.status(500).json({ error: 'Failed to fetch salary history' });
+    }
+});
+
+// ============================================
+// PAYSLIP REVISION (P0-05)
+// ============================================
+
+// Delete a Draft payslip (allows re-generation)
+router.delete('/payslips/:id', requireHRMSRole(RoleGroups.PAYROLL_ACCESS), async (req, res) => {
+    try {
+        const payslip = await Payslip.findByPk(req.params.id);
+        if (!payslip) {
+            return res.status(404).json({ error: 'Payslip not found' });
+        }
+
+        if (payslip.status !== 'Draft') {
+            return res.status(400).json({
+                error: 'Only Draft payslips can be deleted. Finalized or Paid payslips must be revised instead.',
+                currentStatus: payslip.status
+            });
+        }
+
+        // Audit log
+        try {
+            await AuditLog.create({
+                id: uuidv4(),
+                userId: req.user.id,
+                action: 'PAYSLIP_DELETE',
+                module: 'payroll',
+                targetId: payslip.id,
+                targetType: 'Payslip',
+                details: JSON.stringify({ employeeId: payslip.employeeId, month: payslip.month, netPay: payslip.netPay }),
+                ipAddress: req.ip,
+                timestamp: new Date().toISOString()
+            });
+        } catch (e) { /* audit best effort */ }
+
+        await payslip.destroy();
+        res.json({ message: 'Draft payslip deleted successfully. You can now regenerate it.' });
+    } catch (error) {
+        console.error('Error deleting payslip:', error);
+        res.status(500).json({ error: 'Failed to delete payslip' });
+    }
+});
+
+// Revise a Finalized payslip (creates a new version, marks old as superseded)
+router.post('/payslips/:id/revise', requireHRMSRole(RoleGroups.PAYROLL_ACCESS), async (req, res) => {
+    try {
+        const payslip = await Payslip.findByPk(req.params.id);
+        if (!payslip) {
+            return res.status(404).json({ error: 'Payslip not found' });
+        }
+
+        if (payslip.status === 'Draft') {
+            return res.status(400).json({ error: 'Draft payslips can be edited directly or deleted and regenerated.' });
+        }
+
+        const { reason } = req.body;
+        if (!reason) {
+            return res.status(400).json({ error: 'Reason for revision is required' });
+        }
+
+        // Reset to Draft so it can be re-finalized after corrections
+        await payslip.update({
+            status: 'Draft',
+            finalizedBy: null,
+            finalizedOn: null,
+            paidOn: null
+        });
+
+        // Audit log
+        try {
+            await AuditLog.create({
+                id: uuidv4(),
+                userId: req.user.id,
+                action: 'PAYSLIP_REVISE',
+                module: 'payroll',
+                targetId: payslip.id,
+                targetType: 'Payslip',
+                details: JSON.stringify({ employeeId: payslip.employeeId, month: payslip.month, reason, previousStatus: payslip.status }),
+                ipAddress: req.ip,
+                timestamp: new Date().toISOString()
+            });
+        } catch (e) { /* audit best effort */ }
+
+        res.json({
+            message: 'Payslip reverted to Draft for revision. Edit and re-finalize when ready.',
+            payslip
+        });
+    } catch (error) {
+        console.error('Error revising payslip:', error);
+        res.status(500).json({ error: 'Failed to revise payslip' });
+    }
+});
+
+// ============================================
+// SHIFT TIMING (P2-08) - Expose to employees
+// ============================================
+
+// Get active shift timings (all authenticated users)
+router.get('/shift-timings', async (req, res) => {
+    try {
+        const shifts = await ShiftTiming.findAll({
+            where: { isActive: true },
+            order: [['isDefault', 'DESC'], ['name', 'ASC']]
+        });
+        res.json(shifts);
+    } catch (error) {
+        console.error('Error fetching shift timings:', error);
+        res.status(500).json({ error: 'Failed to fetch shift timings' });
+    }
+});
+
+// ============================================
+// AUDIT LOG (P1-11)
+// ============================================
+
+// Get audit logs (HR/Admin only)
+router.get('/audit-logs', requireHRMSRole(RoleGroups.FULL_ACCESS), async (req, res) => {
+    try {
+        const { module, action, targetType, userId, startDate, endDate, limit: queryLimit } = req.query;
+        const where = {};
+
+        if (module) where.module = module;
+        if (action) where.action = action;
+        if (targetType) where.targetType = targetType;
+        if (userId) where.userId = userId;
+        if (startDate && endDate) {
+            where.timestamp = { [Op.between]: [startDate, endDate] };
+        }
+
+        const logs = await AuditLog.findAll({
+            where,
+            order: [['timestamp', 'DESC']],
+            limit: parseInt(queryLimit) || 100
+        });
+        res.json(logs);
+    } catch (error) {
+        console.error('Error fetching audit logs:', error);
+        res.status(500).json({ error: 'Failed to fetch audit logs' });
     }
 });
 

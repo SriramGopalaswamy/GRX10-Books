@@ -31,6 +31,9 @@ export const Attendance: React.FC = () => {
   const [checkInLoading, setCheckInLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
+  // Shift timing info (P2-08)
+  const [shiftInfo, setShiftInfo] = useState<{ name: string; startTime: string; endTime: string; graceMinutes: number } | null>(null);
+
   // Regularization State
   const [showRegModal, setShowRegModal] = useState(false);
   const [newReg, setNewReg] = useState({
@@ -41,10 +44,34 @@ export const Attendance: React.FC = () => {
     reason: ''
   });
 
+  // P2-08: Fetch shift timing info
+  useEffect(() => {
+    const fetchShiftInfo = async () => {
+      try {
+        const response = await fetch('/api/hrms/shift-timings');
+        if (response.ok) {
+          const shifts = await response.json();
+          const defaultShift = shifts.find((s: any) => s.isDefault) || shifts[0];
+          if (defaultShift) {
+            setShiftInfo({
+              name: defaultShift.name,
+              startTime: defaultShift.startTime,
+              endTime: defaultShift.endTime,
+              graceMinutes: defaultShift.graceMinutes || 15
+            });
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching shift info:', err);
+      }
+    };
+    fetchShiftInfo();
+  }, []);
+
   // Fetch today's attendance status
   useEffect(() => {
     if (!user) return;
-    
+
     const fetchTodayStatus = async () => {
       try {
         const response = await fetch(`/api/hrms/attendance/today/${user.id}`);
@@ -273,6 +300,17 @@ export const Attendance: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* P2-08: Shift Timing Info */}
+      {shiftInfo && (
+        <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800 rounded-lg px-4 py-2.5 flex items-center gap-4 text-sm">
+          <Clock size={16} className="text-indigo-600 dark:text-indigo-400 shrink-0" />
+          <span className="text-indigo-700 dark:text-indigo-300">
+            <span className="font-medium">{shiftInfo.name}:</span> {shiftInfo.startTime} - {shiftInfo.endTime}
+            <span className="text-indigo-500 dark:text-indigo-400 ml-2">({shiftInfo.graceMinutes} min grace period)</span>
+          </span>
+        </div>
+      )}
 
       {error && (
         <div className="bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 rounded-lg p-4 text-rose-700 dark:text-rose-300">

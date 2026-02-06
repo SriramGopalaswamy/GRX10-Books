@@ -10,6 +10,48 @@ dotenv.config();
 
 const router = express.Router();
 
+// --- Rate Limiting (P1-09) ---
+// Simple in-memory rate limiter for login endpoints
+const loginAttempts = new Map(); // key: IP, value: { count, firstAttempt }
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+const RATE_LIMIT_MAX_ATTEMPTS = 10; // max 10 attempts per window
+
+const loginRateLimiter = (req, res, next) => {
+    const ip = req.ip || req.connection.remoteAddress;
+    const now = Date.now();
+    const record = loginAttempts.get(ip);
+
+    if (record) {
+        // Reset window if expired
+        if (now - record.firstAttempt > RATE_LIMIT_WINDOW_MS) {
+            loginAttempts.set(ip, { count: 1, firstAttempt: now });
+            return next();
+        }
+        if (record.count >= RATE_LIMIT_MAX_ATTEMPTS) {
+            const retryAfter = Math.ceil((RATE_LIMIT_WINDOW_MS - (now - record.firstAttempt)) / 1000);
+            res.set('Retry-After', retryAfter.toString());
+            return res.status(429).json({
+                error: 'Too many login attempts. Please try again later.',
+                retryAfterSeconds: retryAfter
+            });
+        }
+        record.count++;
+    } else {
+        loginAttempts.set(ip, { count: 1, firstAttempt: now });
+    }
+
+    // Cleanup old entries periodically (every 100 requests)
+    if (loginAttempts.size > 1000) {
+        for (const [key, val] of loginAttempts) {
+            if (now - val.firstAttempt > RATE_LIMIT_WINDOW_MS) {
+                loginAttempts.delete(key);
+            }
+        }
+    }
+
+    next();
+};
+
 // --- Configuration ---
 // TODO: User must provide these in .env or Cloud Run secrets
 const CLIENT_ID = process.env.MICROSOFT_CLIENT_ID;
@@ -116,7 +158,7 @@ router.get('/status', (req, res) => {
 });
 
 // 4. Employee Login (Email/Password) - All employees login via Employee table
-router.post('/admin/login', async (req, res) => {
+router.post('/admin/login', loginRateLimiter, async (req, res) => {
     try {
         const { username, password } = req.body;
 

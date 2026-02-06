@@ -613,6 +613,31 @@ const ApprovalRequest = sequelize.define('ApprovalRequest', {
     completedAt: { type: DataTypes.DATE }
 });
 
+// Salary Change Log - tracks every salary modification for audit trail (P0-04)
+const SalaryChangeLog = sequelize.define('SalaryChangeLog', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    employeeId: { type: DataTypes.STRING, allowNull: false },
+    previousSalary: { type: DataTypes.FLOAT },
+    newSalary: { type: DataTypes.FLOAT, allowNull: false },
+    reason: { type: DataTypes.TEXT },
+    effectiveDate: { type: DataTypes.STRING }, // YYYY-MM-DD
+    changedBy: { type: DataTypes.STRING, allowNull: false }, // User ID of person making the change
+    changedOn: { type: DataTypes.STRING, allowNull: false } // ISO date
+});
+
+// Audit Log - records admin/HR actions for compliance (P1-11)
+const AuditLog = sequelize.define('AuditLog', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    userId: { type: DataTypes.STRING, allowNull: false }, // Who performed the action
+    action: { type: DataTypes.STRING, allowNull: false }, // e.g. 'EMPLOYEE_CREATE', 'SALARY_UPDATE', 'LEAVE_APPROVE'
+    module: { type: DataTypes.STRING, allowNull: false }, // 'hrms', 'payroll', 'auth'
+    targetId: { type: DataTypes.STRING }, // ID of the affected entity
+    targetType: { type: DataTypes.STRING }, // 'Employee', 'LeaveRequest', 'Payslip', etc.
+    details: { type: DataTypes.TEXT }, // JSON string with change details
+    ipAddress: { type: DataTypes.STRING },
+    timestamp: { type: DataTypes.STRING, allowNull: false }
+});
+
 const ApprovalHistory = sequelize.define('ApprovalHistory', {
     id: { type: DataTypes.STRING, primaryKey: true },
     requestId: { type: DataTypes.STRING, allowNull: false },
@@ -689,6 +714,10 @@ ApprovalRequest.hasMany(ApprovalHistory, { foreignKey: 'requestId', as: 'history
 
 ApprovalHistory.belongsTo(ApprovalRequest, { foreignKey: 'requestId' });
 ApprovalHistory.belongsTo(User, { foreignKey: 'approverId', as: 'approver' });
+
+// Salary Change Log Relationships
+Employee.hasMany(SalaryChangeLog, { foreignKey: 'employeeId', as: 'salaryHistory' });
+SalaryChangeLog.belongsTo(Employee, { foreignKey: 'employeeId' });
 
 // OS Relationships
 OSGoal.hasMany(OSGoalComment, { foreignKey: 'goalId', as: 'comments' });
@@ -783,5 +812,8 @@ export {
     ApprovalWorkflow,
     ApprovalWorkflowStep,
     ApprovalRequest,
-    ApprovalHistory
+    ApprovalHistory,
+    // Audit & History Models
+    SalaryChangeLog,
+    AuditLog
 };
