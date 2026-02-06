@@ -580,6 +580,11 @@ router.post('/leaves', async (req, res) => {
         const userId = req.user.id;
         const isHROrAdmin = userRole === HRMSRoles.ADMIN || userRole === HRMSRoles.HR;
 
+        // Validate required fields
+        if (!type || !startDate || !endDate) {
+            return res.status(400).json({ error: 'Leave type, start date, and end date are required' });
+        }
+
         // Determine which employee the leave is for
         const targetEmployeeId = employeeId || userId;
 
@@ -588,10 +593,155 @@ router.post('/leaves', async (req, res) => {
             return res.status(403).json({ error: 'You can only apply leave for yourself' });
         }
 
-        // Verify employee exists
+        // Verify employee exists and is active
         const employee = await Employee.findByPk(targetEmployeeId);
         if (!employee) {
             return res.status(404).json({ error: 'Employee not found' });
+        }
+        if (employee.status !== 'Active') {
+            return res.status(400).json({ error: 'Leave request cannot be created for inactive employees' });
+        }
+
+        // Validate leave type exists
+        const leaveTypeConfig = await LeaveType.findOne({
+            where: {
+                name: type,
+                isActive: true
+            }
+        });
+        if (!leaveTypeConfig) {
+            // Fallback: allow standard leave types even if not in database
+            const standardLeaveTypes = ['Sick Leave', 'Casual Leave', 'Earned Leave', 'Leave Without Pay',
+                'Compensatory Off', 'Maternity Leave', 'Paternity Leave', 'Bereavement Leave'];
+            if (!standardLeaveTypes.includes(type)) {
+                return res.status(400).json({ error: `Invalid leave type: ${type}` });
+            }
+        }
+
+        // Validate dates
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+            return res.status(400).json({ error: 'Invalid date format. Use YYYY-MM-DD' });
+        }
+
+        if (start > end) {
+            return res.status(400).json({ error: 'Start date cannot be after end date' });
+        }
+
+        // Check if dates are in the past (HR/Admin can override this)
+        if (!isHROrAdmin && start < today) {
+            return res.status(400).json({ error: 'Start date cannot be in the past' });
+        }
+
+        // Check for overlapping leave requests
+        const overlappingLeave = await LeaveRequest.findOne({
+            where: {
+                employeeId: targetEmployeeId,
+                status: { [Op.in]: ['Pending', 'Approved'] },
+                [Op.or]: [
+                    {
+                        startDate: { [Op.between]: [startDate, endDate] }
+                    },
+                    {
+                        endDate: { [Op.between]: [startDate, endDate] }
+                    },
+                    {
+                        [Op.and]: [
+                            { startDate: { [Op.lte]: startDate } },
+                            { endDate: { [Op.gte]: endDate } }
+                        ]
+                    }
+                ]
+            }
+        });
+
+        if (overlappingLeave) {
+            return res.status(400).json({
+                error: 'Overlapping leave request exists',
+                existingLeave: {
+                    id: overlappingLeave.id,
+                    type: overlappingLeave.type,
+                    startDate: overlappingLeave.startDate,
+                    endDate: overlappingLeave.endDate,
+                    status: overlappingLeave.status
+                }
+            });
+        }
+
+        // Calculate requested days (for balance check)
+        const currentYear = start.getFullYear().toString();
+        const yearStart = `${currentYear}-01-01`;
+        const yearEnd = `${currentYear}-12-31`;
+
+        // Fetch holidays for the year
+        const holidays = await Holiday.findAll({
+            where: {
+                date: { [Op.between]: [yearStart, yearEnd] },
+                isActive: true,
+                type: { [Op.ne]: 'Optional' }
+            },
+            attributes: ['date']
+        });
+        const holidayDates = new Set(holidays.map(h => h.date));
+
+        // Calculate working days for the leave request
+        let requestedDays = 0;
+        const current = new Date(start);
+        while (current <= end) {
+            const dayOfWeek = current.getDay();
+            const dateStr = current.toISOString().split('T')[0];
+            if (dayOfWeek !== 0 && dayOfWeek !== 6 && !holidayDates.has(dateStr)) {
+                requestedDays++;
+            }
+            current.setDate(current.getDate() + 1);
+        }
+
+        // Check leave balance (warn but don't block, HR can approve negative balance)
+        let balanceWarning = null;
+        let leaveEntitlements = {};
+        if (employee.leaveEntitlements) {
+            try {
+                leaveEntitlements = typeof employee.leaveEntitlements === 'string'
+                    ? JSON.parse(employee.leaveEntitlements)
+                    : employee.leaveEntitlements;
+            } catch (e) { /* ignore */ }
+        }
+
+        // Get approved leaves for the year
+        const approvedLeaves = await LeaveRequest.findAll({
+            where: {
+                employeeId: targetEmployeeId,
+                type: type,
+                status: 'Approved',
+                startDate: { [Op.gte]: yearStart },
+                endDate: { [Op.lte]: yearEnd }
+            }
+        });
+
+        let usedDays = 0;
+        approvedLeaves.forEach(leave => {
+            const s = new Date(leave.startDate);
+            const e = new Date(leave.endDate);
+            const curr = new Date(s);
+            while (curr <= e) {
+                const dow = curr.getDay();
+                const ds = curr.toISOString().split('T')[0];
+                if (dow !== 0 && dow !== 6 && !holidayDates.has(ds)) {
+                    usedDays++;
+                }
+                curr.setDate(curr.getDate() + 1);
+            }
+        });
+
+        const maxDays = leaveTypeConfig?.maxDays || leaveEntitlements[type] || 12;
+        const availableBalance = maxDays - usedDays;
+
+        if (requestedDays > availableBalance && type !== 'Leave Without Pay') {
+            balanceWarning = `Requested ${requestedDays} days but only ${Math.max(0, availableBalance)} days available. Request may be converted to Loss of Pay.`;
         }
 
         const leave = await LeaveRequest.create({
@@ -602,10 +752,21 @@ router.post('/leaves', async (req, res) => {
             endDate,
             reason,
             status: 'Pending',
-            appliedOn: new Date().toISOString().split('T')[0]
+            appliedOn: new Date().toISOString().split('T')[0],
+            workingDays: requestedDays
         });
 
-        res.status(201).json(leave);
+        const response = {
+            ...leave.toJSON(),
+            requestedDays,
+            availableBalance: Math.max(0, availableBalance)
+        };
+
+        if (balanceWarning) {
+            response.warning = balanceWarning;
+        }
+
+        res.status(201).json(response);
     } catch (error) {
         console.error('Error creating leave request:', error);
         res.status(500).json({ error: 'Failed to create leave request' });
@@ -616,7 +777,7 @@ router.post('/leaves', async (req, res) => {
 router.put('/leaves/:id', async (req, res) => {
     try {
         const leave = await LeaveRequest.findByPk(req.params.id, {
-            include: [{ model: Employee, attributes: ['id', 'managerId'] }]
+            include: [{ model: Employee, attributes: ['id', 'name', 'managerId'] }]
         });
         if (!leave) {
             return res.status(404).json({ error: 'Leave request not found' });
@@ -629,16 +790,34 @@ router.put('/leaves/:id', async (req, res) => {
         const isManagerOfEmployee = leave.Employee?.managerId === userId;
 
         // Determine what updates are allowed
-        const { status, ...otherUpdates } = req.body;
+        const { status, approverComments, ...otherUpdates } = req.body;
 
         // Status changes (approval/rejection) require Manager/HR/Admin
         if (status && status !== leave.status) {
+            // Can only change from Pending status (or HR/Admin can change any)
+            if (leave.status !== 'Pending' && !isHROrAdmin) {
+                return res.status(400).json({ error: 'Can only approve/reject pending requests' });
+            }
+
             if (!isHROrAdmin && !isManagerOfEmployee) {
                 return res.status(403).json({ error: 'Only managers or HR can approve/reject leave requests' });
             }
             // Managers cannot approve their own leave
             if (isOwnLeave && !isHROrAdmin) {
                 return res.status(403).json({ error: 'You cannot approve your own leave request' });
+            }
+
+            // Validate status transition
+            const validStatuses = ['Approved', 'Rejected', 'Cancelled'];
+            if (!validStatuses.includes(status)) {
+                return res.status(400).json({ error: `Invalid status. Must be one of: ${validStatuses.join(', ')}` });
+            }
+
+            // Employee can only cancel their own pending leave
+            if (status === 'Cancelled') {
+                if (!isOwnLeave && !isHROrAdmin) {
+                    return res.status(403).json({ error: 'Only the employee or HR can cancel a leave request' });
+                }
             }
         }
 
@@ -652,8 +831,37 @@ router.put('/leaves/:id', async (req, res) => {
             }
         }
 
-        await leave.update(req.body);
-        res.json(leave);
+        // Build update data
+        const updateData = { ...req.body };
+
+        // Track approval details if status is changing to Approved/Rejected
+        if (status && ['Approved', 'Rejected'].includes(status) && status !== leave.status) {
+            updateData.approvedBy = userId;
+            updateData.approvedOn = new Date().toISOString().split('T')[0];
+            if (approverComments) {
+                updateData.approverComments = approverComments;
+            }
+        }
+
+        // Track cancellation
+        if (status === 'Cancelled' && status !== leave.status) {
+            updateData.approvedBy = userId;
+            updateData.approvedOn = new Date().toISOString().split('T')[0];
+            if (approverComments) {
+                updateData.approverComments = approverComments;
+            }
+        }
+
+        await leave.update(updateData);
+
+        // Fetch updated leave with relationships
+        const updatedLeave = await LeaveRequest.findByPk(req.params.id, {
+            include: [
+                { model: Employee, attributes: ['id', 'name', 'email', 'managerId'] }
+            ]
+        });
+
+        res.json(updatedLeave);
     } catch (error) {
         console.error('Error updating leave request:', error);
         res.status(500).json({ error: 'Failed to update leave request' });
@@ -828,6 +1036,156 @@ router.get('/leaves/balance/:employeeId', requireEmployeeAccess(req => req.param
     } catch (error) {
         console.error('Error fetching leave balance:', error);
         res.status(500).json({ error: 'Failed to fetch leave balance' });
+    }
+});
+
+// Calculate leave accrual for an employee (HR/Admin only)
+// Used to update employee's leave entitlements with accrued and carry-forward leaves
+router.post('/leaves/accrual/:employeeId', requireHRMSRole(RoleGroups.FULL_ACCESS), async (req, res) => {
+    try {
+        const { employeeId } = req.params;
+        const { year, applyUpdate } = req.body;
+        const targetYear = year || new Date().getFullYear().toString();
+        const previousYear = (parseInt(targetYear) - 1).toString();
+
+        // Get employee
+        const employee = await Employee.findByPk(employeeId);
+        if (!employee) {
+            return res.status(404).json({ error: 'Employee not found' });
+        }
+
+        // Parse current leave entitlements
+        let currentEntitlements = {};
+        if (employee.leaveEntitlements) {
+            try {
+                currentEntitlements = typeof employee.leaveEntitlements === 'string'
+                    ? JSON.parse(employee.leaveEntitlements)
+                    : employee.leaveEntitlements;
+            } catch (e) { /* ignore */ }
+        }
+
+        // Get leave types from configuration
+        const leaveTypesConfig = await LeaveType.findAll({
+            where: { isActive: true }
+        });
+
+        // Build leave types map with accrual settings
+        const leaveTypesMap = {};
+        leaveTypesConfig.forEach(lt => {
+            leaveTypesMap[lt.name] = {
+                maxDays: lt.maxDays || 0,
+                isPaid: lt.isPaid !== false,
+                canCarryForward: lt.name === 'Earned Leave', // Only EL carries forward by default
+                maxCarryForward: lt.name === 'Earned Leave' ? 30 : 0, // Max 30 days carry forward
+                monthlyAccrual: lt.name === 'Earned Leave' ? 1.25 : 0 // 1.25 days/month for EL
+            };
+        });
+
+        // Fallback defaults
+        const defaultLeaveTypes = {
+            'Sick Leave': { maxDays: 12, canCarryForward: false, maxCarryForward: 0, monthlyAccrual: 1 },
+            'Casual Leave': { maxDays: 12, canCarryForward: false, maxCarryForward: 0, monthlyAccrual: 1 },
+            'Earned Leave': { maxDays: 15, canCarryForward: true, maxCarryForward: 30, monthlyAccrual: 1.25 }
+        };
+
+        const leaveTypes = Object.keys(leaveTypesMap).length > 0 ? leaveTypesMap : defaultLeaveTypes;
+
+        // Calculate months employed in target year
+        const joinDate = new Date(employee.joinDate);
+        const yearStart = new Date(`${targetYear}-01-01`);
+        const yearEnd = new Date(`${targetYear}-12-31`);
+
+        let monthsEmployed = 12;
+        if (joinDate > yearStart) {
+            // Employee joined during the year
+            const joinMonth = joinDate.getMonth();
+            const joinYear = joinDate.getFullYear();
+            if (joinYear.toString() === targetYear) {
+                monthsEmployed = 12 - joinMonth;
+            }
+        }
+
+        // Calculate carry-forward from previous year
+        const prevYearStart = `${previousYear}-01-01`;
+        const prevYearEnd = `${previousYear}-12-31`;
+
+        // Get previous year's approved leaves
+        const prevYearLeaves = await LeaveRequest.findAll({
+            where: {
+                employeeId,
+                status: 'Approved',
+                startDate: { [Op.gte]: prevYearStart },
+                endDate: { [Op.lte]: prevYearEnd }
+            }
+        });
+
+        // Calculate used leaves by type for previous year
+        const prevYearUsed = {};
+        prevYearLeaves.forEach(leave => {
+            if (!prevYearUsed[leave.type]) {
+                prevYearUsed[leave.type] = 0;
+            }
+            prevYearUsed[leave.type] += leave.workingDays || 0;
+        });
+
+        // Build accrual result
+        const accrualResult = {};
+        const newEntitlements = { ...currentEntitlements };
+
+        for (const [leaveType, config] of Object.entries(leaveTypes)) {
+            const prevEntitlement = currentEntitlements[leaveType] || config.maxDays;
+            const prevUsed = prevYearUsed[leaveType] || 0;
+            const prevBalance = Math.max(0, prevEntitlement - prevUsed);
+
+            // Calculate carry forward
+            let carryForward = 0;
+            if (config.canCarryForward) {
+                carryForward = Math.min(prevBalance, config.maxCarryForward);
+            }
+
+            // Calculate accrual for target year
+            const annualAccrual = Math.round(config.monthlyAccrual * monthsEmployed * 10) / 10;
+
+            // New entitlement = base entitlement + carry forward
+            const baseEntitlement = config.maxDays;
+            const totalEntitlement = baseEntitlement + carryForward;
+
+            accrualResult[leaveType] = {
+                baseEntitlement,
+                monthsEmployed,
+                monthlyAccrual: config.monthlyAccrual,
+                annualAccrual,
+                previousYearBalance: prevBalance,
+                carryForward,
+                maxCarryForward: config.maxCarryForward,
+                totalEntitlement
+            };
+
+            newEntitlements[leaveType] = totalEntitlement;
+        }
+
+        // Apply update if requested
+        if (applyUpdate) {
+            await employee.update({
+                leaveEntitlements: JSON.stringify(newEntitlements)
+            });
+        }
+
+        res.json({
+            employeeId,
+            targetYear,
+            previousYear,
+            monthsEmployed,
+            accrual: accrualResult,
+            newEntitlements,
+            applied: !!applyUpdate,
+            note: applyUpdate
+                ? 'Leave entitlements updated successfully'
+                : 'Preview only. Set applyUpdate: true to update employee leave entitlements'
+        });
+    } catch (error) {
+        console.error('Error calculating leave accrual:', error);
+        res.status(500).json({ error: 'Failed to calculate leave accrual' });
     }
 });
 

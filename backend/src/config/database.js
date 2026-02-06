@@ -289,8 +289,14 @@ const LeaveRequest = sequelize.define('LeaveRequest', {
     startDate: { type: DataTypes.STRING, allowNull: false },
     endDate: { type: DataTypes.STRING, allowNull: false },
     reason: { type: DataTypes.STRING },
-    status: { type: DataTypes.STRING, defaultValue: 'Pending' }, // 'Pending', 'Approved', 'Rejected'
-    appliedOn: { type: DataTypes.STRING, allowNull: false }
+    status: { type: DataTypes.STRING, defaultValue: 'Pending' }, // 'Pending', 'Approved', 'Rejected', 'Cancelled'
+    appliedOn: { type: DataTypes.STRING, allowNull: false },
+    // Approval tracking
+    approvedBy: { type: DataTypes.STRING }, // Employee ID of approver
+    approvedOn: { type: DataTypes.STRING }, // Date of approval/rejection
+    approverComments: { type: DataTypes.TEXT }, // Comments from approver
+    // Working days calculation (stored for quick reference)
+    workingDays: { type: DataTypes.FLOAT } // Number of working days in leave period
 });
 
 const AttendanceRecord = sequelize.define('AttendanceRecord', {
