@@ -335,7 +335,19 @@ const Payslip = sequelize.define('Payslip', {
     allowances: { type: DataTypes.FLOAT, defaultValue: 0 },
     deductions: { type: DataTypes.FLOAT, defaultValue: 0 },
     netPay: { type: DataTypes.FLOAT, defaultValue: 0 },
-    generatedDate: { type: DataTypes.STRING, allowNull: false }
+    generatedDate: { type: DataTypes.STRING, allowNull: false },
+    // Attendance-based fields
+    workingDays: { type: DataTypes.INTEGER }, // Total working days in month
+    presentDays: { type: DataTypes.FLOAT }, // Days present (including half days)
+    lopDays: { type: DataTypes.FLOAT, defaultValue: 0 }, // Loss of pay days
+    lopDeduction: { type: DataTypes.FLOAT, defaultValue: 0 }, // LOP deduction amount
+    // Payroll status
+    status: { type: DataTypes.STRING, defaultValue: 'Draft' }, // 'Draft', 'Finalized', 'Paid'
+    finalizedBy: { type: DataTypes.STRING }, // Employee ID who finalized
+    finalizedOn: { type: DataTypes.STRING }, // Date of finalization
+    paidOn: { type: DataTypes.STRING }, // Date of payment
+    // Detailed breakdown (JSON)
+    breakdown: { type: DataTypes.TEXT } // JSON string with full breakdown
 });
 
 // OS (Performance OS) Models

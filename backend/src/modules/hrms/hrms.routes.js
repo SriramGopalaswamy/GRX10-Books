@@ -2156,11 +2156,162 @@ router.post('/payslips/generate', requireHRMSRole(RoleGroups.PAYROLL_ACCESS), as
 
         const otherDeductions = salaryBreakdown.otherDeductions || 0;
 
-        // Total deductions
-        const totalDeductions = pfEmployee + esiEmployee + tds + professionalTax + otherDeductions;
+        // Calculate attendance-based LOP (Loss of Pay)
+        const [year, monthNum] = month.split('-').map(Number);
+        const startDate = `${month}-01`;
+        const lastDay = new Date(year, monthNum, 0).getDate();
+        const endDate = `${month}-${String(lastDay).padStart(2, '0')}`;
+
+        // Get holidays for the month
+        const monthHolidays = await Holiday.findAll({
+            where: {
+                date: { [Op.between]: [startDate, endDate] },
+                isActive: true,
+                type: { [Op.ne]: 'Optional' }
+            },
+            transaction: t
+        });
+        const holidayDates = new Set(monthHolidays.map(h => h.date));
+
+        // Get approved leaves for the month
+        const monthLeaves = await LeaveRequest.findAll({
+            where: {
+                employeeId,
+                status: 'Approved',
+                [Op.or]: [
+                    { startDate: { [Op.between]: [startDate, endDate] } },
+                    { endDate: { [Op.between]: [startDate, endDate] } }
+                ]
+            },
+            transaction: t
+        });
+
+        // Build leave dates set with type
+        const leaveDates = new Map();
+        monthLeaves.forEach(leave => {
+            const start = new Date(leave.startDate);
+            const end = new Date(leave.endDate);
+            const current = new Date(start);
+            while (current <= end) {
+                const dateStr = current.toISOString().split('T')[0];
+                if (dateStr >= startDate && dateStr <= endDate) {
+                    leaveDates.set(dateStr, leave.type);
+                }
+                current.setDate(current.getDate() + 1);
+            }
+        });
+
+        // Get attendance records
+        const attendanceRecords = await AttendanceRecord.findAll({
+            where: {
+                employeeId,
+                date: { [Op.between]: [startDate, endDate] }
+            },
+            transaction: t
+        });
+        const attendanceMap = new Map();
+        attendanceRecords.forEach(r => attendanceMap.set(r.date, r));
+
+        // Calculate working days and LOP
+        let workingDays = 0;
+        let presentDays = 0;
+        let lopDays = 0;
+        let paidLeaveDays = 0;
+
+        const current = new Date(startDate);
+        const endDateObj = new Date(endDate);
+        while (current <= endDateObj) {
+            const dateStr = current.toISOString().split('T')[0];
+            const dayOfWeek = current.getDay();
+            const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+            const isHoliday = holidayDates.has(dateStr);
+
+            if (!isWeekend && !isHoliday) {
+                workingDays++;
+                const leaveType = leaveDates.get(dateStr);
+                const attendance = attendanceMap.get(dateStr);
+
+                if (leaveType) {
+                    // On approved leave
+                    if (leaveType === 'Leave Without Pay') {
+                        lopDays++;
+                    } else {
+                        paidLeaveDays++;
+                        presentDays++; // Paid leave counts as present
+                    }
+                } else if (attendance) {
+                    // Has attendance record
+                    if (attendance.status === 'Present' || attendance.status === 'Late' || attendance.status === 'WFH') {
+                        presentDays++;
+                    } else if (attendance.status === 'Half Day') {
+                        presentDays += 0.5;
+                        lopDays += 0.5; // Half day absence = 0.5 LOP
+                    } else if (attendance.status === 'Absent') {
+                        lopDays++;
+                    } else {
+                        presentDays++; // Default to present
+                    }
+                } else {
+                    // No attendance record - check if date has passed
+                    if (new Date(dateStr) < new Date()) {
+                        lopDays++; // Past date with no attendance = LOP
+                    }
+                    // Future dates are not counted as LOP
+                }
+            }
+
+            current.setDate(current.getDate() + 1);
+        }
+
+        // Calculate LOP deduction
+        const perDaySalary = grossSalary / workingDays;
+        const lopDeduction = Math.round(perDaySalary * lopDays);
+
+        // Adjusted gross after LOP
+        const adjustedGross = grossSalary - lopDeduction;
+
+        // Total deductions including LOP
+        const totalDeductions = pfEmployee + esiEmployee + tds + professionalTax + otherDeductions + lopDeduction;
 
         // Net pay
         const netPay = Math.round(grossSalary - totalDeductions);
+
+        // Build detailed breakdown
+        const breakdownData = {
+            earnings: {
+                basic,
+                hra,
+                specialAllowance,
+                otherAllowances,
+                grossSalary
+            },
+            deductions: {
+                pfEmployee,
+                pfEmployer,
+                esiEmployee,
+                esiEmployer,
+                tds,
+                professionalTax,
+                professionalTaxState: professionalTaxState || 'Default',
+                lopDeduction,
+                otherDeductions,
+                totalDeductions
+            },
+            attendance: {
+                workingDays,
+                presentDays,
+                paidLeaveDays,
+                lopDays,
+                perDaySalary: Math.round(perDaySalary)
+            },
+            netPay,
+            employerCost: {
+                grossSalary,
+                pfEmployer,
+                esiEmployer,
+                totalCost: grossSalary + pfEmployer + esiEmployer
+            }
+        };
 
         // Create payslip (within transaction)
         const payslip = await Payslip.create({
@@ -2172,7 +2323,13 @@ router.post('/payslips/generate', requireHRMSRole(RoleGroups.PAYROLL_ACCESS), as
             allowances: specialAllowance + otherAllowances,
             deductions: totalDeductions,
             netPay,
-            generatedDate: new Date().toISOString().split('T')[0]
+            generatedDate: new Date().toISOString().split('T')[0],
+            workingDays,
+            presentDays,
+            lopDays,
+            lopDeduction,
+            status: 'Draft',
+            breakdown: JSON.stringify(breakdownData)
         }, { transaction: t });
 
         // Commit the transaction
@@ -2181,39 +2338,182 @@ router.post('/payslips/generate', requireHRMSRole(RoleGroups.PAYROLL_ACCESS), as
         // Return detailed payslip with breakdown
         res.status(201).json({
             payslip,
-            breakdown: {
-                earnings: {
-                    basic,
-                    hra,
-                    specialAllowance,
-                    otherAllowances,
-                    grossSalary
-                },
-                deductions: {
-                    pfEmployee,
-                    pfEmployer,
-                    esiEmployee,
-                    esiEmployer,
-                    tds,
-                    professionalTax,
-                    professionalTaxState: professionalTaxState || 'Default',
-                    otherDeductions,
-                    totalDeductions
-                },
-                netPay,
-                employerCost: {
-                    grossSalary,
-                    pfEmployer,
-                    esiEmployer,
-                    totalCost: grossSalary + pfEmployer + esiEmployer
-                }
-            }
+            breakdown: breakdownData
         });
     } catch (error) {
         // Rollback on any error
         await t.rollback();
         console.error('Error generating payslip:', error);
         res.status(500).json({ error: 'Failed to generate payslip' });
+    }
+});
+
+// Finalize payslip (lock for payment - Payroll Access only)
+router.put('/payslips/:id/finalize', requireHRMSRole(RoleGroups.PAYROLL_ACCESS), async (req, res) => {
+    try {
+        const payslip = await Payslip.findByPk(req.params.id);
+        if (!payslip) {
+            return res.status(404).json({ error: 'Payslip not found' });
+        }
+
+        if (payslip.status === 'Finalized' || payslip.status === 'Paid') {
+            return res.status(400).json({ error: 'Payslip is already finalized' });
+        }
+
+        await payslip.update({
+            status: 'Finalized',
+            finalizedBy: req.user.id,
+            finalizedOn: new Date().toISOString().split('T')[0]
+        });
+
+        res.json({
+            message: 'Payslip finalized successfully',
+            payslip
+        });
+    } catch (error) {
+        console.error('Error finalizing payslip:', error);
+        res.status(500).json({ error: 'Failed to finalize payslip' });
+    }
+});
+
+// Mark payslip as paid (Payroll Access only)
+router.put('/payslips/:id/paid', requireHRMSRole(RoleGroups.PAYROLL_ACCESS), async (req, res) => {
+    try {
+        const payslip = await Payslip.findByPk(req.params.id);
+        if (!payslip) {
+            return res.status(404).json({ error: 'Payslip not found' });
+        }
+
+        if (payslip.status !== 'Finalized') {
+            return res.status(400).json({ error: 'Payslip must be finalized before marking as paid' });
+        }
+
+        await payslip.update({
+            status: 'Paid',
+            paidOn: new Date().toISOString().split('T')[0]
+        });
+
+        res.json({
+            message: 'Payslip marked as paid',
+            payslip
+        });
+    } catch (error) {
+        console.error('Error marking payslip as paid:', error);
+        res.status(500).json({ error: 'Failed to update payslip status' });
+    }
+});
+
+// Bulk generate payslips for a month (Payroll Access only)
+router.post('/payslips/bulk-generate', requireHRMSRole(RoleGroups.PAYROLL_ACCESS), async (req, res) => {
+    try {
+        const { month, departmentId, employeeIds } = req.body;
+
+        if (!month) {
+            return res.status(400).json({ error: 'Month is required (format: YYYY-MM)' });
+        }
+
+        // Build employee filter
+        const where = { status: 'Active' };
+        if (employeeIds && employeeIds.length > 0) {
+            where.id = { [Op.in]: employeeIds };
+        }
+        if (departmentId) {
+            where.department = departmentId;
+        }
+
+        // Get active employees
+        const employees = await Employee.findAll({ where });
+
+        if (employees.length === 0) {
+            return res.status(400).json({ error: 'No active employees found matching criteria' });
+        }
+
+        // Check for existing payslips
+        const existingPayslips = await Payslip.findAll({
+            where: {
+                month,
+                employeeId: { [Op.in]: employees.map(e => e.id) }
+            },
+            attributes: ['employeeId']
+        });
+        const existingEmployeeIds = new Set(existingPayslips.map(p => p.employeeId));
+
+        // Filter out employees with existing payslips
+        const employeesToProcess = employees.filter(e => !existingEmployeeIds.has(e.id));
+
+        if (employeesToProcess.length === 0) {
+            return res.status(400).json({
+                error: 'All employees already have payslips for this month',
+                existingCount: existingPayslips.length
+            });
+        }
+
+        // Generate payslips (simplified - without full transaction for bulk)
+        const results = {
+            success: [],
+            failed: [],
+            skipped: Array.from(existingEmployeeIds)
+        };
+
+        for (const employee of employeesToProcess) {
+            try {
+                // Simplified payslip generation for bulk
+                const annualCTC = employee.salary || 0;
+                const monthlyGross = annualCTC / 12;
+
+                let salaryBreakdown = {};
+                if (employee.salaryBreakdown) {
+                    try {
+                        salaryBreakdown = typeof employee.salaryBreakdown === 'string'
+                            ? JSON.parse(employee.salaryBreakdown)
+                            : employee.salaryBreakdown;
+                    } catch (e) { /* ignore */ }
+                }
+
+                const basic = salaryBreakdown.basic || Math.round(monthlyGross * 0.5);
+                const hra = salaryBreakdown.hra || Math.round(basic * 0.4);
+                const specialAllowance = salaryBreakdown.specialAllowance || Math.round(monthlyGross - basic - hra);
+
+                const grossSalary = basic + hra + specialAllowance;
+                const pfEmployee = Math.min(Math.round(basic * 0.12), 1800);
+                const esiEmployee = grossSalary < 21000 ? Math.round(grossSalary * 0.0075) : 0;
+                const professionalTax = salaryBreakdown.professionalTax || 200;
+
+                const totalDeductions = pfEmployee + esiEmployee + professionalTax;
+                const netPay = Math.round(grossSalary - totalDeductions);
+
+                await Payslip.create({
+                    id: uuidv4(),
+                    employeeId: employee.id,
+                    month,
+                    basic,
+                    hra,
+                    allowances: specialAllowance,
+                    deductions: totalDeductions,
+                    netPay,
+                    generatedDate: new Date().toISOString().split('T')[0],
+                    status: 'Draft'
+                });
+
+                results.success.push(employee.id);
+            } catch (err) {
+                console.error(`Failed to generate payslip for ${employee.id}:`, err);
+                results.failed.push({ employeeId: employee.id, error: err.message });
+            }
+        }
+
+        res.status(201).json({
+            message: `Bulk payslip generation completed`,
+            month,
+            totalEmployees: employees.length,
+            generated: results.success.length,
+            failed: results.failed.length,
+            skipped: results.skipped.length,
+            details: results
+        });
+    } catch (error) {
+        console.error('Error in bulk payslip generation:', error);
+        res.status(500).json({ error: 'Failed to generate payslips in bulk' });
     }
 });
 
