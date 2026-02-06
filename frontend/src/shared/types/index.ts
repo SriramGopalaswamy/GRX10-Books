@@ -303,7 +303,8 @@ export enum LeaveType {
 export enum LeaveStatus {
   PENDING = 'Pending',
   APPROVED = 'Approved',
-  REJECTED = 'Rejected'
+  REJECTED = 'Rejected',
+  CANCELLED = 'Cancelled'
 }
 
 export interface LeaveRequest {

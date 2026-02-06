@@ -274,11 +274,22 @@ router.post('/employees', requireHRMSRole(RoleGroups.FULL_ACCESS), validateEmplo
             bankBranch,
             // Referral
             employeeReferralId,
+            // Auto-initialize leave entitlements if not provided (pro-rated by join month)
+            leaveEntitlements: leaveEntitlements
+                ? (typeof leaveEntitlements === 'string' ? leaveEntitlements : JSON.stringify(leaveEntitlements))
+                : (() => {
+                    const joinMonth = joinDate ? new Date(joinDate).getMonth() : 0;
+                    const remainingMonths = 12 - joinMonth;
+                    return JSON.stringify({
+                        'Sick Leave': Math.round(12 * remainingMonths / 12),
+                        'Casual Leave': Math.round(12 * remainingMonths / 12),
+                        'Earned Leave': Math.round(15 * remainingMonths / 12)
+                    });
+                })(),
             // JSON fields - stringify if they're objects
             educationDetails: educationDetails ? (typeof educationDetails === 'string' ? educationDetails : JSON.stringify(educationDetails)) : null,
             experienceDetails: experienceDetails ? (typeof experienceDetails === 'string' ? experienceDetails : JSON.stringify(experienceDetails)) : null,
             salaryBreakdown: salaryBreakdown ? (typeof salaryBreakdown === 'string' ? salaryBreakdown : JSON.stringify(salaryBreakdown)) : null,
-            leaveEntitlements: leaveEntitlements ? (typeof leaveEntitlements === 'string' ? leaveEntitlements : JSON.stringify(leaveEntitlements)) : null,
             certifications: certifications ? (typeof certifications === 'string' ? certifications : JSON.stringify(certifications)) : null,
             skills: req.body.skills ? (typeof req.body.skills === 'string' ? req.body.skills : JSON.stringify(req.body.skills)) : null,
             languages: req.body.languages ? (typeof req.body.languages === 'string' ? req.body.languages : JSON.stringify(req.body.languages)) : null,
@@ -348,9 +359,20 @@ router.put('/employees/:id', validateEmployeeData, async (req, res) => {
             updateData = restrictedData;
         }
 
-        // Hash password if being updated
+        // Hash password if being updated — require current password for self-update
         if (updateData.password) {
+            if (!isHROrAdmin) {
+                // Employees must provide currentPassword to change their own password
+                if (!req.body.currentPassword) {
+                    return res.status(400).json({ error: 'Current password is required to set a new password' });
+                }
+                const isCurrentValid = await bcrypt.compare(req.body.currentPassword, employee.password);
+                if (!isCurrentValid) {
+                    return res.status(403).json({ error: 'Current password is incorrect' });
+                }
+            }
             updateData.password = await bcrypt.hash(updateData.password, BCRYPT_SALT_ROUNDS);
+            delete updateData.currentPassword; // Don't persist this field
         }
 
         // Stringify JSON fields
@@ -441,11 +463,12 @@ router.delete('/employees/:id', requireHRMSRole(RoleGroups.FULL_ACCESS), async (
             isRehire: false
         }, { transaction: t });
 
-        // Update employee status (within transaction)
+        // Update employee status and revoke access (within transaction)
         await employee.update({
             status: 'Terminated',
             terminationDate: terminationDate,
-            lastWorkingDay: terminationDate
+            lastWorkingDay: terminationDate,
+            enableEmailLogin: false
         }, { transaction: t });
 
         // Commit the transaction
@@ -499,6 +522,37 @@ router.post('/employees/:id/separate', requireHRMSRole(RoleGroups.FULL_ACCESS), 
             return res.status(400).json({ error: 'Separation type and last working day are required' });
         }
 
+        // Check for orphaned reportees — require reassignment before separation
+        const directReportees = await Employee.findAll({
+            where: { managerId: employee.id, status: 'Active' },
+            attributes: ['id', 'name'],
+            transaction: t
+        });
+
+        if (directReportees.length > 0 && !req.body.reassignManagerId) {
+            await t.rollback();
+            const reporteeNames = directReportees.map(r => r.name).join(', ');
+            return res.status(400).json({
+                error: 'Employee has active direct reportees who must be reassigned before separation',
+                reportees: directReportees.map(r => ({ id: r.id, name: r.name })),
+                hint: 'Provide reassignManagerId in the request body to reassign reportees automatically',
+                reporteeNames
+            });
+        }
+
+        // Reassign reportees if reassignManagerId is provided
+        if (directReportees.length > 0 && req.body.reassignManagerId) {
+            const newManager = await Employee.findByPk(req.body.reassignManagerId, { transaction: t });
+            if (!newManager || newManager.status !== 'Active') {
+                await t.rollback();
+                return res.status(400).json({ error: 'Reassignment target manager not found or not active' });
+            }
+            await Employee.update(
+                { managerId: req.body.reassignManagerId },
+                { where: { managerId: employee.id, status: 'Active' }, transaction: t }
+            );
+        }
+
         const validSeparationTypes = ['Resignation', 'Termination', 'Retirement', 'Layoff', 'Contract End', 'Absconding'];
         if (!validSeparationTypes.includes(separationType)) {
             await t.rollback();
@@ -531,11 +585,12 @@ router.post('/employees/:id/separate', requireHRMSRole(RoleGroups.FULL_ACCESS), 
             isRehire: false
         }, { transaction: t });
 
-        // Update employee status
+        // Update employee status and revoke access
         await employee.update({
             status: statusMap[separationType],
             terminationDate: lastWorkingDay,
-            lastWorkingDay: lastWorkingDay
+            lastWorkingDay: lastWorkingDay,
+            enableEmailLogin: false
         }, { transaction: t });
 
         // Cancel any pending leave requests
@@ -1523,11 +1578,12 @@ router.post('/attendance/checkin', async (req, res) => {
         const lateThresholdMinutes = shiftStartTotalMinutes + (shiftConfig.graceMinutes || 15);
 
         // Use IST timezone for Indian operations
+        // Use Intl API for correct IST conversion regardless of server timezone
         const now = new Date();
-        const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC+5:30
-        const istDate = new Date(now.getTime() + istOffset);
-        const today = istDate.toISOString().split('T')[0];
-        const currentTime = istDate.toISOString().split('T')[1].substring(0, 5); // HH:mm format
+        const istFormatter = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' });
+        const istTimeFormatter = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: false });
+        const today = istFormatter.format(now); // YYYY-MM-DD
+        const currentTime = istTimeFormatter.format(now); // HH:mm
 
         // Check if there's already an attendance record for today
         let attendance = await AttendanceRecord.findOne({
@@ -1625,11 +1681,10 @@ router.post('/attendance/checkin', async (req, res) => {
 // Get today's attendance status for an employee
 router.get('/attendance/today/:employeeId', requireEmployeeAccess(req => req.params.employeeId), async (req, res) => {
     try {
-        // Use IST timezone
+        // Use IST timezone via Intl API for correctness regardless of server timezone
         const now = new Date();
-        const istOffset = 5.5 * 60 * 60 * 1000;
-        const istDate = new Date(now.getTime() + istOffset);
-        const today = istDate.toISOString().split('T')[0];
+        const istFormatter = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' });
+        const today = istFormatter.format(now);
 
         const attendance = await AttendanceRecord.findOne({
             where: {
@@ -1899,7 +1954,16 @@ router.put('/attendance/:id', requireHRMSRole(RoleGroups.FULL_ACCESS), async (re
             return res.status(404).json({ error: 'Attendance record not found' });
         }
 
-        await attendance.update(req.body);
+        // Whitelist allowed fields to prevent injection
+        const allowedFields = ['checkIn', 'checkOut', 'status', 'durationHours', 'date'];
+        const sanitizedData = {};
+        allowedFields.forEach(field => {
+            if (req.body[field] !== undefined) {
+                sanitizedData[field] = req.body[field];
+            }
+        });
+
+        await attendance.update(sanitizedData);
         res.json(attendance);
     } catch (error) {
         console.error('Error updating attendance record:', error);
@@ -1983,6 +2047,25 @@ router.post('/regularizations', async (req, res) => {
         // Non-HR/Admin can only create for themselves
         if (!isHROrAdmin && targetEmployeeId !== userId) {
             return res.status(403).json({ error: 'You can only create regularization requests for yourself' });
+        }
+
+        // Validate date is not in the future
+        if (date) {
+            const regDate = new Date(date);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            if (regDate > today) {
+                return res.status(400).json({ error: 'Regularization date cannot be in the future' });
+            }
+        }
+
+        // Validate check-in is before check-out
+        if (newCheckIn && newCheckOut) {
+            const [inH, inM] = newCheckIn.split(':').map(Number);
+            const [outH, outM] = newCheckOut.split(':').map(Number);
+            if (inH * 60 + inM >= outH * 60 + outM) {
+                return res.status(400).json({ error: 'Check-in time must be before check-out time' });
+            }
         }
 
         // Get employee name if not provided
@@ -2155,6 +2238,13 @@ router.get('/payslips', scopeByRole, async (req, res) => {
 
         if (month) where.month = month;
 
+        // Non-payroll roles (employees) should only see Finalized/Paid payslips, not Drafts
+        const userRole = req.user.role;
+        const isPayrollRole = [HRMSRoles.ADMIN, HRMSRoles.HR, HRMSRoles.FINANCE].includes(userRole);
+        if (!isPayrollRole) {
+            where.status = { [Op.in]: ['Finalized', 'Paid'] };
+        }
+
         const payslips = await Payslip.findAll({
             where,
             include: [{ model: Employee, attributes: ['id', 'name', 'email', 'department'] }],
@@ -2252,6 +2342,12 @@ router.post('/payslips/generate', requireHRMSRole(RoleGroups.PAYROLL_ACCESS), as
         if (!employee) {
             await t.rollback();
             return res.status(404).json({ error: 'Employee not found' });
+        }
+
+        // Block payslip generation for non-active employees
+        if (employee.status !== 'Active') {
+            await t.rollback();
+            return res.status(400).json({ error: `Cannot generate payslip for ${employee.status.toLowerCase()} employee` });
         }
 
         // Check if payslip already exists for this month (with lock)

@@ -26,19 +26,60 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
     ...initialData
   });
   const [offerLetter, setOfferLetter] = useState<File | null>(null);
+  const [tempPassword, setTempPassword] = useState('');
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
   if (!isOpen) return null;
 
   const handleChange = (field: keyof Employee, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    // Clear validation error when user types
+    if (validationErrors[field]) {
+      setValidationErrors(prev => { const next = { ...prev }; delete next[field]; return next; });
+    }
+  };
+
+  const validateStep1 = (): boolean => {
+    const errors: Record<string, string> = {};
+    if (!formData.name?.trim()) errors.name = 'Name is required';
+    if (!formData.email?.trim()) errors.email = 'Email is required';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) errors.email = 'Invalid email format';
+    if (!formData.joinDate) errors.joinDate = 'Joining date is required';
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const validateStep2 = (): boolean => {
+    const errors: Record<string, string> = {};
+    if (!formData.department) errors.department = 'Department is required';
+    if (!formData.designation?.trim()) errors.designation = 'Designation is required';
+    if (!formData.managerId) errors.managerId = 'Reporting manager is required';
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const validateStep3 = (): boolean => {
+    const errors: Record<string, string> = {};
+    if (!formData.salary || formData.salary <= 0) errors.salary = 'Salary must be greater than 0';
+    if (!tempPassword || tempPassword.length < 8) errors.password = 'Password must be at least 8 characters';
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleNext = () => {
+    if (step === 1 && validateStep1()) setStep(2);
+    else if (step === 2 && validateStep2()) setStep(3);
   };
 
   const handleSubmit = async () => {
+    if (!validateStep3()) return;
     try {
       const newEmployee: Employee = {
         id: `EMP${Math.floor(Math.random() * 10000)}`, // Will be replaced by backend
         avatar: `https://ui-avatars.com/api/?name=${formData.name}&background=random`,
-        status: 'Active', // Ensure status is set
+        status: 'Active',
+        password: tempPassword,
+        isNewUser: true,
         ...formData as Employee
       };
       await addEmployee(newEmployee);
@@ -98,33 +139,39 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
               <h4 className="font-semibold text-slate-900">Personal Information</h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
-                  <input 
-                    type="text" 
-                    className="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Full Name <span className="text-red-500">*</span></label>
+                  <input
+                    type="text"
+                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.name ? 'border-red-400' : 'border-slate-300'}`}
                     value={formData.name || ''}
                     onChange={e => handleChange('name', e.target.value)}
                     placeholder="e.g. John Doe"
+                    maxLength={100}
                   />
+                  {validationErrors.name && <p className="text-xs text-red-500 mt-1">{validationErrors.name}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
-                  <input 
-                    type="email" 
-                    className="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Email Address <span className="text-red-500">*</span></label>
+                  <input
+                    type="email"
+                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.email ? 'border-red-400' : 'border-slate-300'}`}
                     value={formData.email || ''}
                     onChange={e => handleChange('email', e.target.value)}
                     placeholder="john.doe@grx10.com"
                   />
+                  {validationErrors.email && <p className="text-xs text-red-500 mt-1">{validationErrors.email}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Joining Date</label>
-                  <input 
-                    type="date" 
-                    className="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Joining Date <span className="text-red-500">*</span></label>
+                  <input
+                    type="date"
+                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.joinDate ? 'border-red-400' : 'border-slate-300'}`}
                     value={formData.joinDate}
+                    min="2000-01-01"
+                    max="2099-12-31"
                     onChange={e => handleChange('joinDate', e.target.value)}
                   />
+                  {validationErrors.joinDate && <p className="text-xs text-red-500 mt-1">{validationErrors.joinDate}</p>}
                 </div>
               </div>
             </div>
@@ -135,9 +182,9 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
               <h4 className="font-semibold text-slate-900">Role & Department</h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Department</label>
-                  <select 
-                    className="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Department <span className="text-red-500">*</span></label>
+                  <select
+                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.department ? 'border-red-400' : 'border-slate-300'}`}
                     value={formData.department || ''}
                     onChange={e => handleChange('department', e.target.value)}
                   >
@@ -146,16 +193,19 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
                       <option key={dept.id} value={dept.name}>{dept.name}</option>
                     ))}
                   </select>
+                  {validationErrors.department && <p className="text-xs text-red-500 mt-1">{validationErrors.department}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Designation</label>
-                  <input 
-                    type="text" 
-                    className="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Designation <span className="text-red-500">*</span></label>
+                  <input
+                    type="text"
+                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.designation ? 'border-red-400' : 'border-slate-300'}`}
                     value={formData.designation || ''}
                     onChange={e => handleChange('designation', e.target.value)}
                     placeholder="e.g. Senior Developer"
+                    maxLength={100}
                   />
+                  {validationErrors.designation && <p className="text-xs text-red-500 mt-1">{validationErrors.designation}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">System Role</label>
@@ -168,9 +218,9 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Reporting Manager</label>
-                  <select 
-                    className="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Reporting Manager <span className="text-red-500">*</span></label>
+                  <select
+                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.managerId ? 'border-red-400' : 'border-slate-300'}`}
                     value={formData.managerId || ''}
                     onChange={e => handleChange('managerId', e.target.value)}
                   >
@@ -178,6 +228,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
                     {managers.length === 0 && <option disabled>No valid managers found</option>}
                     {managers.map(m => <option key={m.id} value={m.id}>{m.name} ({m.designation})</option>)}
                   </select>
+                  {validationErrors.managerId && <p className="text-xs text-red-500 mt-1">{validationErrors.managerId}</p>}
                 </div>
               </div>
             </div>
@@ -185,26 +236,43 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
 
           {step === 3 && (
             <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
-              <h4 className="font-semibold text-slate-900">Compensation & Documents</h4>
+              <h4 className="font-semibold text-slate-900">Compensation & Credentials</h4>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Annual CTC (USD)</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Annual CTC (INR)</label>
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">$</span>
-                    <input 
-                      type="number" 
-                      className="w-full border border-slate-300 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">&#8377;</span>
+                    <input
+                      type="number"
+                      className={`w-full border rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.salary ? 'border-red-400' : 'border-slate-300'}`}
                       value={formData.salary || ''}
-                      onChange={e => handleChange('salary', parseInt(e.target.value))}
-                      placeholder="0.00"
+                      onChange={e => handleChange('salary', parseInt(e.target.value) || 0)}
+                      min={1}
+                      placeholder="e.g. 600000"
                     />
                   </div>
+                  {validationErrors.salary && <p className="text-xs text-red-500 mt-1">{validationErrors.salary}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Initial Password</label>
+                  <input
+                    type="password"
+                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.password ? 'border-red-400' : 'border-slate-300'}`}
+                    value={tempPassword}
+                    onChange={e => { setTempPassword(e.target.value); if (validationErrors.password) setValidationErrors(prev => { const n = { ...prev }; delete n.password; return n; }); }}
+                    placeholder="Min 8 characters"
+                    minLength={8}
+                  />
+                  {validationErrors.password && <p className="text-xs text-red-500 mt-1">{validationErrors.password}</p>}
+                  <p className="text-xs text-slate-400 mt-1">Employee will be prompted to change this on first login.</p>
                 </div>
 
                 <div className="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:bg-slate-50 transition-colors cursor-pointer relative">
-                  <input 
-                    type="file" 
-                    className="absolute inset-0 opacity-0 cursor-pointer" 
+                  <input
+                    type="file"
+                    className="absolute inset-0 opacity-0 cursor-pointer"
+                    accept=".pdf,.docx"
                     onChange={e => setOfferLetter(e.target.files?.[0] || null)}
                   />
                   <div className="flex flex-col items-center gap-2 text-slate-500">
@@ -240,9 +308,8 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
           )}
 
           {step < 3 ? (
-             <button 
-              onClick={() => setStep(step + 1)}
-              disabled={step === 1 && !formData.name} // Simple validation check
+             <button
+              onClick={handleNext}
               className="bg-indigo-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-indigo-700 flex items-center gap-2 transition-colors disabled:opacity-50"
             >
               Next <ChevronRight size={16} />

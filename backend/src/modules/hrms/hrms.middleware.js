@@ -20,14 +20,39 @@ const SENSITIVE_FIELDS = [
     'pan', 'aadhar', 'pfNumber', 'esiNumber', 'uanNumber', 'taxDeclarations', 'password'
 ];
 
+// Personal fields that Finance should NOT see (they only need payroll-relevant data)
+const PERSONAL_FIELDS_HIDDEN_FROM_FINANCE = [
+    'dateOfBirth', 'address', 'bloodGroup', 'maritalStatus', 'spouseName',
+    'emergencyContactName', 'emergencyContactRelation', 'emergencyContactPhone',
+    'educationDetails', 'experienceDetails', 'certifications', 'dependents',
+    'skills', 'languages', 'employeeReferralId', 'exitInterviewDate'
+];
+
 /**
  * Middleware to require authentication
- * Must be applied before any HRMS route
+ * Must be applied before any HRMS route.
+ * Also rejects users whose employee status is no longer Active
+ * (handles stale sessions after separation).
  */
-export const requireAuth = (req, res, next) => {
+export const requireAuth = async (req, res, next) => {
     if (!req.user) {
         return res.status(401).json({ error: 'Authentication required' });
     }
+
+    // Check if the employee is still active (guards against stale sessions after separation)
+    try {
+        const { Employee } = await import('../../config/database.js');
+        const employee = await Employee.findByPk(req.user.id);
+        if (employee && employee.status !== 'Active') {
+            // Destroy the stale session
+            req.logout(() => {});
+            return res.status(401).json({ error: 'Account is no longer active. Please contact HR.' });
+        }
+    } catch (e) {
+        // If DB check fails, allow request to proceed (fail-open for auth check)
+        console.error('Auth status check failed:', e.message);
+    }
+
     next();
 };
 
@@ -116,11 +141,20 @@ export const filterSensitiveData = (employeeData, reqUser, targetEmployeeId = nu
     const userRole = reqUser?.role;
     const userId = reqUser?.id;
 
-    // Admin, HR, Finance can see all data
-    if (userRole === HRMSRoles.ADMIN || userRole === HRMSRoles.HR || userRole === HRMSRoles.FINANCE) {
-        // Still remove password
+    // Admin, HR can see all data (except password)
+    if (userRole === HRMSRoles.ADMIN || userRole === HRMSRoles.HR) {
         const { password, ...dataWithoutPassword } = employeeData;
         return dataWithoutPassword;
+    }
+
+    // Finance can see payroll-relevant data but NOT personal details
+    if (userRole === HRMSRoles.FINANCE) {
+        const filteredData = { ...employeeData };
+        delete filteredData.password;
+        PERSONAL_FIELDS_HIDDEN_FROM_FINANCE.forEach(field => {
+            delete filteredData[field];
+        });
+        return filteredData;
     }
 
     // User viewing their own data can see most things
