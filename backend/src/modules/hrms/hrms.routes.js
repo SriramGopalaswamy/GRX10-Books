@@ -9,7 +9,10 @@ import {
     AttendanceRecord,
     RegularizationRequest,
     Payslip,
-    LeaveType
+    LeaveType,
+    WorkLocation,
+    ProfessionalTaxSlab,
+    Holiday
 } from '../../config/database.js';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -20,7 +23,8 @@ import {
     filterEmployeeList,
     scopeByRole,
     HRMSRoles,
-    RoleGroups
+    RoleGroups,
+    validateEmployeeData
 } from './hrms.middleware.js';
 
 const router = express.Router();
@@ -176,7 +180,7 @@ router.get('/employees/:id', requireEmployeeAccess(req => req.params.id), async 
 });
 
 // Create employee (HR/Admin only)
-router.post('/employees', requireHRMSRole(RoleGroups.FULL_ACCESS), async (req, res) => {
+router.post('/employees', requireHRMSRole(RoleGroups.FULL_ACCESS), validateEmployeeData, async (req, res) => {
     try {
         const {
             name,
@@ -198,6 +202,8 @@ router.post('/employees', requireHRMSRole(RoleGroups.FULL_ACCESS), async (req, r
             pan,
             aadhar,
             pfNumber,
+            esiNumber,
+            uanNumber,
             // Employment Details
             employeeType,
             workLocation,
@@ -246,6 +252,8 @@ router.post('/employees', requireHRMSRole(RoleGroups.FULL_ACCESS), async (req, r
             pan,
             aadhar,
             pfNumber,
+            esiNumber,
+            uanNumber,
             // Employment Details
             employeeType,
             workLocation,
@@ -303,7 +311,7 @@ router.post('/employees', requireHRMSRole(RoleGroups.FULL_ACCESS), async (req, r
 });
 
 // Update employee (HR/Admin can update anyone, employees can update limited fields of their own record)
-router.put('/employees/:id', async (req, res) => {
+router.put('/employees/:id', validateEmployeeData, async (req, res) => {
     try {
         const employee = await Employee.findByPk(req.params.id);
         if (!employee) {
@@ -690,19 +698,39 @@ router.get('/leaves/balance/:employeeId', requireEmployeeAccess(req => req.param
             }
         });
 
+        // Fetch holidays for the year to exclude from working days calculation
+        const holidays = await Holiday.findAll({
+            where: {
+                date: {
+                    [Op.gte]: startOfYear,
+                    [Op.lte]: endOfYear
+                },
+                isActive: true,
+                // Exclude optional holidays as they count as working days
+                type: { [Op.ne]: 'Optional' }
+            },
+            attributes: ['date']
+        });
+
+        // Create a Set of holiday dates for O(1) lookup
+        const holidayDates = new Set(holidays.map(h => h.date));
+
         // Calculate balance for each leave type
         const leaveBalances = {};
-        
-        // Helper function to calculate days between dates (excluding weekends)
+
+        // Helper function to calculate days between dates (excluding weekends and holidays)
         const calculateWorkingDays = (startDate, endDate) => {
             const start = new Date(startDate);
             const end = new Date(endDate);
             let days = 0;
             const current = new Date(start);
-            
+
             while (current <= end) {
                 const dayOfWeek = current.getDay();
-                if (dayOfWeek !== 0 && dayOfWeek !== 6) { // Exclude Sunday (0) and Saturday (6)
+                const dateStr = current.toISOString().split('T')[0]; // YYYY-MM-DD format
+
+                // Exclude Sunday (0), Saturday (6), and holidays
+                if (dayOfWeek !== 0 && dayOfWeek !== 6 && !holidayDates.has(dateStr)) {
                     days++;
                 }
                 current.setDate(current.getDate() + 1);
@@ -793,7 +821,9 @@ router.get('/leaves/balance/:employeeId', requireEmployeeAccess(req => req.param
                 totalEntitlement: Object.values(leaveBalances).reduce((sum, b) => sum + b.entitlement, 0),
                 totalUsed: Object.values(leaveBalances).reduce((sum, b) => sum + b.used, 0),
                 totalBalance: Object.values(leaveBalances).reduce((sum, b) => sum + b.balance, 0)
-            }
+            },
+            holidaysConsidered: holidayDates.size,
+            note: 'Working days calculation excludes weekends and non-optional holidays'
         });
     } catch (error) {
         console.error('Error fetching leave balance:', error);
@@ -1378,8 +1408,59 @@ router.post('/payslips/generate', requireHRMSRole(RoleGroups.PAYROLL_ACCESS), as
 
         tds = Math.round(tds);
 
-        // Other deductions
-        const professionalTax = salaryBreakdown.professionalTax || 200; // Standard PT
+        // Calculate Professional Tax based on employee's work location/state
+        let professionalTax = 0;
+        let professionalTaxState = null;
+
+        // Try to get state from work location
+        if (employee.workLocation) {
+            const workLoc = await WorkLocation.findOne({
+                where: {
+                    [Op.or]: [
+                        { name: employee.workLocation },
+                        { code: employee.workLocation }
+                    ],
+                    isActive: true
+                },
+                transaction: t
+            });
+
+            if (workLoc && workLoc.state) {
+                professionalTaxState = workLoc.state;
+
+                // Look up PT slab for the state based on gross salary
+                const ptSlab = await ProfessionalTaxSlab.findOne({
+                    where: {
+                        [Op.or]: [
+                            { state: professionalTaxState },
+                            { stateCode: professionalTaxState }
+                        ],
+                        minSalary: { [Op.lte]: grossSalary },
+                        [Op.or]: [
+                            { maxSalary: { [Op.gte]: grossSalary } },
+                            { maxSalary: null }
+                        ],
+                        isActive: true,
+                        [Op.or]: [
+                            { effectiveTo: null },
+                            { effectiveTo: { [Op.gte]: month } }
+                        ]
+                    },
+                    order: [['minSalary', 'DESC']], // Get the highest applicable slab
+                    transaction: t
+                });
+
+                if (ptSlab) {
+                    professionalTax = ptSlab.taxAmount;
+                }
+            }
+        }
+
+        // Fallback to salaryBreakdown or default if no PT slab found
+        if (professionalTax === 0) {
+            professionalTax = salaryBreakdown.professionalTax || 200; // Default PT
+        }
+
         const otherDeductions = salaryBreakdown.otherDeductions || 0;
 
         // Total deductions
@@ -1422,6 +1503,7 @@ router.post('/payslips/generate', requireHRMSRole(RoleGroups.PAYROLL_ACCESS), as
                     esiEmployer,
                     tds,
                     professionalTax,
+                    professionalTaxState: professionalTaxState || 'Default',
                     otherDeductions,
                     totalDeductions
                 },

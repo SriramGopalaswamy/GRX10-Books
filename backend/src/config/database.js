@@ -255,6 +255,9 @@ const Employee = sequelize.define('Employee', {
     pan: { type: DataTypes.STRING },
     aadhar: { type: DataTypes.STRING },
     pfNumber: { type: DataTypes.STRING },
+    // Statutory identifiers for Indian compliance
+    esiNumber: { type: DataTypes.STRING }, // ESI number (17 digits)
+    uanNumber: { type: DataTypes.STRING }, // Universal Account Number for PF (12 digits)
     // JSON fields for complex data
     educationDetails: { type: DataTypes.TEXT }, // JSON array
     experienceDetails: { type: DataTypes.TEXT }, // JSON array
@@ -460,6 +463,20 @@ const WorkLocation = sequelize.define('WorkLocation', {
     city: { type: DataTypes.STRING },
     state: { type: DataTypes.STRING },
     country: { type: DataTypes.STRING },
+    isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
+});
+
+// Professional Tax Slabs by State (Indian Statutory Compliance)
+const ProfessionalTaxSlab = sequelize.define('ProfessionalTaxSlab', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    state: { type: DataTypes.STRING, allowNull: false }, // State name (e.g., 'Maharashtra', 'Karnataka')
+    stateCode: { type: DataTypes.STRING }, // State code (e.g., 'MH', 'KA')
+    minSalary: { type: DataTypes.FLOAT, allowNull: false, defaultValue: 0 }, // Minimum monthly salary for this slab
+    maxSalary: { type: DataTypes.FLOAT }, // Maximum monthly salary (null = no upper limit)
+    taxAmount: { type: DataTypes.FLOAT, allowNull: false }, // Monthly PT amount
+    gender: { type: DataTypes.STRING, defaultValue: 'All' }, // 'Male', 'Female', 'All' (some states have exemptions)
+    effectiveFrom: { type: DataTypes.STRING }, // Effective date YYYY-MM-DD
+    effectiveTo: { type: DataTypes.STRING }, // End date (null = currently active)
     isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
 });
 
@@ -716,6 +733,7 @@ export {
     Holiday,
     LeaveType,
     WorkLocation,
+    ProfessionalTaxSlab,
     Skill,
     Language,
     ChartOfAccount,
