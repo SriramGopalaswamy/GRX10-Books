@@ -460,6 +460,236 @@ router.delete('/employees/:id', requireHRMSRole(RoleGroups.FULL_ACCESS), async (
     }
 });
 
+// Employee separation/offboarding (HR/Admin only)
+router.post('/employees/:id/separate', requireHRMSRole(RoleGroups.FULL_ACCESS), async (req, res) => {
+    const t = await sequelize.transaction();
+
+    try {
+        const employee = await Employee.findByPk(req.params.id, { transaction: t });
+        if (!employee) {
+            await t.rollback();
+            return res.status(404).json({ error: 'Employee not found' });
+        }
+
+        // Prevent separating yourself
+        if (employee.id === req.user.id) {
+            await t.rollback();
+            return res.status(400).json({ error: 'Cannot process your own separation' });
+        }
+
+        // Already separated/terminated
+        if (employee.status === 'Terminated' || employee.status === 'Resigned') {
+            await t.rollback();
+            return res.status(400).json({ error: 'Employee is already separated' });
+        }
+
+        const {
+            separationType, // 'Resignation', 'Termination', 'Retirement', 'Layoff', 'Contract End'
+            lastWorkingDay,
+            reason,
+            exitInterviewNotes,
+            fullAndFinalDate,
+            noticePeriodServed, // days
+            recoveryAmount, // if any
+            remarks
+        } = req.body;
+
+        if (!separationType || !lastWorkingDay) {
+            await t.rollback();
+            return res.status(400).json({ error: 'Separation type and last working day are required' });
+        }
+
+        const validSeparationTypes = ['Resignation', 'Termination', 'Retirement', 'Layoff', 'Contract End', 'Absconding'];
+        if (!validSeparationTypes.includes(separationType)) {
+            await t.rollback();
+            return res.status(400).json({ error: `Invalid separation type. Must be one of: ${validSeparationTypes.join(', ')}` });
+        }
+
+        // Determine status based on separation type
+        const statusMap = {
+            'Resignation': 'Resigned',
+            'Termination': 'Terminated',
+            'Retirement': 'Retired',
+            'Layoff': 'Terminated',
+            'Contract End': 'Inactive',
+            'Absconding': 'Terminated'
+        };
+
+        // Create hiring history record
+        await EmployeeHiringHistory.create({
+            id: uuidv4(),
+            employeeId: employee.id,
+            hireDate: employee.joinDate,
+            terminationDate: lastWorkingDay,
+            employeeType: employee.employeeType,
+            department: employee.department,
+            employeePosition: employee.employeePosition,
+            designation: employee.designation,
+            salary: employee.salary,
+            managerId: employee.managerId,
+            reasonForTermination: `${separationType}: ${reason || 'Not specified'}`,
+            isRehire: false
+        }, { transaction: t });
+
+        // Update employee status
+        await employee.update({
+            status: statusMap[separationType],
+            terminationDate: lastWorkingDay,
+            lastWorkingDay: lastWorkingDay
+        }, { transaction: t });
+
+        // Cancel any pending leave requests
+        await LeaveRequest.update(
+            {
+                status: 'Cancelled',
+                approverComments: 'Auto-cancelled due to employee separation'
+            },
+            {
+                where: {
+                    employeeId: employee.id,
+                    status: 'Pending',
+                    startDate: { [Op.gt]: lastWorkingDay }
+                },
+                transaction: t
+            }
+        );
+
+        await t.commit();
+
+        res.json({
+            message: 'Employee separation processed successfully',
+            employee: {
+                id: employee.id,
+                name: employee.name,
+                status: statusMap[separationType],
+                lastWorkingDay
+            },
+            separation: {
+                type: separationType,
+                reason,
+                exitInterviewNotes,
+                fullAndFinalDate,
+                noticePeriodServed,
+                recoveryAmount,
+                remarks,
+                processedBy: req.user.id,
+                processedOn: new Date().toISOString().split('T')[0]
+            }
+        });
+    } catch (error) {
+        await t.rollback();
+        console.error('Error processing separation:', error);
+        res.status(500).json({ error: 'Failed to process employee separation' });
+    }
+});
+
+// Rehire a previously separated employee (HR/Admin only)
+router.post('/employees/:id/rehire', requireHRMSRole(RoleGroups.FULL_ACCESS), async (req, res) => {
+    const t = await sequelize.transaction();
+
+    try {
+        const employee = await Employee.findByPk(req.params.id, { transaction: t });
+        if (!employee) {
+            await t.rollback();
+            return res.status(404).json({ error: 'Employee not found' });
+        }
+
+        // Can only rehire separated employees
+        if (!['Terminated', 'Resigned', 'Retired', 'Inactive'].includes(employee.status)) {
+            await t.rollback();
+            return res.status(400).json({ error: 'Can only rehire employees who have been separated' });
+        }
+
+        const {
+            newJoinDate,
+            newDepartment,
+            newDesignation,
+            newSalary,
+            newManagerId,
+            newEmployeeType,
+            newWorkLocation
+        } = req.body;
+
+        if (!newJoinDate) {
+            await t.rollback();
+            return res.status(400).json({ error: 'New join date is required' });
+        }
+
+        const previousEmployeeId = employee.id;
+
+        // Create hiring history record for rehire
+        await EmployeeHiringHistory.create({
+            id: uuidv4(),
+            employeeId: employee.id,
+            hireDate: newJoinDate,
+            employeeType: newEmployeeType || employee.employeeType,
+            department: newDepartment || employee.department,
+            designation: newDesignation || employee.designation,
+            salary: newSalary || employee.salary,
+            managerId: newManagerId || employee.managerId,
+            reasonForTermination: null,
+            isRehire: true,
+            previousEmployeeId: previousEmployeeId
+        }, { transaction: t });
+
+        // Update employee record
+        await employee.update({
+            status: 'Active',
+            joinDate: newJoinDate,
+            department: newDepartment || employee.department,
+            designation: newDesignation || employee.designation,
+            salary: newSalary || employee.salary,
+            managerId: newManagerId || employee.managerId,
+            employeeType: newEmployeeType || employee.employeeType,
+            workLocation: newWorkLocation || employee.workLocation,
+            terminationDate: null,
+            lastWorkingDay: null,
+            isNewUser: true // Reset password on first login
+        }, { transaction: t });
+
+        // Reset leave entitlements for new year if applicable
+        const currentYear = new Date().getFullYear();
+        const joinYear = new Date(newJoinDate).getFullYear();
+        if (joinYear === currentYear) {
+            // Pro-rate leave entitlements based on join month
+            const joinMonth = new Date(newJoinDate).getMonth();
+            const remainingMonths = 12 - joinMonth;
+            const proratedEntitlements = {
+                'Sick Leave': Math.round(12 * remainingMonths / 12),
+                'Casual Leave': Math.round(12 * remainingMonths / 12),
+                'Earned Leave': Math.round(15 * remainingMonths / 12)
+            };
+            await employee.update({
+                leaveEntitlements: JSON.stringify(proratedEntitlements)
+            }, { transaction: t });
+        }
+
+        await t.commit();
+
+        res.json({
+            message: 'Employee rehired successfully',
+            employee: {
+                id: employee.id,
+                name: employee.name,
+                email: employee.email,
+                status: 'Active',
+                joinDate: newJoinDate,
+                department: newDepartment || employee.department,
+                designation: newDesignation || employee.designation
+            },
+            rehire: {
+                previousEmployeeId,
+                processedBy: req.user.id,
+                processedOn: new Date().toISOString().split('T')[0]
+            }
+        });
+    } catch (error) {
+        await t.rollback();
+        console.error('Error processing rehire:', error);
+        res.status(500).json({ error: 'Failed to process employee rehire' });
+    }
+});
+
 // ============================================
 // EMPLOYEE HIRING HISTORY
 // ============================================
