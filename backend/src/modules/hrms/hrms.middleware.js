@@ -17,7 +17,7 @@ export const HRMSRoles = {
 // Sensitive fields that should be filtered based on role
 const SENSITIVE_FIELDS = [
     'salary', 'salaryBreakdown', 'bankAccountNumber', 'bankIFSC', 'bankName', 'bankBranch',
-    'pan', 'aadhar', 'pfNumber', 'taxDeclarations', 'password'
+    'pan', 'aadhar', 'pfNumber', 'esiNumber', 'uanNumber', 'taxDeclarations', 'password'
 ];
 
 /**
@@ -212,4 +212,182 @@ export const RoleGroups = {
 
     // All authenticated users
     ALL_AUTHENTICATED: [HRMSRoles.ADMIN, HRMSRoles.HR, HRMSRoles.MANAGER, HRMSRoles.EMPLOYEE, HRMSRoles.FINANCE]
+};
+
+/**
+ * Validation patterns for Indian statutory fields
+ */
+export const StatutoryValidators = {
+    // PAN format: 5 letters + 4 digits + 1 letter (e.g., ABCDE1234F)
+    PAN: /^[A-Z]{5}[0-9]{4}[A-Z]$/,
+
+    // Aadhar: 12 digits (may be space-separated in groups of 4)
+    AADHAR: /^[0-9]{12}$/,
+
+    // UAN (Universal Account Number): 12 digits
+    UAN: /^[0-9]{12}$/,
+
+    // ESI Number: 17 digits
+    ESI: /^[0-9]{17}$/,
+
+    // PF Number: Regional code/Establishment code/Account number
+    // Format varies by region, common pattern: XX/XXX/XXXXXXX/XXX/XXXXXXX
+    PF_NUMBER: /^[A-Z]{2}\/[A-Z]{3}\/\d{7}\/\d{3}\/\d{7}$/,
+
+    // Email validation
+    EMAIL: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+
+    // Phone number: 10 digits (Indian mobile)
+    PHONE: /^[6-9][0-9]{9}$/,
+
+    // Bank IFSC: 4 letters + 0 + 6 alphanumeric
+    IFSC: /^[A-Z]{4}0[A-Z0-9]{6}$/,
+
+    // Bank Account: 9-18 digits
+    BANK_ACCOUNT: /^[0-9]{9,18}$/
+};
+
+/**
+ * Validate statutory field value
+ *
+ * @param {string} field - Field name (pan, aadhar, esiNumber, uanNumber, pfNumber)
+ * @param {string} value - Value to validate
+ * @returns {{ valid: boolean, error?: string }} Validation result
+ */
+export const validateStatutoryField = (field, value) => {
+    if (!value || value.trim() === '') {
+        return { valid: true }; // Empty values are allowed (not mandatory)
+    }
+
+    const cleanValue = value.replace(/\s/g, '').toUpperCase();
+
+    switch (field.toLowerCase()) {
+        case 'pan':
+            if (!StatutoryValidators.PAN.test(cleanValue)) {
+                return {
+                    valid: false,
+                    error: 'Invalid PAN format. Expected format: ABCDE1234F (5 letters + 4 digits + 1 letter)'
+                };
+            }
+            break;
+
+        case 'aadhar':
+            const aadharClean = value.replace(/\s/g, '');
+            if (!StatutoryValidators.AADHAR.test(aadharClean)) {
+                return {
+                    valid: false,
+                    error: 'Invalid Aadhar format. Expected 12 digits'
+                };
+            }
+            break;
+
+        case 'esinumber':
+        case 'esi':
+            if (!StatutoryValidators.ESI.test(cleanValue)) {
+                return {
+                    valid: false,
+                    error: 'Invalid ESI number format. Expected 17 digits'
+                };
+            }
+            break;
+
+        case 'uannumber':
+        case 'uan':
+            if (!StatutoryValidators.UAN.test(cleanValue)) {
+                return {
+                    valid: false,
+                    error: 'Invalid UAN format. Expected 12 digits'
+                };
+            }
+            break;
+
+        case 'pfnumber':
+        case 'pf':
+            // PF number has multiple valid formats, be lenient
+            // Just check it's not empty and has reasonable length
+            if (cleanValue.length < 5 || cleanValue.length > 30) {
+                return {
+                    valid: false,
+                    error: 'Invalid PF number format'
+                };
+            }
+            break;
+
+        case 'bankifsc':
+        case 'ifsc':
+            if (!StatutoryValidators.IFSC.test(cleanValue)) {
+                return {
+                    valid: false,
+                    error: 'Invalid IFSC code format. Expected format: AAAA0XXXXXX'
+                };
+            }
+            break;
+
+        case 'bankaccountnumber':
+            const accountClean = value.replace(/\s/g, '');
+            if (!StatutoryValidators.BANK_ACCOUNT.test(accountClean)) {
+                return {
+                    valid: false,
+                    error: 'Invalid bank account number. Expected 9-18 digits'
+                };
+            }
+            break;
+
+        case 'phone':
+            const phoneClean = value.replace(/[\s\-+]/g, '');
+            // Remove country code if present
+            const phoneDigits = phoneClean.replace(/^91/, '');
+            if (!StatutoryValidators.PHONE.test(phoneDigits)) {
+                return {
+                    valid: false,
+                    error: 'Invalid phone number. Expected 10 digit Indian mobile number'
+                };
+            }
+            break;
+
+        case 'email':
+            if (!StatutoryValidators.EMAIL.test(value)) {
+                return {
+                    valid: false,
+                    error: 'Invalid email format'
+                };
+            }
+            break;
+
+        default:
+            return { valid: true };
+    }
+
+    return { valid: true };
+};
+
+/**
+ * Middleware to validate statutory fields in employee data
+ * Apply to create/update employee endpoints
+ */
+export const validateEmployeeData = (req, res, next) => {
+    const fieldsToValidate = [
+        'pan', 'aadhar', 'pfNumber', 'esiNumber', 'uanNumber',
+        'bankIFSC', 'bankAccountNumber', 'phone', 'email'
+    ];
+
+    const errors = [];
+
+    for (const field of fieldsToValidate) {
+        if (req.body[field]) {
+            const result = validateStatutoryField(field, req.body[field]);
+            if (!result.valid) {
+                errors.push({ field, message: result.error });
+            }
+        }
+    }
+
+    if (errors.length > 0) {
+        return res.status(400).json({
+            error: 'Validation failed',
+            details: errors
+        });
+    }
+
+    next();
 };

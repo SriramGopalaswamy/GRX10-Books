@@ -255,6 +255,9 @@ const Employee = sequelize.define('Employee', {
     pan: { type: DataTypes.STRING },
     aadhar: { type: DataTypes.STRING },
     pfNumber: { type: DataTypes.STRING },
+    // Statutory identifiers for Indian compliance
+    esiNumber: { type: DataTypes.STRING }, // ESI number (17 digits)
+    uanNumber: { type: DataTypes.STRING }, // Universal Account Number for PF (12 digits)
     // JSON fields for complex data
     educationDetails: { type: DataTypes.TEXT }, // JSON array
     experienceDetails: { type: DataTypes.TEXT }, // JSON array
@@ -286,8 +289,14 @@ const LeaveRequest = sequelize.define('LeaveRequest', {
     startDate: { type: DataTypes.STRING, allowNull: false },
     endDate: { type: DataTypes.STRING, allowNull: false },
     reason: { type: DataTypes.STRING },
-    status: { type: DataTypes.STRING, defaultValue: 'Pending' }, // 'Pending', 'Approved', 'Rejected'
-    appliedOn: { type: DataTypes.STRING, allowNull: false }
+    status: { type: DataTypes.STRING, defaultValue: 'Pending' }, // 'Pending', 'Approved', 'Rejected', 'Cancelled'
+    appliedOn: { type: DataTypes.STRING, allowNull: false },
+    // Approval tracking
+    approvedBy: { type: DataTypes.STRING }, // Employee ID of approver
+    approvedOn: { type: DataTypes.STRING }, // Date of approval/rejection
+    approverComments: { type: DataTypes.TEXT }, // Comments from approver
+    // Working days calculation (stored for quick reference)
+    workingDays: { type: DataTypes.FLOAT } // Number of working days in leave period
 });
 
 const AttendanceRecord = sequelize.define('AttendanceRecord', {
@@ -310,7 +319,11 @@ const RegularizationRequest = sequelize.define('RegularizationRequest', {
     status: { type: DataTypes.STRING, defaultValue: 'Pending' }, // 'Pending', 'Approved', 'Rejected'
     appliedOn: { type: DataTypes.STRING, allowNull: false },
     newCheckIn: { type: DataTypes.STRING },
-    newCheckOut: { type: DataTypes.STRING }
+    newCheckOut: { type: DataTypes.STRING },
+    // Approval tracking
+    approvedBy: { type: DataTypes.STRING }, // Employee ID of approver
+    approvedOn: { type: DataTypes.STRING }, // Date of approval/rejection
+    approverComments: { type: DataTypes.TEXT } // Comments from approver
 });
 
 const Payslip = sequelize.define('Payslip', {
@@ -322,7 +335,19 @@ const Payslip = sequelize.define('Payslip', {
     allowances: { type: DataTypes.FLOAT, defaultValue: 0 },
     deductions: { type: DataTypes.FLOAT, defaultValue: 0 },
     netPay: { type: DataTypes.FLOAT, defaultValue: 0 },
-    generatedDate: { type: DataTypes.STRING, allowNull: false }
+    generatedDate: { type: DataTypes.STRING, allowNull: false },
+    // Attendance-based fields
+    workingDays: { type: DataTypes.INTEGER }, // Total working days in month
+    presentDays: { type: DataTypes.FLOAT }, // Days present (including half days)
+    lopDays: { type: DataTypes.FLOAT, defaultValue: 0 }, // Loss of pay days
+    lopDeduction: { type: DataTypes.FLOAT, defaultValue: 0 }, // LOP deduction amount
+    // Payroll status
+    status: { type: DataTypes.STRING, defaultValue: 'Draft' }, // 'Draft', 'Finalized', 'Paid'
+    finalizedBy: { type: DataTypes.STRING }, // Employee ID who finalized
+    finalizedOn: { type: DataTypes.STRING }, // Date of finalization
+    paidOn: { type: DataTypes.STRING }, // Date of payment
+    // Detailed breakdown (JSON)
+    breakdown: { type: DataTypes.TEXT } // JSON string with full breakdown
 });
 
 // OS (Performance OS) Models
@@ -452,6 +477,21 @@ const LeaveType = sequelize.define('LeaveType', {
     isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
 });
 
+// Shift Timing Configuration for attendance tracking
+const ShiftTiming = sequelize.define('ShiftTiming', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    name: { type: DataTypes.STRING, allowNull: false, unique: true }, // 'General Shift', 'Night Shift', etc.
+    code: { type: DataTypes.STRING },
+    startTime: { type: DataTypes.STRING, allowNull: false }, // HH:mm format (e.g., '09:00')
+    endTime: { type: DataTypes.STRING, allowNull: false }, // HH:mm format (e.g., '18:00')
+    graceMinutes: { type: DataTypes.INTEGER, defaultValue: 15 }, // Grace period for late marking
+    halfDayHours: { type: DataTypes.FLOAT, defaultValue: 4 }, // Hours for half day
+    fullDayHours: { type: DataTypes.FLOAT, defaultValue: 8 }, // Hours for full day
+    isFlexible: { type: DataTypes.BOOLEAN, defaultValue: false }, // Flexible timing
+    isDefault: { type: DataTypes.BOOLEAN, defaultValue: false }, // Default shift
+    isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
+});
+
 const WorkLocation = sequelize.define('WorkLocation', {
     id: { type: DataTypes.STRING, primaryKey: true },
     name: { type: DataTypes.STRING, allowNull: false, unique: true },
@@ -460,6 +500,20 @@ const WorkLocation = sequelize.define('WorkLocation', {
     city: { type: DataTypes.STRING },
     state: { type: DataTypes.STRING },
     country: { type: DataTypes.STRING },
+    isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
+});
+
+// Professional Tax Slabs by State (Indian Statutory Compliance)
+const ProfessionalTaxSlab = sequelize.define('ProfessionalTaxSlab', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    state: { type: DataTypes.STRING, allowNull: false }, // State name (e.g., 'Maharashtra', 'Karnataka')
+    stateCode: { type: DataTypes.STRING }, // State code (e.g., 'MH', 'KA')
+    minSalary: { type: DataTypes.FLOAT, allowNull: false, defaultValue: 0 }, // Minimum monthly salary for this slab
+    maxSalary: { type: DataTypes.FLOAT }, // Maximum monthly salary (null = no upper limit)
+    taxAmount: { type: DataTypes.FLOAT, allowNull: false }, // Monthly PT amount
+    gender: { type: DataTypes.STRING, defaultValue: 'All' }, // 'Male', 'Female', 'All' (some states have exemptions)
+    effectiveFrom: { type: DataTypes.STRING }, // Effective date YYYY-MM-DD
+    effectiveTo: { type: DataTypes.STRING }, // End date (null = currently active)
     isActive: { type: DataTypes.BOOLEAN, defaultValue: true }
 });
 
@@ -715,7 +769,9 @@ export {
     EmployeeType,
     Holiday,
     LeaveType,
+    ShiftTiming,
     WorkLocation,
+    ProfessionalTaxSlab,
     Skill,
     Language,
     ChartOfAccount,
