@@ -1,6 +1,9 @@
 # Use an official Node.js runtime as a parent image
 FROM node:22-alpine
 
+# Install build tools needed for native modules (bcrypt, sqlite3)
+RUN apk add --no-cache python3 make g++
+
 # Set the working directory to /app
 WORKDIR /app
 
@@ -22,11 +25,11 @@ WORKDIR /app/backend
 COPY backend/package*.json ./
 RUN npm install
 
+# Remove build tools to reduce image size
+RUN apk del python3 make g++
+
 # Copy backend source
 COPY backend/ ./
-
-# Return to root
-# WORKDIR /app
 
 # Expose port 8080 (Cloud Run default)
 EXPOSE 8080
