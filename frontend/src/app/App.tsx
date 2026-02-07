@@ -70,6 +70,7 @@ import { PayrollReportPage } from '../features/reports/pages/PayrollReportPage';
 import { View, Invoice } from '../shared/types';
 import { MOCK_INVOICES } from '../shared/constants/app.constants';
 import { Loader2 } from 'lucide-react';
+import { NotificationBell } from '../shared/components/NotificationBell';
 import { ConfigurationProvider } from '../shared/contexts/ConfigurationContext';
 import { ThemeProvider } from '../shared/contexts/ThemeContext';
 import { AuthProvider } from '../shared/contexts/AuthContext';
@@ -252,8 +253,13 @@ const App: React.FC = () => {
                 onChangeView={setCurrentView}
                 onCollapseChange={setIsSidebarCollapsed}
               />
-              <main className={`flex-1 p-8 transition-all duration-300 bg-slate-50 dark:bg-slate-900 ${isSidebarCollapsed ? 'ml-16' : 'ml-64'}`}>
-                {renderContent()}
+              <main className={`flex-1 transition-all duration-300 bg-slate-50 dark:bg-slate-900 ${isSidebarCollapsed ? 'ml-16' : 'ml-64'}`}>
+                <div className="flex justify-end items-center px-8 pt-4 pb-0">
+                  <NotificationBell />
+                </div>
+                <div className="p-8 pt-2">
+                  {renderContent()}
+                </div>
               </main>
             </div>
           </ConfigurationProvider>

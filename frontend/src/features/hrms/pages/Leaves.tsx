@@ -45,6 +45,7 @@ export const Leaves: React.FC = () => {
   const [formErrors, setFormErrors] = useState<ValidationErrors>({});
   
   // Leave request form state
+  const [editingLeaveId, setEditingLeaveId] = useState<string | null>(null);
   const [newLeave, setNewLeave] = useState({
     type: '',
     startDate: '',
@@ -217,8 +218,12 @@ export const Leaves: React.FC = () => {
     setError(null);
 
     try {
-      const response = await fetch('/api/hrms/leaves', {
-        method: 'POST',
+      // P1-04: If editing, use PUT to update the pending leave request
+      const url = editingLeaveId ? `/api/hrms/leaves/${editingLeaveId}` : '/api/hrms/leaves';
+      const method = editingLeaveId ? 'PUT' : 'POST';
+
+      const response = await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           employeeId: user.id,
@@ -226,7 +231,7 @@ export const Leaves: React.FC = () => {
           startDate: newLeave.startDate,
           endDate: newLeave.endDate,
           reason: newLeave.reason,
-          status: 'Pending'
+          ...(editingLeaveId ? {} : { status: 'Pending' })
         })
       });
 
@@ -253,9 +258,10 @@ export const Leaves: React.FC = () => {
 
       // Reset form and close modal
       setNewLeave({ type: leaveTypes[0]?.name || '', startDate: '', endDate: '', reason: '' });
+      setEditingLeaveId(null);
       setFormErrors({});
       setShowModal(false);
-      alert('Leave request submitted successfully!');
+      alert(editingLeaveId ? 'Leave request updated successfully!' : 'Leave request submitted successfully!');
     } catch (err: any) {
       setError(err.message || 'Failed to submit leave request');
       console.error('Error submitting leave request:', err);
@@ -347,6 +353,7 @@ export const Leaves: React.FC = () => {
                  <th className="px-6 py-3">Reason</th>
                  <th className="px-6 py-3">Applied On</th>
                  <th className="px-6 py-3">Status</th>
+                 <th className="px-6 py-3">Actions</th>
                </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
@@ -371,6 +378,46 @@ export const Leaves: React.FC = () => {
                       {leave.status}
                     </span>
                   </td>
+                  <td className="px-6 py-4">
+                    <div className="flex gap-1">
+                      {/* P1-04: Edit pending leave */}
+                      {leave.status === 'Pending' && leave.employeeId === user?.id && (
+                        <button
+                          onClick={() => {
+                            setNewLeave({
+                              type: leave.type,
+                              startDate: leave.startDate,
+                              endDate: leave.endDate,
+                              reason: leave.reason || ''
+                            });
+                            setEditingLeaveId(leave.id);
+                            setShowModal(true);
+                          }}
+                          className="text-xs px-2 py-1 bg-indigo-50 text-indigo-600 rounded hover:bg-indigo-100 dark:bg-indigo-900/30 dark:text-indigo-400 dark:hover:bg-indigo-900/50 transition-colors"
+                        >
+                          Edit
+                        </button>
+                      )}
+                      {/* P2-09: Re-apply from rejected */}
+                      {leave.status === 'Rejected' && leave.employeeId === user?.id && (
+                        <button
+                          onClick={() => {
+                            setNewLeave({
+                              type: leave.type,
+                              startDate: '',
+                              endDate: '',
+                              reason: leave.reason || ''
+                            });
+                            setEditingLeaveId(null);
+                            setShowModal(true);
+                          }}
+                          className="text-xs px-2 py-1 bg-amber-50 text-amber-600 rounded hover:bg-amber-100 dark:bg-amber-900/30 dark:text-amber-400 dark:hover:bg-amber-900/50 transition-colors"
+                        >
+                          Re-apply
+                        </button>
+                      )}
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -382,7 +429,7 @@ export const Leaves: React.FC = () => {
        {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-slate-800 rounded-xl w-full max-w-md p-6 shadow-2xl">
-            <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100">Apply for Leave</h3>
+            <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100">{editingLeaveId ? 'Edit Leave Request' : 'Apply for Leave'}</h3>
             {error && (
               <div className="mb-4 p-3 bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 rounded-lg text-sm text-rose-700 dark:text-rose-300">
                 {error}
@@ -492,6 +539,7 @@ export const Leaves: React.FC = () => {
                     setShowModal(false);
                     setError(null);
                     setFormErrors({});
+                    setEditingLeaveId(null);
                     setNewLeave({ type: leaveTypes[0]?.name || '', startDate: '', endDate: '', reason: '' });
                   }}
                   className="flex-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 py-2.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 font-medium transition-colors"
@@ -509,7 +557,7 @@ export const Leaves: React.FC = () => {
                       Submitting...
                     </>
                   ) : (
-                    'Submit'
+                    editingLeaveId ? 'Update' : 'Submit'
                   )}
                 </button>
               </div>

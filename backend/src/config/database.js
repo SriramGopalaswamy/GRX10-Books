@@ -646,6 +646,44 @@ const ApprovalRequest = sequelize.define('ApprovalRequest', {
     completedAt: { type: DataTypes.DATE }
 });
 
+// HRMS Notification - in-app notifications for HRMS events (P1-05)
+const HRMSNotification = sequelize.define('HRMSNotification', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    recipientId: { type: DataTypes.STRING, allowNull: false }, // Employee ID who should see this
+    type: { type: DataTypes.STRING, allowNull: false }, // 'leave_applied', 'leave_approved', 'leave_rejected', 'payslip_generated', 'attendance_anomaly', 'regularization_update'
+    title: { type: DataTypes.STRING, allowNull: false },
+    message: { type: DataTypes.TEXT, allowNull: false },
+    isRead: { type: DataTypes.BOOLEAN, defaultValue: false },
+    relatedModule: { type: DataTypes.STRING }, // 'leave', 'payslip', 'attendance', 'regularization'
+    relatedId: { type: DataTypes.STRING }, // ID of the related entity
+    createdAt: { type: DataTypes.STRING, allowNull: false }
+});
+
+// Salary Change Log - tracks every salary modification for audit trail (P0-04)
+const SalaryChangeLog = sequelize.define('SalaryChangeLog', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    employeeId: { type: DataTypes.STRING, allowNull: false },
+    previousSalary: { type: DataTypes.FLOAT },
+    newSalary: { type: DataTypes.FLOAT, allowNull: false },
+    reason: { type: DataTypes.TEXT },
+    effectiveDate: { type: DataTypes.STRING }, // YYYY-MM-DD
+    changedBy: { type: DataTypes.STRING, allowNull: false }, // User ID of person making the change
+    changedOn: { type: DataTypes.STRING, allowNull: false } // ISO date
+});
+
+// Audit Log - records admin/HR actions for compliance (P1-11)
+const AuditLog = sequelize.define('AuditLog', {
+    id: { type: DataTypes.STRING, primaryKey: true },
+    userId: { type: DataTypes.STRING, allowNull: false }, // Who performed the action
+    action: { type: DataTypes.STRING, allowNull: false }, // e.g. 'EMPLOYEE_CREATE', 'SALARY_UPDATE', 'LEAVE_APPROVE'
+    module: { type: DataTypes.STRING, allowNull: false }, // 'hrms', 'payroll', 'auth'
+    targetId: { type: DataTypes.STRING }, // ID of the affected entity
+    targetType: { type: DataTypes.STRING }, // 'Employee', 'LeaveRequest', 'Payslip', etc.
+    details: { type: DataTypes.TEXT }, // JSON string with change details
+    ipAddress: { type: DataTypes.STRING },
+    timestamp: { type: DataTypes.STRING, allowNull: false }
+});
+
 const ApprovalHistory = sequelize.define('ApprovalHistory', {
     id: { type: DataTypes.STRING, primaryKey: true },
     requestId: { type: DataTypes.STRING, allowNull: false },
@@ -722,6 +760,14 @@ ApprovalRequest.hasMany(ApprovalHistory, { foreignKey: 'requestId', as: 'history
 
 ApprovalHistory.belongsTo(ApprovalRequest, { foreignKey: 'requestId' });
 ApprovalHistory.belongsTo(User, { foreignKey: 'approverId', as: 'approver' });
+
+// HRMS Notification Relationships (P1-05)
+Employee.hasMany(HRMSNotification, { foreignKey: 'recipientId', as: 'notifications' });
+HRMSNotification.belongsTo(Employee, { foreignKey: 'recipientId' });
+
+// Salary Change Log Relationships
+Employee.hasMany(SalaryChangeLog, { foreignKey: 'employeeId', as: 'salaryHistory' });
+SalaryChangeLog.belongsTo(Employee, { foreignKey: 'employeeId' });
 
 // OS Relationships
 OSGoal.hasMany(OSGoalComment, { foreignKey: 'goalId', as: 'comments' });
@@ -877,6 +923,10 @@ export {
     ApprovalWorkflowStep,
     ApprovalRequest,
     ApprovalHistory,
+    // Audit & History Models
+    SalaryChangeLog,
+    // Notification Model
+    HRMSNotification,
     // ============================================
     // Finance Module Models
     // ============================================
