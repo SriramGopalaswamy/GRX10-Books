@@ -27,14 +27,22 @@ import paymentsRoutes from './modules/payments/payments.routes.js';
 import taxRoutes from './modules/tax/tax.routes.js';
 import bankingRoutes from './modules/banking/banking.routes.js';
 
+// Prevent unhandled rejections from crashing the container before port is bound
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+});
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-console.log(`Starting server. NODE_ENV: ${process.env.NODE_ENV}`);
-console.log(`Current directory: ${__dirname}`);
+console.log(`[startup] Starting server. NODE_ENV: ${process.env.NODE_ENV}, PORT: ${PORT}`);
+console.log(`[startup] Current directory: ${__dirname}`);
 
 app.use(cors());
 app.use(express.json({ limit: '50mb' })); // Increased limit for file uploads
@@ -114,22 +122,23 @@ app.get('*', (req, res, next) => {
   });
 });
 
-// Initialize DB and bootstrap admin user
-initDb().then(async () => {
-  console.log('Database initialized successfully');
-
-  // Bootstrap initial admin user if none exists
-  try {
-    await bootstrapAdminUser();
-  } catch (err) {
-    console.error('Bootstrap warning:', err.message);
-    // Don't fail startup if bootstrap fails
-  }
-}).catch(err => {
-  console.error('Failed to initialize database:', err);
-});
-
-// Start server immediately (don't wait for DB) to satisfy Cloud Run health check
+// CRITICAL: Bind port FIRST so Cloud Run health check passes immediately.
+// Database initialization runs in the background after the port is bound.
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on http://0.0.0.0:${PORT}`);
+  console.log(`[startup] Server listening on http://0.0.0.0:${PORT}`);
+
+  // Initialize DB and bootstrap admin user AFTER port is bound
+  initDb().then(async () => {
+    console.log('[startup] Database initialized successfully');
+
+    // Bootstrap initial admin user if none exists
+    try {
+      await bootstrapAdminUser();
+    } catch (err) {
+      console.error('Bootstrap warning:', err.message);
+    }
+  }).catch(err => {
+    console.error('Failed to initialize database:', err);
+    // Don't crash - server still serves health checks and static files
+  });
 });
