@@ -15,7 +15,7 @@ import {
     ProfessionalTaxSlab,
     Holiday,
     SalaryChangeLog,
-    AuditLog,
+    HRMSAuditLog,
     HRMSNotification
 } from '../../config/database.js';
 import { v4 as uuidv4 } from 'uuid';
@@ -373,7 +373,7 @@ router.post('/employees', requireHRMSRole(RoleGroups.FULL_ACCESS), validateEmplo
 
         // P1-11: Audit log for employee creation
         try {
-            await AuditLog.create({
+            await HRMSAuditLog.create({
                 id: uuidv4(),
                 userId: req.user.id,
                 action: 'EMPLOYEE_CREATE',
@@ -519,7 +519,7 @@ router.put('/employees/:id', validateEmployeeData, async (req, res) => {
         // P1-11: Audit log for significant updates
         if (isHROrAdmin && (updateData.salary !== undefined || updateData.role || updateData.department || updateData.status)) {
             try {
-                await AuditLog.create({
+                await HRMSAuditLog.create({
                     id: uuidv4(),
                     userId: req.user.id,
                     action: 'EMPLOYEE_UPDATE',
@@ -3129,7 +3129,7 @@ router.delete('/payslips/:id', requireHRMSRole(RoleGroups.PAYROLL_ACCESS), async
 
         // Audit log
         try {
-            await AuditLog.create({
+            await HRMSAuditLog.create({
                 id: uuidv4(),
                 userId: req.user.id,
                 action: 'PAYSLIP_DELETE',
@@ -3177,7 +3177,7 @@ router.post('/payslips/:id/revise', requireHRMSRole(RoleGroups.PAYROLL_ACCESS), 
 
         // Audit log
         try {
-            await AuditLog.create({
+            await HRMSAuditLog.create({
                 id: uuidv4(),
                 userId: req.user.id,
                 action: 'PAYSLIP_REVISE',
@@ -3236,7 +3236,7 @@ router.get('/audit-logs', requireHRMSRole(RoleGroups.FULL_ACCESS), async (req, r
             where.timestamp = { [Op.between]: [startDate, endDate] };
         }
 
-        const logs = await AuditLog.findAll({
+        const logs = await HRMSAuditLog.findAll({
             where,
             order: [['timestamp', 'DESC']],
             limit: parseInt(queryLimit) || 100

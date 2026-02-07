@@ -15,8 +15,7 @@ import {
     FiscalYear,
     AccountingPeriod,
     CostCenter,
-    Project,
-    AuditLog
+    Project
 } from '../../config/database.js';
 import {
     createJournalEntry,

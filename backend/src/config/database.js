@@ -136,12 +136,24 @@ const getDatabaseConfig = () => {
   // Fallback: Use SQLite for local development
   console.log('📦 No PostgreSQL credentials found - using SQLite for local development');
   console.log('   Set SUPABASE_PWD or DATABASE_URL for production PostgreSQL');
-  const sqlitePath = path.join(__dirname, '../../database/grx10.sqlite');
-  return new Sequelize({
-    dialect: 'sqlite',
-    storage: sqlitePath,
-    logging: process.env.DB_LOGGING === 'true' ? console.log : false
-  });
+  try {
+    const sqlitePath = path.join(__dirname, '../../database/grx10.sqlite');
+    return new Sequelize({
+      dialect: 'sqlite',
+      storage: sqlitePath,
+      logging: process.env.DB_LOGGING === 'true' ? console.log : false
+    });
+  } catch (err) {
+    // sqlite3 native module may not be available (e.g. missing libsqlite3.so
+    // in production containers). Fall back to a PostgreSQL stub that will
+    // fail at connect-time (inside initDb) rather than crash at import-time.
+    console.error('❌ SQLite driver not available:', err.message);
+    console.error('💡 Set DATABASE_URL or SUPABASE_PWD environment variables');
+    return new Sequelize('postgres://localhost:5432/placeholder', {
+      dialect: 'postgres',
+      logging: false
+    });
+  }
 };
 
 const sequelize = getDatabaseConfig();
@@ -671,8 +683,8 @@ const SalaryChangeLog = sequelize.define('SalaryChangeLog', {
     changedOn: { type: DataTypes.STRING, allowNull: false } // ISO date
 });
 
-// Audit Log - records admin/HR actions for compliance (P1-11)
-const AuditLog = sequelize.define('AuditLog', {
+// HRMS Audit Log - records admin/HR actions for compliance (P1-11)
+const HRMSAuditLog = sequelize.define('HRMSAuditLog', {
     id: { type: DataTypes.STRING, primaryKey: true },
     userId: { type: DataTypes.STRING, allowNull: false }, // Who performed the action
     action: { type: DataTypes.STRING, allowNull: false }, // e.g. 'EMPLOYEE_CREATE', 'SALARY_UPDATE', 'LEAVE_APPROVE'
@@ -933,6 +945,7 @@ export {
     ApprovalHistory,
     // Audit & History Models
     SalaryChangeLog,
+    HRMSAuditLog,
     // Notification Model
     HRMSNotification,
     // ============================================
