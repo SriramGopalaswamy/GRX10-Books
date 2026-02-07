@@ -112,18 +112,28 @@ export const requireEmployeeAccess = (getEmployeeId) => {
             return next();
         }
 
-        // Manager accessing reportee's data - need to check manager relationship
+        // Manager accessing reportee's data - check full hierarchy chain (P1-07)
         if (userRole === HRMSRoles.MANAGER) {
-            // Import Employee model dynamically to avoid circular dependency
             const { Employee } = await import('../../config/database.js');
 
-            const targetEmployee = await Employee.findByPk(targetEmployeeId);
-            if (targetEmployee && targetEmployee.managerId === userId) {
-                return next();
+            // Walk up the manager chain from target employee to see if current user is an ancestor
+            let currentManagerId = null;
+            const targetEmployee = await Employee.findByPk(targetEmployeeId, { attributes: ['id', 'managerId'] });
+            if (targetEmployee) {
+                currentManagerId = targetEmployee.managerId;
+                const visited = new Set();
+                while (currentManagerId && !visited.has(currentManagerId)) {
+                    if (currentManagerId === userId) {
+                        return next(); // User is in the management chain
+                    }
+                    visited.add(currentManagerId);
+                    const mgr = await Employee.findByPk(currentManagerId, { attributes: ['id', 'managerId'] });
+                    currentManagerId = mgr?.managerId || null;
+                }
             }
         }
 
-        return res.status(403).json({ error: 'Access denied. You can only access your own data or your direct reportees.' });
+        return res.status(403).json({ error: 'Access denied. You can only access your own data or your reportees.' });
     };
 };
 
@@ -209,20 +219,35 @@ export const scopeByRole = async (req, res, next) => {
         return next();
     }
 
-    // Manager can see their direct reportees
+    // Manager can see all subordinates (direct + skip-level) (P1-07)
     if (userRole === HRMSRoles.MANAGER) {
         const { Employee } = await import('../../config/database.js');
 
-        const reportees = await Employee.findAll({
-            where: { managerId: userId },
-            attributes: ['id']
-        });
+        // Recursively find all subordinates (BFS traversal of manager tree)
+        const allSubordinateIds = [];
+        const queue = [userId];
+        const visited = new Set();
 
-        const reporteeIds = reportees.map(r => r.id);
+        while (queue.length > 0) {
+            const currentId = queue.shift();
+            if (visited.has(currentId)) continue;
+            visited.add(currentId);
+
+            const directReports = await Employee.findAll({
+                where: { managerId: currentId, status: 'Active' },
+                attributes: ['id']
+            });
+
+            for (const report of directReports) {
+                allSubordinateIds.push(report.id);
+                queue.push(report.id); // Continue traversal for skip-level reports
+            }
+        }
+
         // Manager can also see their own data
-        reporteeIds.push(userId);
+        allSubordinateIds.push(userId);
 
-        req.hrmsScope = { type: 'manager', employeeIds: reporteeIds };
+        req.hrmsScope = { type: 'manager', employeeIds: allSubordinateIds };
         return next();
     }
 

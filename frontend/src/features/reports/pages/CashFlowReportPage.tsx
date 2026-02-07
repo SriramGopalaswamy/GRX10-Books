@@ -35,7 +35,7 @@ interface CashFlowData {
   endingCashBalance: number;
 }
 
-export const CashFlowReportPage: React.FC = () => {
+const CashFlowReportPage: React.FC = () => {
   const [data, setData] = useState<CashFlowData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -457,3 +457,5 @@ export const CashFlowReportPage: React.FC = () => {
     </div>
   );
 };
+
+export default CashFlowReportPage;

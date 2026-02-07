@@ -50,7 +50,7 @@ const STATUS_STYLES: Record<string, string> = {
   Reversed: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400',
 };
 
-export const JournalEntriesPage: React.FC = () => {
+const JournalEntriesPage: React.FC = () => {
   const [entries, setEntries] = useState<JournalEntry[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -572,3 +572,5 @@ export const JournalEntriesPage: React.FC = () => {
     </div>
   );
 };
+
+export default JournalEntriesPage;

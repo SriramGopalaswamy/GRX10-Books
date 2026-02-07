@@ -28,7 +28,7 @@ const ACTION_STYLES: Record<string, string> = {
   DELETE: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400',
 };
 
-export const AuditLogPage: React.FC = () => {
+const AuditLogPage: React.FC = () => {
   const [logs, setLogs] = useState<AuditLogEntry[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -254,3 +254,5 @@ export const AuditLogPage: React.FC = () => {
     </div>
   );
 };
+
+export default AuditLogPage;
