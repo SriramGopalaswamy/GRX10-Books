@@ -845,7 +845,7 @@ const initDb = async () => {
         const dbType = sequelize.getDialect();
         console.log(`✅ Database connection established successfully!`);
         console.log(`📊 Database type: ${dbType.toUpperCase()}`);
-        
+
         // Log which connection string was used
         if (process.env.DATABASE_URL) {
             console.log(`✅ Successfully connected using DATABASE_URL (pooler/IPv4)`);
@@ -854,12 +854,20 @@ const initDb = async () => {
         } else {
             console.log(`✅ Successfully connected using SUPABASE_PWD (auto-built)`);
         }
-        
-        await sequelize.sync({ alter: true }); // Update schema if changed
+
+        // In production, use sync() without alter to avoid running ALTER TABLE
+        // on 60+ tables on every cold start (which causes Cloud Run timeouts).
+        // Use alter:true only in development for convenience.
+        const isProduction = process.env.NODE_ENV === 'production';
+        if (isProduction) {
+            await sequelize.sync(); // Create missing tables only, no ALTER
+        } else {
+            await sequelize.sync({ alter: true }); // Dev: update schema if changed
+        }
         console.log('📋 Database synchronized.');
     } catch (error) {
         console.error('❌ Unable to connect to the database:', error.message);
-        
+
         // Provide helpful error messages
         if (process.env.DATABASE_URL) {
             console.error('💡 DATABASE_URL connection failed. Error details above.');
@@ -872,7 +880,7 @@ const initDb = async () => {
         } else if (process.env.SUPABASE_PWD) {
             console.error('💡 Auto-built connection failed. Check SUPABASE_PWD and SUPABASE_REGION.');
         }
-        
+
         throw error;
     }
 };
