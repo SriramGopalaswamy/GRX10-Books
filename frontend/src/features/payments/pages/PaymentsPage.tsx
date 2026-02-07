@@ -55,7 +55,7 @@ const TYPE_STYLES: Record<string, string> = {
 
 const PAYMENT_METHODS = ['Bank Transfer', 'Cash', 'Cheque', 'UPI', 'Credit Card'];
 
-export const PaymentsPage: React.FC = () => {
+const PaymentsPage: React.FC = () => {
   const [payments, setPayments] = useState<Payment[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -649,3 +649,5 @@ export const PaymentsPage: React.FC = () => {
     </div>
   );
 };
+
+export default PaymentsPage;

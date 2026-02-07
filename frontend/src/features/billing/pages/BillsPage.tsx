@@ -61,7 +61,7 @@ const STATUS_STYLES: Record<string, string> = {
   Void: 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400',
 };
 
-export const BillsPage: React.FC = () => {
+const BillsPage: React.FC = () => {
   const [bills, setBills] = useState<Bill[]>([]);
   const [aging, setAging] = useState<AgingSummary | null>(null);
   const [loading, setLoading] = useState(false);
@@ -607,3 +607,5 @@ export const BillsPage: React.FC = () => {
     </div>
   );
 };
+
+export default BillsPage;
