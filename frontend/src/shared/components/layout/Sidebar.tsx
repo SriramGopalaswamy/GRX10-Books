@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
-import { 
-  LayoutDashboard, FileText, Briefcase, Upload, MessageSquare, Settings, Landmark, LogOut, 
-  FileStack, Users, Calculator, TrendingUp, CalendarCheck, Banknote, Bot, Target, 
-  FileText as MemoIcon, ChevronDown, ChevronRight, ChevronLeft, Menu, Building2, 
-  FolderTree, UserCog, Calendar, MapPin, Code, Globe, BookOpen, Shield, Key, 
+import {
+  LayoutDashboard, FileText, Briefcase, Upload, MessageSquare, Settings, Landmark, LogOut,
+  FileStack, Users, Calculator, TrendingUp, CalendarCheck, Banknote, Bot, Target,
+  FileText as MemoIcon, ChevronDown, ChevronRight, ChevronLeft, Menu, Building2,
+  FolderTree, UserCog, Calendar, MapPin, Code, Globe, BookOpen, Shield, Key,
   Workflow, CheckCircle2, UserCheck, Sun, Moon, BarChart3, FileSpreadsheet
 } from 'lucide-react';
 import { View } from '../../types';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useAuth } from '../../contexts/AuthContext';
+import { GRX10Logo } from '../../design-system/GRX10Logo';
 
 interface SidebarProps {
   currentView: View;
   onChangeView: (view: View) => void;
   onCollapseChange?: (collapsed: boolean) => void;
+  isCollapsed?: boolean;
 }
 
 interface MenuItem {
@@ -29,15 +31,16 @@ interface MenuSection {
   items: MenuItem[];
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, onCollapseChange }) => {
+const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, onCollapseChange, isCollapsed: externalCollapsed }) => {
   const { theme, toggleTheme } = useTheme();
   const { logout } = useAuth();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [internalCollapsed, setInternalCollapsed] = useState(false);
+  const isCollapsed = externalCollapsed !== undefined ? externalCollapsed : internalCollapsed;
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['financial', 'hrms', 'os', 'config', 'security', 'reports']));
 
   const handleToggle = () => {
     const newState = !isCollapsed;
-    setIsCollapsed(newState);
+    setInternalCollapsed(newState);
     onCollapseChange?.(newState);
   };
 
@@ -154,165 +157,118 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, onCollapse
   const isItemActive = (viewId: View) => currentView === viewId;
 
   return (
-    <div 
-      className={`bg-slate-900 text-white h-screen flex flex-col fixed left-0 top-0 shadow-xl z-40 overflow-y-auto transition-all duration-300 ${
+    <div
+      className={`bg-grx-primary dark:bg-grx-primary-900 text-white h-screen flex flex-col fixed left-0 top-16 z-40 overflow-y-auto transition-all duration-300 ${
         isCollapsed ? 'w-16' : 'w-64'
       }`}
+      style={{ boxShadow: '1px 0 0 rgba(255,255,255,0.06)' }}
     >
-      {/* Header */}
-      <div className={`border-b border-slate-800 transition-all duration-300 ${isCollapsed ? 'p-4' : 'p-6'}`}>
-        {!isCollapsed ? (
-          <div className="flex items-center justify-between">
-            <button
-              onClick={() => onChangeView(View.DASHBOARD)}
-              className="text-left hover:opacity-80 transition-opacity cursor-pointer"
-            >
-              <h1 className="text-2xl font-bold text-emerald-400 tracking-tight">GRX10</h1>
-              <p className="text-xs text-slate-400 mt-1">Financial Suite</p>
-            </button>
-            <button
-              onClick={handleToggle}
-              className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
-              aria-label="Collapse sidebar"
-            >
-              <ChevronLeft size={20} />
-            </button>
-          </div>
-        ) : (
-          <div className="flex flex-col items-center gap-2">
-            <button
-              onClick={() => onChangeView(View.DASHBOARD)}
-              className="text-xl font-bold text-emerald-400 tracking-tight hover:opacity-80 transition-opacity cursor-pointer"
-            >
-              G
-            </button>
-            <button
-              onClick={handleToggle}
-              className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
-              aria-label="Expand sidebar"
-            >
-              <Menu size={18} />
-            </button>
-          </div>
-        )}
-      </div>
+      {/* Navigation Sections */}
+      <nav className={`flex-1 py-4 space-y-1 ${isCollapsed ? 'px-2' : 'px-3'}`}>
+        {menuSections.map((section) => {
+          const SectionIcon = section.icon;
+          const isExpanded = isSectionExpanded(section.id);
+          const hasActiveItem = section.items.some(item => isItemActive(item.id));
 
-        {/* Navigation Sections */}
-        <nav className={`flex-1 py-6 space-y-2 ${isCollapsed ? 'px-2' : 'px-3'}`}>
-          {menuSections.map((section) => {
-            const SectionIcon = section.icon;
-            const isExpanded = isSectionExpanded(section.id);
-            const hasActiveItem = section.items.some(item => isItemActive(item.id));
+          if (isCollapsed) {
+            return (
+              <div key={section.id} className="space-y-0.5">
+                {section.items.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = isItemActive(item.id);
 
-            if (isCollapsed) {
-              // Collapsed view: Show only icons, no sections
-              return (
-                <div key={section.id} className="space-y-1">
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => onChangeView(item.id)}
+                      className={`w-full flex items-center justify-center p-2.5 rounded-lg transition-all duration-200 grx-btn-press grx-focus-ring ${
+                        isActive
+                          ? 'bg-grx-accent text-white shadow-md'
+                          : 'text-grx-primary-200 hover:bg-white/10 hover:text-white'
+                      }`}
+                      title={item.label}
+                    >
+                      <Icon size={18} />
+                    </button>
+                  );
+                })}
+              </div>
+            );
+          }
+
+          return (
+            <div key={section.id} className="space-y-0.5">
+              {/* Section Header */}
+              <button
+                onClick={() => toggleSection(section.id)}
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all duration-200 grx-focus-ring ${
+                  hasActiveItem
+                    ? 'bg-white/10 text-grx-accent-200'
+                    : 'text-grx-primary-200 hover:bg-white/5 hover:text-grx-primary-100'
+                }`}
+              >
+                <div className="flex items-center gap-2.5">
+                  <SectionIcon size={16} />
+                  <span>{section.label}</span>
+                </div>
+                {isExpanded ? (
+                  <ChevronDown size={14} className="text-grx-primary-300" />
+                ) : (
+                  <ChevronRight size={14} className="text-grx-primary-300" />
+                )}
+              </button>
+
+              {/* Section Items */}
+              {isExpanded && (
+                <div className="ml-3 space-y-0.5 border-l-2 border-grx-primary-600 pl-2 grx-animate-expand">
                   {section.items.map((item) => {
                     const Icon = item.icon;
                     const isActive = isItemActive(item.id);
-                    
+
                     return (
                       <button
                         key={item.id}
                         onClick={() => onChangeView(item.id)}
-                        className={`w-full flex items-center justify-center p-3 rounded-lg transition-all duration-200 ${
+                        className={`w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 grx-btn-press grx-focus-ring ${
                           isActive
-                            ? 'bg-emerald-600 text-white shadow-md shadow-emerald-900/20'
-                            : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                            ? 'bg-grx-accent text-white shadow-md'
+                            : 'text-grx-primary-100 hover:bg-white/10 hover:text-white'
                         }`}
-                        title={item.label}
                       >
-                        <Icon size={20} />
+                        <Icon size={15} />
+                        <span>{item.label}</span>
                       </button>
                     );
                   })}
                 </div>
-              );
-            }
+              )}
+            </div>
+          );
+        })}
+      </nav>
 
-            // Expanded view: Show sections with labels
-            return (
-              <div key={section.id} className="space-y-1">
-                {/* Section Header */}
-                <button
-                  onClick={() => toggleSection(section.id)}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
-                    hasActiveItem
-                      ? 'bg-slate-800 text-emerald-400'
-                      : 'text-slate-400 hover:bg-slate-800 hover:text-slate-300'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <SectionIcon size={18} />
-                    <span>{section.label}</span>
-                  </div>
-                  {isExpanded ? (
-                    <ChevronDown size={16} className="text-slate-500" />
-                  ) : (
-                    <ChevronRight size={16} className="text-slate-500" />
-                  )}
-                </button>
-
-                {/* Section Items (Second Level) */}
-                {isExpanded && (
-                  <div className="ml-4 space-y-1 border-l-2 border-slate-800 pl-2">
-                    {section.items.map((item) => {
-                      const Icon = item.icon;
-                      const isActive = isItemActive(item.id);
-                      
-                      return (
-                        <button
-                          key={item.id}
-                          onClick={() => onChangeView(item.id)}
-                          className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                            isActive
-                              ? 'bg-emerald-600 text-white shadow-md shadow-emerald-900/20'
-                              : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-                          }`}
-                        >
-                          <Icon size={16} />
-                          <span>{item.label}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </nav>
-
-        {/* Footer */}
-        <div className={`border-t border-slate-800 ${isCollapsed ? 'p-2' : 'p-4'} space-y-1`}>
-          <button 
-            onClick={toggleTheme}
-            className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'} px-3 py-2 text-slate-400 hover:text-white text-sm font-medium hover:bg-slate-800 rounded-lg transition-colors`}
-            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-          >
-            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-            {!isCollapsed && <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>}
-          </button>
-          <button 
-            className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'} px-3 py-2 text-slate-400 hover:text-white text-sm font-medium hover:bg-slate-800 rounded-lg transition-colors`}
-            title="Settings"
-          >
-            <Settings size={18} />
-            {!isCollapsed && <span>Settings</span>}
-          </button>
-          <button 
-            onClick={async () => {
-              await logout();
-              window.location.reload();
-            }}
-            className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'} px-3 py-2 text-red-400 hover:text-red-300 text-sm font-medium hover:bg-slate-800 rounded-lg transition-colors`}
-            title="Logout"
-          >
-            <LogOut size={18} />
-            {!isCollapsed && <span>Logout</span>}
-          </button>
-        </div>
+      {/* Footer */}
+      <div className={`border-t border-grx-primary-600 ${isCollapsed ? 'p-2' : 'p-3'} space-y-0.5`}>
+        <button
+          className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'gap-2.5'} px-3 py-2 text-grx-primary-200 hover:text-white text-sm font-medium hover:bg-white/10 rounded-lg transition-colors grx-btn-press grx-focus-ring`}
+          title="Settings"
+        >
+          <Settings size={16} />
+          {!isCollapsed && <span>Settings</span>}
+        </button>
+        <button
+          onClick={async () => {
+            await logout();
+            window.location.reload();
+          }}
+          className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'gap-2.5'} px-3 py-2 text-grx-accent-200 hover:text-grx-accent text-sm font-medium hover:bg-white/10 rounded-lg transition-colors grx-btn-press grx-focus-ring`}
+          title="Logout"
+        >
+          <LogOut size={16} />
+          {!isCollapsed && <span>Logout</span>}
+        </button>
       </div>
+    </div>
   );
 };
 

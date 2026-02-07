@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Users, 
-  TrendingUp, 
-  Calendar, 
-  DollarSign, 
-  FileText, 
+import {
+  Users,
+  TrendingUp,
+  Calendar,
+  DollarSign,
+  FileText,
   Target,
   AlertCircle,
   CheckCircle,
@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../../shared/contexts/AuthContext';
 import { View } from '../../../shared/types';
+import { SkeletonDashboard } from '../../../shared/design-system/SkeletonLoader';
 
 interface DashboardStats {
   hrms: {
@@ -86,7 +87,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
   const fetchDashboardStats = async () => {
     try {
       const res = await fetch('/api/dashboard/summary', {
-        credentials: 'include' // Include cookies for session
+        credentials: 'include'
       });
       if (res.ok) {
         const data = await res.json();
@@ -94,7 +95,6 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
       } else {
         const errorData = await res.json().catch(() => ({ error: 'Unknown error' }));
         console.error('Dashboard API error:', res.status, errorData);
-        // Don't set stats to null, show error message instead
       }
     } catch (error) {
       console.error('Error fetching dashboard stats:', error);
@@ -103,7 +103,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
     }
   };
 
-  const formatINR = (val: number) => 
+  const formatINR = (val: number) =>
     new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
 
   const formatDate = (dateString: string) => {
@@ -111,13 +111,11 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
     return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
   };
 
-  // Determine user role for UI customization
   const userRole = user?.role || 'Employee';
   const isAdmin = userRole === 'Admin' || userRole === 'HR' || userRole === 'Finance';
   const isManager = userRole === 'Manager';
   const isEmployee = userRole === 'Employee';
 
-  // Role-specific header messages
   const getHeaderMessage = () => {
     if (isAdmin) return "Here's what's happening with your business today";
     if (isManager) return "Here's what's happening with your team today";
@@ -125,232 +123,248 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-96">
-        <div className="text-slate-400 dark:text-slate-500">Loading dashboard...</div>
-      </div>
-    );
+    return <SkeletonDashboard />;
   }
 
   if (!stats) {
     return (
-      <div className="flex items-center justify-center h-96">
-        <div className="text-red-400">Failed to load dashboard data</div>
+      <div className="flex items-center justify-center h-96 grx-animate-fade-in">
+        <div className="text-center">
+          <AlertCircle size={40} className="text-grx-accent mx-auto mb-3" />
+          <p className="text-grx-muted font-medium">Failed to load dashboard data</p>
+          <button
+            onClick={() => { setLoading(true); fetchDashboardStats(); }}
+            className="mt-3 px-4 py-2 bg-grx-primary text-white rounded-lg text-sm grx-btn-press grx-focus-ring hover:bg-grx-primary-600 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6 grx-animate-fade-in-up">
       {/* Header */}
       <div className="flex justify-between items-end">
         <div>
-          <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100">Welcome back{user?.name ? `, ${user.name.split(' ')[0]}` : ''}!</h2>
-          <p className="text-slate-500 dark:text-slate-400 mt-1">{getHeaderMessage()}</p>
+          <h2 className="text-3xl font-bold text-grx-text dark:text-white">
+            Welcome back{user?.name ? `, ${user.name.split(' ')[0]}` : ''}!
+          </h2>
+          <p className="text-grx-muted mt-1">{getHeaderMessage()}</p>
         </div>
-        <div className="text-sm text-slate-500 dark:text-slate-400">
+        <div className="text-sm text-grx-muted">
           {new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
         </div>
       </div>
 
-      {/* Key Metrics Grid - Role-based */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Total Employees - Only for Admin/HR/Manager */}
-        {isAdmin || isManager ? (
-          <div 
-            className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all cursor-pointer group"
+      {/* Key Metrics Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 grx-stagger">
+        {/* Total Employees */}
+        {(isAdmin || isManager) && (
+          <div
+            className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-slate-100 dark:border-grx-primary-800 hover:border-grx-primary-200 dark:hover:border-grx-primary-600 transition-all duration-200 cursor-pointer group"
+            style={{ boxShadow: 'var(--shadow-sm)' }}
             onClick={() => onChangeView(View.EMPLOYEES)}
           >
             <div className="flex justify-between items-start mb-3">
               <div>
-                <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
+                <p className="text-sm font-medium text-grx-muted">
                   {isManager ? 'Team Members' : 'Total Employees'}
                 </p>
-                <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mt-1">{stats.hrms.totalEmployees}</h3>
+                <h3 className="text-2xl font-bold text-grx-text dark:text-white mt-1">{stats.hrms.totalEmployees}</h3>
               </div>
-              <div className="p-2.5 bg-blue-50 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform">
+              <div className="p-2.5 bg-grx-primary-50 dark:bg-grx-primary-800 rounded-lg text-grx-primary dark:text-grx-primary-300 group-hover:scale-110 transition-transform duration-200">
                 <Users size={20} />
               </div>
             </div>
-            <div className="flex items-center text-xs text-slate-400 dark:text-slate-500">
+            <div className="flex items-center text-xs text-grx-muted">
               <UserPlus size={12} className="mr-1" />
               <span>{stats.hrms.newEmployeesThisMonth} new this month</span>
             </div>
           </div>
-        ) : null}
+        )}
 
-        {/* Attendance Rate - All roles, different labels */}
-        <div 
-          className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all cursor-pointer group"
+        {/* Attendance Rate */}
+        <div
+          className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-slate-100 dark:border-grx-primary-800 hover:border-grx-primary-200 dark:hover:border-grx-primary-600 transition-all duration-200 cursor-pointer group"
+          style={{ boxShadow: 'var(--shadow-sm)' }}
           onClick={() => onChangeView(View.ATTENDANCE)}
         >
           <div className="flex justify-between items-start mb-3">
             <div>
-              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
+              <p className="text-sm font-medium text-grx-muted">
                 {isEmployee ? 'My Attendance' : isManager ? 'Team Attendance' : 'Attendance Rate'}
               </p>
-              <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mt-1">{stats.hrms.attendanceRate}%</h3>
+              <h3 className="text-2xl font-bold text-grx-text dark:text-white mt-1">{stats.hrms.attendanceRate}%</h3>
             </div>
-            <div className="p-2.5 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform">
+            <div className="p-2.5 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform duration-200">
               <CalendarCheck size={20} />
             </div>
           </div>
-          <div className="flex items-center text-xs text-slate-400 dark:text-slate-500">
+          <div className="flex items-center text-xs text-grx-muted">
             <CheckCircle size={12} className="mr-1 text-emerald-500" />
             <span>{stats.hrms.presentCount} present, {stats.hrms.absentCount} absent</span>
           </div>
         </div>
 
-        {/* Total Receivables - Only for Admin/Finance */}
-        {isAdmin ? (
-          <div 
-            className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all cursor-pointer group"
+        {/* Total Receivables */}
+        {isAdmin && (
+          <div
+            className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-slate-100 dark:border-grx-primary-800 hover:border-grx-primary-200 dark:hover:border-grx-primary-600 transition-all duration-200 cursor-pointer group"
+            style={{ boxShadow: 'var(--shadow-sm)' }}
             onClick={() => onChangeView(View.INVOICES)}
           >
             <div className="flex justify-between items-start mb-3">
               <div>
-                <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Total Receivables</p>
-                <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mt-1">{formatINR(stats.financial.totalReceivables)}</h3>
+                <p className="text-sm font-medium text-grx-muted">Total Receivables</p>
+                <h3 className="text-2xl font-bold text-grx-text dark:text-white mt-1">{formatINR(stats.financial.totalReceivables)}</h3>
               </div>
-              <div className="p-2.5 bg-purple-50 dark:bg-purple-900/30 rounded-lg text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform">
+              <div className="p-2.5 bg-grx-accent-50 dark:bg-grx-accent-900/20 rounded-lg text-grx-accent dark:text-grx-accent-300 group-hover:scale-110 transition-transform duration-200">
                 <Receipt size={20} />
               </div>
             </div>
-            <div className="flex items-center text-xs text-slate-400 dark:text-slate-500">
+            <div className="flex items-center text-xs text-grx-muted">
               <AlertCircle size={12} className="mr-1 text-amber-500" />
               <span>{stats.financial.overdueInvoices} overdue invoices</span>
             </div>
           </div>
-        ) : null}
+        )}
 
-        {/* Revenue This Month - Only for Admin/Finance */}
-        {isAdmin ? (
-          <div 
-            className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all cursor-pointer group"
+        {/* Revenue This Month */}
+        {isAdmin && (
+          <div
+            className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-slate-100 dark:border-grx-primary-800 hover:border-grx-primary-200 dark:hover:border-grx-primary-600 transition-all duration-200 cursor-pointer group"
+            style={{ boxShadow: 'var(--shadow-sm)' }}
             onClick={() => onChangeView(View.ACCOUNTING)}
           >
             <div className="flex justify-between items-start mb-3">
               <div>
-                <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Revenue (This Month)</p>
+                <p className="text-sm font-medium text-grx-muted">Revenue (This Month)</p>
                 <h3 className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">{formatINR(stats.financial.revenueThisMonth)}</h3>
               </div>
-              <div className="p-2.5 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform">
+              <div className="p-2.5 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform duration-200">
                 <TrendingUp size={20} />
               </div>
             </div>
-            <div className="flex items-center text-xs text-slate-400 dark:text-slate-500">
+            <div className="flex items-center text-xs text-grx-muted">
               <BarChart3 size={12} className="mr-1" />
               <span>{stats.financial.paidInvoices} paid invoices</span>
             </div>
           </div>
-        ) : null}
+        )}
 
-        {/* My Leave Balance - For Employee */}
-        {isEmployee ? (
-          <div 
-            className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all cursor-pointer group"
+        {/* My Leave Balance */}
+        {isEmployee && (
+          <div
+            className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-slate-100 dark:border-grx-primary-800 hover:border-grx-primary-200 dark:hover:border-grx-primary-600 transition-all duration-200 cursor-pointer group"
+            style={{ boxShadow: 'var(--shadow-sm)' }}
             onClick={() => onChangeView(View.LEAVES)}
           >
             <div className="flex justify-between items-start mb-3">
               <div>
-                <p className="text-sm font-medium text-slate-500 dark:text-slate-400">My Leave Balance</p>
-                <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mt-1">{stats.hrms.pendingLeaves}</h3>
+                <p className="text-sm font-medium text-grx-muted">My Leave Balance</p>
+                <h3 className="text-2xl font-bold text-grx-primary dark:text-grx-primary-300 mt-1">{stats.hrms.pendingLeaves}</h3>
               </div>
-              <div className="p-2.5 bg-blue-50 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform">
+              <div className="p-2.5 bg-grx-primary-50 dark:bg-grx-primary-800 rounded-lg text-grx-primary dark:text-grx-primary-300 group-hover:scale-110 transition-transform duration-200">
                 <Calendar size={20} />
               </div>
             </div>
-            <div className="flex items-center text-xs text-slate-400 dark:text-slate-500">
+            <div className="flex items-center text-xs text-grx-muted">
               <Clock size={12} className="mr-1" />
               <span>Pending requests</span>
             </div>
           </div>
-        ) : null}
+        )}
 
-        {/* My Payroll - For Employee */}
-        {isEmployee ? (
-          <div 
-            className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all cursor-pointer group"
+        {/* My Payroll */}
+        {isEmployee && (
+          <div
+            className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-slate-100 dark:border-grx-primary-800 hover:border-grx-primary-200 dark:hover:border-grx-primary-600 transition-all duration-200 cursor-pointer group"
+            style={{ boxShadow: 'var(--shadow-sm)' }}
             onClick={() => onChangeView(View.PAYROLL)}
           >
             <div className="flex justify-between items-start mb-3">
               <div>
-                <p className="text-sm font-medium text-slate-500 dark:text-slate-400">My Payroll</p>
+                <p className="text-sm font-medium text-grx-muted">My Payroll</p>
                 <h3 className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">{formatINR(stats.hrms.totalNetPay)}</h3>
               </div>
-              <div className="p-2.5 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform">
+              <div className="p-2.5 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform duration-200">
                 <Wallet size={20} />
               </div>
             </div>
-            <div className="flex items-center text-xs text-slate-400 dark:text-slate-500">
+            <div className="flex items-center text-xs text-grx-muted">
               <span>This month</span>
             </div>
           </div>
-        ) : null}
+        )}
       </div>
 
-      {/* Secondary Metrics - Role-based */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Pending Leaves - Different labels for different roles */}
+      {/* Secondary Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 grx-stagger">
+        {/* Pending Leaves */}
         {(isAdmin || isManager) && (
-          <div 
-            className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all cursor-pointer group"
+          <div
+            className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-slate-100 dark:border-grx-primary-800 hover:border-grx-primary-200 dark:hover:border-grx-primary-600 transition-all duration-200 cursor-pointer group"
+            style={{ boxShadow: 'var(--shadow-sm)' }}
             onClick={() => onChangeView(View.LEAVES)}
           >
             <div className="flex justify-between items-center">
               <div>
-                <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
+                <p className="text-sm font-medium text-grx-muted">
                   {isManager ? 'Team Leave Requests' : 'Pending Leave Requests'}
                 </p>
                 <h3 className="text-2xl font-bold text-amber-600 dark:text-amber-400 mt-1">{stats.hrms.pendingLeaves}</h3>
               </div>
-              <div className="p-2.5 bg-amber-50 dark:bg-amber-900/30 rounded-lg text-amber-600 dark:text-amber-400">
+              <div className="p-2.5 bg-amber-50 dark:bg-amber-900/20 rounded-lg text-amber-600 dark:text-amber-400">
                 <Clock size={20} />
               </div>
             </div>
           </div>
         )}
 
-        {/* Payroll This Month - Only for Admin/HR/Finance/Manager */}
+        {/* Payroll This Month */}
         {(isAdmin || isManager) && (
-          <div 
-            className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all cursor-pointer group"
+          <div
+            className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-slate-100 dark:border-grx-primary-800 hover:border-grx-primary-200 dark:hover:border-grx-primary-600 transition-all duration-200 cursor-pointer group"
+            style={{ boxShadow: 'var(--shadow-sm)' }}
             onClick={() => onChangeView(View.PAYROLL)}
           >
             <div className="flex justify-between items-center">
               <div>
-                <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
+                <p className="text-sm font-medium text-grx-muted">
                   {isManager ? 'Team Payroll' : 'Payroll (This Month)'}
                 </p>
-                <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mt-1">{formatINR(stats.hrms.totalNetPay)}</h3>
+                <h3 className="text-2xl font-bold text-grx-primary dark:text-grx-primary-300 mt-1">{formatINR(stats.hrms.totalNetPay)}</h3>
               </div>
-              <div className="p-2.5 bg-blue-50 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
+              <div className="p-2.5 bg-grx-primary-50 dark:bg-grx-primary-800 rounded-lg text-grx-primary dark:text-grx-primary-300">
                 <Wallet size={20} />
               </div>
             </div>
-            <div className="mt-2 text-xs text-slate-400 dark:text-slate-500">
+            <div className="mt-2 text-xs text-grx-muted">
               {stats.hrms.payslipCount} payslips processed
             </div>
           </div>
         )}
 
-        {/* Goal Completion - All roles, different labels */}
-        <div 
-          className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all cursor-pointer group"
+        {/* Goal Completion */}
+        <div
+          className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-slate-100 dark:border-grx-primary-800 hover:border-grx-primary-200 dark:hover:border-grx-primary-600 transition-all duration-200 cursor-pointer group"
+          style={{ boxShadow: 'var(--shadow-sm)' }}
           onClick={() => onChangeView(View.GOALS)}
         >
           <div className="flex justify-between items-center">
             <div>
-              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
+              <p className="text-sm font-medium text-grx-muted">
                 {isEmployee ? 'My Goals' : isManager ? 'Team Goals' : 'Goal Completion'}
               </p>
-              <h3 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400 mt-1">{stats.os.goalCompletionRate}%</h3>
+              <h3 className="text-2xl font-bold text-grx-accent dark:text-grx-accent-300 mt-1">{stats.os.goalCompletionRate}%</h3>
             </div>
-            <div className="p-2.5 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400">
+            <div className="p-2.5 bg-grx-accent-50 dark:bg-grx-accent-900/20 rounded-lg text-grx-accent dark:text-grx-accent-300">
               <Target size={20} />
             </div>
           </div>
-          <div className="mt-2 text-xs text-slate-400 dark:text-slate-500">
+          <div className="mt-2 text-xs text-grx-muted">
             {stats.os.completedGoals} of {stats.os.totalGoals} completed
           </div>
         </div>
@@ -359,35 +373,34 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
       {/* Recent Activity & Quick Actions */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Activity */}
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl border border-slate-100 dark:border-grx-primary-800" style={{ boxShadow: 'var(--shadow-sm)' }}>
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">Recent Activity</h3>
-            <Clock size={18} className="text-slate-400 dark:text-slate-500" />
+            <h3 className="text-lg font-semibold text-grx-text dark:text-white">Recent Activity</h3>
+            <Clock size={18} className="text-grx-muted" />
           </div>
-          
+
           <div className="space-y-3">
-            {/* Recent Leaves */}
             {stats.recentActivity.leaves.slice(0, 3).map((leave) => (
-              <div key={leave.id} className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+              <div key={leave.id} className="flex items-center justify-between p-3 bg-grx-bg dark:bg-grx-primary-800/50 rounded-lg transition-colors hover:bg-grx-primary-50 dark:hover:bg-grx-primary-800">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
-                    <Calendar size={16} className="text-blue-600 dark:text-blue-400" />
+                  <div className="p-2 bg-grx-primary-50 dark:bg-grx-primary-800 rounded-lg">
+                    <Calendar size={16} className="text-grx-primary dark:text-grx-primary-300" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-slate-800 dark:text-slate-100">
+                    <p className="text-sm font-medium text-grx-text dark:text-white">
                       {leave.employeeName} - {leave.type}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <p className="text-xs text-grx-muted">
                       {formatDate(leave.startDate)} - {formatDate(leave.endDate)}
                     </p>
                   </div>
                 </div>
                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                  leave.status === 'Approved' 
-                    ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'
+                  leave.status === 'Approved'
+                    ? 'bg-emerald-100 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400'
                     : leave.status === 'Pending'
-                    ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400'
-                    : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+                    ? 'bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400'
+                    : 'bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400'
                 }`}>
                   {leave.status}
                 </span>
@@ -395,7 +408,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
             ))}
 
             {stats.recentActivity.leaves.length === 0 && (
-              <div className="text-center py-8 text-slate-400 dark:text-slate-500 text-sm">
+              <div className="text-center py-8 text-grx-muted text-sm">
                 No recent leave requests
               </div>
             )}
@@ -403,80 +416,74 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl border border-slate-100 dark:border-grx-primary-800" style={{ boxShadow: 'var(--shadow-sm)' }}>
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">Quick Actions</h3>
-            <Briefcase size={18} className="text-slate-400 dark:text-slate-500" />
+            <h3 className="text-lg font-semibold text-grx-text dark:text-white">Quick Actions</h3>
+            <Briefcase size={18} className="text-grx-muted" />
           </div>
-          
+
           <div className="grid grid-cols-2 gap-3">
-            {/* Add Employee - Only for Admin/HR */}
             {isAdmin && (
               <button
                 onClick={() => onChangeView(View.EMPLOYEES)}
-                className="p-4 bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-900/50 rounded-lg text-left transition-colors group"
+                className="p-4 bg-grx-primary-50 dark:bg-grx-primary-800/50 hover:bg-grx-primary-100 dark:hover:bg-grx-primary-800 rounded-lg text-left transition-colors duration-200 group grx-btn-press grx-focus-ring"
               >
-                <UserPlus size={20} className="text-blue-600 dark:text-blue-400 mb-2" />
-                <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Add Employee</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Onboard new team member</p>
+                <UserPlus size={20} className="text-grx-primary dark:text-grx-primary-300 mb-2" />
+                <p className="text-sm font-medium text-grx-text dark:text-white">Add Employee</p>
+                <p className="text-xs text-grx-muted mt-1">Onboard new team member</p>
               </button>
             )}
 
-            {/* Create Invoice - Only for Admin/Finance */}
             {isAdmin && (
               <button
                 onClick={() => onChangeView(View.INVOICES)}
-                className="p-4 bg-purple-50 dark:bg-purple-900/30 hover:bg-purple-100 dark:hover:bg-purple-900/50 rounded-lg text-left transition-colors group"
+                className="p-4 bg-grx-accent-50 dark:bg-grx-accent-900/10 hover:bg-grx-accent-100 dark:hover:bg-grx-accent-900/20 rounded-lg text-left transition-colors duration-200 group grx-btn-press grx-focus-ring"
               >
-                <FileText size={20} className="text-purple-600 dark:text-purple-400 mb-2" />
-                <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Create Invoice</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Generate new invoice</p>
+                <FileText size={20} className="text-grx-accent dark:text-grx-accent-300 mb-2" />
+                <p className="text-sm font-medium text-grx-text dark:text-white">Create Invoice</p>
+                <p className="text-xs text-grx-muted mt-1">Generate new invoice</p>
               </button>
             )}
 
-            {/* Check Attendance - All roles */}
             <button
               onClick={() => onChangeView(View.ATTENDANCE)}
-              className="p-4 bg-emerald-50 dark:bg-emerald-900/30 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 rounded-lg text-left transition-colors group"
+              className="p-4 bg-emerald-50 dark:bg-emerald-900/10 hover:bg-emerald-100 dark:hover:bg-emerald-900/20 rounded-lg text-left transition-colors duration-200 group grx-btn-press grx-focus-ring"
             >
               <CalendarCheck size={20} className="text-emerald-600 dark:text-emerald-400 mb-2" />
-              <p className="text-sm font-medium text-slate-800 dark:text-slate-100">
+              <p className="text-sm font-medium text-grx-text dark:text-white">
                 {isEmployee ? 'My Attendance' : 'Check Attendance'}
               </p>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">View attendance logs</p>
+              <p className="text-xs text-grx-muted mt-1">View attendance logs</p>
             </button>
 
-            {/* Request Leave - For Employee */}
             {isEmployee && (
               <button
                 onClick={() => onChangeView(View.LEAVES)}
-                className="p-4 bg-amber-50 dark:bg-amber-900/30 hover:bg-amber-100 dark:hover:bg-amber-900/50 rounded-lg text-left transition-colors group"
+                className="p-4 bg-amber-50 dark:bg-amber-900/10 hover:bg-amber-100 dark:hover:bg-amber-900/20 rounded-lg text-left transition-colors duration-200 group grx-btn-press grx-focus-ring"
               >
                 <Calendar size={20} className="text-amber-600 dark:text-amber-400 mb-2" />
-                <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Request Leave</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Apply for leave</p>
+                <p className="text-sm font-medium text-grx-text dark:text-white">Request Leave</p>
+                <p className="text-xs text-grx-muted mt-1">Apply for leave</p>
               </button>
             )}
 
-            {/* Set Goals - All roles */}
             <button
               onClick={() => onChangeView(View.GOALS)}
-              className="p-4 bg-indigo-50 dark:bg-indigo-900/30 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 rounded-lg text-left transition-colors group"
+              className="p-4 bg-grx-primary-50 dark:bg-grx-primary-800/50 hover:bg-grx-primary-100 dark:hover:bg-grx-primary-800 rounded-lg text-left transition-colors duration-200 group grx-btn-press grx-focus-ring"
             >
-              <Target size={20} className="text-indigo-600 dark:text-indigo-400 mb-2" />
-              <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Set Goals</p>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Create new goals</p>
+              <Target size={20} className="text-grx-primary dark:text-grx-primary-300 mb-2" />
+              <p className="text-sm font-medium text-grx-text dark:text-white">Set Goals</p>
+              <p className="text-xs text-grx-muted mt-1">Create new goals</p>
             </button>
 
-            {/* View Team - For Manager */}
             {isManager && (
               <button
                 onClick={() => onChangeView(View.EMPLOYEES)}
-                className="p-4 bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-900/50 rounded-lg text-left transition-colors group"
+                className="p-4 bg-grx-primary-50 dark:bg-grx-primary-800/50 hover:bg-grx-primary-100 dark:hover:bg-grx-primary-800 rounded-lg text-left transition-colors duration-200 group grx-btn-press grx-focus-ring"
               >
-                <Users size={20} className="text-blue-600 dark:text-blue-400 mb-2" />
-                <p className="text-sm font-medium text-slate-800 dark:text-slate-100">View Team</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Manage team members</p>
+                <Users size={20} className="text-grx-primary dark:text-grx-primary-300 mb-2" />
+                <p className="text-sm font-medium text-grx-text dark:text-white">View Team</p>
+                <p className="text-xs text-grx-muted mt-1">Manage team members</p>
               </button>
             )}
           </div>
@@ -487,4 +494,3 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
 };
 
 export default MainDashboard;
-

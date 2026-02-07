@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Sidebar from '../shared/components/layout/Sidebar';
 import DashboardPage from '../features/dashboard/pages/DashboardPage';
 import MainDashboard from '../features/dashboard/pages/MainDashboard';
@@ -75,6 +75,10 @@ import { ConfigurationProvider } from '../shared/contexts/ConfigurationContext';
 import { ThemeProvider } from '../shared/contexts/ThemeContext';
 import { AuthProvider } from '../shared/contexts/AuthContext';
 import { EmployeeProvider } from '../shared/contexts/EmployeeContext';
+// Design System
+import { Header } from '../shared/design-system/Header';
+import { ToastProvider } from '../shared/design-system/Toast';
+import { GRX10Logo } from '../shared/design-system/GRX10Logo';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>(View.DASHBOARD);
@@ -82,6 +86,7 @@ const App: React.FC = () => {
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<string | null>(null);
+  const [pageKey, setPageKey] = useState(0);
 
   // Auth State
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -127,6 +132,7 @@ const App: React.FC = () => {
 
   const handleViewChange = (view: View, employeeId?: string) => {
     setCurrentView(view);
+    setPageKey(prev => prev + 1);
     if (employeeId) {
       setSelectedEmployeeId(employeeId);
     } else {
@@ -136,18 +142,27 @@ const App: React.FC = () => {
 
   const handleBackToEmployees = () => {
     setCurrentView(View.EMPLOYEES);
+    setPageKey(prev => prev + 1);
     setSelectedEmployeeId(null);
   };
 
+  const handleNavigateHome = () => {
+    setCurrentView(View.DASHBOARD);
+    setPageKey(prev => prev + 1);
+  };
+
+  const handleToggleSidebar = () => {
+    setIsSidebarCollapsed(prev => !prev);
+  };
+
   const renderContent = () => {
-    // Show Finance Dashboard for Finance users, Main Dashboard for others
     const isFinanceUser = user?.role === 'Finance';
-    
+
     switch (currentView) {
-      case View.DASHBOARD: 
-        return isFinanceUser 
-          ? <FinanceDashboard onChangeView={setCurrentView} />
-          : <MainDashboard onChangeView={setCurrentView} />;
+      case View.DASHBOARD:
+        return isFinanceUser
+          ? <FinanceDashboard onChangeView={(v: View) => handleViewChange(v)} />
+          : <MainDashboard onChangeView={(v: View) => handleViewChange(v)} />;
       case View.INVOICES: return <InvoicesPage invoices={invoices} onCreateInvoice={handleAddInvoice} initialTemplateId={selectedTemplate} />;
       case View.MIGRATION: return <MigrationPage onImport={handleImport} />;
       case View.ASSISTANT: return <AiAssistantPage invoices={invoices} />;
@@ -174,8 +189,8 @@ const App: React.FC = () => {
       case View.EMPLOYEES: return <HRMSProvider><Employees onViewChange={handleViewChange} /></HRMSProvider>;
       case View.EMPLOYEE_DETAILS: return selectedEmployeeId ? (
         <HRMSProvider>
-          <EmployeeDetails 
-            employeeId={selectedEmployeeId} 
+          <EmployeeDetails
+            employeeId={selectedEmployeeId}
             onBack={handleBackToEmployees}
             onViewChange={handleViewChange}
           />
@@ -208,7 +223,7 @@ const App: React.FC = () => {
       case View.SECURITY_PERMISSIONS: return <PermissionsPage />;
       case View.SECURITY_USER_ROLES: return <UserRolesPage />;
       case View.SECURITY_APPROVAL_WORKFLOWS: return <ApprovalWorkflowsPage />;
-      case View.SECURITY_APPROVAL_REQUESTS: return <div className="p-8"><h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Approval Requests</h2><p className="text-slate-600 dark:text-slate-400 mt-2">Approval requests page coming soon...</p></div>;
+      case View.SECURITY_APPROVAL_REQUESTS: return <div className="p-8 grx-animate-fade-in-up"><h2 className="text-2xl font-bold text-grx-text dark:text-white">Approval Requests</h2><p className="text-grx-muted mt-2">Approval requests page coming soon...</p></div>;
       // Reports Views
       case View.REPORT_TRIAL_BALANCE: return <TrialBalancePage />;
       case View.REPORT_BALANCE_SHEET: return <BalanceSheetPage />;
@@ -224,11 +239,17 @@ const App: React.FC = () => {
     }
   };
 
+  // Branded loading screen
   if (isAuthLoading) {
     return (
       <ThemeProvider>
-        <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">
-          <Loader2 className="animate-spin text-indigo-600 dark:text-indigo-400" size={48} />
+        <div className="grx-brand-loader">
+          <div className="grx-brand-logo">
+            <GRX10Logo size="xl" variant="mark" />
+          </div>
+          <div className="grx-brand-bar">
+            <div className="grx-brand-bar-fill" />
+          </div>
         </div>
       </ThemeProvider>
     );
@@ -244,27 +265,45 @@ const App: React.FC = () => {
 
   return (
     <ThemeProvider>
-      <EmployeeProvider>
-        <AuthProvider>
-          <ConfigurationProvider>
-            <div className="flex min-h-screen bg-[#f8fafc] dark:bg-slate-900">
-              <Sidebar 
-                currentView={currentView} 
-                onChangeView={setCurrentView}
-                onCollapseChange={setIsSidebarCollapsed}
-              />
-              <main className={`flex-1 transition-all duration-300 bg-slate-50 dark:bg-slate-900 ${isSidebarCollapsed ? 'ml-16' : 'ml-64'}`}>
-                <div className="flex justify-end items-center px-8 pt-4 pb-0">
-                  <NotificationBell />
-                </div>
-                <div className="p-8 pt-2">
-                  {renderContent()}
-                </div>
-              </main>
-            </div>
-          </ConfigurationProvider>
-        </AuthProvider>
-      </EmployeeProvider>
+      <ToastProvider>
+        <EmployeeProvider>
+          <AuthProvider>
+            <ConfigurationProvider>
+              <div className="min-h-screen bg-grx-bg dark:bg-grx-dark">
+                {/* Fixed Header */}
+                <Header
+                  onNavigateHome={handleNavigateHome}
+                  user={user}
+                  isSidebarCollapsed={isSidebarCollapsed}
+                  onToggleSidebar={handleToggleSidebar}
+                />
+
+                {/* Sidebar (below header) */}
+                <Sidebar
+                  currentView={currentView}
+                  onChangeView={(v: View) => handleViewChange(v)}
+                  onCollapseChange={setIsSidebarCollapsed}
+                  isCollapsed={isSidebarCollapsed}
+                />
+
+                {/* Main content area */}
+                <main
+                  className={`pt-16 transition-all duration-300 ${
+                    isSidebarCollapsed ? 'ml-16' : 'ml-64'
+                  }`}
+                >
+                  <div className="flex justify-end items-center px-8 pt-4 pb-0">
+                    <NotificationBell />
+                  </div>
+                  <div key={pageKey} className="p-8 grx-page-enter">
+                    {renderContent()}
+                  </div>
+                </main>
+              </div>
+            </ConfigurationProvider>
+          </AuthProvider>
+        </EmployeeProvider>
+      </ToastProvider>
     </ThemeProvider>
   );
 };
