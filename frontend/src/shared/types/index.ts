@@ -307,6 +307,7 @@ export interface Employee {
   certifications?: Certification[];
   // Hiring History (from related table)
   hiringHistory?: HiringHistory[];
+  permissions?: string[];
 }
 
 export enum LeaveType {

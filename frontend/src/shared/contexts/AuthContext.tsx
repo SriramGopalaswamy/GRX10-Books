@@ -3,9 +3,12 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Employee, HRMSRole as Role } from '../types';
 import { MOCK_EMPLOYEES } from '../constants/app.constants';
 import { useEmployees } from './EmployeeContext';
+import { ROLE_PERMISSION_FALLBACK } from '../security/permissions';
 
 interface AuthContextType {
   user: Employee | null;
+  permissions: string[];
+  hasPermission: (permission: string) => boolean;
   login: (email: string, password?: string) => Promise<void>;
   logout: () => void;
   resetPassword: (email: string) => Promise<void>;
@@ -17,6 +20,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<Employee | null>(null);
+  const [permissions, setPermissions] = useState<string[]>([]);
   const { employees, updateEmployee } = useEmployees();
 
   useEffect(() => {
@@ -28,11 +32,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (data.isAuthenticated && data.user) {
           // Convert backend user to Employee format
           const backendUser = data.user;
+          const backendPermissions: string[] = Array.isArray(backendUser.permissions) ? backendUser.permissions : [];
           // Try to find matching employee in the employees list
           const employee = employees.find(e => e.id === backendUser.id || e.email === backendUser.email);
           if (employee) {
-            setUser(employee);
-            localStorage.setItem('grx10_user', JSON.stringify(employee));
+            const enrichedEmployee = { ...employee, permissions: backendPermissions };
+            setUser(enrichedEmployee);
+            setPermissions(backendPermissions);
+            localStorage.setItem('grx10_user', JSON.stringify(enrichedEmployee));
+            localStorage.setItem('grx10_permissions', JSON.stringify(backendPermissions));
           } else {
             // If employee not found in list yet, create a temporary user object
             const tempUser: Employee = {
@@ -45,16 +53,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               joinDate: '',
               status: 'Active',
               avatar: '',
-              password: ''
+              password: '',
+              permissions: backendPermissions
             };
             setUser(tempUser);
+            setPermissions(backendPermissions);
             localStorage.setItem('grx10_user', JSON.stringify(tempUser));
+            localStorage.setItem('grx10_permissions', JSON.stringify(backendPermissions));
           }
         } else {
           // Check local storage as fallback
           const savedUser = localStorage.getItem('grx10_user');
           if (savedUser) {
             setUser(JSON.parse(savedUser));
+            const savedPermissions = localStorage.getItem('grx10_permissions');
+            if (savedPermissions) {
+              setPermissions(JSON.parse(savedPermissions));
+            }
           }
         }
       } catch (error) {
@@ -63,6 +78,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const savedUser = localStorage.getItem('grx10_user');
         if (savedUser) {
           setUser(JSON.parse(savedUser));
+          const savedPermissions = localStorage.getItem('grx10_permissions');
+          if (savedPermissions) {
+            setPermissions(JSON.parse(savedPermissions));
+          }
         }
       }
     };
@@ -90,8 +109,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       throw new Error("Invalid credentials");
     }
 
-    setUser(foundUser);
-    localStorage.setItem('grx10_user', JSON.stringify(foundUser));
+    const fallbackPermissions = ROLE_PERMISSION_FALLBACK[foundUser.role] || [];
+    const enrichedUser = { ...foundUser, permissions: fallbackPermissions };
+    setUser(enrichedUser);
+    setPermissions(fallbackPermissions);
+    localStorage.setItem('grx10_user', JSON.stringify(enrichedUser));
+    localStorage.setItem('grx10_permissions', JSON.stringify(fallbackPermissions));
   };
 
   const logout = async () => {
@@ -103,7 +126,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } finally {
       // Clear local state regardless of API call result
       setUser(null);
+      setPermissions([]);
       localStorage.removeItem('grx10_user');
+      localStorage.removeItem('grx10_permissions');
     }
   };
 
@@ -127,8 +152,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return;
   };
 
+  const hasPermission = (permission: string) => permissions.includes(permission);
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, resetPassword, activateAccount, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, permissions, hasPermission, login, logout, resetPassword, activateAccount, isAuthenticated: !!user }}>
       {children}
     </AuthContext.Provider>
   );

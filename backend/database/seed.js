@@ -8,7 +8,8 @@
 
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
-import { sequelize, Customer, Ledger, User, Employee, LeaveRequest, AttendanceRecord, RegularizationRequest, Payslip, Organization, Department, Position, HRMSRole, EmployeeType, Holiday, LeaveType, WorkLocation, Skill, Language, ChartOfAccount } from '../src/config/database.js';
+import { sequelize, Customer, Ledger, User, Employee, LeaveRequest, AttendanceRecord, RegularizationRequest, Payslip, Organization, Department, Position, HRMSRole, EmployeeType, Holiday, LeaveType, WorkLocation, Skill, Language, ChartOfAccount, Role, Permission, RolePermission, UserRole } from '../src/config/database.js';
+import { PERMISSIONS, ROLE_CODES, ROLE_PERMISSIONS, EMPLOYEE_ROLE_TO_CODE } from '../src/security/permissions.js';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
@@ -31,6 +32,50 @@ async function seedDatabase() {
         // Initialize database (sync models)
         await sequelize.sync();
         console.log('✅ Database models synced\n');
+
+        // Seed Roles & Permissions
+        console.log('📝 Seeding Roles & Permissions...');
+        const roleEntries = Object.values(ROLE_CODES).map(roleCode => ({
+            id: `role-${roleCode.toLowerCase()}`,
+            name: roleCode.replace('_', ' '),
+            code: roleCode,
+            description: `${roleCode.replace('_', ' ')} role`,
+            isSystemRole: true,
+            isActive: true
+        }));
+
+        for (const role of roleEntries) {
+            await Role.findOrCreate({ where: { code: role.code }, defaults: role });
+        }
+
+        for (const permission of PERMISSIONS) {
+            await Permission.findOrCreate({
+                where: { code: permission.code },
+                defaults: {
+                    id: `perm-${permission.code}`,
+                    ...permission,
+                    isActive: true
+                }
+            });
+        }
+
+        for (const [roleCode, permissionCodes] of Object.entries(ROLE_PERMISSIONS)) {
+            const role = await Role.findOne({ where: { code: roleCode } });
+            if (!role) continue;
+            for (const permissionCode of permissionCodes) {
+                const permission = await Permission.findOne({ where: { code: permissionCode } });
+                if (!permission) continue;
+                await RolePermission.findOrCreate({
+                    where: { roleId: role.id, permissionId: permission.id },
+                    defaults: {
+                        id: `rp-${role.id}-${permission.id}`,
+                        roleId: role.id,
+                        permissionId: permission.id
+                    }
+                });
+            }
+        }
+        console.log('   ✅ Roles & Permissions ready');
 
         // Seed Ledgers (Chart of Accounts)
         console.log('📝 Seeding Ledgers...');
@@ -106,6 +151,37 @@ async function seedDatabase() {
             });
         }
         console.log(`   ✅ Created ${employees.length} Sample Employees`);
+
+        // Ensure User records and role assignments for employees
+        console.log('📝 Assigning Roles to Users...');
+        for (const employee of employees) {
+            const [user] = await User.findOrCreate({
+                where: { id: employee.id },
+                defaults: {
+                    id: employee.id,
+                    username: employee.email?.split('@')[0] || employee.id,
+                    email: employee.email,
+                    displayName: employee.name,
+                    role: employee.role?.toLowerCase() || 'user',
+                    isActive: true
+                }
+            });
+            const roleCode = EMPLOYEE_ROLE_TO_CODE[employee.role] || ROLE_CODES.EMPLOYEE;
+            const role = await Role.findOne({ where: { code: roleCode } });
+            if (role) {
+                await UserRole.findOrCreate({
+                    where: { userId: user.id, roleId: role.id },
+                    defaults: {
+                        id: `ur-${user.id}-${role.id}`,
+                        userId: user.id,
+                        roleId: role.id,
+                        assignedAt: new Date(),
+                        isActive: true
+                    }
+                });
+            }
+        }
+        console.log('   ✅ User role assignments complete');
 
         // Seed Leave Requests
         console.log('📝 Seeding Leave Requests...');
@@ -455,4 +531,3 @@ seedDatabase().catch(error => {
     console.error('Fatal error:', error);
     process.exit(1);
 });
-

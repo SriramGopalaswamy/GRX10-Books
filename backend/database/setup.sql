@@ -481,6 +481,130 @@ CREATE INDEX "idx_osNotifications_userId" ON "OSNotifications"("userId");
 CREATE INDEX "idx_osNotifications_read" ON "OSNotifications"("read");
 
 -- ============================================
+-- Security & Approval Tables
+-- ============================================
+
+CREATE TABLE "Roles" (
+    "id" VARCHAR(255) PRIMARY KEY,
+    "name" VARCHAR(255) NOT NULL UNIQUE,
+    "code" VARCHAR(255) UNIQUE,
+    "description" TEXT,
+    "isSystemRole" BOOLEAN DEFAULT false,
+    "isActive" BOOLEAN DEFAULT true,
+    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE "Permissions" (
+    "id" VARCHAR(255) PRIMARY KEY,
+    "name" VARCHAR(255) NOT NULL UNIQUE,
+    "code" VARCHAR(255) UNIQUE NOT NULL,
+    "module" VARCHAR(255) NOT NULL,
+    "resource" VARCHAR(255) NOT NULL,
+    "action" VARCHAR(255) NOT NULL,
+    "description" TEXT,
+    "isActive" BOOLEAN DEFAULT true,
+    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE "RolePermissions" (
+    "id" VARCHAR(255) PRIMARY KEY,
+    "roleId" VARCHAR(255) NOT NULL,
+    "permissionId" VARCHAR(255) NOT NULL,
+    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "RolePermissions_roleId_fkey" FOREIGN KEY ("roleId")
+        REFERENCES "Roles"("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "RolePermissions_permissionId_fkey" FOREIGN KEY ("permissionId")
+        REFERENCES "Permissions"("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE "UserRoles" (
+    "id" VARCHAR(255) PRIMARY KEY,
+    "userId" VARCHAR(255) NOT NULL,
+    "roleId" VARCHAR(255) NOT NULL,
+    "assignedBy" VARCHAR(255),
+    "assignedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "isActive" BOOLEAN DEFAULT true,
+    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "UserRoles_userId_fkey" FOREIGN KEY ("userId")
+        REFERENCES "Users"("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "UserRoles_roleId_fkey" FOREIGN KEY ("roleId")
+        REFERENCES "Roles"("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE "ApprovalWorkflows" (
+    "id" VARCHAR(255) PRIMARY KEY,
+    "name" VARCHAR(255) NOT NULL,
+    "module" VARCHAR(255) NOT NULL,
+    "resource" VARCHAR(255) NOT NULL,
+    "workflowType" VARCHAR(255) NOT NULL,
+    "isActive" BOOLEAN DEFAULT true,
+    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE "ApprovalWorkflowSteps" (
+    "id" VARCHAR(255) PRIMARY KEY,
+    "workflowId" VARCHAR(255) NOT NULL,
+    "stepOrder" INTEGER NOT NULL,
+    "approverType" VARCHAR(255) NOT NULL,
+    "approverId" VARCHAR(255),
+    "isRequired" BOOLEAN DEFAULT true,
+    "canDelegate" BOOLEAN DEFAULT false,
+    "timeoutHours" INTEGER,
+    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "ApprovalWorkflowSteps_workflowId_fkey" FOREIGN KEY ("workflowId")
+        REFERENCES "ApprovalWorkflows"("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE "ApprovalRequests" (
+    "id" VARCHAR(255) PRIMARY KEY,
+    "workflowId" VARCHAR(255) NOT NULL,
+    "module" VARCHAR(255) NOT NULL,
+    "resource" VARCHAR(255) NOT NULL,
+    "resourceId" VARCHAR(255) NOT NULL,
+    "requestedBy" VARCHAR(255) NOT NULL,
+    "currentStep" INTEGER DEFAULT 1,
+    "status" VARCHAR(255) DEFAULT 'Pending',
+    "priority" VARCHAR(255) DEFAULT 'Normal',
+    "requestData" TEXT,
+    "comments" TEXT,
+    "completedAt" TIMESTAMP WITH TIME ZONE,
+    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "ApprovalRequests_workflowId_fkey" FOREIGN KEY ("workflowId")
+        REFERENCES "ApprovalWorkflows"("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE "ApprovalHistory" (
+    "id" VARCHAR(255) PRIMARY KEY,
+    "requestId" VARCHAR(255) NOT NULL,
+    "stepOrder" INTEGER NOT NULL,
+    "approverId" VARCHAR(255) NOT NULL,
+    "action" VARCHAR(255) NOT NULL,
+    "comments" TEXT,
+    "actionDate" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "ApprovalHistory_requestId_fkey" FOREIGN KEY ("requestId")
+        REFERENCES "ApprovalRequests"("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE INDEX "idx_roles_isActive" ON "Roles"("isActive");
+CREATE INDEX "idx_permissions_module" ON "Permissions"("module");
+CREATE INDEX "idx_permissions_resource" ON "Permissions"("resource");
+CREATE INDEX "idx_rolePermissions_roleId" ON "RolePermissions"("roleId");
+CREATE INDEX "idx_rolePermissions_permissionId" ON "RolePermissions"("permissionId");
+CREATE INDEX "idx_userRoles_userId" ON "UserRoles"("userId");
+CREATE INDEX "idx_userRoles_roleId" ON "UserRoles"("roleId");
+CREATE INDEX "idx_approvalRequests_status" ON "ApprovalRequests"("status");
+CREATE INDEX "idx_approvalHistory_requestId" ON "ApprovalHistory"("requestId");
+
+-- ============================================
 -- Configuration Tables
 -- ============================================
 
@@ -686,4 +810,3 @@ BEGIN
     RAISE NOTICE '📊 Configuration Tables: Organizations, Departments, Positions, HRMSRoles, EmployeeTypes, Holidays, LeaveTypes, WorkLocations, Skills, Languages, ChartOfAccounts';
     RAISE NOTICE '📊 Security Tables: Roles, Permissions, RolePermissions, UserRoles, ApprovalWorkflows, ApprovalWorkflowSteps, ApprovalRequests, ApprovalHistory';
 END $$;
-

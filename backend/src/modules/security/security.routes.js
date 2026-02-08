@@ -13,6 +13,7 @@ import {
     ApprovalHistory
 } from '../../config/database.js';
 import { v4 as uuidv4 } from 'uuid';
+import { requirePermission } from '../../security/requirePermission.js';
 
 const router = express.Router();
 
@@ -21,7 +22,7 @@ const router = express.Router();
 // ============================================
 
 // Get all roles
-router.get('/roles', async (req, res) => {
+router.get('/roles', requirePermission('security.read'), async (req, res) => {
     try {
         const { activeOnly } = req.query;
         const where = {};
@@ -36,7 +37,7 @@ router.get('/roles', async (req, res) => {
 });
 
 // Get role by ID with permissions
-router.get('/roles/:id', async (req, res) => {
+router.get('/roles/:id', requirePermission('security.read'), async (req, res) => {
     try {
         const role = await Role.findByPk(req.params.id, {
             include: [{ model: Permission, as: 'permissions', through: { attributes: [] } }]
@@ -51,7 +52,7 @@ router.get('/roles/:id', async (req, res) => {
 });
 
 // Create role
-router.post('/roles', async (req, res) => {
+router.post('/roles', requirePermission('security.manage'), async (req, res) => {
     try {
         const role = await Role.create({
             id: uuidv4(),
@@ -68,7 +69,7 @@ router.post('/roles', async (req, res) => {
 });
 
 // Update role
-router.put('/roles/:id', async (req, res) => {
+router.put('/roles/:id', requirePermission('security.manage'), async (req, res) => {
     try {
         const role = await Role.findByPk(req.params.id);
         if (!role) {
@@ -89,7 +90,7 @@ router.put('/roles/:id', async (req, res) => {
 });
 
 // Delete role (soft delete)
-router.delete('/roles/:id', async (req, res) => {
+router.delete('/roles/:id', requirePermission('security.manage'), async (req, res) => {
     try {
         const role = await Role.findByPk(req.params.id);
         if (!role) {
@@ -106,7 +107,7 @@ router.delete('/roles/:id', async (req, res) => {
 });
 
 // Assign permissions to role
-router.post('/roles/:id/permissions', async (req, res) => {
+router.post('/roles/:id/permissions', requirePermission('security.manage'), async (req, res) => {
     try {
         const { permissionIds } = req.body;
         const role = await Role.findByPk(req.params.id);
@@ -141,7 +142,7 @@ router.post('/roles/:id/permissions', async (req, res) => {
 // ============================================
 
 // Get all permissions
-router.get('/permissions', async (req, res) => {
+router.get('/permissions', requirePermission('security.read'), async (req, res) => {
     try {
         const { module, resource, activeOnly } = req.query;
         const where = {};
@@ -158,7 +159,7 @@ router.get('/permissions', async (req, res) => {
 });
 
 // Get permission by ID
-router.get('/permissions/:id', async (req, res) => {
+router.get('/permissions/:id', requirePermission('security.read'), async (req, res) => {
     try {
         const permission = await Permission.findByPk(req.params.id);
         if (!permission) {
@@ -171,7 +172,7 @@ router.get('/permissions/:id', async (req, res) => {
 });
 
 // Create permission
-router.post('/permissions', async (req, res) => {
+router.post('/permissions', requirePermission('security.manage'), async (req, res) => {
     try {
         const permission = await Permission.create({
             id: uuidv4(),
@@ -188,7 +189,7 @@ router.post('/permissions', async (req, res) => {
 });
 
 // Update permission
-router.put('/permissions/:id', async (req, res) => {
+router.put('/permissions/:id', requirePermission('security.manage'), async (req, res) => {
     try {
         const permission = await Permission.findByPk(req.params.id);
         if (!permission) {
@@ -206,7 +207,7 @@ router.put('/permissions/:id', async (req, res) => {
 });
 
 // Delete permission (soft delete)
-router.delete('/permissions/:id', async (req, res) => {
+router.delete('/permissions/:id', requirePermission('security.manage'), async (req, res) => {
     try {
         const permission = await Permission.findByPk(req.params.id);
         if (!permission) {
@@ -224,7 +225,7 @@ router.delete('/permissions/:id', async (req, res) => {
 // ============================================
 
 // Get user roles
-router.get('/users/:userId/roles', async (req, res) => {
+router.get('/users/:userId/roles', requirePermission('security.read'), async (req, res) => {
     try {
         const userRoles = await UserRole.findAll({
             where: { userId: req.params.userId, isActive: true },
@@ -237,7 +238,7 @@ router.get('/users/:userId/roles', async (req, res) => {
 });
 
 // Assign role to user
-router.post('/users/:userId/roles', async (req, res) => {
+router.post('/users/:userId/roles', requirePermission('security.manage'), async (req, res) => {
     try {
         const { roleId, assignedBy } = req.body;
         const [userRole, created] = await UserRole.findOrCreate({
@@ -263,7 +264,7 @@ router.post('/users/:userId/roles', async (req, res) => {
 });
 
 // Remove role from user
-router.delete('/users/:userId/roles/:roleId', async (req, res) => {
+router.delete('/users/:userId/roles/:roleId', requirePermission('security.manage'), async (req, res) => {
     try {
         const userRole = await UserRole.findOne({
             where: { userId: req.params.userId, roleId: req.params.roleId }
@@ -279,7 +280,7 @@ router.delete('/users/:userId/roles/:roleId', async (req, res) => {
 });
 
 // Get user permissions (all permissions from all user roles)
-router.get('/users/:userId/permissions', async (req, res) => {
+router.get('/users/:userId/permissions', requirePermission('security.read'), async (req, res) => {
     try {
         const userRoles = await UserRole.findAll({
             where: { userId: req.params.userId, isActive: true },
@@ -315,7 +316,7 @@ router.get('/users/:userId/permissions', async (req, res) => {
 // ============================================
 
 // Get all workflows
-router.get('/approval-workflows', async (req, res) => {
+router.get('/approval-workflows', requirePermission('security.read'), async (req, res) => {
     try {
         const { module, resource, activeOnly } = req.query;
         const where = {};
@@ -336,7 +337,7 @@ router.get('/approval-workflows', async (req, res) => {
 });
 
 // Get workflow by ID
-router.get('/approval-workflows/:id', async (req, res) => {
+router.get('/approval-workflows/:id', requirePermission('security.read'), async (req, res) => {
     try {
         const workflow = await ApprovalWorkflow.findByPk(req.params.id, {
             include: [{ model: ApprovalWorkflowStep, as: 'steps', order: [['stepOrder', 'ASC']] }]
@@ -351,7 +352,7 @@ router.get('/approval-workflows/:id', async (req, res) => {
 });
 
 // Create workflow
-router.post('/approval-workflows', async (req, res) => {
+router.post('/approval-workflows', requirePermission('security.manage'), async (req, res) => {
     try {
         const { steps, ...workflowData } = req.body;
         const workflow = await ApprovalWorkflow.create({
@@ -379,7 +380,7 @@ router.post('/approval-workflows', async (req, res) => {
 });
 
 // Update workflow
-router.put('/approval-workflows/:id', async (req, res) => {
+router.put('/approval-workflows/:id', requirePermission('security.manage'), async (req, res) => {
     try {
         const { steps, ...workflowData } = req.body;
         const workflow = await ApprovalWorkflow.findByPk(req.params.id);
@@ -413,7 +414,7 @@ router.put('/approval-workflows/:id', async (req, res) => {
 });
 
 // Delete workflow (soft delete)
-router.delete('/approval-workflows/:id', async (req, res) => {
+router.delete('/approval-workflows/:id', requirePermission('security.manage'), async (req, res) => {
     try {
         const workflow = await ApprovalWorkflow.findByPk(req.params.id);
         if (!workflow) {
@@ -431,7 +432,7 @@ router.delete('/approval-workflows/:id', async (req, res) => {
 // ============================================
 
 // Get all approval requests
-router.get('/approval-requests', async (req, res) => {
+router.get('/approval-requests', requirePermission('security.read'), async (req, res) => {
     try {
         const { status, module, requestedBy, assignedTo } = req.query;
         const where = {};
@@ -455,7 +456,7 @@ router.get('/approval-requests', async (req, res) => {
 });
 
 // Get approval request by ID
-router.get('/approval-requests/:id', async (req, res) => {
+router.get('/approval-requests/:id', requirePermission('security.read'), async (req, res) => {
     try {
         const request = await ApprovalRequest.findByPk(req.params.id, {
             include: [
@@ -474,7 +475,7 @@ router.get('/approval-requests/:id', async (req, res) => {
 });
 
 // Create approval request
-router.post('/approval-requests', async (req, res) => {
+router.post('/approval-requests', requirePermission('security.manage'), async (req, res) => {
     try {
         const request = await ApprovalRequest.create({
             id: uuidv4(),
@@ -493,7 +494,7 @@ router.post('/approval-requests', async (req, res) => {
 });
 
 // Process approval (approve/reject)
-router.post('/approval-requests/:id/process', async (req, res) => {
+router.post('/approval-requests/:id/process', requirePermission('security.manage'), async (req, res) => {
     try {
         const { action, comments, approverId } = req.body; // action: 'Approved', 'Rejected', 'Returned'
         const request = await ApprovalRequest.findByPk(req.params.id, {
@@ -559,7 +560,7 @@ router.post('/approval-requests/:id/process', async (req, res) => {
 });
 
 // Get pending approvals for a user
-router.get('/approval-requests/pending/:userId', async (req, res) => {
+router.get('/approval-requests/pending/:userId', requirePermission('security.read'), async (req, res) => {
     try {
         // This is a simplified version - in production, you'd check user roles, manager relationships, etc.
         const requests = await ApprovalRequest.findAll({
@@ -577,4 +578,3 @@ router.get('/approval-requests/pending/:userId', async (req, res) => {
 });
 
 export default router;
-
