@@ -120,7 +120,7 @@ export const GoalList: React.FC = () => {
         </button>
       </div>
 
-      <div className="bg-white dark:bg-grx-dark-surface rounded-xl border border-grx-primary-50 dark:border-grx-primary-800 overflow-hidden" style={{ boxShadow: 'var(--shadow-sm)' }}>
+      <div className="grx-glass-card rounded-xl border border-grx-primary-50 dark:border-grx-primary-800 overflow-hidden" style={{ boxShadow: 'var(--shadow-sm)' }}>
         <table className="min-w-full divide-y divide-grx-primary-50 dark:divide-grx-primary-800">
           <thead className="bg-grx-primary-50 dark:bg-grx-primary-900">
             <tr>
@@ -182,7 +182,7 @@ export const GoalList: React.FC = () => {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4 grx-animate-fade-in" onClick={() => setIsModalOpen(false)}>
+        <div className="fixed inset-0 grx-modal-backdrop z-50 flex items-center justify-center p-4 grx-animate-fade-in" onClick={() => setIsModalOpen(false)}>
           <div
             className="bg-white dark:bg-grx-dark-surface rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto grx-animate-scale-in"
             style={{ boxShadow: 'var(--shadow-xl)' }}
@@ -215,13 +215,13 @@ export const GoalList: React.FC = () => {
                   <button
                     onClick={handleOptimize}
                     disabled={isThinking || !editingGoal.title}
-                    className="bg-grx-primary text-white text-xs px-3 py-1.5 rounded-lg hover:bg-grx-primary-600 disabled:opacity-50 transition-colors grx-btn-press grx-focus-ring font-medium"
+                    className="bg-grx-primary text-white grx-btn-press text-xs px-3 py-1.5 rounded-lg hover:bg-grx-primary-600 disabled:opacity-50 transition-colors grx-btn-press grx-focus-ring font-medium"
                   >
                     {isThinking ? 'Thinking...' : 'Optimize'}
                   </button>
                 </div>
                 {aiSuggestion && (
-                  <div className="mt-3 p-3 bg-white dark:bg-grx-dark-surface rounded-lg border border-grx-primary-200 dark:border-grx-primary-700 text-sm text-grx-text dark:text-grx-primary-200 font-mono whitespace-pre-wrap grx-animate-fade-in-up">
+                  <div className="mt-3 p-3 grx-glass rounded-lg border border-grx-primary-200 dark:border-grx-primary-700 text-sm text-grx-text dark:text-grx-primary-200 font-mono whitespace-pre-wrap grx-animate-fade-in-up">
                     {aiSuggestion}
                   </div>
                 )}
@@ -343,7 +343,7 @@ export const GoalList: React.FC = () => {
                     <button
                       onClick={handleAddComment}
                       disabled={!newComment.trim()}
-                      className="bg-grx-primary text-white p-2.5 rounded-lg hover:bg-grx-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed grx-btn-press grx-focus-ring"
+                      className="bg-grx-primary text-white grx-btn-press p-2.5 rounded-lg hover:bg-grx-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed grx-btn-press grx-focus-ring"
                     >
                       <Send size={16} />
                     </button>
@@ -362,7 +362,7 @@ export const GoalList: React.FC = () => {
               </button>
               <button
                 onClick={handleSave}
-                className="px-5 py-2.5 bg-grx-primary text-white hover:bg-grx-primary-600 rounded-lg transition-colors grx-btn-press grx-focus-ring font-medium"
+                className="px-5 py-2.5 bg-grx-primary text-white grx-btn-press hover:bg-grx-primary-600 rounded-lg transition-colors grx-btn-press grx-focus-ring font-medium"
                 style={{ boxShadow: 'var(--shadow-sm)' }}
               >
                 Save Goal

@@ -34,7 +34,7 @@ const Accounting: React.FC = () => {
   };
 
   const renderCoA = () => (
-    <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
+    <div className="grx-glass-card rounded-xl overflow-hidden">
         <table className="w-full text-sm text-left">
            <thead className="bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-50 dark:border-grx-primary-800 text-grx-muted dark:text-grx-muted uppercase">
               <tr>
@@ -68,8 +68,8 @@ const Accounting: React.FC = () => {
   );
 
   const renderJournal = () => (
-     <div className="space-y-6">
-        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800">
+     <div className="space-y-6 grx-animate-fade-in-up">
+        <div className="grx-glass-card p-6 rounded-xl">
            <h3 className="font-semibold text-grx-text dark:text-white mb-4">Post Manual Journal</h3>
            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
@@ -110,7 +110,7 @@ const Accounting: React.FC = () => {
            </div>
            
            <div className="flex justify-end">
-              <button onClick={handlePostJournal} className="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 font-medium text-sm">Post Entry</button>
+              <button onClick={handlePostJournal} className="bg-grx-primary-600 text-white px-6 py-2 rounded hover:bg-grx-primary-700 font-medium text-sm">Post Entry</button>
            </div>
         </div>
 
@@ -135,7 +135,7 @@ const Accounting: React.FC = () => {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
       <div className="flex justify-between items-center">
          <h2 className="text-2xl font-bold text-grx-text dark:text-white">Accounting</h2>
          <div className="flex bg-grx-primary-50 dark:bg-grx-dark-surface p-1 rounded-lg">

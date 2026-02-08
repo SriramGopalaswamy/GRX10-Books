@@ -110,12 +110,12 @@ export const UserRolesPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-grx-text dark:text-white">User Role Assignment</h2>
         <button
           onClick={() => setShowAssignModal(true)}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2 transition-colors"
+          className="bg-grx-primary-600 text-white px-4 py-2 rounded-lg hover:bg-grx-primary-700 flex items-center gap-2 transition-colors"
         >
           <Plus size={18} />
           Assign Role
@@ -124,8 +124,8 @@ export const UserRolesPage: React.FC = () => {
 
       {/* Assign Role Modal */}
       {showAssignModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-xl p-6 max-w-md w-full mx-4">
+        <div className="fixed inset-0 grx-modal-backdrop flex items-center justify-center z-50">
+          <div className="grx-glass-card rounded-xl shadow-xl p-6 max-w-md w-full mx-4">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-xl font-semibold text-grx-text dark:text-white">Assign Role to User</h3>
               <button
@@ -144,7 +144,7 @@ export const UserRolesPage: React.FC = () => {
               <div>
                 <label className="block text-sm font-medium text-grx-text mb-2">User</label>
                 <select
-                  className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                  className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                   value={selectedUser}
                   onChange={e => setSelectedUser(e.target.value)}
                 >
@@ -160,7 +160,7 @@ export const UserRolesPage: React.FC = () => {
               <div>
                 <label className="block text-sm font-medium text-grx-text mb-2">Role</label>
                 <select
-                  className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                  className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                   value={assigningRoleId}
                   onChange={e => setAssigningRoleId(e.target.value)}
                 >
@@ -185,7 +185,7 @@ export const UserRolesPage: React.FC = () => {
               </button>
               <button
                 onClick={handleAssignRole}
-                className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+                className="bg-grx-primary-600 text-white px-4 py-2 rounded-lg hover:bg-grx-primary-700 transition-colors"
               >
                 Assign
               </button>
@@ -195,7 +195,7 @@ export const UserRolesPage: React.FC = () => {
       )}
 
       {/* User Roles Table */}
-      <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
+      <div className="grx-glass-card rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-100 dark:border-grx-primary-800">
@@ -219,8 +219,8 @@ export const UserRolesPage: React.FC = () => {
                     <tr key={user.id} className="hover:bg-grx-bg">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
-                            <User size={20} className="text-indigo-600" />
+                          <div className="w-10 h-10 rounded-full bg-grx-primary-100 flex items-center justify-center">
+                            <User size={20} className="text-grx-primary-600" />
                           </div>
                           <div>
                             <p className="font-medium text-grx-text dark:text-white">{user.displayName || user.username}</p>
@@ -236,7 +236,7 @@ export const UserRolesPage: React.FC = () => {
                             roles.map(ur => (
                               <span
                                 key={ur.id}
-                                className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-700"
+                                className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-grx-primary-100 text-grx-primary-700"
                               >
                                 <Shield size={14} />
                                 {ur.role.name}

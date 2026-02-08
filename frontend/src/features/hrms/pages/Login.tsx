@@ -86,7 +86,7 @@ export const Login: React.FC = () => {
       <div className="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden">
         <div className="p-8">
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-indigo-600 rounded-2xl mx-auto flex items-center justify-center text-white text-3xl font-bold mb-4 shadow-lg shadow-indigo-200">
+            <div className="w-16 h-16 bg-grx-primary-600 rounded-2xl mx-auto flex items-center justify-center text-white text-3xl font-bold mb-4 shadow-lg shadow-grx-primary-200">
               G
             </div>
             <h1 className="text-2xl font-bold text-grx-text">GRX10 HRMS</h1>
@@ -118,7 +118,7 @@ export const Login: React.FC = () => {
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-grx-muted" size={18} />
                     <input 
                       type="email" 
-                      className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-grx-primary-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-grx-primary-100 focus:ring-2 focus:ring-grx-primary focus:border-grx-primary-500 outline-none"
                       placeholder="name@grx10.com"
                       value={email}
                       onChange={e => setEmail(e.target.value)}
@@ -132,7 +132,7 @@ export const Login: React.FC = () => {
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-grx-muted" size={18} />
                     <input 
                       type="password" 
-                      className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-grx-primary-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-grx-primary-100 focus:ring-2 focus:ring-grx-primary focus:border-grx-primary-500 outline-none"
                       placeholder="••••••••"
                       value={password}
                       onChange={e => setPassword(e.target.value)}
@@ -142,7 +142,7 @@ export const Login: React.FC = () => {
                 </div>
                 
                 <div className="flex justify-end">
-                  <button type="button" onClick={() => setView('forgot')} className="text-sm text-indigo-600 hover:text-indigo-800">
+                  <button type="button" onClick={() => setView('forgot')} className="text-sm text-grx-primary-600 hover:text-grx-primary-800">
                     Forgot Password?
                   </button>
                 </div>
@@ -150,7 +150,7 @@ export const Login: React.FC = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
+                  className="w-full bg-grx-primary-600 hover:bg-grx-primary-700 text-white grx-btn-press font-semibold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
                 >
                   {loading ? 'Signing In...' : 'Sign In'}
                 </button>
@@ -193,7 +193,7 @@ export const Login: React.FC = () => {
                 </div>
 
                  <div className="text-center">
-                  <button type="button" onClick={() => setView('activate')} className="text-sm font-medium text-indigo-600 hover:text-indigo-800 flex items-center justify-center gap-1 mx-auto">
+                  <button type="button" onClick={() => setView('activate')} className="text-sm font-medium text-grx-primary-600 hover:text-grx-primary-800 flex items-center justify-center gap-1 mx-auto">
                     First time user? Activate account <ArrowRight size={14} />
                   </button>
                 </div>
@@ -208,7 +208,7 @@ export const Login: React.FC = () => {
                 <label className="block text-sm font-medium text-grx-text mb-1">Work Email</label>
                 <input 
                   type="email" 
-                  className="w-full px-4 py-2.5 rounded-lg border border-grx-primary-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="w-full px-4 py-2.5 rounded-lg border border-grx-primary-100 focus:ring-2 focus:ring-grx-primary outline-none"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   required
@@ -217,7 +217,7 @@ export const Login: React.FC = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg"
+                className="w-full bg-grx-primary-600 hover:bg-grx-primary-700 text-white grx-btn-press font-semibold py-2.5 rounded-lg"
               >
                 {loading ? 'Sending...' : 'Send Reset Link'}
               </button>
@@ -234,7 +234,7 @@ export const Login: React.FC = () => {
                 <label className="block text-sm font-medium text-grx-text mb-1">Work Email</label>
                 <input 
                   type="email" 
-                  className="w-full px-4 py-2.5 rounded-lg border border-grx-primary-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="w-full px-4 py-2.5 rounded-lg border border-grx-primary-100 focus:ring-2 focus:ring-grx-primary outline-none"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   required
@@ -244,7 +244,7 @@ export const Login: React.FC = () => {
                 <label className="block text-sm font-medium text-grx-text mb-1">New Password</label>
                 <input 
                   type="password" 
-                  className="w-full px-4 py-2.5 rounded-lg border border-grx-primary-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="w-full px-4 py-2.5 rounded-lg border border-grx-primary-100 focus:ring-2 focus:ring-grx-primary outline-none"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="Min 8 characters"

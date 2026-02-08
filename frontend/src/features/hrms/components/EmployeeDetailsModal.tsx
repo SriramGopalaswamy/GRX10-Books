@@ -99,11 +99,11 @@ export const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ empl
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in duration-200">
+    <div className="fixed inset-0 grx-modal-backdrop z-50 flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="bg-white rounded-2xl w-full max-w-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
         
         {/* Header Background */}
-        <div className="h-32 bg-gradient-to-r from-indigo-600 to-purple-600 relative">
+        <div className="h-32 bg-gradient-to-r from-grx-primary-600 to-purple-600 relative">
            <div className="absolute top-4 right-4 flex gap-2">
               {canEdit && !isEditing && (
                 <button 
@@ -142,13 +142,13 @@ export const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ empl
                 {isEditing ? (
                     <div className="space-y-2">
                         <input 
-                            className="text-2xl font-bold text-grx-text border-b border-grx-primary-100 focus:border-indigo-500 outline-none bg-transparent w-full"
+                            className="text-2xl font-bold text-grx-text border-b border-grx-primary-100 focus:border-grx-primary-500 outline-none bg-transparent w-full"
                             value={formData.name || ''}
                             onChange={e => handleChange('name', e.target.value)}
                             placeholder="Employee Name"
                         />
                          <input 
-                            className="text-grx-muted font-medium border-b border-grx-primary-100 focus:border-indigo-500 outline-none bg-transparent w-full"
+                            className="text-grx-muted font-medium border-b border-grx-primary-100 focus:border-grx-primary-500 outline-none bg-transparent w-full"
                             value={formData.designation || ''}
                             onChange={e => handleChange('designation', e.target.value)}
                             placeholder="Designation"
@@ -165,7 +165,7 @@ export const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ empl
                  {isEditing ? (
                     <>
                        <select 
-                        className="text-xs rounded-lg border border-grx-primary-100 p-1.5 bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                        className="text-xs rounded-lg border border-grx-primary-100 p-1.5 bg-white focus:ring-2 focus:ring-grx-primary outline-none"
                         value={formData.status}
                         onChange={e => handleChange('status', e.target.value)}
                        >
@@ -173,7 +173,7 @@ export const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ empl
                            <option value="Exited">Exited</option>
                        </select>
                        <select 
-                        className="text-xs rounded-lg border border-grx-primary-100 p-1.5 bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                        className="text-xs rounded-lg border border-grx-primary-100 p-1.5 bg-white focus:ring-2 focus:ring-grx-primary outline-none"
                         value={formData.role}
                         onChange={e => handleChange('role', e.target.value)}
                        >
@@ -205,7 +205,7 @@ export const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ empl
             {/* Personal Info */}
             <div className="space-y-6">
               <h3 className="text-lg font-bold text-grx-text flex items-center gap-2">
-                <User size={20} className="text-indigo-600" />
+                <User size={20} className="text-grx-primary-600" />
                 Personal Details
               </h3>
               <div className="space-y-4">
@@ -221,7 +221,7 @@ export const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ empl
                    <Briefcase size={18} className="text-grx-muted" />
                    {isEditing ? (
                        <input 
-                        className="border-b border-grx-primary-100 focus:border-indigo-500 outline-none bg-transparent flex-1"
+                        className="border-b border-grx-primary-100 focus:border-grx-primary-500 outline-none bg-transparent flex-1"
                         value={formData.department || ''}
                         onChange={e => handleChange('department', e.target.value)}
                         placeholder="Department"
@@ -302,7 +302,7 @@ export const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ empl
             {/* Activity Feed */}
             <div className="space-y-6">
               <h3 className="text-lg font-bold text-grx-text flex items-center gap-2">
-                <Clock size={20} className="text-indigo-600" />
+                <Clock size={20} className="text-grx-primary-600" />
                 Recent Activity
               </h3>
               

@@ -122,8 +122,8 @@ const CashFlowReportPage: React.FC = () => {
     bgClass: string,
     textClass: string
   ) => (
-    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-      <div className={`p-4 border-b border-slate-200 dark:border-slate-700 ${bgClass}`}>
+    <div className="grx-glass-card rounded-xl overflow-hidden">
+      <div className={`p-4 border-b border-grx-primary-100 dark:border-grx-primary-800 ${bgClass}`}>
         <h3 className={`font-bold flex items-center gap-2 ${textClass}`}>
           {icon}
           {title}
@@ -131,30 +131,30 @@ const CashFlowReportPage: React.FC = () => {
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
+          <thead className="bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-100 dark:border-grx-primary-800">
             <tr>
-              <th className="px-6 py-2 text-left text-xs font-semibold text-slate-600 dark:text-slate-400">
+              <th className="px-6 py-2 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted">
                 Description
               </th>
-              <th className="px-6 py-2 text-right text-xs font-semibold text-slate-600 dark:text-slate-400">
+              <th className="px-6 py-2 text-right text-xs font-semibold text-grx-muted dark:text-grx-muted">
                 Amount
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+          <tbody className="divide-y divide-grx-primary-100 dark:divide-grx-primary-800">
             {section.items.length === 0 ? (
               <tr>
                 <td
                   colSpan={2}
-                  className="px-6 py-6 text-center text-slate-400 dark:text-slate-500"
+                  className="px-6 py-6 text-center text-grx-muted dark:text-grx-muted"
                 >
                   No items in this section
                 </td>
               </tr>
             ) : (
               section.items.map((item, idx) => (
-                <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-700">
-                  <td className="px-6 py-3 text-slate-900 dark:text-slate-100">
+                <tr key={idx} className="hover:bg-grx-bg dark:hover:bg-grx-primary-800">
+                  <td className="px-6 py-3 text-grx-text dark:text-white">
                     {item.description}
                   </td>
                   <td
@@ -169,8 +169,8 @@ const CashFlowReportPage: React.FC = () => {
                 </tr>
               ))
             )}
-            <tr className="bg-slate-50 dark:bg-slate-900 font-bold border-t-2 border-slate-300 dark:border-slate-600">
-              <td className="px-6 py-3 text-slate-900 dark:text-slate-100">
+            <tr className="bg-grx-bg dark:bg-grx-dark font-bold border-t-2 border-grx-primary-100 dark:border-grx-primary-700">
+              <td className="px-6 py-3 text-grx-text dark:text-white">
                 Net Cash from {title}
               </td>
               <td
@@ -190,26 +190,26 @@ const CashFlowReportPage: React.FC = () => {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+          <h2 className="text-2xl font-bold text-grx-text dark:text-white">
             Cash Flow Statement
           </h2>
-          <p className="text-slate-500 dark:text-slate-400">
+          <p className="text-grx-muted dark:text-grx-muted">
             Sources and uses of cash for a period
           </p>
         </div>
         <div className="flex items-center gap-4">
           {/* Method Toggle */}
-          <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
+          <div className="flex bg-grx-primary-50 dark:bg-grx-dark-surface p-1 rounded-lg">
             <button
               onClick={() => setMethod('indirect')}
               className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
                 method === 'indirect'
-                  ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-slate-100'
-                  : 'text-slate-500 dark:text-slate-400'
+                  ? 'bg-white dark:bg-grx-primary-800 shadow-sm text-grx-text dark:text-white'
+                  : 'text-grx-muted dark:text-grx-muted'
               }`}
             >
               Indirect
@@ -218,8 +218,8 @@ const CashFlowReportPage: React.FC = () => {
               onClick={() => setMethod('direct')}
               className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
                 method === 'direct'
-                  ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-slate-100'
-                  : 'text-slate-500 dark:text-slate-400'
+                  ? 'bg-white dark:bg-grx-primary-800 shadow-sm text-grx-text dark:text-white'
+                  : 'text-grx-muted dark:text-grx-muted'
               }`}
             >
               Direct
@@ -228,26 +228,26 @@ const CashFlowReportPage: React.FC = () => {
 
           {/* Date Range */}
           <div className="flex items-center gap-2">
-            <Calendar size={18} className="text-slate-400" />
+            <Calendar size={18} className="text-grx-muted" />
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="border border-slate-300 dark:border-slate-600 rounded-lg p-2 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
+              className="border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none text-sm"
             />
-            <span className="text-slate-500 dark:text-slate-400">to</span>
+            <span className="text-grx-muted dark:text-grx-muted">to</span>
             <input
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="border border-slate-300 dark:border-slate-600 rounded-lg p-2 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
+              className="border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none text-sm"
             />
           </div>
 
           <button
             onClick={handleDownload}
             disabled={!data}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2 transition-colors disabled:opacity-50"
+            className="bg-grx-primary-600 text-white px-4 py-2 rounded-lg hover:bg-grx-primary-700 flex items-center gap-2 transition-colors disabled:opacity-50"
           >
             <Download size={18} />
             Export CSV
@@ -265,13 +265,13 @@ const CashFlowReportPage: React.FC = () => {
       {/* Loading */}
       {loading ? (
         <div className="flex items-center justify-center h-64">
-          <Loader2 className="animate-spin text-indigo-600" size={32} />
-          <span className="ml-2 text-slate-500 dark:text-slate-400">
+          <Loader2 className="animate-spin text-grx-primary-600" size={32} />
+          <span className="ml-2 text-grx-muted dark:text-grx-muted">
             Loading cash flow statement...
           </span>
         </div>
       ) : data ? (
-        <div className="space-y-6">
+        <div className="space-y-6 grx-animate-fade-in-up">
           {/* Summary Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="bg-blue-50 dark:bg-blue-900/20 p-5 rounded-xl border border-blue-200 dark:border-blue-800">
@@ -375,13 +375,13 @@ const CashFlowReportPage: React.FC = () => {
           )}
 
           {/* Net Change in Cash Summary */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-            <div className="p-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
-              <h3 className="font-bold text-slate-900 dark:text-slate-100">Cash Summary</h3>
+          <div className="grx-glass-card rounded-xl overflow-hidden">
+            <div className="p-4 border-b border-grx-primary-100 dark:border-grx-primary-800 bg-grx-bg dark:bg-grx-dark">
+              <h3 className="font-bold text-grx-text dark:text-white">Cash Summary</h3>
             </div>
-            <div className="divide-y divide-slate-200 dark:divide-slate-700">
+            <div className="divide-y divide-grx-primary-100 dark:divide-grx-primary-800">
               <div className="flex justify-between items-center px-6 py-4">
-                <span className="text-slate-700 dark:text-slate-300">
+                <span className="text-grx-text dark:text-grx-primary-200">
                   Net Cash from Operating Activities
                 </span>
                 <span
@@ -395,7 +395,7 @@ const CashFlowReportPage: React.FC = () => {
                 </span>
               </div>
               <div className="flex justify-between items-center px-6 py-4">
-                <span className="text-slate-700 dark:text-slate-300">
+                <span className="text-grx-text dark:text-grx-primary-200">
                   Net Cash from Investing Activities
                 </span>
                 <span
@@ -409,7 +409,7 @@ const CashFlowReportPage: React.FC = () => {
                 </span>
               </div>
               <div className="flex justify-between items-center px-6 py-4">
-                <span className="text-slate-700 dark:text-slate-300">
+                <span className="text-grx-text dark:text-grx-primary-200">
                   Net Cash from Financing Activities
                 </span>
                 <span
@@ -422,8 +422,8 @@ const CashFlowReportPage: React.FC = () => {
                   {formatINR(data.financing.total)}
                 </span>
               </div>
-              <div className="flex justify-between items-center px-6 py-4 bg-indigo-50 dark:bg-indigo-900/20 font-bold border-t-2 border-indigo-200 dark:border-indigo-800">
-                <span className="text-slate-900 dark:text-slate-100">Net Change in Cash</span>
+              <div className="flex justify-between items-center px-6 py-4 bg-grx-primary-50 dark:bg-grx-primary-900/20 font-bold border-t-2 border-grx-primary-200 dark:border-grx-primary-800">
+                <span className="text-grx-text dark:text-white">Net Change in Cash</span>
                 <span
                   className={`font-mono ${
                     data.netChangeInCash >= 0
@@ -435,14 +435,14 @@ const CashFlowReportPage: React.FC = () => {
                 </span>
               </div>
               <div className="flex justify-between items-center px-6 py-4">
-                <span className="text-slate-700 dark:text-slate-300">Beginning Cash Balance</span>
-                <span className="font-mono font-semibold text-slate-700 dark:text-slate-300">
+                <span className="text-grx-text dark:text-grx-primary-200">Beginning Cash Balance</span>
+                <span className="font-mono font-semibold text-grx-text dark:text-grx-primary-200">
                   {formatINR(data.beginningCashBalance)}
                 </span>
               </div>
-              <div className="flex justify-between items-center px-6 py-4 bg-slate-50 dark:bg-slate-900 font-bold">
-                <span className="text-slate-900 dark:text-slate-100">Ending Cash Balance</span>
-                <span className="font-mono text-lg text-slate-900 dark:text-slate-100">
+              <div className="flex justify-between items-center px-6 py-4 bg-grx-bg dark:bg-grx-dark font-bold">
+                <span className="text-grx-text dark:text-white">Ending Cash Balance</span>
+                <span className="font-mono text-lg text-grx-text dark:text-white">
                   {formatINR(data.endingCashBalance)}
                 </span>
               </div>
@@ -450,7 +450,7 @@ const CashFlowReportPage: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 text-center text-slate-500 dark:text-slate-400">
+        <div className="grx-glass-card rounded-xl p-8 text-center text-grx-muted dark:text-grx-muted">
           No data available. Please ensure transactions are recorded.
         </div>
       )}

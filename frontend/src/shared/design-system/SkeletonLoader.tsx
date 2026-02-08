@@ -111,7 +111,7 @@ export const SkeletonTable: React.FC<{ rows?: number; columns?: number }> = ({
   rows = 5,
   columns = 5,
 }) => (
-  <div className="bg-white dark:bg-grx-dark-surface rounded-xl border border-grx-primary-50 dark:border-grx-dark-surface overflow-hidden grx-animate-fade-in">
+  <div className="grx-glass-card rounded-xl border border-grx-primary-50 dark:border-grx-dark-surface overflow-hidden grx-animate-fade-in">
     {/* Table header skeleton */}
     <div className="bg-grx-primary-50 dark:bg-grx-primary-900 px-6 py-3 flex gap-8">
       {Array.from({ length: columns }).map((_, i) => (

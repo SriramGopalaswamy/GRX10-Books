@@ -97,6 +97,32 @@ const App: React.FC = () => {
     checkAuthStatus();
   }, []);
 
+  // Scroll-reveal IntersectionObserver for elements with .grx-reveal
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('grx-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
+    // Observe after a short delay to let React render
+    const timer = setTimeout(() => {
+      document.querySelectorAll('.grx-reveal, .grx-reveal-left').forEach((el) => {
+        observer.observe(el);
+      });
+    }, 100);
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
+  }, [isAuthenticated, currentView, pageKey]);
+
   const checkAuthStatus = async () => {
     try {
       const res = await fetch('/api/auth/status');

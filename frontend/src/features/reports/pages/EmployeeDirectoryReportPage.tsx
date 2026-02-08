@@ -95,7 +95,7 @@ export const EmployeeDirectoryReportPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold text-grx-text dark:text-white">Employee Directory Report</h2>
@@ -104,7 +104,7 @@ export const EmployeeDirectoryReportPage: React.FC = () => {
         <button
           onClick={handleDownload}
           disabled={!data}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2 transition-colors disabled:opacity-50"
+          className="bg-grx-primary-600 text-white px-4 py-2 rounded-lg hover:bg-grx-primary-700 flex items-center gap-2 transition-colors disabled:opacity-50"
         >
           <Download size={18} />
           Export CSV
@@ -112,18 +112,18 @@ export const EmployeeDirectoryReportPage: React.FC = () => {
       </div>
 
       {/* Filters */}
-      <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-4">
+      <div className="grx-glass-card rounded-xl p-4">
         <div className="flex items-center gap-2 mb-4">
           <Filter size={18} className="text-grx-muted" />
           <h3 className="font-semibold text-grx-text dark:text-white">Filters</h3>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 grx-stagger">
           <div>
             <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Department</label>
             <select
               value={filters.department}
               onChange={e => setFilters({ ...filters, department: e.target.value })}
-              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
             >
               <option value="">All Departments</option>
               {getActiveDepartments().map(dept => (
@@ -136,7 +136,7 @@ export const EmployeeDirectoryReportPage: React.FC = () => {
             <select
               value={filters.status}
               onChange={e => setFilters({ ...filters, status: e.target.value })}
-              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
             >
               <option value="">All Status</option>
               <option value="Active">Active</option>
@@ -148,7 +148,7 @@ export const EmployeeDirectoryReportPage: React.FC = () => {
             <select
               value={filters.employeeType}
               onChange={e => setFilters({ ...filters, employeeType: e.target.value })}
-              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
             >
               <option value="">All Types</option>
               {getActiveEmployeeTypes().map(type => (
@@ -167,11 +167,11 @@ export const EmployeeDirectoryReportPage: React.FC = () => {
 
       {loading ? (
         <div className="flex items-center justify-center h-64">
-          <Loader2 className="animate-spin text-indigo-600" size={32} />
+          <Loader2 className="animate-spin text-grx-primary-600" size={32} />
           <span className="ml-2 text-grx-muted">Loading employee directory...</span>
         </div>
       ) : data ? (
-        <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
+        <div className="grx-glass-card rounded-xl overflow-hidden">
           <div className="p-4 border-b border-grx-primary-100 dark:border-grx-primary-800 bg-grx-bg dark:bg-grx-dark">
             <p className="text-sm text-grx-muted dark:text-grx-muted">
               Total Employees: <span className="font-semibold text-grx-text dark:text-white">{data.totalEmployees}</span>
@@ -223,7 +223,7 @@ export const EmployeeDirectoryReportPage: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-8 text-center text-grx-muted">
+        <div className="grx-glass-card rounded-xl p-8 text-center text-grx-muted">
           No data available.
         </div>
       )}

@@ -20,7 +20,7 @@ export const MemoList: React.FC = () => {
       switch(status) {
           case MemoStatus.APPROVED: return 'text-green-600 bg-green-50';
           case MemoStatus.REVISION_REQUESTED: return 'text-red-600 bg-red-50';
-          case MemoStatus.DRAFT: return 'text-gray-600 bg-gray-50';
+          case MemoStatus.DRAFT: return 'text-grx-muted bg-grx-bg';
           default: return 'text-yellow-600 bg-yellow-50';
       }
   }
@@ -54,12 +54,12 @@ export const MemoList: React.FC = () => {
             <div 
                 key={memo.id} 
                 onClick={() => handleOpenMemo(memo)}
-                className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-gray-200 dark:border-grx-primary-800 hover:border-brand-400 dark:hover:border-brand-500 hover:shadow-md transition-all cursor-pointer group"
+                className="grx-glass-card p-5 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800 hover:border-brand-400 dark:hover:border-brand-500 hover:shadow-md transition-all cursor-pointer group"
             >
                 <div className="flex justify-between items-start">
                     <div>
                         <h3 className="text-lg font-bold text-grx-text dark:text-white group-hover:text-brand-700 dark:group-hover:text-brand-500">{memo.subject}</h3>
-                        <div className="flex items-center gap-4 mt-2 text-sm text-gray-500 dark:text-gray-400">
+                        <div className="flex items-center gap-4 mt-2 text-sm text-grx-muted dark:text-grx-muted">
                             <span className="flex items-center gap-1"><UserIcon size={14}/> {getAuthorName(memo.fromId)}</span>
                             <span>•</span>
                             <span>{memo.date}</span>
@@ -69,7 +69,7 @@ export const MemoList: React.FC = () => {
                         {memo.status}
                     </span>
                 </div>
-                <p className="mt-3 text-gray-600 dark:text-gray-300 text-sm line-clamp-2">
+                <p className="mt-3 text-grx-muted dark:text-grx-primary-200 text-sm line-clamp-2">
                     {memo.summary || 'No summary available'}
                 </p>
             </div>

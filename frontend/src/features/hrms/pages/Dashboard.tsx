@@ -5,7 +5,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { Clock, Calendar, TrendingUp, Users, AlertCircle } from 'lucide-react';
 
 const StatCard: React.FC<{ title: string; value: string | number; icon: React.ReactNode; color: string }> = ({ title, value, icon, color }) => (
-  <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl shadow-sm border border-grx-primary-50 dark:border-grx-primary-800 flex items-center gap-4">
+  <div className="grx-glass-card p-6 rounded-xl flex items-center gap-4">
     <div className={`p-3 rounded-lg ${color} text-white`}>
       {icon}
     </div>
@@ -51,7 +51,7 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 grx-stagger">
         <StatCard 
           title="Avg. Work Hours" 
           value="8h 45m" 
@@ -70,7 +70,7 @@ export const Dashboard: React.FC = () => {
               title="Total Employees" 
               value="104" 
               icon={<Users size={24} />} 
-              color="bg-indigo-500" 
+              color="bg-grx-primary-500" 
             />
             <StatCard 
               title="Attrition Rate" 
@@ -85,7 +85,7 @@ export const Dashboard: React.FC = () => {
               title="Next Holiday" 
               value="Nov 14" 
               icon={<TrendingUp size={24} />} 
-              color="bg-indigo-500" 
+              color="bg-grx-primary-500" 
             />
             <StatCard 
               title="Pending Tasks" 
@@ -100,7 +100,7 @@ export const Dashboard: React.FC = () => {
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Attendance Chart */}
-        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl shadow-sm border border-grx-primary-50 dark:border-grx-primary-800">
+        <div className="grx-glass-card p-6 rounded-xl">
           <h3 className="text-lg font-semibold text-grx-text dark:text-white mb-6">Weekly Attendance Trend</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -116,7 +116,7 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Leave Chart or Team Status */}
-        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl shadow-sm border border-grx-primary-50 dark:border-grx-primary-800">
+        <div className="grx-glass-card p-6 rounded-xl">
           <h3 className="text-lg font-semibold text-grx-text dark:text-white mb-6">Leave Balance Distribution</h3>
           <div className="h-64 flex items-center justify-center">
              <ResponsiveContainer width="100%" height="100%">

@@ -56,7 +56,7 @@ export const Dashboard: React.FC = () => {
           <p className="text-grx-muted dark:text-grx-muted mt-1">Real-time performance snapshot for GRX10.</p>
         </div>
         <div className="text-right">
-            <p className="text-sm text-gray-500 dark:text-gray-400">Current Quarter</p>
+            <p className="text-sm text-grx-muted dark:text-grx-muted">Current Quarter</p>
             <p className="text-2xl font-bold text-brand-600 dark:text-brand-500">Q3 2024</p>
         </div>
       </div>
@@ -64,26 +64,26 @@ export const Dashboard: React.FC = () => {
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {/* Goal Completion */}
-        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl border border-gray-200 shadow-sm relative overflow-hidden">
+        <div className="grx-glass-card p-6 rounded-xl border border-grx-primary-100 shadow-sm relative overflow-hidden">
           <div className="flex justify-between items-start">
              <div>
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Goal Completion</p>
+                <p className="text-sm font-medium text-grx-muted dark:text-grx-muted">Goal Completion</p>
                 <p className="text-3xl font-bold text-grx-text dark:text-white mt-2">{completionRate}%</p>
              </div>
              <div className={`p-2 rounded-lg ${completionRate >= 80 ? 'bg-green-50 text-green-600' : 'bg-yellow-50 text-yellow-600'}`}>
                  <TrendingUp size={20} />
              </div>
           </div>
-          <div className="w-full bg-gray-100 dark:bg-grx-primary-800 rounded-full h-1.5 mt-4">
+          <div className="w-full bg-grx-primary-50 dark:bg-grx-primary-800 rounded-full h-1.5 mt-4">
             <div className="bg-brand-500 h-1.5 rounded-full" style={{ width: `${completionRate}%` }}></div>
           </div>
         </div>
 
         {/* CAC */}
-        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl border border-gray-200 shadow-sm">
+        <div className="grx-glass-card p-6 rounded-xl border border-grx-primary-100 shadow-sm">
           <div className="flex justify-between items-start">
              <div>
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">CAC</p>
+                <p className="text-sm font-medium text-grx-muted dark:text-grx-muted">CAC</p>
                 <p className="text-3xl font-bold text-grx-text dark:text-white mt-2">$142</p>
              </div>
              <div className="p-2 rounded-lg bg-green-50 text-green-600">
@@ -96,11 +96,11 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Solar Installation Rate */}
-        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl border border-gray-200 shadow-sm">
+        <div className="grx-glass-card p-6 rounded-xl border border-grx-primary-100 shadow-sm">
           <div className="flex justify-between items-start">
              <div>
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Install Rate</p>
-                <p className="text-3xl font-bold text-grx-text dark:text-white mt-2">18<span className="text-sm text-gray-400 font-normal">/wk</span></p>
+                <p className="text-sm font-medium text-grx-muted dark:text-grx-muted">Install Rate</p>
+                <p className="text-3xl font-bold text-grx-text dark:text-white mt-2">18<span className="text-sm text-grx-muted font-normal">/wk</span></p>
              </div>
              <div className="p-2 rounded-lg bg-blue-50 text-blue-600">
                  <Zap size={20} />
@@ -112,17 +112,17 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Average Deal Size */}
-        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl border border-gray-200 shadow-sm">
+        <div className="grx-glass-card p-6 rounded-xl border border-grx-primary-100 shadow-sm">
           <div className="flex justify-between items-start">
              <div>
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Avg Deal Size</p>
+                <p className="text-sm font-medium text-grx-muted dark:text-grx-muted">Avg Deal Size</p>
                 <p className="text-3xl font-bold text-grx-text dark:text-white mt-2">$8.5k</p>
              </div>
-             <div className="p-2 rounded-lg bg-gray-50 text-gray-600">
+             <div className="p-2 rounded-lg bg-grx-bg text-grx-muted">
                  <Minus size={20} />
              </div>
           </div>
-           <p className="text-xs text-gray-500 mt-3 flex items-center gap-1">
+           <p className="text-xs text-grx-muted mt-3 flex items-center gap-1">
              Flat vs last month
           </p>
         </div>
@@ -130,7 +130,7 @@ export const Dashboard: React.FC = () => {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl border border-gray-200 shadow-sm">
+        <div className="grx-glass-card p-6 rounded-xl border border-grx-primary-100 shadow-sm">
           <h3 className="text-lg font-semibold text-grx-text mb-4">Goal Status Distribution</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -153,7 +153,7 @@ export const Dashboard: React.FC = () => {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="flex justify-center gap-4 text-sm text-gray-600">
+          <div className="flex justify-center gap-4 text-sm text-grx-muted">
              {dataStatus.map((d, i) => (
                 <div key={i} className="flex items-center gap-1">
                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS[i] }}></div>
@@ -163,7 +163,7 @@ export const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl border border-gray-200 shadow-sm">
+        <div className="grx-glass-card p-6 rounded-xl border border-grx-primary-100 shadow-sm">
           <h3 className="text-lg font-semibold text-grx-text mb-4">Revenue: Actual vs Target (k$)</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">

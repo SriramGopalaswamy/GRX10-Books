@@ -211,20 +211,20 @@ export const Employees: React.FC<EmployeesProps> = ({ onViewChange }) => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-2xl font-bold text-grx-text dark:text-white">Employee Directory</h2>
         <div className="flex gap-2">
           <button 
             onClick={() => setShowOnboarding(true)}
-            className="bg-indigo-600 dark:bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 flex items-center gap-2 transition-colors"
+            className="bg-grx-primary-600 dark:bg-grx-primary-500 text-white px-4 py-2 rounded-lg hover:bg-grx-primary-700 dark:hover:bg-grx-primary-600 flex items-center gap-2 transition-colors"
           >
             <Plus size={18} />
             New Employee
           </button>
           <button 
             onClick={handleImportEmployees}
-            className="bg-white dark:bg-grx-dark-surface border border-grx-primary-100 dark:border-grx-primary-800 text-grx-text dark:text-grx-primary-200 px-4 py-2 rounded-lg hover:bg-grx-bg dark:hover:bg-grx-primary-800 flex items-center gap-2 transition-colors"
+            className="grx-glass border border-grx-primary-100 dark:border-grx-primary-800 text-grx-text dark:text-grx-primary-200 px-4 py-2 rounded-lg hover:bg-grx-bg dark:hover:bg-grx-primary-800 flex items-center gap-2 transition-colors"
           >
             <Upload size={18} />
             Import Employees
@@ -232,7 +232,7 @@ export const Employees: React.FC<EmployeesProps> = ({ onViewChange }) => {
           {(user?.role === Role.HR || user?.role === Role.ADMIN) && (
             <button 
               onClick={() => setShowJDModal(true)}
-              className="bg-white dark:bg-grx-dark-surface border border-grx-primary-100 dark:border-grx-primary-800 text-grx-text dark:text-grx-primary-200 px-4 py-2 rounded-lg hover:bg-grx-bg dark:hover:bg-grx-primary-800 flex items-center gap-2 transition-colors"
+              className="grx-glass border border-grx-primary-100 dark:border-grx-primary-800 text-grx-text dark:text-grx-primary-200 px-4 py-2 rounded-lg hover:bg-grx-bg dark:hover:bg-grx-primary-800 flex items-center gap-2 transition-colors"
             >
               <FileText size={18} />
               Generate JD
@@ -254,14 +254,14 @@ export const Employees: React.FC<EmployeesProps> = ({ onViewChange }) => {
         <input 
           type="text" 
           placeholder="Search by name, email, department, or designation..." 
-          className="w-full pl-10 pr-4 py-3 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800 bg-white dark:bg-grx-dark-surface text-grx-text dark:text-white placeholder:text-grx-muted dark:placeholder:text-grx-muted focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 outline-none"
+          className="w-full pl-10 pr-4 py-3 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800 bg-white dark:bg-grx-dark-surface text-grx-text dark:text-white placeholder:text-grx-muted dark:placeholder:text-grx-muted focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 focus:border-grx-primary-500 dark:focus:border-grx-primary-400 outline-none"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
 
       {/* Table View */}
-      <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
+      <div className="grx-glass-card rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-100 dark:border-grx-primary-800">
@@ -286,7 +286,7 @@ export const Employees: React.FC<EmployeesProps> = ({ onViewChange }) => {
                   <tr 
                     key={emp.id} 
                     onClick={() => handleRowClick(emp.id)}
-                    className="hover:bg-indigo-50 dark:hover:bg-grx-primary-800 cursor-pointer transition-colors"
+                    className="hover:bg-grx-primary-50 dark:hover:bg-grx-primary-800 cursor-pointer transition-colors"
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
@@ -342,7 +342,7 @@ export const Employees: React.FC<EmployeesProps> = ({ onViewChange }) => {
 
       {/* JD Generator Modal */}
       {showJDModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 grx-modal-backdrop dark:bg-opacity-70 z-50 flex items-center justify-center p-4">
           <div className="bg-white dark:bg-grx-dark-surface rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6">
             <h3 className="text-xl font-bold mb-4 text-grx-text dark:text-white">AI Job Description Generator</h3>
             
@@ -381,7 +381,7 @@ export const Employees: React.FC<EmployeesProps> = ({ onViewChange }) => {
               <button 
                 onClick={handleGenerateJD} 
                 disabled={isGenerating || !jdRole}
-                className="bg-indigo-600 dark:bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 disabled:opacity-50"
+                className="bg-grx-primary-600 dark:bg-grx-primary-500 text-white px-4 py-2 rounded-lg hover:bg-grx-primary-700 dark:hover:bg-grx-primary-600 disabled:opacity-50"
               >
                 {isGenerating ? 'Generating...' : 'Generate with Gemini'}
               </button>

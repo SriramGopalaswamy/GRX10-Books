@@ -92,7 +92,7 @@ export const BalanceSheetPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold text-grx-text dark:text-white">Balance Sheet</h2>
@@ -105,13 +105,13 @@ export const BalanceSheetPage: React.FC = () => {
               type="date"
               value={asOfDate}
               onChange={e => setAsOfDate(e.target.value)}
-              className="border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
             />
           </div>
           <button
             onClick={handleDownload}
             disabled={!data}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2 transition-colors disabled:opacity-50"
+            className="bg-grx-primary-600 text-white px-4 py-2 rounded-lg hover:bg-grx-primary-700 flex items-center gap-2 transition-colors disabled:opacity-50"
           >
             <Download size={18} />
             Export CSV
@@ -127,13 +127,13 @@ export const BalanceSheetPage: React.FC = () => {
 
       {loading ? (
         <div className="flex items-center justify-center h-64">
-          <Loader2 className="animate-spin text-indigo-600" size={32} />
+          <Loader2 className="animate-spin text-grx-primary-600" size={32} />
           <span className="ml-2 text-grx-muted">Loading balance sheet...</span>
         </div>
       ) : data ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Assets */}
-          <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
+          <div className="grx-glass-card rounded-xl overflow-hidden">
             <div className="p-4 border-b border-grx-primary-100 dark:border-grx-primary-800 bg-blue-50 dark:bg-blue-900/20">
               <h3 className="font-bold text-blue-900 dark:text-blue-300">ASSETS</h3>
             </div>
@@ -166,7 +166,7 @@ export const BalanceSheetPage: React.FC = () => {
           </div>
 
           {/* Liabilities & Equity */}
-          <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
+          <div className="grx-glass-card rounded-xl overflow-hidden">
             <div className="p-4 border-b border-grx-primary-100 dark:border-grx-primary-800 bg-red-50 dark:bg-red-900/20">
               <h3 className="font-bold text-red-900 dark:text-red-300">LIABILITIES & EQUITY</h3>
             </div>
@@ -226,7 +226,7 @@ export const BalanceSheetPage: React.FC = () => {
                       {data.equity.total.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                     </td>
                   </tr>
-                  <tr className="bg-indigo-50 dark:bg-indigo-900/20 font-bold border-t-2 border-indigo-300 dark:border-indigo-700">
+                  <tr className="bg-grx-primary-50 dark:bg-grx-primary-900/20 font-bold border-t-2 border-grx-primary-300 dark:border-grx-primary-700">
                     <td className="px-4 py-3 text-grx-text dark:text-white">Total Liabilities & Equity</td>
                     <td className="px-4 py-3 text-right font-mono text-grx-text dark:text-white">
                       {data.totals.totalLiabilitiesAndEquity.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
@@ -238,7 +238,7 @@ export const BalanceSheetPage: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-8 text-center text-grx-muted">
+        <div className="grx-glass-card rounded-xl p-8 text-center text-grx-muted">
           No data available. Please ensure transactions are recorded.
         </div>
       )}

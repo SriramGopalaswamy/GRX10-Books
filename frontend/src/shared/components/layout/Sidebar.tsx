@@ -190,7 +190,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, onCollapse
                       onClick={() => onChangeView(item.id)}
                       className={`w-full flex items-center justify-center p-2.5 rounded-lg transition-all duration-200 grx-btn-press grx-focus-ring ${
                         isActive
-                          ? 'bg-grx-accent text-white shadow-md'
+                          ? 'bg-grx-accent text-white grx-btn-press shadow-md'
                           : 'text-grx-primary-200 hover:bg-white/10 hover:text-white'
                       }`}
                       title={item.label}
@@ -238,7 +238,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, onCollapse
                         onClick={() => onChangeView(item.id)}
                         className={`w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 grx-btn-press grx-focus-ring ${
                           isActive
-                            ? 'bg-grx-accent text-white shadow-md'
+                            ? 'bg-grx-accent text-white grx-btn-press shadow-md'
                             : 'text-grx-primary-100 hover:bg-white/10 hover:text-white'
                         }`}
                       >

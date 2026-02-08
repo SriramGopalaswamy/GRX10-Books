@@ -17,7 +17,7 @@ const ICON_MAP: Record<string, React.ReactNode> = {
   leave_applied: <CalendarDays size={14} className="text-blue-500" />,
   leave_approved: <Check size={14} className="text-emerald-500" />,
   leave_rejected: <X size={14} className="text-red-500" />,
-  payslip_generated: <FileText size={14} className="text-indigo-500" />,
+  payslip_generated: <FileText size={14} className="text-grx-primary-500" />,
   attendance_anomaly: <AlertCircle size={14} className="text-amber-500" />,
   regularization_update: <Clock size={14} className="text-purple-500" />,
   pt_slab_change: <AlertCircle size={14} className="text-orange-500" />,
@@ -85,12 +85,12 @@ export const NotificationBell: React.FC = () => {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full relative transition-colors"
+        className="p-2 text-grx-muted hover:bg-grx-primary-50 dark:hover:bg-grx-primary-800 rounded-full relative transition-colors"
         title="Notifications"
       >
         <Bell size={20} />
         {unreadCount > 0 && (
-          <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-red-500 border-2 border-white dark:border-slate-800 rounded-full flex items-center justify-center text-[10px] font-bold text-white">
+          <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-red-500 border-2 border-white dark:border-grx-dark-surface rounded-full flex items-center justify-center text-[10px] font-bold text-white">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
@@ -99,13 +99,13 @@ export const NotificationBell: React.FC = () => {
       {isOpen && (
         <>
           <div className="fixed inset-0 z-30" onClick={() => setIsOpen(false)} />
-          <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 z-40 overflow-hidden">
-            <div className="p-3 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800">
-              <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">Notifications</h3>
+          <div className="absolute right-0 mt-2 w-80 grx-glass-card rounded-xl shadow-xl border border-grx-primary-50 dark:border-grx-primary-800 z-40 overflow-hidden grx-dropdown-enter">
+            <div className="p-3 border-b border-grx-primary-50 dark:border-grx-primary-800 flex justify-between items-center bg-grx-bg dark:bg-grx-dark-surface">
+              <h3 className="text-sm font-bold text-grx-text dark:text-grx-primary-200">Notifications</h3>
               {unreadCount > 0 && (
                 <button
                   onClick={markAllRead}
-                  className="text-xs text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 font-medium"
+                  className="text-xs text-grx-primary-600 hover:text-grx-primary-700 dark:text-grx-primary-400 font-medium"
                 >
                   Mark all read
                 </button>
@@ -113,27 +113,27 @@ export const NotificationBell: React.FC = () => {
             </div>
             <div className="max-h-80 overflow-y-auto">
               {notifications.length === 0 ? (
-                <div className="p-6 text-center text-sm text-slate-400">
+                <div className="p-6 text-center text-sm text-grx-muted">
                   No notifications
                 </div>
               ) : (
                 notifications.map(notif => (
                   <div
                     key={notif.id}
-                    className={`p-3 border-b border-slate-50 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors cursor-pointer ${!notif.isRead ? 'bg-indigo-50/40 dark:bg-indigo-900/20' : 'opacity-70'}`}
+                    className={`p-3 border-b border-grx-primary-50 dark:border-grx-primary-800 hover:bg-grx-bg dark:hover:bg-grx-primary-800/50 transition-colors cursor-pointer ${!notif.isRead ? 'bg-grx-primary-50/40 dark:bg-grx-primary-900/20' : 'opacity-70'}`}
                     onClick={() => !notif.isRead && markAsRead(notif.id)}
                   >
                     <div className="flex items-start gap-2.5">
                       <div className="mt-0.5 shrink-0">
-                        {ICON_MAP[notif.type] || <Bell size={14} className="text-slate-400" />}
+                        {ICON_MAP[notif.type] || <Bell size={14} className="text-grx-muted" />}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs font-semibold text-slate-800 dark:text-slate-200">{notif.title}</p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2">{notif.message}</p>
-                        <p className="text-[10px] text-slate-400 mt-1">{timeAgo(notif.createdAt)}</p>
+                        <p className="text-xs font-semibold text-grx-text dark:text-grx-primary-200">{notif.title}</p>
+                        <p className="text-xs text-grx-muted dark:text-grx-muted mt-0.5 line-clamp-2">{notif.message}</p>
+                        <p className="text-[10px] text-grx-muted mt-1">{timeAgo(notif.createdAt)}</p>
                       </div>
                       {!notif.isRead && (
-                        <div className="w-2 h-2 bg-indigo-500 rounded-full mt-1 shrink-0" />
+                        <div className="w-2 h-2 bg-grx-primary-500 rounded-full mt-1 shrink-0" />
                       )}
                     </div>
                   </div>

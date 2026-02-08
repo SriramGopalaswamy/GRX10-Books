@@ -102,7 +102,7 @@ const Login: React.FC = () => {
                             onClick={() => { setLoginMethod('sso'); setError(null); setFieldErrors({}); }}
                             className={`flex-1 py-2 px-4 rounded-md text-sm font-semibold transition-all duration-200 grx-btn-press grx-focus-ring ${
                                 loginMethod === 'sso'
-                                    ? 'bg-grx-primary text-white shadow-sm'
+                                    ? 'bg-grx-primary text-white grx-btn-press shadow-sm'
                                     : 'text-grx-muted hover:text-grx-text dark:hover:text-white'
                             }`}
                         >
@@ -112,7 +112,7 @@ const Login: React.FC = () => {
                             onClick={() => { setLoginMethod('email'); setError(null); setFieldErrors({}); }}
                             className={`flex-1 py-2 px-4 rounded-md text-sm font-semibold transition-all duration-200 grx-btn-press grx-focus-ring ${
                                 loginMethod === 'email'
-                                    ? 'bg-grx-primary text-white shadow-sm'
+                                    ? 'bg-grx-primary text-white grx-btn-press shadow-sm'
                                     : 'text-grx-muted hover:text-grx-text dark:hover:text-white'
                             }`}
                         >
@@ -138,7 +138,7 @@ const Login: React.FC = () => {
                             </button>
                             <button
                                 onClick={handleGoogleLogin}
-                                className="w-full bg-white dark:bg-grx-dark-surface text-grx-text dark:text-white py-3 px-4 rounded-lg font-semibold border border-slate-200 dark:border-grx-primary-700 hover:bg-slate-50 dark:hover:bg-grx-primary-800 transition-all duration-200 flex items-center justify-center gap-3 grx-btn-press grx-focus-ring"
+                                className="w-full bg-white dark:bg-grx-dark-surface text-grx-text dark:text-white py-3 px-4 rounded-lg font-semibold border border-grx-primary-100 dark:border-grx-primary-700 hover:bg-grx-bg dark:hover:bg-grx-primary-800 transition-all duration-200 flex items-center justify-center gap-3 grx-btn-press grx-focus-ring"
                                 style={{ boxShadow: 'var(--shadow-md)' }}
                             >
                                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />

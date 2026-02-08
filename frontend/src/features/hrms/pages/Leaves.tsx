@@ -271,13 +271,13 @@ export const Leaves: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-grx-text dark:text-white">Leave Management</h2>
         {user && (
           <button 
             onClick={() => setShowModal(true)}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2 transition-colors"
+            className="bg-grx-primary-600 text-white px-4 py-2 rounded-lg hover:bg-grx-primary-700 flex items-center gap-2 transition-colors"
           >
             <Plus size={18} />
             Apply Leave
@@ -287,12 +287,12 @@ export const Leaves: React.FC = () => {
 
       {/* Balance Cards */}
       {!user ? (
-        <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-50 dark:border-grx-primary-800 p-8 text-center">
+        <div className="grx-glass-card rounded-xl p-8 text-center">
           <p className="text-grx-muted dark:text-grx-muted">Please log in to view your leave balances.</p>
         </div>
       ) : balanceLoading ? (
         <div className="flex items-center justify-center p-8">
-          <Loader2 className="animate-spin text-indigo-600" size={32} />
+          <Loader2 className="animate-spin text-grx-primary-600" size={32} />
           <span className="ml-2 text-grx-muted dark:text-grx-muted">Loading leave balances...</span>
         </div>
       ) : (
@@ -311,7 +311,7 @@ export const Leaves: React.FC = () => {
                                 'bg-emerald-500';
               
               return (
-                <div key={leaveType} className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-grx-primary-50 dark:border-grx-primary-800 shadow-sm">
+                <div key={leaveType} className="grx-glass-card p-5 rounded-xl border border-grx-primary-50 dark:border-grx-primary-800 shadow-sm">
                   <p className="text-grx-muted dark:text-grx-muted text-sm mb-1">{leaveType}</p>
                   <p className="text-2xl font-bold text-grx-text dark:text-white">
                     {balance.balance} <span className="text-sm font-normal text-grx-muted">/ {balance.entitlement}</span>
@@ -328,13 +328,13 @@ export const Leaves: React.FC = () => {
       )}
 
       {/* Leave History */}
-      <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-50 dark:border-grx-primary-800 overflow-hidden">
+      <div className="grx-glass-card rounded-xl overflow-hidden">
         <div className="p-4 border-b border-grx-primary-50 dark:border-grx-primary-800 font-medium text-grx-text dark:text-grx-primary-200">Request History</div>
         {!user ? (
           <div className="p-8 text-center text-grx-muted dark:text-grx-muted">Please log in to view your leave requests.</div>
         ) : loading ? (
           <div className="p-8 text-center">
-            <Loader2 className="animate-spin text-indigo-600 mx-auto" size={32} />
+            <Loader2 className="animate-spin text-grx-primary-600 mx-auto" size={32} />
             <p className="text-grx-muted dark:text-grx-muted mt-2">Loading leave requests...</p>
           </div>
         ) : error ? (
@@ -393,7 +393,7 @@ export const Leaves: React.FC = () => {
                             setEditingLeaveId(leave.id);
                             setShowModal(true);
                           }}
-                          className="text-xs px-2 py-1 bg-indigo-50 text-indigo-600 rounded hover:bg-indigo-100 dark:bg-indigo-900/30 dark:text-indigo-400 dark:hover:bg-indigo-900/50 transition-colors"
+                          className="text-xs px-2 py-1 bg-grx-primary-50 text-grx-primary-600 rounded hover:bg-grx-primary-100 dark:bg-grx-primary-900/30 dark:text-grx-primary-400 dark:hover:bg-grx-primary-900/50 transition-colors"
                         >
                           Edit
                         </button>
@@ -427,8 +427,8 @@ export const Leaves: React.FC = () => {
       
        {/* Leave Application Modal */}
        {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-grx-dark-surface rounded-xl w-full max-w-md p-6 shadow-2xl">
+        <div className="fixed inset-0 grx-modal-backdrop flex items-center justify-center z-50 p-4">
+          <div className="grx-glass-card rounded-xl w-full max-w-md p-6 shadow-2xl grx-modal-enter">
             <h3 className="text-lg font-bold mb-4 text-grx-text dark:text-white">{editingLeaveId ? 'Edit Leave Request' : 'Apply for Leave'}</h3>
             {error && (
               <div className="mb-4 p-3 bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 rounded-lg text-sm text-rose-700 dark:text-rose-300">
@@ -439,7 +439,7 @@ export const Leaves: React.FC = () => {
               <div>
                 <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">Leave Type *</label>
                 <select 
-                  className={`w-full border rounded-lg p-2.5 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none ${
+                  className={`w-full border rounded-lg p-2.5 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none ${
                     formErrors.type 
                       ? 'border-red-300 dark:border-red-700' 
                       : 'border-grx-primary-100 dark:border-grx-primary-700'
@@ -473,7 +473,7 @@ export const Leaves: React.FC = () => {
                    <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">Start Date *</label>
                    <input 
                     type="date" 
-                    className={`w-full border rounded-lg p-2.5 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none ${
+                    className={`w-full border rounded-lg p-2.5 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none ${
                       formErrors.startDate 
                         ? 'border-red-300 dark:border-red-700' 
                         : 'border-grx-primary-100 dark:border-grx-primary-700'
@@ -500,7 +500,7 @@ export const Leaves: React.FC = () => {
                    <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">End Date *</label>
                    <input 
                     type="date" 
-                    className={`w-full border rounded-lg p-2.5 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none ${
+                    className={`w-full border rounded-lg p-2.5 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none ${
                       formErrors.endDate 
                         ? 'border-red-300 dark:border-red-700' 
                         : 'border-grx-primary-100 dark:border-grx-primary-700'
@@ -527,7 +527,7 @@ export const Leaves: React.FC = () => {
               <div>
                 <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">Reason</label>
                 <textarea 
-                  className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2.5 h-24 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none resize-none" 
+                  className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2.5 h-24 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none resize-none" 
                   placeholder="Enter reason for leave..."
                   value={newLeave.reason}
                   onChange={e => setNewLeave({...newLeave, reason: e.target.value})}
@@ -549,7 +549,7 @@ export const Leaves: React.FC = () => {
                 <button 
                   onClick={handleSubmitLeave}
                   disabled={loading || !newLeave.type || !newLeave.startDate || !newLeave.endDate}
-                  className="flex-1 bg-indigo-600 text-white py-2.5 rounded-lg hover:bg-indigo-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                  className="flex-1 bg-grx-primary-600 text-white py-2.5 rounded-lg hover:bg-grx-primary-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
                 >
                   {loading ? (
                     <>

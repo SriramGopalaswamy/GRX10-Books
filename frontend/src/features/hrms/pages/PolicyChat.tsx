@@ -214,9 +214,9 @@ export const PolicyChat: React.FC = () => {
 
   return (
     <>
-      <div className="flex flex-col h-[calc(100vh-140px)] bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
-        <div className="p-4 border-b border-grx-primary-50 bg-indigo-50 flex items-center gap-3">
-          <div className="p-2 bg-indigo-100 rounded-full text-indigo-600">
+      <div className="flex flex-col h-[calc(100vh-140px)] grx-glass-card rounded-xl overflow-hidden">
+        <div className="p-4 border-b border-grx-primary-50 bg-grx-primary-50 flex items-center gap-3">
+          <div className="p-2 bg-grx-primary-100 rounded-full text-grx-primary-600">
             <Bot size={24} />
           </div>
           <div>
@@ -233,14 +233,14 @@ export const PolicyChat: React.FC = () => {
             >
               <div className={`flex gap-3 max-w-[90%] md:max-w-[80%] ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                  msg.sender === 'user' ? 'bg-grx-primary-100' : 'bg-indigo-100 text-indigo-600'
+                  msg.sender === 'user' ? 'bg-grx-primary-100' : 'bg-grx-primary-100 text-grx-primary-600'
                 }`}>
                   {msg.sender === 'user' ? <User size={16} /> : <Bot size={16} />}
                 </div>
                 <div className="flex flex-col gap-2">
                   <div className={`p-3 rounded-2xl text-sm shadow-sm ${
                     msg.sender === 'user' 
-                      ? 'bg-indigo-600 text-white rounded-tr-none' 
+                      ? 'bg-grx-primary-600 text-white rounded-tr-none' 
                       : 'bg-grx-primary-50 text-grx-text rounded-tl-none'
                   }`}>
                     {msg.text}
@@ -248,7 +248,7 @@ export const PolicyChat: React.FC = () => {
                   
                   {/* Action Bubbles */}
                   {msg.payslip && (
-                    <div className="max-w-xs bg-white dark:bg-grx-dark-surface rounded-xl border border-grx-primary-100 dark:border-grx-primary-800 shadow-sm overflow-hidden mt-1">
+                    <div className="max-w-xs grx-glass-card rounded-xl border border-grx-primary-100 dark:border-grx-primary-800 shadow-sm overflow-hidden mt-1">
                       <div className="p-3 bg-grx-bg border-b border-grx-primary-50 flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <div className="p-1.5 bg-emerald-100 text-emerald-600 rounded-lg">
@@ -264,7 +264,7 @@ export const PolicyChat: React.FC = () => {
                         </div>
                         <button 
                           onClick={() => msg.payslip && handleDownload(msg.payslip)}
-                          className="flex items-center gap-2 bg-indigo-600 text-white text-xs font-medium px-3 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+                          className="flex items-center gap-2 bg-grx-primary-600 text-white text-xs font-medium px-3 py-2 rounded-lg hover:bg-grx-primary-700 transition-colors"
                         >
                           <Download size={14} />
                           PDF
@@ -276,7 +276,7 @@ export const PolicyChat: React.FC = () => {
                   {msg.showOnboardingForm && (
                     <button 
                       onClick={() => setShowOnboardingModal(true)}
-                      className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-3 rounded-xl hover:bg-indigo-700 shadow-sm transition-all text-sm font-medium self-start w-fit mt-1"
+                      className="flex items-center gap-2 bg-grx-primary-600 text-white px-4 py-3 rounded-xl hover:bg-grx-primary-700 shadow-sm transition-all text-sm font-medium self-start w-fit mt-1"
                     >
                       <UserPlus size={18} />
                       Open Onboarding Wizard
@@ -294,7 +294,7 @@ export const PolicyChat: React.FC = () => {
                   )}
 
                   {msg.showRegularizationForm && (
-                    <div className="bg-white dark:bg-grx-dark-surface p-4 rounded-xl border border-grx-primary-100 shadow-sm mt-1 w-full min-w-[280px]">
+                    <div className="grx-glass-card p-4 rounded-xl border border-grx-primary-100 shadow-sm mt-1 w-full min-w-[280px]">
                       <h4 className="text-sm font-bold text-grx-text dark:text-white mb-3">New Regularization Request</h4>
                       <div className="space-y-3">
                         <div>
@@ -328,7 +328,7 @@ export const PolicyChat: React.FC = () => {
                         <button 
                           onClick={submitRegularizationForm}
                           disabled={!regForm.date || !regForm.reason}
-                          className="w-full bg-indigo-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+                          className="w-full bg-grx-primary-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-grx-primary-700 disabled:opacity-50 transition-colors"
                         >
                           Submit Request
                         </button>
@@ -337,7 +337,7 @@ export const PolicyChat: React.FC = () => {
                   )}
 
                   {msg.regularizationList && msg.regularizationList.length > 0 && (
-                    <div className="bg-white dark:bg-grx-dark-surface rounded-xl border border-grx-primary-100 shadow-sm mt-1 overflow-hidden w-full">
+                    <div className="grx-glass-card rounded-xl border border-grx-primary-100 shadow-sm mt-1 overflow-hidden w-full">
                       <div className="overflow-x-auto">
                         <table className="w-full text-left text-sm">
                           <thead className="bg-grx-bg text-grx-muted">
@@ -402,7 +402,7 @@ export const PolicyChat: React.FC = () => {
           {isTyping && (
             <div className="flex justify-start">
               <div className="flex gap-3 max-w-[80%]">
-                <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-grx-primary-100 text-grx-primary-600 flex items-center justify-center">
                   <Bot size={16} />
                 </div>
                 <div className="bg-grx-primary-50 p-3 rounded-2xl rounded-tl-none flex gap-1 items-center">
@@ -422,12 +422,12 @@ export const PolicyChat: React.FC = () => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Message HR Assistant... (e.g. 'Offboard employee')"
-            className="flex-1 border border-grx-primary-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow"
+            className="flex-1 border border-grx-primary-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-grx-primary transition-shadow"
           />
           <button 
             type="submit" 
             disabled={!input.trim() || isTyping}
-            className="bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+            className="bg-grx-primary-600 text-white p-2 rounded-lg hover:bg-grx-primary-700 disabled:opacity-50 transition-colors"
           >
             <Send size={20} />
           </button>

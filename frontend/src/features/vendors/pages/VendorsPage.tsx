@@ -53,27 +53,27 @@ const Vendors: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
        <div className="flex justify-between items-center">
          <div>
             <h2 className="text-2xl font-bold text-grx-text dark:text-white">Vendors & Bills</h2>
             <p className="text-grx-muted dark:text-grx-muted">Manage expenses and supplier payments</p>
          </div>
          <div className="flex gap-2">
-            <button className="bg-white dark:bg-grx-dark-surface border border-grx-primary-100 dark:border-grx-primary-700 text-grx-text dark:text-grx-primary-200 px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-grx-bg dark:hover:bg-grx-primary-800 relative overflow-hidden">
+            <button className="grx-glass border border-grx-primary-100 dark:border-grx-primary-700 text-grx-text dark:text-grx-primary-200 px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-grx-bg dark:hover:bg-grx-primary-800 relative overflow-hidden">
                <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={handleFileUpload} accept="image/*,application/pdf" />
                {isProcessing ? <Loader2 className="animate-spin" size={18} /> : <Upload size={18} />}
                Upload Bill (AI)
             </button>
-            <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-700">
+            <button className="bg-grx-primary-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-grx-primary-700">
                <Plus size={18} /> Add Vendor
             </button>
          </div>
        </div>
 
-       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 grx-stagger">
           {/* Vendors List */}
-          <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
+          <div className="grx-glass-card rounded-xl overflow-hidden">
              <div className="p-4 bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-50 dark:border-grx-primary-800 font-semibold text-grx-text dark:text-grx-primary-200">Your Vendors</div>
              <div className="divide-y divide-grx-primary-50 dark:divide-grx-primary-800">
                 {vendors.map(v => (
@@ -92,7 +92,7 @@ const Vendors: React.FC = () => {
           </div>
 
           {/* Bills List */}
-          <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
+          <div className="grx-glass-card rounded-xl overflow-hidden">
              <div className="p-4 bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-50 dark:border-grx-primary-800 font-semibold text-grx-text dark:text-grx-primary-200 flex justify-between">
                 <span>Recent Bills</span>
              </div>

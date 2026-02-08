@@ -445,6 +445,289 @@
         background-clip: text;
       }
 
+      /* ── Accessibility: Reduced Motion ──────────────────────────── */
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+        .grx-glass-card:hover { transform: none; }
+      }
+
+      /* ── Scroll Reveal ─────────────────────────────────────────── */
+      .grx-reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+      }
+      .grx-reveal.grx-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .grx-reveal-left {
+        opacity: 0;
+        transform: translateX(-20px);
+        transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+      }
+      .grx-reveal-left.grx-visible {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      /* ── Link Hover Effects ────────────────────────────────────── */
+      .grx-link {
+        position: relative;
+        text-decoration: none;
+        transition: color var(--motion-fast) var(--ease-default);
+      }
+      .grx-link::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 0;
+        height: 1.5px;
+        background: currentColor;
+        transition: width var(--motion-normal) var(--ease-out);
+      }
+      .grx-link:hover::after {
+        width: 100%;
+      }
+
+      /* ── Button System ─────────────────────────────────────────── */
+      .grx-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all var(--motion-fast) var(--ease-default);
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+      .grx-btn:active {
+        transform: scale(0.97);
+      }
+      .grx-btn:focus-visible {
+        outline: 2px solid var(--grx10-accent);
+        outline-offset: 2px;
+      }
+      .grx-btn-primary {
+        background: var(--grx10-primary);
+        color: white;
+        box-shadow: 0 1px 3px rgba(58, 47, 120, 0.2);
+      }
+      .grx-btn-primary:hover {
+        background: var(--grx10-primary-600);
+        box-shadow: 0 4px 12px rgba(58, 47, 120, 0.25);
+        transform: translateY(-1px);
+      }
+      .grx-btn-primary:active { transform: scale(0.97) translateY(0); }
+      .grx-btn-accent {
+        background: var(--grx10-accent);
+        color: white;
+        box-shadow: 0 1px 3px rgba(230, 0, 126, 0.2);
+      }
+      .grx-btn-accent:hover {
+        background: var(--grx10-accent-600);
+        box-shadow: 0 4px 12px rgba(230, 0, 126, 0.25);
+        transform: translateY(-1px);
+      }
+      .grx-btn-ghost {
+        background: transparent;
+        color: var(--grx10-primary);
+      }
+      .grx-btn-ghost:hover {
+        background: var(--grx10-primary-50);
+      }
+      .dark .grx-btn-ghost { color: var(--grx10-primary-200); }
+      .dark .grx-btn-ghost:hover { background: rgba(58, 47, 120, 0.2); }
+
+      /* ── Form Input System ─────────────────────────────────────── */
+      .grx-input {
+        width: 100%;
+        padding: 0.625rem 0.875rem;
+        border: 1px solid rgba(58, 47, 120, 0.15);
+        border-radius: 0.5rem;
+        background: rgba(255, 255, 255, 0.6);
+        color: var(--grx10-dark);
+        font-size: 0.875rem;
+        transition: all var(--motion-fast) var(--ease-default);
+      }
+      .grx-input::placeholder { color: var(--grx10-muted); }
+      .grx-input:hover { border-color: rgba(58, 47, 120, 0.25); }
+      .grx-input:focus {
+        outline: none;
+        border-color: var(--grx10-primary);
+        box-shadow: 0 0 0 3px rgba(58, 47, 120, 0.08);
+        background: rgba(255, 255, 255, 0.85);
+      }
+      .dark .grx-input {
+        background: rgba(42, 42, 66, 0.5);
+        border-color: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+      .dark .grx-input:focus {
+        border-color: var(--grx10-primary-300);
+        box-shadow: 0 0 0 3px rgba(174, 166, 229, 0.12);
+        background: rgba(42, 42, 66, 0.7);
+      }
+      .grx-input-error {
+        border-color: var(--grx10-error) !important;
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.08) !important;
+      }
+      .grx-input-success {
+        border-color: var(--grx10-success) !important;
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.08) !important;
+      }
+
+      /* ── Validation Message Animation ──────────────────────────── */
+      @keyframes grx-validation-enter {
+        from { opacity: 0; transform: translateY(-4px); max-height: 0; }
+        to { opacity: 1; transform: translateY(0); max-height: 40px; }
+      }
+      .grx-validation-msg {
+        animation: grx-validation-enter var(--motion-fast) var(--ease-out) both;
+        font-size: 0.75rem;
+        margin-top: 0.25rem;
+        overflow: hidden;
+      }
+
+      /* ── Table System ──────────────────────────────────────────── */
+      .grx-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+      }
+      .grx-table thead th {
+        background: var(--grx10-primary-50);
+        color: var(--grx10-muted);
+        font-weight: 600;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 0.75rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid rgba(58, 47, 120, 0.08);
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+      .dark .grx-table thead th {
+        background: var(--grx10-primary-800);
+        color: var(--grx10-primary-200);
+        border-bottom-color: rgba(255, 255, 255, 0.06);
+      }
+      .grx-table tbody tr {
+        transition: background var(--motion-fast) var(--ease-default);
+      }
+      .grx-table tbody tr:hover {
+        background: rgba(58, 47, 120, 0.03);
+      }
+      .dark .grx-table tbody tr:hover {
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .grx-table tbody td {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid rgba(58, 47, 120, 0.05);
+        font-size: 0.875rem;
+        color: var(--grx10-dark);
+      }
+      .dark .grx-table tbody td {
+        border-bottom-color: rgba(255, 255, 255, 0.04);
+        color: var(--grx10-primary-200);
+      }
+
+      /* ── Badge System ──────────────────────────────────────────── */
+      .grx-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.125rem 0.625rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        line-height: 1.5;
+        transition: all var(--motion-fast) var(--ease-default);
+      }
+      .grx-badge-success { background: rgba(16, 185, 129, 0.1); color: #059669; }
+      .dark .grx-badge-success { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+      .grx-badge-warning { background: rgba(245, 158, 11, 0.1); color: #d97706; }
+      .dark .grx-badge-warning { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+      .grx-badge-error { background: rgba(239, 68, 68, 0.1); color: #dc2626; }
+      .dark .grx-badge-error { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+      .grx-badge-info { background: rgba(59, 130, 246, 0.1); color: #2563eb; }
+      .dark .grx-badge-info { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+      .grx-badge-primary { background: rgba(58, 47, 120, 0.08); color: var(--grx10-primary); }
+      .dark .grx-badge-primary { background: rgba(174, 166, 229, 0.15); color: var(--grx10-primary-200); }
+      .grx-badge-accent { background: rgba(230, 0, 126, 0.08); color: var(--grx10-accent); }
+      .dark .grx-badge-accent { background: rgba(230, 0, 126, 0.15); color: var(--grx10-accent-200); }
+
+      /* ── Modal & Dropdown Transitions ──────────────────────────── */
+      @keyframes grx-modal-enter {
+        from { opacity: 0; transform: scale(0.95) translateY(10px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+      }
+      @keyframes grx-modal-exit {
+        from { opacity: 1; transform: scale(1) translateY(0); }
+        to { opacity: 0; transform: scale(0.95) translateY(10px); }
+      }
+      @keyframes grx-dropdown-enter {
+        from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+      }
+      .grx-modal-enter {
+        animation: grx-modal-enter var(--motion-normal) var(--ease-spring) both;
+      }
+      .grx-dropdown-enter {
+        animation: grx-dropdown-enter var(--motion-fast) var(--ease-out) both;
+      }
+
+      /* ── Progress Bar ──────────────────────────────────────────── */
+      .grx-progress {
+        height: 6px;
+        background: var(--grx10-primary-50);
+        border-radius: 3px;
+        overflow: hidden;
+      }
+      .dark .grx-progress { background: var(--grx10-primary-800); }
+      .grx-progress-fill {
+        height: 100%;
+        border-radius: 3px;
+        background: linear-gradient(90deg, var(--grx10-primary), var(--grx10-accent));
+        transition: width 0.6s var(--ease-out);
+      }
+
+      /* ── Card Depth Hover ──────────────────────────────────────── */
+      .grx-card-lift {
+        transition: transform var(--motion-normal) var(--ease-out),
+                    box-shadow var(--motion-normal) var(--ease-out);
+      }
+      .grx-card-lift:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 16px 48px rgba(58, 47, 120, 0.12);
+      }
+      .dark .grx-card-lift:hover {
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+      }
+
+      /* ── Empty State ───────────────────────────────────────────── */
+      .grx-empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 2rem;
+        text-align: center;
+        color: var(--grx10-muted);
+      }
+      .grx-empty-state svg { opacity: 0.4; margin-bottom: 1rem; }
+
       /* ── Glassmorphism & 2026 UI ──────────────────────────────── */
       .grx-glass {
         background: rgba(255, 255, 255, 0.72);

@@ -25,7 +25,7 @@ const Dashboard: React.FC<DashboardProps> = ({ invoices }) => {
   const formatINR = (val: number) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6 grx-animate-fade-in-up">
       <div className="flex justify-between items-end">
         <div>
           <h2 className="text-2xl font-bold text-grx-text dark:text-white">Dashboard</h2>
@@ -37,8 +37,8 @@ const Dashboard: React.FC<DashboardProps> = ({ invoices }) => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl shadow-sm border border-grx-primary-50 dark:border-grx-primary-800 hover:shadow-md transition-shadow">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 grx-stagger">
+        <div className="grx-glass-card p-6 rounded-xl hover:shadow-md transition-shadow">
           <div className="flex justify-between items-start">
             <div>
               <p className="text-sm font-medium text-grx-muted dark:text-grx-muted mb-1">Total Receivables</p>
@@ -56,7 +56,7 @@ const Dashboard: React.FC<DashboardProps> = ({ invoices }) => {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl shadow-sm border border-grx-primary-50 dark:border-grx-primary-800 hover:shadow-md transition-shadow">
+        <div className="grx-glass-card p-6 rounded-xl hover:shadow-md transition-shadow">
           <div className="flex justify-between items-start">
             <div>
               <p className="text-sm font-medium text-grx-muted dark:text-grx-muted mb-1">Total Overdue</p>
@@ -74,7 +74,7 @@ const Dashboard: React.FC<DashboardProps> = ({ invoices }) => {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl shadow-sm border border-grx-primary-50 dark:border-grx-primary-800 hover:shadow-md transition-shadow">
+        <div className="grx-glass-card p-6 rounded-xl hover:shadow-md transition-shadow">
           <div className="flex justify-between items-start">
             <div>
               <p className="text-sm font-medium text-grx-muted dark:text-grx-muted mb-1">Revenue (YTD)</p>
@@ -93,7 +93,7 @@ const Dashboard: React.FC<DashboardProps> = ({ invoices }) => {
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Cash Flow Chart */}
-        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl shadow-sm border border-grx-primary-50 dark:border-grx-primary-800">
+        <div className="grx-glass-card p-6 rounded-xl">
           <h3 className="text-lg font-semibold text-grx-text dark:text-white mb-6">Cash Flow</h3>
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -123,7 +123,7 @@ const Dashboard: React.FC<DashboardProps> = ({ invoices }) => {
         </div>
 
         {/* Expense Breakdown (Mock Bar Chart) */}
-        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl shadow-sm border border-grx-primary-50 dark:border-grx-primary-800">
+        <div className="grx-glass-card p-6 rounded-xl">
           <h3 className="text-lg font-semibold text-grx-text dark:text-white mb-6">Income vs Expense</h3>
            <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">

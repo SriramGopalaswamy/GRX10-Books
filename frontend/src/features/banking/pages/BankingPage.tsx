@@ -46,19 +46,19 @@ const Banking: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
        <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold text-grx-text dark:text-white">Banking & Reconciliation</h2>
           <div className="relative">
              <input type="file" className="hidden" id="bank-upload" onChange={handleStatementUpload} accept=".pdf,.csv,.jpg" />
-             <label htmlFor="bank-upload" className="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-700 cursor-pointer">
+             <label htmlFor="bank-upload" className="bg-grx-primary-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-grx-primary-700 cursor-pointer">
                 {isUploading ? <Loader2 className="animate-spin" size={18}/> : <Upload size={18}/>}
                 Import Statement
              </label>
           </div>
        </div>
 
-       <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
+       <div className="grx-glass-card rounded-xl overflow-hidden">
           <table className="w-full text-sm text-left">
              <thead className="bg-grx-bg dark:bg-grx-dark text-grx-muted dark:text-grx-muted font-medium">
                 <tr>
@@ -84,7 +84,7 @@ const Banking: React.FC = () => {
                       </td>
                       <td className="px-6 py-4">
                          {t.status === 'Unreconciled' && (
-                            <button onClick={() => reconcile(t.id)} className="text-indigo-600 hover:text-indigo-800 flex items-center gap-1 text-xs font-semibold">
+                            <button onClick={() => reconcile(t.id)} className="text-grx-primary-600 hover:text-grx-primary-800 flex items-center gap-1 text-xs font-semibold">
                                <RefreshCcw size={14} /> Match
                             </button>
                          )}

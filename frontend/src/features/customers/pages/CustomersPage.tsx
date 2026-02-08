@@ -25,7 +25,7 @@ const Customers: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-grx-text dark:text-white">Customers</h2>
         <button onClick={() => setShowAddModal(true)} className="bg-emerald-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-emerald-700">
@@ -35,9 +35,9 @@ const Customers: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {customers.map(cust => (
-          <div key={cust.id} className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 hover:shadow-md transition-shadow">
+          <div key={cust.id} className="grx-glass-card p-6 rounded-xl hover:shadow-md transition-shadow">
              <div className="flex justify-between items-start mb-4">
-                <div className="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold text-lg">
+                <div className="w-12 h-12 bg-grx-primary-100 text-grx-primary-600 rounded-full flex items-center justify-center font-bold text-lg">
                    {cust.name.substring(0, 2).toUpperCase()}
                 </div>
                 <div className="text-right">
@@ -59,7 +59,7 @@ const Customers: React.FC = () => {
 
       {showAddModal && (
         <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-grx-dark-surface rounded-xl p-6 w-full max-w-md shadow-2xl">
+          <div className="grx-glass-card rounded-xl p-6 w-full max-w-md shadow-2xl grx-modal-enter">
              <h3 className="text-lg font-bold mb-4 text-grx-text dark:text-white">New Customer</h3>
              <div className="space-y-3">
                <input placeholder="Company Name" className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white p-2 rounded" value={newCust.name} onChange={e => setNewCust({...newCust, name: e.target.value})} />

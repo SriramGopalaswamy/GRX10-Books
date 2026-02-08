@@ -12,9 +12,9 @@ type Tab = 'uploads' | 'templates' | 'agreements' | 'msa';
 
 const MOCK_TEMPLATES: InvoiceTemplate[] = [
   { id: 'Professional GST Standard', name: 'Professional GST Standard', thumbnailColor: 'bg-grx-primary-100', tags: ['Professional', 'GST Compliant'] },
-  { id: 'Creative Digital', name: 'Creative Digital', thumbnailColor: 'bg-indigo-100', tags: ['Modern', 'Freelancer'] },
+  { id: 'Creative Digital', name: 'Creative Digital', thumbnailColor: 'bg-grx-primary-100', tags: ['Modern', 'Freelancer'] },
   { id: 'Corporate Blue', name: 'Corporate Blue', thumbnailColor: 'bg-blue-100', tags: ['Corporate', 'Clean'] },
-  { id: 'Minimalist Mono', name: 'Minimalist Mono', thumbnailColor: 'bg-gray-100', tags: ['Simple', 'B&W'] },
+  { id: 'Minimalist Mono', name: 'Minimalist Mono', thumbnailColor: 'bg-grx-primary-50', tags: ['Simple', 'B&W'] },
 ];
 
 const INITIAL_AGREEMENTS: Agreement[] = [
@@ -282,7 +282,7 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
   // --- Render Functions ---
 
   const renderUploads = () => (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6 grx-animate-fade-in-up">
       <div 
         className={`p-8 border-2 border-dashed rounded-xl transition-colors text-center cursor-pointer
           ${dragActive ? "border-emerald-500 bg-emerald-50" : "border-grx-primary-100 bg-grx-bg hover:bg-grx-primary-50"}`}
@@ -327,12 +327,12 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
                        {doc.ocrStatus === 'idle' && (
                           <div className="flex items-center justify-between">
                              <span className="text-xs text-grx-muted">Analysis pending</span>
-                             <button onClick={() => runOCR(doc.id)} className="flex items-center gap-2 text-xs font-medium bg-indigo-600 text-white px-3 py-1.5 rounded-md hover:bg-indigo-700 transition-colors">
+                             <button onClick={() => runOCR(doc.id)} className="flex items-center gap-2 text-xs font-medium bg-grx-primary-600 text-white px-3 py-1.5 rounded-md hover:bg-grx-primary-700 transition-colors">
                                 <ScanLine size={14} /> Run Auto-OCR
                              </button>
                           </div>
                        )}
-                       {doc.ocrStatus === 'processing' && <div className="flex items-center gap-2 text-xs text-indigo-600 font-medium"><Loader2 size={14} className="animate-spin" /> Extracting financial data with Gemini...</div>}
+                       {doc.ocrStatus === 'processing' && <div className="flex items-center gap-2 text-xs text-grx-primary-600 font-medium"><Loader2 size={14} className="animate-spin" /> Extracting financial data with Gemini...</div>}
                        {doc.ocrStatus === 'completed' && doc.extractedData && (
                           <div className="bg-emerald-50/50 rounded-md p-3 border border-emerald-100">
                              <div className="flex items-center gap-2 mb-2 text-emerald-700 font-medium text-xs"><CheckCircle size={14} /> Data Extracted</div>
@@ -362,9 +362,9 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
   );
 
   const renderTemplates = () => (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6 grx-animate-fade-in-up">
       <p className="text-sm text-grx-muted">Select a pre-made, GST-compliant template for your next invoice.</p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 grx-stagger">
         {MOCK_TEMPLATES.map(template => (
           <div key={template.id} className="bg-white rounded-xl shadow-sm border border-grx-primary-100 overflow-hidden group hover:shadow-md transition-shadow cursor-pointer">
              <div className={`h-48 ${template.thumbnailColor} w-full flex items-center justify-center relative`}>
@@ -404,7 +404,7 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
            {/* Header */}
            <div className="bg-white dark:bg-grx-dark-surface p-4 flex justify-between items-center shadow-md z-10">
               <div className="flex items-center gap-3">
-                 <div className="w-8 h-8 bg-indigo-600 rounded text-white flex items-center justify-center font-bold">G</div>
+                 <div className="w-8 h-8 bg-grx-primary-600 rounded text-white flex items-center justify-center font-bold">G</div>
                  <div className="h-6 w-px bg-grx-primary-200"></div>
                  <div>
                     <h3 className="font-bold text-grx-text text-sm">GRX10 Secure Sign</h3>
@@ -416,7 +416,7 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
 
            {/* Document Body (Mock) */}
            <div className="flex-1 bg-grx-primary-50 p-8 overflow-y-auto flex justify-center">
-              <div className="bg-white dark:bg-grx-dark-surface shadow-xl w-full max-w-3xl min-h-[800px] p-12 text-grx-text relative">
+              <div className="grx-glass shadow-xl w-full max-w-3xl min-h-[800px] p-12 text-grx-text relative">
                   <h1 className="text-2xl font-bold uppercase text-center mb-8 border-b pb-4">{signingAgreement.type}</h1>
                   <div className="space-y-6 text-justify text-sm leading-relaxed">
                      <p>This Agreement is made on <strong>{new Date().toLocaleDateString()}</strong> between GRX10 Solutions and <strong>{signingAgreement.customerName}</strong>.</p>
@@ -437,7 +437,7 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
                       </div>
                       <div className="w-1/3 relative group cursor-pointer" onClick={handleSignAgreement}>
                          <div className="h-12 border-b border-grx-primary-800 mb-2 bg-yellow-50 flex items-center justify-center text-yellow-700 font-handwriting text-xl relative overflow-hidden">
-                             {isSigning ? <Loader2 className="animate-spin text-indigo-600"/> : <span className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 font-sans text-xs bg-indigo-600 text-white px-2 py-1 rounded shadow-lg absolute top-[-10px]">Click to Sign</span>}
+                             {isSigning ? <Loader2 className="animate-spin text-grx-primary-600"/> : <span className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 font-sans text-xs bg-grx-primary-600 text-white px-2 py-1 rounded shadow-lg absolute top-[-10px]">Click to Sign</span>}
                          </div>
                          <p className="font-bold">{signingAgreement.customerName}</p>
                          <p className="text-xs text-grx-muted">Client / Customer</p>
@@ -452,7 +452,7 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
               <button 
                  onClick={handleSignAgreement} 
                  disabled={isSigning}
-                 className="bg-indigo-600 text-white px-8 py-2 rounded-lg font-bold hover:bg-indigo-700 shadow-lg shadow-indigo-200 flex items-center gap-2"
+                 className="bg-grx-primary-600 text-white px-8 py-2 rounded-lg font-bold hover:bg-grx-primary-700 shadow-lg shadow-grx-primary-200 flex items-center gap-2"
               >
                  {isSigning ? 'Securing Signature...' : 'Adopt & Sign'}
               </button>
@@ -463,20 +463,20 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
       {/* Audit Trail Modal */}
       {viewingAudit && (
         <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-           <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-xl max-w-lg w-full overflow-hidden animate-scale-in">
+           <div className="grx-glass-card rounded-xl shadow-xl max-w-lg w-full overflow-hidden animate-scale-in">
               <div className="p-6 border-b border-grx-primary-50 flex justify-between items-center bg-grx-bg/50">
                  <div>
-                   <h3 className="font-bold text-grx-text flex items-center gap-2"><History size={18} className="text-indigo-600"/> Audit Trail</h3>
+                   <h3 className="font-bold text-grx-text flex items-center gap-2"><History size={18} className="text-grx-primary-600"/> Audit Trail</h3>
                    <p className="text-xs text-grx-muted">{viewingAudit.uniqueLink}</p>
                  </div>
                  <button onClick={() => setViewAuditId(null)} className="text-grx-muted hover:text-grx-muted"><X size={20}/></button>
               </div>
               <div className="p-6 max-h-[400px] overflow-y-auto bg-white">
-                 <div className="relative border-l-2 border-indigo-100 ml-3 space-y-8 pl-6 pb-2">
+                 <div className="relative border-l-2 border-grx-primary-100 ml-3 space-y-8 pl-6 pb-2">
                     {viewingAudit.auditTrail.map((event, idx) => (
                       <div key={event.id} className="relative">
                          <span className={`absolute -left-[31px] w-4 h-4 rounded-full border-2 border-white shadow-sm 
-                           ${idx === viewingAudit.auditTrail.length - 1 ? 'bg-indigo-600' : 'bg-grx-primary-200'}`}></span>
+                           ${idx === viewingAudit.auditTrail.length - 1 ? 'bg-grx-primary-600' : 'bg-grx-primary-200'}`}></span>
                          <p className="text-xs font-semibold text-grx-muted mb-0.5">{event.timestamp}</p>
                          <h4 className="text-sm font-bold text-grx-text">{event.action}</h4>
                          <p className="text-sm text-grx-muted mt-1">{event.details}</p>
@@ -491,7 +491,7 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
       {/* Send Modal */}
       {isSendModalOpen && (
          <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-xl max-w-md w-full p-6 animate-scale-in">
+            <div className="grx-glass-card rounded-xl shadow-xl max-w-md w-full p-6 animate-scale-in">
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-bold text-grx-text">Send Agreement</h3>
                     <button onClick={() => setIsSendModalOpen(false)} className="text-grx-muted hover:text-grx-muted"><X size={20}/></button>
@@ -499,21 +499,21 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
                 <div className="space-y-4">
                     <div>
                         <label className="block text-xs font-semibold text-grx-muted mb-1">Customer Name</label>
-                        <input type="text" className="w-full border border-grx-primary-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="e.g. TechFlow India" value={sendForm.customerName} onChange={e => setSendForm({...sendForm, customerName: e.target.value})} />
+                        <input type="text" className="w-full border border-grx-primary-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-grx-primary outline-none" placeholder="e.g. TechFlow India" value={sendForm.customerName} onChange={e => setSendForm({...sendForm, customerName: e.target.value})} />
                     </div>
                     <div>
                         <label className="block text-xs font-semibold text-grx-muted mb-1">Recipient Email</label>
-                        <input type="email" className="w-full border border-grx-primary-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="signer@company.com" value={sendForm.email} onChange={e => setSendForm({...sendForm, email: e.target.value})} />
+                        <input type="email" className="w-full border border-grx-primary-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-grx-primary outline-none" placeholder="signer@company.com" value={sendForm.email} onChange={e => setSendForm({...sendForm, email: e.target.value})} />
                     </div>
                      <div>
                         <label className="block text-xs font-semibold text-grx-muted mb-1">Agreement Type</label>
-                        <select className="w-full border border-grx-primary-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 outline-none bg-white" value={sendForm.type} onChange={e => setSendForm({...sendForm, type: e.target.value})}>
+                        <select className="w-full border border-grx-primary-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-grx-primary outline-none bg-white" value={sendForm.type} onChange={e => setSendForm({...sendForm, type: e.target.value})}>
                             <option value="MSA">Master Services Agreement (MSA)</option>
                             <option value="NDA">Non-Disclosure Agreement (NDA)</option>
                             <option value="Service Contract">Service Contract</option>
                         </select>
                     </div>
-                    <button onClick={handleSendAgreement} disabled={isSending || !sendForm.customerName || !sendForm.email} className="w-full bg-indigo-600 text-white rounded-lg py-2.5 font-medium hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-70">
+                    <button onClick={handleSendAgreement} disabled={isSending || !sendForm.customerName || !sendForm.email} className="w-full bg-grx-primary-600 text-white rounded-lg py-2.5 font-medium hover:bg-grx-primary-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-70">
                         {isSending ? <Loader2 className="animate-spin" size={18} /> : <Send size={18} />}
                         {isSending ? 'Generating Secure Link...' : 'Send for Signature'}
                     </button>
@@ -529,7 +529,7 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
                 <Wifi size={12} className="animate-pulse" /> Real-time Tracking Active
             </div>
          </div>
-         <button onClick={() => setIsSendModalOpen(true)} className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-indigo-700 transition-colors shadow-sm shadow-indigo-200">
+         <button onClick={() => setIsSendModalOpen(true)} className="bg-grx-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-grx-primary-700 transition-colors shadow-sm shadow-grx-primary-200">
            <FileSignature size={16} /> New Agreement
          </button>
       </div>
@@ -571,7 +571,7 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
                        <Link size={12} /> {copiedLinkId === agreement.id ? 'Copied!' : 'Copy'}
                     </button>
                     {agreement.status !== 'Signed' && agreement.status !== 'Expired' && (
-                        <button onClick={() => setSigningAgreement(agreement)} className="flex items-center gap-1 text-xs text-indigo-600 hover:text-indigo-800 font-medium px-2 py-1 hover:bg-indigo-50 rounded" title="Simulate Customer View">
+                        <button onClick={() => setSigningAgreement(agreement)} className="flex items-center gap-1 text-xs text-grx-primary-600 hover:text-grx-primary-800 font-medium px-2 py-1 hover:bg-grx-primary-50 rounded" title="Simulate Customer View">
                            <ExternalLink size={12} /> Open Sign Link
                         </button>
                     )}
@@ -579,7 +579,7 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
                 </td>
                 <td className="px-6 py-4 text-grx-muted text-xs">{agreement.lastActivity}</td>
                 <td className="px-6 py-4 text-center flex justify-center gap-2">
-                   <button onClick={() => setViewAuditId(agreement.id)} className="text-grx-muted hover:text-indigo-600 p-2 rounded-full hover:bg-indigo-50 transition-colors" title="View Audit Trail">
+                   <button onClick={() => setViewAuditId(agreement.id)} className="text-grx-muted hover:text-grx-primary-600 p-2 rounded-full hover:bg-grx-primary-50 transition-colors" title="View Audit Trail">
                       <History size={16} />
                    </button>
                    {agreement.status === 'Signed' ? (
@@ -606,7 +606,7 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
            <h1 className="text-2xl font-bold text-grx-text">Master Services Agreement</h1>
            <p className="text-grx-muted text-sm mt-1">Reference Version 1.4 • Updated Jan 2024</p>
          </div>
-         <button onClick={() => window.print()} className="text-indigo-600 text-sm font-medium border border-indigo-200 px-4 py-2 rounded-lg hover:bg-indigo-50">Download PDF</button>
+         <button onClick={() => window.print()} className="text-grx-primary-600 text-sm font-medium border border-grx-primary-200 px-4 py-2 rounded-lg hover:bg-grx-primary-50">Download PDF</button>
       </div>
       <div className="prose prose-slate prose-sm max-w-none text-justify text-grx-text space-y-4">
         <p><strong>1. PARTIES.</strong> This Master Services Agreement (hereinafter referred to as "Agreement") is entered into by and between GRX10 Solutions Pvt Ltd (the "Service Provider") and the Client (the "Customer").</p>

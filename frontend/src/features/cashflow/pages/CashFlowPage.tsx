@@ -11,18 +11,18 @@ const CashFlow: React.FC = () => {
   const totalOutflow = data.outflows.reduce((acc, curr) => acc + curr.projected, 0);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
        <div className="flex justify-between items-center">
           <div>
              <h2 className="text-2xl font-bold text-grx-text dark:text-white">Cash Flow Planner</h2>
              <p className="text-grx-muted dark:text-grx-muted">Forecast for {data.month}</p>
           </div>
-          <button onClick={() => setEditing(!editing)} className="text-indigo-600 bg-indigo-50 px-4 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-indigo-100">
+          <button onClick={() => setEditing(!editing)} className="text-grx-primary-600 bg-grx-primary-50 px-4 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-grx-primary-100">
              {editing ? <Save size={18}/> : <Edit2 size={18}/>} {editing ? 'Save Plan' : 'Edit Forecast'}
           </button>
        </div>
 
-       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 grx-stagger">
            <div className="bg-emerald-500 text-white p-6 rounded-xl shadow-lg shadow-emerald-200">
               <p className="text-emerald-100 font-medium">Projected Inflow</p>
               <h3 className="text-3xl font-bold mt-2">₹{totalInflow.toLocaleString()}</h3>
@@ -37,7 +37,7 @@ const CashFlow: React.FC = () => {
            </div>
        </div>
 
-       <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-6">
+       <div className="grx-glass-card rounded-xl p-6">
           <h3 className="font-bold text-grx-text dark:text-white mb-4 text-lg">Detailed Breakdown</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
              {/* Inflows */}

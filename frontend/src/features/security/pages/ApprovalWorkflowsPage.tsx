@@ -100,7 +100,7 @@ export const ApprovalWorkflowsPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-grx-text dark:text-white">Approval Workflows</h2>
         <button
@@ -109,7 +109,7 @@ export const ApprovalWorkflowsPage: React.FC = () => {
             setEditingWorkflow(null);
             setFormData({ name: '', module: '', resource: '', workflowType: 'sequential', steps: [] });
           }}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2 transition-colors"
+          className="bg-grx-primary-600 text-white px-4 py-2 rounded-lg hover:bg-grx-primary-700 flex items-center gap-2 transition-colors"
         >
           <Plus size={18} />
           New Workflow
@@ -118,8 +118,8 @@ export const ApprovalWorkflowsPage: React.FC = () => {
 
       {/* Workflow Form Modal */}
       {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-xl p-6 max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 grx-modal-backdrop flex items-center justify-center z-50">
+          <div className="grx-glass-card rounded-xl shadow-xl p-6 max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-xl font-semibold text-grx-text dark:text-white">
                 {editingWorkflow ? 'Edit Workflow' : 'Create Workflow'}
@@ -141,7 +141,7 @@ export const ApprovalWorkflowsPage: React.FC = () => {
                   <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Workflow Name</label>
                   <input
                     type="text"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.name || ''}
                     onChange={e => setFormData({ ...formData, name: e.target.value })}
                   />
@@ -149,7 +149,7 @@ export const ApprovalWorkflowsPage: React.FC = () => {
                 <div>
                   <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Module</label>
                   <select
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.module || ''}
                     onChange={e => setFormData({ ...formData, module: e.target.value })}
                   >
@@ -163,7 +163,7 @@ export const ApprovalWorkflowsPage: React.FC = () => {
                   <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Resource</label>
                   <input
                     type="text"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.resource || ''}
                     onChange={e => setFormData({ ...formData, resource: e.target.value })}
                     placeholder="e.g. leave, expense, invoice"
@@ -172,7 +172,7 @@ export const ApprovalWorkflowsPage: React.FC = () => {
                 <div>
                   <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Workflow Type</label>
                   <select
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.workflowType || 'sequential'}
                     onChange={e => setFormData({ ...formData, workflowType: e.target.value })}
                   >
@@ -189,7 +189,7 @@ export const ApprovalWorkflowsPage: React.FC = () => {
                   <label className="block text-sm font-medium text-grx-text">Approval Steps</label>
                   <button
                     onClick={handleAddStep}
-                    className="text-indigo-600 hover:text-indigo-700 text-sm font-medium"
+                    className="text-grx-primary-600 hover:text-grx-primary-700 text-sm font-medium"
                   >
                     + Add Step
                   </button>
@@ -210,7 +210,7 @@ export const ApprovalWorkflowsPage: React.FC = () => {
                         <div>
                           <label className="block text-xs font-medium text-grx-muted dark:text-grx-muted mb-1">Approver Type</label>
                           <select
-                            className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded p-2 text-sm focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                            className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded p-2 text-sm focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                             value={step.approverType}
                             onChange={e => handleUpdateStep(index, 'approverType', e.target.value)}
                           >
@@ -224,7 +224,7 @@ export const ApprovalWorkflowsPage: React.FC = () => {
                           <label className="block text-xs font-medium text-grx-muted dark:text-grx-muted mb-1">Approver ID</label>
                           <input
                             type="text"
-                            className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded p-2 text-sm focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                            className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded p-2 text-sm focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                             value={step.approverId || ''}
                             onChange={e => handleUpdateStep(index, 'approverId', e.target.value)}
                             placeholder="Role ID or User ID"
@@ -236,7 +236,7 @@ export const ApprovalWorkflowsPage: React.FC = () => {
                               type="checkbox"
                               checked={step.isRequired}
                               onChange={e => handleUpdateStep(index, 'isRequired', e.target.checked)}
-                              className="rounded border-grx-primary-100 text-indigo-600"
+                              className="rounded border-grx-primary-100 text-grx-primary-600"
                             />
                             <span className="text-xs text-grx-text dark:text-grx-primary-200">Required</span>
                           </label>
@@ -247,7 +247,7 @@ export const ApprovalWorkflowsPage: React.FC = () => {
                               type="checkbox"
                               checked={step.canDelegate}
                               onChange={e => handleUpdateStep(index, 'canDelegate', e.target.checked)}
-                              className="rounded border-grx-primary-100 text-indigo-600"
+                              className="rounded border-grx-primary-100 text-grx-primary-600"
                             />
                             <span className="text-xs text-grx-text dark:text-grx-primary-200">Can Delegate</span>
                           </label>
@@ -271,7 +271,7 @@ export const ApprovalWorkflowsPage: React.FC = () => {
               </button>
               <button
                 onClick={handleSave}
-                className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2 transition-colors"
+                className="bg-grx-primary-600 text-white px-4 py-2 rounded-lg hover:bg-grx-primary-700 flex items-center gap-2 transition-colors"
               >
                 <Save size={18} />
                 Save
@@ -282,7 +282,7 @@ export const ApprovalWorkflowsPage: React.FC = () => {
       )}
 
       {/* Workflows List */}
-      <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
+      <div className="grx-glass-card rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-100 dark:border-grx-primary-800">
@@ -326,7 +326,7 @@ export const ApprovalWorkflowsPage: React.FC = () => {
                             setFormData(workflow);
                             setShowForm(true);
                           }}
-                          className="text-indigo-600 hover:text-indigo-700"
+                          className="text-grx-primary-600 hover:text-grx-primary-700"
                         >
                           <Edit2 size={18} />
                         </button>

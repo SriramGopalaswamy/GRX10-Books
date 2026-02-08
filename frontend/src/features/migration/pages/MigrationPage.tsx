@@ -111,7 +111,7 @@ const Migration: React.FC<MigrationProps> = ({ onImport }) => {
         ))}
       </div>
 
-      <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-lg border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
+      <div className="grx-glass-card rounded-xl shadow-lg border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
 
         {status === 'idle' && (
           <div
@@ -122,7 +122,7 @@ const Migration: React.FC<MigrationProps> = ({ onImport }) => {
             onDragOver={handleDrag}
             onDrop={handleDrop}
           >
-            <div className="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mb-4">
+            <div className="w-16 h-16 bg-grx-primary-100 text-grx-primary-600 rounded-full flex items-center justify-center mb-4">
               <UploadCloud size={32} />
             </div>
 
