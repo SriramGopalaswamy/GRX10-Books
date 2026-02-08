@@ -1,4 +1,5 @@
 import React from 'react';
+import logoSvg from '../assets/grx10-logo.svg';
 
 interface GRX10LogoProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
@@ -22,85 +23,40 @@ export const GRX10Logo: React.FC<GRX10LogoProps> = ({
 
   if (variant === 'mark') {
     return (
-      <svg
-        width={s.height}
-        height={s.height}
-        viewBox="0 0 40 40"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
+      <img
+        src={logoSvg}
+        alt="GRX10 logo mark"
         className={className}
-        aria-label="GRX10 logo"
-        role="img"
-      >
-        <rect width="40" height="40" rx="10" fill="#3A2F78" />
-        <text
-          x="50%"
-          y="54%"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          fill="white"
-          fontFamily="Inter, sans-serif"
-          fontWeight="700"
-          fontSize="16"
-        >
-          G
-        </text>
-        <circle cx="32" cy="8" r="4" fill="#E6007E" />
-      </svg>
+        style={{ width: s.height, height: s.height }}
+      />
     );
   }
 
   if (variant === 'text') {
     return (
-      <span
-        className={`font-bold tracking-tight ${className}`}
-        style={{ fontSize: s.fontSize, color: '#3A2F78' }}
-        aria-label="GRX10"
-      >
-        GRX<span style={{ color: '#E6007E' }}>10</span>
-      </span>
+      <img
+        src={logoSvg}
+        alt="GRX10"
+        className={className}
+        style={{ height: s.height, width: s.width }}
+      />
     );
   }
 
   // Full logo: icon mark + text
   return (
     <div className={`flex items-center gap-2.5 ${className}`} aria-label="GRX10 Financial Suite" role="img">
-      <svg
-        width="36"
-        height="36"
-        viewBox="0 0 40 40"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
+      <img
+        src={logoSvg}
+        alt="GRX10"
+        style={{ width: s.width, height: s.height }}
+      />
+      <span
+        className="text-grx-primary-100 uppercase tracking-[0.24em]"
+        style={{ fontSize: s.subSize }}
       >
-        <rect width="40" height="40" rx="10" fill="#3A2F78" />
-        <text
-          x="50%"
-          y="54%"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          fill="white"
-          fontFamily="Inter, sans-serif"
-          fontWeight="700"
-          fontSize="16"
-        >
-          G
-        </text>
-        <circle cx="32" cy="8" r="4" fill="#E6007E" />
-      </svg>
-      <div className="flex flex-col">
-        <span
-          className="font-bold tracking-tight leading-tight text-white"
-          style={{ fontSize: s.fontSize }}
-        >
-          GRX<span style={{ color: '#E6007E' }}>10</span>
-        </span>
-        <span
-          className="text-grx-primary-200 leading-tight"
-          style={{ fontSize: s.subSize }}
-        >
-          Financial Suite
-        </span>
-      </div>
+        Financial Suite
+      </span>
     </div>
   );
 };
