@@ -112,22 +112,29 @@ async function seedDatabase() {
         }
         console.log(`   ✅ Created ${customers.length} Customers`);
 
-        // Seed Admin User (if not exists)
-        console.log('📝 Seeding Admin User...');
+        // Seed Admin User (Hardcoded with upsert to ensure password compliance)
+        console.log('📝 Seeding Admin User (Hardcoded)...');
         const adminPasswordHash = await bcrypt.hash('admin123', BCRYPT_SALT_ROUNDS);
-        const adminUser = await User.findOrCreate({
-            where: { username: 'admin' },
-            defaults: {
-                id: 'admin-001',
-                username: 'admin',
-                email: 'admin@grx10.com',
-                passwordHash: adminPasswordHash,
-                displayName: 'Administrator',
-                role: 'admin',
-                isActive: true
-            }
-        });
-        console.log('   ✅ Admin user ready (username: admin, password: admin123)');
+        
+        // Use upsert or find+update to ensure the user has the correct credentials
+        const adminUserData = {
+            id: 'admin-001',
+            username: 'admin',
+            email: 'admin@grx10.com',
+            passwordHash: adminPasswordHash,
+            displayName: 'Administrator',
+            role: 'admin',
+            isActive: true
+        };
+
+        const existingAdmin = await User.findOne({ where: { username: 'admin' } });
+        if (existingAdmin) {
+            await existingAdmin.update(adminUserData);
+            console.log('   ✅ Admin user updated (username: admin, password: admin123)');
+        } else {
+            await User.create(adminUserData);
+            console.log('   ✅ Admin user created (username: admin, password: admin123)');
+        }
 
         // Seed HRMS Employees
         console.log('📝 Seeding HRMS Employees...');
