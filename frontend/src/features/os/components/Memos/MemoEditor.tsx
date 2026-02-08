@@ -73,7 +73,7 @@ export const MemoEditor: React.FC<MemoEditorProps> = ({ onCancel, onSave }) => {
         <div className="max-w-4xl mx-auto">
             <div className="flex justify-between items-center mb-6">
                 <div>
-                  <h1 className="text-2xl font-bold text-slate-900">New Memo</h1>
+                  <h1 className="text-2xl font-bold text-grx-text">New Memo</h1>
                   <p className="text-sm text-gray-500">Subject: {formData.subject || '...'}</p>
                 </div>
                 <div className="flex gap-3">
@@ -99,7 +99,7 @@ export const MemoEditor: React.FC<MemoEditorProps> = ({ onCancel, onSave }) => {
                         </div>
                         
                         <div>
-                            <label className="block text-sm font-bold text-slate-800 mb-1">Summary & Details</label>
+                            <label className="block text-sm font-bold text-grx-text mb-1">Summary & Details</label>
                             <p className="text-xs text-gray-500 mb-2">Include Problem, Solution, ROI, Risks, and the Ask in a concise format.</p>
                             <textarea 
                                 rows={12}
@@ -112,7 +112,7 @@ export const MemoEditor: React.FC<MemoEditorProps> = ({ onCancel, onSave }) => {
 
                         {/* File Upload Section */}
                         <div>
-                            <label className="block text-sm font-bold text-slate-800 mb-2">Attachments</label>
+                            <label className="block text-sm font-bold text-grx-text mb-2">Attachments</label>
                             <div 
                                 onClick={() => fileInputRef.current?.click()}
                                 className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:border-brand-500 hover:bg-gray-50 transition-colors"
@@ -131,11 +131,11 @@ export const MemoEditor: React.FC<MemoEditorProps> = ({ onCancel, onSave }) => {
                             {formData.attachments && formData.attachments.length > 0 && (
                                 <div className="mt-4 space-y-2">
                                     {formData.attachments.map(file => (
-                                        <div key={file.id} className="flex items-center justify-between bg-slate-50 p-3 rounded-md border border-slate-200">
+                                        <div key={file.id} className="flex items-center justify-between bg-grx-bg p-3 rounded-md border border-grx-primary-100">
                                             <div className="flex items-center gap-3">
                                                 <FileIcon className="text-brand-600" size={18} />
                                                 <div>
-                                                    <p className="text-sm font-medium text-slate-700">{file.name}</p>
+                                                    <p className="text-sm font-medium text-grx-text">{file.name}</p>
                                                     <p className="text-xs text-gray-500">{file.size}</p>
                                                 </div>
                                             </div>

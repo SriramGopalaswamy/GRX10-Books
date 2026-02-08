@@ -102,7 +102,7 @@ export const ApprovalWorkflowsPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Approval Workflows</h2>
+        <h2 className="text-2xl font-bold text-grx-text dark:text-white">Approval Workflows</h2>
         <button
           onClick={() => {
             setShowForm(true);
@@ -119,9 +119,9 @@ export const ApprovalWorkflowsPage: React.FC = () => {
       {/* Workflow Form Modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-xl p-6 max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-xl p-6 max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+              <h3 className="text-xl font-semibold text-grx-text dark:text-white">
                 {editingWorkflow ? 'Edit Workflow' : 'Create Workflow'}
               </h3>
               <button
@@ -129,7 +129,7 @@ export const ApprovalWorkflowsPage: React.FC = () => {
                   setShowForm(false);
                   setEditingWorkflow(null);
                 }}
-                className="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
+                className="text-grx-muted dark:text-grx-muted hover:text-grx-text dark:hover:text-grx-primary-200"
               >
                 <X size={24} />
               </button>
@@ -138,18 +138,18 @@ export const ApprovalWorkflowsPage: React.FC = () => {
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Workflow Name</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Workflow Name</label>
                   <input
                     type="text"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.name || ''}
                     onChange={e => setFormData({ ...formData, name: e.target.value })}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Module</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Module</label>
                   <select
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.module || ''}
                     onChange={e => setFormData({ ...formData, module: e.target.value })}
                   >
@@ -160,19 +160,19 @@ export const ApprovalWorkflowsPage: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Resource</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Resource</label>
                   <input
                     type="text"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.resource || ''}
                     onChange={e => setFormData({ ...formData, resource: e.target.value })}
                     placeholder="e.g. leave, expense, invoice"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Workflow Type</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Workflow Type</label>
                   <select
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.workflowType || 'sequential'}
                     onChange={e => setFormData({ ...formData, workflowType: e.target.value })}
                   >
@@ -186,7 +186,7 @@ export const ApprovalWorkflowsPage: React.FC = () => {
               {/* Workflow Steps */}
               <div>
                 <div className="flex justify-between items-center mb-3">
-                  <label className="block text-sm font-medium text-slate-700">Approval Steps</label>
+                  <label className="block text-sm font-medium text-grx-text">Approval Steps</label>
                   <button
                     onClick={handleAddStep}
                     className="text-indigo-600 hover:text-indigo-700 text-sm font-medium"
@@ -196,9 +196,9 @@ export const ApprovalWorkflowsPage: React.FC = () => {
                 </div>
                 <div className="space-y-3">
                   {(formData.steps || []).map((step, index) => (
-                    <div key={index} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4">
+                    <div key={index} className="border border-grx-primary-100 dark:border-grx-primary-800 rounded-lg p-4">
                       <div className="flex justify-between items-center mb-3">
-                        <span className="font-medium text-slate-900 dark:text-slate-100">Step {step.stepOrder}</span>
+                        <span className="font-medium text-grx-text dark:text-white">Step {step.stepOrder}</span>
                         <button
                           onClick={() => handleRemoveStep(index)}
                           className="text-red-600 hover:text-red-700"
@@ -208,9 +208,9 @@ export const ApprovalWorkflowsPage: React.FC = () => {
                       </div>
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Approver Type</label>
+                          <label className="block text-xs font-medium text-grx-muted dark:text-grx-muted mb-1">Approver Type</label>
                           <select
-                            className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded p-2 text-sm focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                            className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded p-2 text-sm focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                             value={step.approverType}
                             onChange={e => handleUpdateStep(index, 'approverType', e.target.value)}
                           >
@@ -221,10 +221,10 @@ export const ApprovalWorkflowsPage: React.FC = () => {
                           </select>
                         </div>
                         <div>
-                          <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Approver ID</label>
+                          <label className="block text-xs font-medium text-grx-muted dark:text-grx-muted mb-1">Approver ID</label>
                           <input
                             type="text"
-                            className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded p-2 text-sm focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                            className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded p-2 text-sm focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                             value={step.approverId || ''}
                             onChange={e => handleUpdateStep(index, 'approverId', e.target.value)}
                             placeholder="Role ID or User ID"
@@ -236,9 +236,9 @@ export const ApprovalWorkflowsPage: React.FC = () => {
                               type="checkbox"
                               checked={step.isRequired}
                               onChange={e => handleUpdateStep(index, 'isRequired', e.target.checked)}
-                              className="rounded border-slate-300 text-indigo-600"
+                              className="rounded border-grx-primary-100 text-indigo-600"
                             />
-                            <span className="text-xs text-slate-700 dark:text-slate-300">Required</span>
+                            <span className="text-xs text-grx-text dark:text-grx-primary-200">Required</span>
                           </label>
                         </div>
                         <div>
@@ -247,9 +247,9 @@ export const ApprovalWorkflowsPage: React.FC = () => {
                               type="checkbox"
                               checked={step.canDelegate}
                               onChange={e => handleUpdateStep(index, 'canDelegate', e.target.checked)}
-                              className="rounded border-slate-300 text-indigo-600"
+                              className="rounded border-grx-primary-100 text-indigo-600"
                             />
-                            <span className="text-xs text-slate-700 dark:text-slate-300">Can Delegate</span>
+                            <span className="text-xs text-grx-text dark:text-grx-primary-200">Can Delegate</span>
                           </label>
                         </div>
                       </div>
@@ -265,7 +265,7 @@ export const ApprovalWorkflowsPage: React.FC = () => {
                   setShowForm(false);
                   setEditingWorkflow(null);
                 }}
-                className="px-4 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                className="px-4 py-2 text-grx-text dark:text-grx-primary-200 hover:bg-grx-primary-50 dark:hover:bg-grx-primary-800 rounded-lg transition-colors"
               >
                 Cancel
               </button>
@@ -282,38 +282,38 @@ export const ApprovalWorkflowsPage: React.FC = () => {
       )}
 
       {/* Workflows List */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+      <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
+            <thead className="bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-100 dark:border-grx-primary-800">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Name</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Module</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Resource</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Type</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Steps</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Actions</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase tracking-wider">Name</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted uppercase tracking-wider">Module</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted uppercase tracking-wider">Resource</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted uppercase tracking-wider">Type</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted uppercase tracking-wider">Steps</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted uppercase tracking-wider">Status</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
-            <tbody className="bg-white dark:bg-slate-800 divide-y divide-slate-200 dark:divide-slate-700">
+            <tbody className="bg-white dark:bg-grx-dark-surface divide-y divide-grx-primary-100 dark:divide-grx-primary-800">
               {workflows.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-6 py-12 text-center text-slate-500">
+                  <td colSpan={7} className="px-6 py-12 text-center text-grx-muted">
                     No workflows found
                   </td>
                 </tr>
               ) : (
                 workflows.map(workflow => (
-                  <tr key={workflow.id} className="hover:bg-slate-50">
-                    <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">{workflow.name}</td>
-                    <td className="px-6 py-4 text-slate-600">{workflow.module}</td>
-                    <td className="px-6 py-4 text-slate-600">{workflow.resource}</td>
-                    <td className="px-6 py-4 text-slate-600">{workflow.workflowType}</td>
-                    <td className="px-6 py-4 text-slate-600">{workflow.steps?.length || 0} steps</td>
+                  <tr key={workflow.id} className="hover:bg-grx-bg">
+                    <td className="px-6 py-4 font-medium text-grx-text dark:text-white">{workflow.name}</td>
+                    <td className="px-6 py-4 text-grx-muted">{workflow.module}</td>
+                    <td className="px-6 py-4 text-grx-muted">{workflow.resource}</td>
+                    <td className="px-6 py-4 text-grx-muted">{workflow.workflowType}</td>
+                    <td className="px-6 py-4 text-grx-muted">{workflow.steps?.length || 0} steps</td>
                     <td className="px-6 py-4">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        workflow.isActive ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-700'
+                        workflow.isActive ? 'bg-emerald-100 text-emerald-700' : 'bg-grx-primary-50 text-grx-text'
                       }`}>
                         {workflow.isActive ? 'Active' : 'Inactive'}
                       </span>

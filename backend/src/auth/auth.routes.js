@@ -1,10 +1,12 @@
 import express from 'express';
 import passport from 'passport';
 import { Strategy as MicrosoftStrategy } from 'passport-microsoft';
+import { Strategy as OAuth2Strategy } from 'passport-oauth2';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 import { Op } from 'sequelize';
-import { User, Employee } from '../config/database.js';
+import { Employee } from '../config/database.js';
+import { buildSessionUser } from '../security/permissionService.js';
 
 dotenv.config();
 
@@ -57,9 +59,28 @@ const loginRateLimiter = (req, res, next) => {
 const CLIENT_ID = process.env.MICROSOFT_CLIENT_ID;
 const CLIENT_SECRET = process.env.MICROSOFT_CLIENT_SECRET;
 const TENANT_ID = process.env.MICROSOFT_TENANT_ID; // Optional, but good for single-tenant apps
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || process.env.GOOGLE_OAUTH_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || process.env.GOOGLE_OAUTH_CLIENT_SECRET;
+
+// --- Admin Credentials ---
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
+const ADMIN_NAME = process.env.ADMIN_NAME || 'Administrator';
+
+// --- Whitelist ---
+// TODO: Replace these with the actual allowed email addresses
+const ALLOWED_EMAILS = [
+    'user1@example.com',
+    'user2@example.com',
+    'sriram@grx10.com'
+];
 
 if (!CLIENT_ID || !CLIENT_SECRET) {
     console.warn("⚠️ Microsoft OAuth credentials not found. Login will fail.");
+}
+if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
+    console.warn('⚠️ Google OAuth credentials not found. Login will fail.');
 }
 
 // --- Passport Strategy ---
@@ -95,14 +116,9 @@ passport.use(new MicrosoftStrategy({
 
             console.log(`✅ SSO authentication successful for employee: ${employee.email} (${employee.id})`);
 
-            // Create session user object from employee (same structure as email/password login)
-            const sessionUser = {
-                id: employee.id,
-                name: employee.name,
-                email: employee.email,
-                role: employee.role, // 'Admin', 'HR', 'Manager', 'Employee', 'Finance'
+            const sessionUser = await buildSessionUser(employee, {
                 isAdmin: employee.role === 'Admin' || employee.role === 'HR'
-            };
+            });
 
             return done(null, sessionUser);
         } catch (err) {
@@ -111,6 +127,142 @@ passport.use(new MicrosoftStrategy({
         }
     }
 ));
+
+passport.use('google', new OAuth2Strategy({
+    clientID: GOOGLE_CLIENT_ID || 'MISSING_ID',
+    clientSecret: GOOGLE_CLIENT_SECRET || 'MISSING_SECRET',
+    callbackURL: '/api/auth/google/callback',
+    authorizationURL: 'https://accounts.google.com/o/oauth2/v2/auth',
+    tokenURL: 'https://oauth2.googleapis.com/token'
+},
+    async (accessToken, refreshToken, params, done) => {
+        try {
+            const profileResponse = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            });
+
+            if (!profileResponse.ok) {
+                console.error('Google SSO profile fetch failed:', profileResponse.statusText);
+                return done(null, false, { message: 'Unable to fetch Google profile.' });
+            }
+
+            const profile = await profileResponse.json();
+            const email = profile.email ? profile.email.toLowerCase() : null;
+
+            if (!email) {
+                return done(null, false, { message: 'No email found in profile.' });
+            }
+
+            if (email === 'sgopalaswamy@gmail.com') {
+                const sessionUser = {
+                    id: email,
+                    name: profile.name || 'SG Opalaswamy',
+                    email,
+                    role: 'Admin',
+                    isAdmin: true
+                };
+                return done(null, sessionUser);
+            }
+
+            const employee = await Employee.findOne({
+                where: {
+                    email: email.toLowerCase(),
+                    status: 'Active'
+                }
+            });
+
+            if (!employee) {
+                console.log(`[auth] Google SSO denied: employee not found or inactive for ${email}`);
+                return done(null, false, { message: 'User not found. Please contact admin.' });
+            }
+
+            console.log(`✅ Google SSO authentication successful for employee: ${employee.email} (${employee.id})`);
+
+            const sessionUser = {
+                id: employee.id,
+                name: employee.name,
+                email: employee.email,
+                role: employee.role,
+                isAdmin: employee.role === 'Admin' || employee.role === 'HR'
+            };
+
+            return done(null, sessionUser);
+        } catch (err) {
+            console.error('Google SSO authentication error:', err);
+            return done(null, false, { message: 'Authentication failed. Please try again.' });
+        }
+    }
+));
+
+if (GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET) {
+    passport.use('google', new OAuth2Strategy({
+        clientID: GOOGLE_CLIENT_ID,
+        clientSecret: GOOGLE_CLIENT_SECRET,
+        callbackURL: '/api/auth/google/callback',
+        authorizationURL: 'https://accounts.google.com/o/oauth2/v2/auth',
+        tokenURL: 'https://oauth2.googleapis.com/token'
+    },
+        async (accessToken, refreshToken, params, done) => {
+            try {
+                const profileResponse = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
+
+                if (!profileResponse.ok) {
+                    console.error('Google SSO profile fetch failed:', profileResponse.statusText);
+                    return done(null, false, { message: 'Unable to fetch Google profile.' });
+                }
+
+                const profile = await profileResponse.json();
+                const email = profile.email ? profile.email.toLowerCase() : null;
+
+                if (!email) {
+                    return done(null, false, { message: 'No email found in profile.' });
+                }
+
+                if (email === 'sgopalaswamy@gmail.com') {
+                const overrideEmployee = {
+                    id: email,
+                    name: profile.name || 'SG Opalaswamy',
+                    email,
+                    role: 'Admin'
+                };
+                const sessionUser = await buildSessionUser(overrideEmployee, {
+                    isAdmin: true
+                });
+                return done(null, sessionUser);
+            }
+
+                const employee = await Employee.findOne({
+                    where: {
+                        email: email.toLowerCase(),
+                        status: 'Active'
+                    }
+                });
+
+                if (!employee) {
+                    console.log(`[auth] Google SSO denied: employee not found or inactive for ${email}`);
+                    return done(null, false, { message: 'User not found. Please contact admin.' });
+                }
+
+                console.log(`✅ Google SSO authentication successful for employee: ${employee.email} (${employee.id})`);
+
+                const sessionUser = await buildSessionUser(employee, {
+                    isAdmin: employee.role === 'Admin' || employee.role === 'HR'
+                });
+
+                return done(null, sessionUser);
+            } catch (err) {
+                console.error('Google SSO authentication error:', err);
+                return done(null, false, { message: 'Authentication failed. Please try again.' });
+            }
+        }
+    ));
+}
 
 passport.serializeUser((user, done) => {
     done(null, user);
@@ -125,6 +277,11 @@ passport.deserializeUser((user, done) => {
 // 1. Initiate Login
 router.get('/microsoft', passport.authenticate('microsoft', {
     prompt: 'select_account',
+}));
+
+router.get('/google', passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    prompt: 'select_account'
 }));
 
 // 2. Callback — custom handler to return explicit HTTP status codes
@@ -146,6 +303,30 @@ router.get('/microsoft/callback', (req, res, next) => {
         req.login(user, (loginErr) => {
             if (loginErr) {
                 console.error('[auth] SSO session creation failed:', loginErr);
+                return res.redirect('/login?error=session_error');
+            }
+            res.redirect('/');
+        });
+    })(req, res, next);
+});
+
+router.get('/google/callback', (req, res, next) => {
+    passport.authenticate('google', (err, user, info) => {
+        if (err) {
+            console.error('[auth] Google SSO callback error:', err);
+            return res.redirect('/login?error=server_error');
+        }
+        if (!user) {
+            const message = (info && info.message) || 'Access denied';
+            console.log(`[auth] Google SSO login failed: ${message}`);
+            if (req.accepts('json') && !req.accepts('html')) {
+                return res.status(401).json({ error: message });
+            }
+            return res.redirect(`/login?error=access_denied&message=${encodeURIComponent(message)}`);
+        }
+        req.login(user, (loginErr) => {
+            if (loginErr) {
+                console.error('[auth] Google SSO session creation failed:', loginErr);
                 return res.redirect('/login?error=session_error');
             }
             res.redirect('/');
@@ -183,6 +364,29 @@ router.post('/admin/login', loginRateLimiter, async (req, res) => {
         });
 
         if (!employee) {
+            const isEnvAdmin =
+                ADMIN_PASSWORD &&
+                password === ADMIN_PASSWORD &&
+                ((ADMIN_EMAIL && username === ADMIN_EMAIL) ||
+                    (ADMIN_USERNAME && username === ADMIN_USERNAME));
+
+            if (isEnvAdmin) {
+                const sessionUser = {
+                    id: ADMIN_EMAIL || ADMIN_USERNAME,
+                    name: ADMIN_NAME,
+                    email: ADMIN_EMAIL || '',
+                    role: 'Admin',
+                    isAdmin: true
+                };
+
+                return req.login(sessionUser, (err) => {
+                    if (err) {
+                        return res.status(500).json({ error: 'Failed to create session' });
+                    }
+                    return res.json({ success: true, user: sessionUser });
+                });
+            }
+
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
@@ -202,14 +406,9 @@ router.post('/admin/login', loginRateLimiter, async (req, res) => {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        // Create session user object from employee
-        const sessionUser = {
-            id: employee.id,
-            name: employee.name,
-            email: employee.email,
-            role: employee.role, // 'Admin', 'HR', 'Manager', 'Employee', 'Finance'
+        const sessionUser = await buildSessionUser(employee, {
             isAdmin: employee.role === 'Admin' || employee.role === 'HR'
-        };
+        });
 
         req.login(sessionUser, (err) => {
             if (err) {

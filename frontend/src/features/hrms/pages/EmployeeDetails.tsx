@@ -89,7 +89,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <p className="text-slate-500 dark:text-slate-400 mb-4">Employee not found</p>
+          <p className="text-grx-muted dark:text-grx-muted mb-4">Employee not found</p>
           {onBack && (
             <button
               onClick={onBack}
@@ -238,23 +238,23 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Employee ID</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Employee ID</label>
                 {isEditing ? (
                   <input
                     type="text"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.id || ''}
                     disabled
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100 font-mono">{employee.id}</p>
+                  <p className="text-grx-text dark:text-white font-mono">{employee.id}</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Department</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Department</label>
                 {isEditing ? (
                   <select
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.department || ''}
                     onChange={e => handleChange('department', e.target.value)}
                   >
@@ -264,14 +264,14 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     ))}
                   </select>
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{employee.department}</p>
+                  <p className="text-grx-text dark:text-white">{employee.department}</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Employee Position/Role</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Employee Position/Role</label>
                 {isEditing ? (
                   <select
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.employeePosition || ''}
                     onChange={e => handleChange('employeePosition', e.target.value)}
                   >
@@ -281,27 +281,27 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     ))}
                   </select>
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.employeePosition || 'Not provided'}</p>
+                  <p className="text-grx-text dark:text-white">{formData.employeePosition || 'Not provided'}</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Designation</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Designation</label>
                 {isEditing ? (
                   <input
                     type="text"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.designation || ''}
                     onChange={e => handleChange('designation', e.target.value)}
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{employee.designation}</p>
+                  <p className="text-grx-text dark:text-white">{employee.designation}</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Employee Type</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Employee Type</label>
                 {isEditing ? (
                   <select
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.employeeType || ''}
                     onChange={e => handleChange('employeeType', e.target.value)}
                   >
@@ -319,14 +319,14 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     )}
                   </select>
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.employeeType || 'Not provided'}</p>
+                  <p className="text-grx-text dark:text-white">{formData.employeeType || 'Not provided'}</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Status</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Status</label>
                 {isEditing ? (
                   <select
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.status || 'Active'}
                     onChange={e => handleChange('status', e.target.value)}
                   >
@@ -334,7 +334,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     <option value="Terminated">Terminated</option>
                   </select>
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">
+                  <p className="text-grx-text dark:text-white">
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                       formData.status === 'Active' 
                         ? 'bg-emerald-100 text-emerald-700' 
@@ -346,36 +346,36 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Joining Date</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Joining Date</label>
                 {isEditing ? (
                   <input
                     type="date"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.joinDate || ''}
                     onChange={e => handleChange('joinDate', e.target.value)}
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.joinDate ? new Date(formData.joinDate).toLocaleDateString() : 'Not provided'}</p>
+                  <p className="text-grx-text dark:text-white">{formData.joinDate ? new Date(formData.joinDate).toLocaleDateString() : 'Not provided'}</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Termination Date</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Termination Date</label>
                 {isEditing ? (
                   <input
                     type="date"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.terminationDate || ''}
                     onChange={e => handleChange('terminationDate', e.target.value)}
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.terminationDate ? new Date(formData.terminationDate).toLocaleDateString() : 'N/A'}</p>
+                  <p className="text-grx-text dark:text-white">{formData.terminationDate ? new Date(formData.terminationDate).toLocaleDateString() : 'N/A'}</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Manager</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Manager</label>
                 {isEditing ? (
                   <select
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.managerId || ''}
                     onChange={e => handleChange('managerId', e.target.value)}
                   >
@@ -385,14 +385,14 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     ))}
                   </select>
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{manager?.name || 'Not assigned'}</p>
+                  <p className="text-grx-text dark:text-white">{manager?.name || 'Not assigned'}</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Work Location</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Work Location</label>
                 {isEditing ? (
                   <select
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.workLocation || ''}
                     onChange={e => handleChange('workLocation', e.target.value)}
                   >
@@ -402,7 +402,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     ))}
                   </select>
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.workLocation || 'Not provided'}</p>
+                  <p className="text-grx-text dark:text-white">{formData.workLocation || 'Not provided'}</p>
                 )}
               </div>
               {formData.isRehired && (
@@ -427,109 +427,109 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Full Name</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Full Name</label>
                 {isEditing ? (
                   <input
                     type="text"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.name || ''}
                     onChange={e => handleChange('name', e.target.value)}
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{employee.name}</p>
+                  <p className="text-grx-text dark:text-white">{employee.name}</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Date of Birth</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Date of Birth</label>
                 {isEditing ? (
                   <input
                     type="date"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.dateOfBirth || ''}
                     onChange={e => handleChange('dateOfBirth', e.target.value)}
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.dateOfBirth || 'Not provided'}</p>
+                  <p className="text-grx-text dark:text-white">{formData.dateOfBirth || 'Not provided'}</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Email</label>
                 {isEditing ? (
                   <input
                     type="email"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.email || ''}
                     onChange={e => handleChange('email', e.target.value)}
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{employee.email}</p>
+                  <p className="text-grx-text dark:text-white">{employee.email}</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Phone</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Phone</label>
                 {isEditing ? (
                   <input
                     type="tel"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.phone || ''}
                     onChange={e => handleChange('phone', e.target.value)}
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.phone || 'Not provided'}</p>
+                  <p className="text-grx-text dark:text-white">{formData.phone || 'Not provided'}</p>
                 )}
               </div>
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Address</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Address</label>
                 {isEditing ? (
                   <textarea
                     rows={3}
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.address || ''}
                     onChange={e => handleChange('address', e.target.value)}
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.address || 'Not provided'}</p>
+                  <p className="text-grx-text dark:text-white">{formData.address || 'Not provided'}</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">PAN</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">PAN</label>
                 {isEditing ? (
                   <input
                     type="text"
-                    className="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none uppercase"
+                    className="w-full border border-grx-primary-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none uppercase"
                     value={formData.pan || ''}
                     onChange={e => handleChange('pan', e.target.value.toUpperCase())}
                     maxLength={10}
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.pan || 'Not provided'}</p>
+                  <p className="text-grx-text dark:text-white">{formData.pan || 'Not provided'}</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Aadhar</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Aadhar</label>
                 {isEditing ? (
                   <input
                     type="text"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.aadhar || ''}
                     onChange={e => handleChange('aadhar', e.target.value)}
                     maxLength={12}
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.aadhar || 'Not provided'}</p>
+                  <p className="text-grx-text dark:text-white">{formData.aadhar || 'Not provided'}</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">PF Number</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">PF Number</label>
                 {isEditing ? (
                   <input
                     type="text"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.pfNumber || ''}
                     onChange={e => handleChange('pfNumber', e.target.value)}
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.pfNumber || 'Not provided'}</p>
+                  <p className="text-grx-text dark:text-white">{formData.pfNumber || 'Not provided'}</p>
                 )}
               </div>
             </div>
@@ -540,9 +540,9 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
         return (
           <div className="space-y-4">
             {(formData.educationDetails || []).map((edu, index) => (
-              <div key={index} className="border border-slate-200 rounded-lg p-4">
+              <div key={index} className="border border-grx-primary-100 rounded-lg p-4">
                 <div className="flex justify-between items-start mb-4">
-                  <h4 className="font-semibold text-slate-900">Education {index + 1}</h4>
+                  <h4 className="font-semibold text-grx-text">Education {index + 1}</h4>
                   {isEditing && (
                     <button
                       onClick={() => handleRemoveEducation(index)}
@@ -554,10 +554,10 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Level</label>
+                    <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Level</label>
                     {isEditing ? (
                       <select
-                        className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                         value={edu.level}
                         onChange={e => handleNestedChange('educationDetails', index, 'level', e.target.value)}
                       >
@@ -568,54 +568,54 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                         <option value="Other">Other</option>
                       </select>
                     ) : (
-                      <p className="text-slate-900 dark:text-slate-100">{edu.level}</p>
+                      <p className="text-grx-text dark:text-white">{edu.level}</p>
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Institution</label>
+                    <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Institution</label>
                     {isEditing ? (
                       <input
                         type="text"
-                        className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                         value={edu.institution}
                         onChange={e => handleNestedChange('educationDetails', index, 'institution', e.target.value)}
                       />
                     ) : (
-                      <p className="text-slate-900 dark:text-slate-100">{edu.institution}</p>
+                      <p className="text-grx-text dark:text-white">{edu.institution}</p>
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Field of Study</label>
+                    <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Field of Study</label>
                     {isEditing ? (
                       <input
                         type="text"
-                        className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                         value={edu.field}
                         onChange={e => handleNestedChange('educationDetails', index, 'field', e.target.value)}
                       />
                     ) : (
-                      <p className="text-slate-900 dark:text-slate-100">{edu.field}</p>
+                      <p className="text-grx-text dark:text-white">{edu.field}</p>
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Year</label>
+                    <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Year</label>
                     {isEditing ? (
                       <input
                         type="text"
-                        className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                         value={edu.year}
                         onChange={e => handleNestedChange('educationDetails', index, 'year', e.target.value)}
                       />
                     ) : (
-                      <p className="text-slate-900 dark:text-slate-100">{edu.year}</p>
+                      <p className="text-grx-text dark:text-white">{edu.year}</p>
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Percentage/Grade</label>
+                    <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Percentage/Grade</label>
                     {isEditing ? (
                       <input
                         type="text"
-                        className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                         value={edu.percentage || edu.grade || ''}
                         onChange={e => {
                           const isNumeric = !isNaN(parseFloat(e.target.value));
@@ -627,7 +627,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                         }}
                       />
                     ) : (
-                      <p className="text-slate-900 dark:text-slate-100">{edu.percentage ? `${edu.percentage}%` : edu.grade || 'N/A'}</p>
+                      <p className="text-grx-text dark:text-white">{edu.percentage ? `${edu.percentage}%` : edu.grade || 'N/A'}</p>
                     )}
                   </div>
                 </div>
@@ -636,14 +636,14 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
             {isEditing && (
               <button
                 onClick={handleAddEducation}
-                className="w-full border-2 border-dashed border-slate-300 rounded-lg p-4 text-slate-600 hover:border-indigo-500 hover:text-indigo-600 transition-colors flex items-center justify-center gap-2"
+                className="w-full border-2 border-dashed border-grx-primary-100 rounded-lg p-4 text-grx-muted hover:border-indigo-500 hover:text-indigo-600 transition-colors flex items-center justify-center gap-2"
               >
                 <Plus size={18} />
                 Add Education
               </button>
             )}
             {(!formData.educationDetails || formData.educationDetails.length === 0) && !isEditing && (
-              <p className="text-slate-500 text-center py-8">No education details added</p>
+              <p className="text-grx-muted text-center py-8">No education details added</p>
             )}
           </div>
         );
@@ -652,9 +652,9 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
         return (
           <div className="space-y-4">
             {(formData.experienceDetails || []).map((exp, index) => (
-              <div key={index} className="border border-slate-200 rounded-lg p-4">
+              <div key={index} className="border border-grx-primary-100 rounded-lg p-4">
                 <div className="flex justify-between items-start mb-4">
-                  <h4 className="font-semibold text-slate-900">Experience {index + 1}</h4>
+                  <h4 className="font-semibold text-grx-text">Experience {index + 1}</h4>
                   {isEditing && (
                     <button
                       onClick={() => handleRemoveExperience(index)}
@@ -666,68 +666,68 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Company</label>
+                    <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Company</label>
                     {isEditing ? (
                       <input
                         type="text"
-                        className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                         value={exp.company}
                         onChange={e => handleNestedChange('experienceDetails', index, 'company', e.target.value)}
                       />
                     ) : (
-                      <p className="text-slate-900 dark:text-slate-100">{exp.company}</p>
+                      <p className="text-grx-text dark:text-white">{exp.company}</p>
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Position</label>
+                    <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Position</label>
                     {isEditing ? (
                       <input
                         type="text"
-                        className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                         value={exp.position}
                         onChange={e => handleNestedChange('experienceDetails', index, 'position', e.target.value)}
                       />
                     ) : (
-                      <p className="text-slate-900 dark:text-slate-100">{exp.position}</p>
+                      <p className="text-grx-text dark:text-white">{exp.position}</p>
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Start Date</label>
+                    <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Start Date</label>
                     {isEditing ? (
                       <input
                         type="date"
-                        className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                         value={exp.startDate}
                         onChange={e => handleNestedChange('experienceDetails', index, 'startDate', e.target.value)}
                       />
                     ) : (
-                      <p className="text-slate-900 dark:text-slate-100">{exp.startDate}</p>
+                      <p className="text-grx-text dark:text-white">{exp.startDate}</p>
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">End Date</label>
+                    <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">End Date</label>
                     {isEditing ? (
                       <input
                         type="date"
-                        className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                         value={exp.endDate}
                         onChange={e => handleNestedChange('experienceDetails', index, 'endDate', e.target.value)}
                       />
                     ) : (
-                      <p className="text-slate-900 dark:text-slate-100">{exp.endDate}</p>
+                      <p className="text-grx-text dark:text-white">{exp.endDate}</p>
                     )}
                   </div>
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Responsibilities</label>
+                    <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Responsibilities</label>
                     {isEditing ? (
                       <textarea
                         rows={3}
-                        className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                         value={exp.responsibilities || ''}
                         onChange={e => handleNestedChange('experienceDetails', index, 'responsibilities', e.target.value)}
                       />
                     ) : (
-                      <p className="text-slate-900 dark:text-slate-100">{exp.responsibilities || 'Not provided'}</p>
+                      <p className="text-grx-text dark:text-white">{exp.responsibilities || 'Not provided'}</p>
                     )}
                   </div>
                 </div>
@@ -736,14 +736,14 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
             {isEditing && (
               <button
                 onClick={handleAddExperience}
-                className="w-full border-2 border-dashed border-slate-300 rounded-lg p-4 text-slate-600 hover:border-indigo-500 hover:text-indigo-600 transition-colors flex items-center justify-center gap-2"
+                className="w-full border-2 border-dashed border-grx-primary-100 rounded-lg p-4 text-grx-muted hover:border-indigo-500 hover:text-indigo-600 transition-colors flex items-center justify-center gap-2"
               >
                 <Plus size={18} />
                 Add Experience
               </button>
             )}
             {(!formData.experienceDetails || formData.experienceDetails.length === 0) && !isEditing && (
-              <p className="text-slate-500 text-center py-8">No experience details added</p>
+              <p className="text-grx-muted text-center py-8">No experience details added</p>
             )}
           </div>
         );
@@ -754,13 +754,13 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
             {canViewSensitive ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Base Salary</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Base Salary</label>
                   {isEditing ? (
                     <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">₹</span>
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-grx-muted">₹</span>
                       <input
                         type="number"
-                        className="w-full border border-slate-300 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+                        className="w-full border border-grx-primary-100 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
                         value={formData.salaryBreakdown?.base || ''}
                         onChange={e => handleChange('salaryBreakdown', {
                           ...formData.salaryBreakdown,
@@ -769,17 +769,17 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                       />
                     </div>
                   ) : (
-                    <p className="text-slate-900 dark:text-slate-100">₹{formData.salaryBreakdown?.base?.toLocaleString() || 'Not provided'}</p>
+                    <p className="text-grx-text dark:text-white">₹{formData.salaryBreakdown?.base?.toLocaleString() || 'Not provided'}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">HRA</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">HRA</label>
                   {isEditing ? (
                     <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">₹</span>
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-grx-muted">₹</span>
                       <input
                         type="number"
-                        className="w-full border border-slate-300 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+                        className="w-full border border-grx-primary-100 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
                         value={formData.salaryBreakdown?.hra || ''}
                         onChange={e => handleChange('salaryBreakdown', {
                           ...formData.salaryBreakdown,
@@ -788,17 +788,17 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                       />
                     </div>
                   ) : (
-                    <p className="text-slate-900 dark:text-slate-100">₹{formData.salaryBreakdown?.hra?.toLocaleString() || 'Not provided'}</p>
+                    <p className="text-grx-text dark:text-white">₹{formData.salaryBreakdown?.hra?.toLocaleString() || 'Not provided'}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Special Allowance</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Special Allowance</label>
                   {isEditing ? (
                     <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">₹</span>
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-grx-muted">₹</span>
                       <input
                         type="number"
-                        className="w-full border border-slate-300 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+                        className="w-full border border-grx-primary-100 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
                         value={formData.salaryBreakdown?.specialAllowance || ''}
                         onChange={e => handleChange('salaryBreakdown', {
                           ...formData.salaryBreakdown,
@@ -807,17 +807,17 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                       />
                     </div>
                   ) : (
-                    <p className="text-slate-900 dark:text-slate-100">₹{formData.salaryBreakdown?.specialAllowance?.toLocaleString() || 'Not provided'}</p>
+                    <p className="text-grx-text dark:text-white">₹{formData.salaryBreakdown?.specialAllowance?.toLocaleString() || 'Not provided'}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">PF</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">PF</label>
                   {isEditing ? (
                     <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">₹</span>
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-grx-muted">₹</span>
                       <input
                         type="number"
-                        className="w-full border border-slate-300 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+                        className="w-full border border-grx-primary-100 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
                         value={formData.salaryBreakdown?.pf || ''}
                         onChange={e => handleChange('salaryBreakdown', {
                           ...formData.salaryBreakdown,
@@ -826,17 +826,17 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                       />
                     </div>
                   ) : (
-                    <p className="text-slate-900 dark:text-slate-100">₹{formData.salaryBreakdown?.pf?.toLocaleString() || 'Not provided'}</p>
+                    <p className="text-grx-text dark:text-white">₹{formData.salaryBreakdown?.pf?.toLocaleString() || 'Not provided'}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">ESI (if applicable)</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">ESI (if applicable)</label>
                   {isEditing ? (
                     <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">₹</span>
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-grx-muted">₹</span>
                       <input
                         type="number"
-                        className="w-full border border-slate-300 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+                        className="w-full border border-grx-primary-100 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
                         value={formData.salaryBreakdown?.esi || ''}
                         onChange={e => handleChange('salaryBreakdown', {
                           ...formData.salaryBreakdown,
@@ -845,17 +845,17 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                       />
                     </div>
                   ) : (
-                    <p className="text-slate-900 dark:text-slate-100">₹{formData.salaryBreakdown?.esi?.toLocaleString() || 'Not applicable'}</p>
+                    <p className="text-grx-text dark:text-white">₹{formData.salaryBreakdown?.esi?.toLocaleString() || 'Not applicable'}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Professional Tax</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Professional Tax</label>
                   {isEditing ? (
                     <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">₹</span>
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-grx-muted">₹</span>
                       <input
                         type="number"
-                        className="w-full border border-slate-300 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+                        className="w-full border border-grx-primary-100 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
                         value={formData.salaryBreakdown?.professionalTax || ''}
                         onChange={e => handleChange('salaryBreakdown', {
                           ...formData.salaryBreakdown,
@@ -864,17 +864,17 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                       />
                     </div>
                   ) : (
-                    <p className="text-slate-900 dark:text-slate-100">₹{formData.salaryBreakdown?.professionalTax?.toLocaleString() || 'Not provided'}</p>
+                    <p className="text-grx-text dark:text-white">₹{formData.salaryBreakdown?.professionalTax?.toLocaleString() || 'Not provided'}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Other Deductions</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Other Deductions</label>
                   {isEditing ? (
                     <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">₹</span>
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-grx-muted">₹</span>
                       <input
                         type="number"
-                        className="w-full border border-slate-300 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+                        className="w-full border border-grx-primary-100 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
                         value={formData.salaryBreakdown?.otherDeductions || ''}
                         onChange={e => handleChange('salaryBreakdown', {
                           ...formData.salaryBreakdown,
@@ -883,24 +883,24 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                       />
                     </div>
                   ) : (
-                    <p className="text-slate-900 dark:text-slate-100">₹{formData.salaryBreakdown?.otherDeductions?.toLocaleString() || 'Not provided'}</p>
+                    <p className="text-grx-text dark:text-white">₹{formData.salaryBreakdown?.otherDeductions?.toLocaleString() || 'Not provided'}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Gross Salary</label>
-                  <p className="text-slate-900 font-semibold">
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Gross Salary</label>
+                  <p className="text-grx-text font-semibold">
                     ₹{((formData.salaryBreakdown?.base || 0) + (formData.salaryBreakdown?.hra || 0) + (formData.salaryBreakdown?.specialAllowance || 0)).toLocaleString()}
                   </p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Net Salary</label>
-                  <p className="text-slate-900 font-semibold">
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Net Salary</label>
+                  <p className="text-grx-text font-semibold">
                     ₹{((formData.salaryBreakdown?.base || 0) + (formData.salaryBreakdown?.hra || 0) + (formData.salaryBreakdown?.specialAllowance || 0) - (formData.salaryBreakdown?.pf || 0) - (formData.salaryBreakdown?.esi || 0) - (formData.salaryBreakdown?.professionalTax || 0) - (formData.salaryBreakdown?.otherDeductions || 0)).toLocaleString()}
                   </p>
                 </div>
               </div>
             ) : (
-              <p className="text-slate-500 text-center py-8">You don't have permission to view salary details</p>
+              <p className="text-grx-muted text-center py-8">You don't have permission to view salary details</p>
             )}
           </div>
         );
@@ -910,11 +910,11 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Casual Leave</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Casual Leave</label>
                 {isEditing ? (
                   <input
                     type="number"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.leaveEntitlements?.casual || ''}
                     onChange={e => handleChange('leaveEntitlements', {
                       ...formData.leaveEntitlements,
@@ -922,15 +922,15 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     })}
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.leaveEntitlements?.casual || 0} days</p>
+                  <p className="text-grx-text dark:text-white">{formData.leaveEntitlements?.casual || 0} days</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Sick Leave</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Sick Leave</label>
                 {isEditing ? (
                   <input
                     type="number"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.leaveEntitlements?.sick || ''}
                     onChange={e => handleChange('leaveEntitlements', {
                       ...formData.leaveEntitlements,
@@ -938,15 +938,15 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     })}
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.leaveEntitlements?.sick || 0} days</p>
+                  <p className="text-grx-text dark:text-white">{formData.leaveEntitlements?.sick || 0} days</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Earned Leave</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Earned Leave</label>
                 {isEditing ? (
                   <input
                     type="number"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.leaveEntitlements?.earned || ''}
                     onChange={e => handleChange('leaveEntitlements', {
                       ...formData.leaveEntitlements,
@@ -954,15 +954,15 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     })}
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.leaveEntitlements?.earned || 0} days</p>
+                  <p className="text-grx-text dark:text-white">{formData.leaveEntitlements?.earned || 0} days</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Maternity Leave</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Maternity Leave</label>
                 {isEditing ? (
                   <input
                     type="number"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.leaveEntitlements?.maternity || ''}
                     onChange={e => handleChange('leaveEntitlements', {
                       ...formData.leaveEntitlements,
@@ -970,15 +970,15 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     })}
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.leaveEntitlements?.maternity || 0} days</p>
+                  <p className="text-grx-text dark:text-white">{formData.leaveEntitlements?.maternity || 0} days</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Paternity Leave</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Paternity Leave</label>
                 {isEditing ? (
                   <input
                     type="number"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.leaveEntitlements?.paternity || ''}
                     onChange={e => handleChange('leaveEntitlements', {
                       ...formData.leaveEntitlements,
@@ -986,15 +986,15 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     })}
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.leaveEntitlements?.paternity || 0} days</p>
+                  <p className="text-grx-text dark:text-white">{formData.leaveEntitlements?.paternity || 0} days</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Comp Off</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Comp Off</label>
                 {isEditing ? (
                   <input
                     type="number"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.leaveEntitlements?.compOff || ''}
                     onChange={e => handleChange('leaveEntitlements', {
                       ...formData.leaveEntitlements,
@@ -1002,7 +1002,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     })}
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.leaveEntitlements?.compOff || 0} days</p>
+                  <p className="text-grx-text dark:text-white">{formData.leaveEntitlements?.compOff || 0} days</p>
                 )}
               </div>
             </div>
@@ -1013,10 +1013,10 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
         return (
           <div className="space-y-4">
             {(formData.certifications || []).map((cert, index) => (
-              <div key={index} className="border border-slate-200 rounded-lg p-4">
+              <div key={index} className="border border-grx-primary-100 rounded-lg p-4">
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex items-center gap-2">
-                    <h4 className="font-semibold text-slate-900">{cert.name || 'Untitled Certification'}</h4>
+                    <h4 className="font-semibold text-grx-text">{cert.name || 'Untitled Certification'}</h4>
                     {cert.isMandatory && (
                       <span className="px-2 py-0.5 bg-red-100 text-red-700 text-xs rounded-full">Mandatory</span>
                     )}
@@ -1032,11 +1032,11 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Certification Name</label>
+                    <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Certification Name</label>
                     {isEditing ? (
                       <input
                         type="text"
-                        className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                         value={cert.name}
                         onChange={e => {
                           const updated = [...(formData.certifications || [])];
@@ -1045,15 +1045,15 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                         }}
                       />
                     ) : (
-                      <p className="text-slate-900 dark:text-slate-100">{cert.name}</p>
+                      <p className="text-grx-text dark:text-white">{cert.name}</p>
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Issuer</label>
+                    <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Issuer</label>
                     {isEditing ? (
                       <input
                         type="text"
-                        className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                         value={cert.issuer}
                         onChange={e => {
                           const updated = [...(formData.certifications || [])];
@@ -1062,15 +1062,15 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                         }}
                       />
                     ) : (
-                      <p className="text-slate-900 dark:text-slate-100">{cert.issuer}</p>
+                      <p className="text-grx-text dark:text-white">{cert.issuer}</p>
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Issue Date</label>
+                    <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Issue Date</label>
                     {isEditing ? (
                       <input
                         type="date"
-                        className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                         value={cert.issueDate}
                         onChange={e => {
                           const updated = [...(formData.certifications || [])];
@@ -1079,15 +1079,15 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                         }}
                       />
                     ) : (
-                      <p className="text-slate-900 dark:text-slate-100">{cert.issueDate}</p>
+                      <p className="text-grx-text dark:text-white">{cert.issueDate}</p>
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Expiry Date (if applicable)</label>
+                    <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Expiry Date (if applicable)</label>
                     {isEditing ? (
                       <input
                         type="date"
-                        className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                         value={cert.expiryDate || ''}
                         onChange={e => {
                           const updated = [...(formData.certifications || [])];
@@ -1096,15 +1096,15 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                         }}
                       />
                     ) : (
-                      <p className="text-slate-900 dark:text-slate-100">{cert.expiryDate || 'No expiry'}</p>
+                      <p className="text-grx-text dark:text-white">{cert.expiryDate || 'No expiry'}</p>
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Certificate Number</label>
+                    <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Certificate Number</label>
                     {isEditing ? (
                       <input
                         type="text"
-                        className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                         value={cert.certificateNumber || ''}
                         onChange={e => {
                           const updated = [...(formData.certifications || [])];
@@ -1113,11 +1113,11 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                         }}
                       />
                     ) : (
-                      <p className="text-slate-900 dark:text-slate-100">{cert.certificateNumber || 'Not provided'}</p>
+                      <p className="text-grx-text dark:text-white">{cert.certificateNumber || 'Not provided'}</p>
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Mandatory</label>
+                    <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Mandatory</label>
                     {isEditing ? (
                       <label className="flex items-center gap-2 cursor-pointer">
                         <input
@@ -1130,10 +1130,10 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                             handleChange('certifications', updated);
                           }}
                         />
-                        <span className="text-sm text-slate-700">Required for role</span>
+                        <span className="text-sm text-grx-text">Required for role</span>
                       </label>
                     ) : (
-                      <p className="text-slate-900 dark:text-slate-100">{cert.isMandatory ? 'Yes' : 'No'}</p>
+                      <p className="text-grx-text dark:text-white">{cert.isMandatory ? 'Yes' : 'No'}</p>
                     )}
                   </div>
                 </div>
@@ -1142,14 +1142,14 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
             {isEditing && (
               <button
                 onClick={handleAddCertification}
-                className="w-full border-2 border-dashed border-slate-300 rounded-lg p-4 text-slate-600 hover:border-indigo-500 hover:text-indigo-600 transition-colors flex items-center justify-center gap-2"
+                className="w-full border-2 border-dashed border-grx-primary-100 rounded-lg p-4 text-grx-muted hover:border-indigo-500 hover:text-indigo-600 transition-colors flex items-center justify-center gap-2"
               >
                 <Plus size={18} />
                 Add Certification
               </button>
             )}
             {(!formData.certifications || formData.certifications.length === 0) && !isEditing && (
-              <p className="text-slate-500 text-center py-8">No certifications added</p>
+              <p className="text-grx-muted text-center py-8">No certifications added</p>
             )}
           </div>
         );
@@ -1158,111 +1158,111 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
         return (
           <div className="space-y-6">
             <div>
-              <h4 className="text-md font-semibold text-slate-900 mb-4 flex items-center gap-2">
+              <h4 className="text-md font-semibold text-grx-text mb-4 flex items-center gap-2">
                 <AlertCircle size={18} />
                 Emergency Contact
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Contact Name</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Contact Name</label>
                   {isEditing ? (
                     <input
                       type="text"
-                      className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                       value={formData.emergencyContactName || ''}
                       onChange={e => handleChange('emergencyContactName', e.target.value)}
                     />
                   ) : (
-                    <p className="text-slate-900 dark:text-slate-100">{formData.emergencyContactName || 'Not provided'}</p>
+                    <p className="text-grx-text dark:text-white">{formData.emergencyContactName || 'Not provided'}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Relationship</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Relationship</label>
                   {isEditing ? (
                     <input
                       type="text"
-                      className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                       value={formData.emergencyContactRelation || ''}
                       onChange={e => handleChange('emergencyContactRelation', e.target.value)}
                       placeholder="e.g. Spouse, Parent, Sibling"
                     />
                   ) : (
-                    <p className="text-slate-900 dark:text-slate-100">{formData.emergencyContactRelation || 'Not provided'}</p>
+                    <p className="text-grx-text dark:text-white">{formData.emergencyContactRelation || 'Not provided'}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Contact Phone</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Contact Phone</label>
                   {isEditing ? (
                     <input
                       type="tel"
-                      className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                       value={formData.emergencyContactPhone || ''}
                       onChange={e => handleChange('emergencyContactPhone', e.target.value)}
                     />
                   ) : (
-                    <p className="text-slate-900 dark:text-slate-100">{formData.emergencyContactPhone || 'Not provided'}</p>
+                    <p className="text-grx-text dark:text-white">{formData.emergencyContactPhone || 'Not provided'}</p>
                   )}
                 </div>
               </div>
             </div>
 
             <div>
-              <h4 className="text-md font-semibold text-slate-900 mb-4 flex items-center gap-2">
+              <h4 className="text-md font-semibold text-grx-text mb-4 flex items-center gap-2">
                 <Banknote size={18} />
                 Bank Account Details
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Account Number</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Account Number</label>
                   {isEditing ? (
                     <input
                       type="text"
-                      className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                       value={formData.bankAccountNumber || ''}
                       onChange={e => handleChange('bankAccountNumber', e.target.value)}
                     />
                   ) : (
-                    <p className="text-slate-900 font-mono">{formData.bankAccountNumber || 'Not provided'}</p>
+                    <p className="text-grx-text font-mono">{formData.bankAccountNumber || 'Not provided'}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">IFSC Code</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">IFSC Code</label>
                   {isEditing ? (
                     <input
                       type="text"
-                      className="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none uppercase"
+                      className="w-full border border-grx-primary-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none uppercase"
                       value={formData.bankIFSC || ''}
                       onChange={e => handleChange('bankIFSC', e.target.value.toUpperCase())}
                       maxLength={11}
                     />
                   ) : (
-                    <p className="text-slate-900 font-mono">{formData.bankIFSC || 'Not provided'}</p>
+                    <p className="text-grx-text font-mono">{formData.bankIFSC || 'Not provided'}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Bank Name</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Bank Name</label>
                   {isEditing ? (
                     <input
                       type="text"
-                      className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                       value={formData.bankName || ''}
                       onChange={e => handleChange('bankName', e.target.value)}
                     />
                   ) : (
-                    <p className="text-slate-900 dark:text-slate-100">{formData.bankName || 'Not provided'}</p>
+                    <p className="text-grx-text dark:text-white">{formData.bankName || 'Not provided'}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Branch</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Branch</label>
                   {isEditing ? (
                     <input
                       type="text"
-                      className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                       value={formData.bankBranch || ''}
                       onChange={e => handleChange('bankBranch', e.target.value)}
                     />
                   ) : (
-                    <p className="text-slate-900 dark:text-slate-100">{formData.bankBranch || 'Not provided'}</p>
+                    <p className="text-grx-text dark:text-white">{formData.bankBranch || 'Not provided'}</p>
                   )}
                 </div>
               </div>
@@ -1275,10 +1275,10 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Blood Group</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Blood Group</label>
                 {isEditing ? (
                   <select
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.bloodGroup || ''}
                     onChange={e => handleChange('bloodGroup', e.target.value)}
                   >
@@ -1293,14 +1293,14 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     <option value="O-">O-</option>
                   </select>
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.bloodGroup || 'Not provided'}</p>
+                  <p className="text-grx-text dark:text-white">{formData.bloodGroup || 'Not provided'}</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Marital Status</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Marital Status</label>
                 {isEditing ? (
                   <select
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.maritalStatus || ''}
                     onChange={e => handleChange('maritalStatus', e.target.value)}
                   >
@@ -1311,81 +1311,81 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     <option value="Widowed">Widowed</option>
                   </select>
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.maritalStatus || 'Not provided'}</p>
+                  <p className="text-grx-text dark:text-white">{formData.maritalStatus || 'Not provided'}</p>
                 )}
               </div>
               {formData.maritalStatus === 'Married' && (
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Spouse Name</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Spouse Name</label>
                   {isEditing ? (
                     <input
                       type="text"
-                      className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                       value={formData.spouseName || ''}
                       onChange={e => handleChange('spouseName', e.target.value)}
                     />
                   ) : (
-                    <p className="text-slate-900 dark:text-slate-100">{formData.spouseName || 'Not provided'}</p>
+                    <p className="text-grx-text dark:text-white">{formData.spouseName || 'Not provided'}</p>
                   )}
                 </div>
               )}
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Probation End Date</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Probation End Date</label>
                 {isEditing ? (
                   <input
                     type="date"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.probationEndDate || ''}
                     onChange={e => handleChange('probationEndDate', e.target.value)}
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.probationEndDate ? new Date(formData.probationEndDate).toLocaleDateString() : 'N/A'}</p>
+                  <p className="text-grx-text dark:text-white">{formData.probationEndDate ? new Date(formData.probationEndDate).toLocaleDateString() : 'N/A'}</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Notice Period (Days)</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Notice Period (Days)</label>
                 {isEditing ? (
                   <input
                     type="number"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.noticePeriod || 30}
                     onChange={e => handleChange('noticePeriod', parseInt(e.target.value) || 30)}
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.noticePeriod || 30} days</p>
+                  <p className="text-grx-text dark:text-white">{formData.noticePeriod || 30} days</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Last Working Day</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Last Working Day</label>
                 {isEditing ? (
                   <input
                     type="date"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.lastWorkingDay || ''}
                     onChange={e => handleChange('lastWorkingDay', e.target.value)}
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.lastWorkingDay ? new Date(formData.lastWorkingDay).toLocaleDateString() : 'N/A'}</p>
+                  <p className="text-grx-text dark:text-white">{formData.lastWorkingDay ? new Date(formData.lastWorkingDay).toLocaleDateString() : 'N/A'}</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Exit Interview Date</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Exit Interview Date</label>
                 {isEditing ? (
                   <input
                     type="date"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.exitInterviewDate || ''}
                     onChange={e => handleChange('exitInterviewDate', e.target.value)}
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{formData.exitInterviewDate ? new Date(formData.exitInterviewDate).toLocaleDateString() : 'N/A'}</p>
+                  <p className="text-grx-text dark:text-white">{formData.exitInterviewDate ? new Date(formData.exitInterviewDate).toLocaleDateString() : 'N/A'}</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Referred By</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Referred By</label>
                 {isEditing ? (
                   <select
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={formData.employeeReferralId || ''}
                     onChange={e => handleChange('employeeReferralId', e.target.value)}
                   >
@@ -1395,7 +1395,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     ))}
                   </select>
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">
+                  <p className="text-grx-text dark:text-white">
                     {formData.employeeReferralId 
                       ? employees.find(e => e.id === formData.employeeReferralId)?.name || 'Unknown'
                       : 'None'}
@@ -1403,31 +1403,31 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 )}
               </div>
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Skills</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Skills</label>
                 {isEditing ? (
                   <input
                     type="text"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={(formData.skills || []).join(', ')}
                     onChange={e => handleChange('skills', e.target.value.split(',').map(s => s.trim()).filter(Boolean))}
                     placeholder="e.g. React, Node.js, Python (comma separated)"
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{(formData.skills || []).join(', ') || 'Not provided'}</p>
+                  <p className="text-grx-text dark:text-white">{(formData.skills || []).join(', ') || 'Not provided'}</p>
                 )}
               </div>
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Languages Known</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Languages Known</label>
                 {isEditing ? (
                   <input
                     type="text"
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
                     value={(formData.languages || []).join(', ')}
                     onChange={e => handleChange('languages', e.target.value.split(',').map(l => l.trim()).filter(Boolean))}
                     placeholder="e.g. English, Hindi, Tamil (comma separated)"
                   />
                 ) : (
-                  <p className="text-slate-900 dark:text-slate-100">{(formData.languages || []).join(', ') || 'Not provided'}</p>
+                  <p className="text-grx-text dark:text-white">{(formData.languages || []).join(', ') || 'Not provided'}</p>
                 )}
               </div>
             </div>
@@ -1451,13 +1451,13 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
             {(formData.hiringHistory || []).length > 0 ? (
               <div className="space-y-4">
                 {formData.hiringHistory?.map((history, index) => (
-                  <div key={index} className="border border-slate-200 rounded-lg p-4">
+                  <div key={index} className="border border-grx-primary-100 rounded-lg p-4">
                     <div className="flex justify-between items-start mb-4">
                       <div>
-                        <h4 className="font-semibold text-slate-900">
+                        <h4 className="font-semibold text-grx-text">
                           {history.isRehire ? 'Rehire' : 'Initial Hire'} - {history.department}
                         </h4>
-                        <p className="text-sm text-slate-500">{history.employeePosition} - {history.designation}</p>
+                        <p className="text-sm text-grx-muted">{history.employeePosition} - {history.designation}</p>
                       </div>
                       {history.isRehire && (
                         <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">Rehire</span>
@@ -1465,29 +1465,29 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                       <div>
-                        <span className="text-slate-600">Hire Date:</span>
-                        <span className="ml-2 text-slate-900">{new Date(history.hireDate).toLocaleDateString()}</span>
+                        <span className="text-grx-muted">Hire Date:</span>
+                        <span className="ml-2 text-grx-text">{new Date(history.hireDate).toLocaleDateString()}</span>
                       </div>
                       {history.terminationDate && (
                         <div>
-                          <span className="text-slate-600">Termination Date:</span>
-                          <span className="ml-2 text-slate-900">{new Date(history.terminationDate).toLocaleDateString()}</span>
+                          <span className="text-grx-muted">Termination Date:</span>
+                          <span className="ml-2 text-grx-text">{new Date(history.terminationDate).toLocaleDateString()}</span>
                         </div>
                       )}
                       <div>
-                        <span className="text-slate-600">Employee Type:</span>
-                        <span className="ml-2 text-slate-900">{history.employeeType}</span>
+                        <span className="text-grx-muted">Employee Type:</span>
+                        <span className="ml-2 text-grx-text">{history.employeeType}</span>
                       </div>
                       {history.salary && (
                         <div>
-                          <span className="text-slate-600">Salary:</span>
-                          <span className="ml-2 text-slate-900">₹{history.salary.toLocaleString()}</span>
+                          <span className="text-grx-muted">Salary:</span>
+                          <span className="ml-2 text-grx-text">₹{history.salary.toLocaleString()}</span>
                         </div>
                       )}
                       {history.reasonForTermination && (
                         <div className="md:col-span-2">
-                          <span className="text-slate-600">Termination Reason:</span>
-                          <span className="ml-2 text-slate-900">{history.reasonForTermination}</span>
+                          <span className="text-grx-muted">Termination Reason:</span>
+                          <span className="ml-2 text-grx-text">{history.reasonForTermination}</span>
                         </div>
                       )}
                     </div>
@@ -1495,7 +1495,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 ))}
               </div>
             ) : (
-              <p className="text-slate-500 text-center py-8">No hiring history available</p>
+              <p className="text-grx-muted text-center py-8">No hiring history available</p>
             )}
           </div>
         );
@@ -1511,7 +1511,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
       <div className="flex items-center justify-between">
         <button
           onClick={handleBack}
-          className="flex items-center gap-2 text-slate-600 hover:text-slate-900 transition-colors"
+          className="flex items-center gap-2 text-grx-muted hover:text-grx-text transition-colors"
         >
           <ArrowLeft size={20} />
           <span className="font-medium">Back to Employees</span>
@@ -1562,7 +1562,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     };
                     setFormData(parsedEmployee);
                   }}
-                  className="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg transition-colors flex items-center gap-2"
+                  className="bg-grx-primary-100 dark:bg-grx-primary-800 hover:bg-grx-primary-200 dark:hover:bg-grx-primary-700 text-grx-text dark:text-grx-primary-200 px-4 py-2 rounded-lg transition-colors flex items-center gap-2"
                 >
                   <X size={18} />
                   <span>Cancel</span>
@@ -1608,7 +1608,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
       </div>
 
       {/* Section Navigation */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4">
+      <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-4">
         <div className="flex flex-wrap gap-2">
           {sections.map((section) => {
             const Icon = section.icon;
@@ -1619,7 +1619,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   activeSection === section.id
                     ? 'bg-indigo-600 text-white'
-                    : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
+                    : 'bg-grx-primary-50 dark:bg-grx-primary-800 text-grx-text dark:text-grx-primary-200 hover:bg-grx-primary-100 dark:hover:bg-grx-primary-700'
                 }`}
               >
                 <Icon size={18} />
@@ -1631,8 +1631,8 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
       </div>
 
       {/* Section Content */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-        <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-6 flex items-center gap-2">
+      <div className="bg-white rounded-xl shadow-sm border border-grx-primary-100 p-6">
+        <h3 className="text-lg font-bold text-grx-text dark:text-white mb-6 flex items-center gap-2">
           {React.createElement(sections.find(s => s.id === activeSection)?.icon || User, { size: 20, className: "text-indigo-600" })}
           {sections.find(s => s.id === activeSection)?.label}
         </h3>

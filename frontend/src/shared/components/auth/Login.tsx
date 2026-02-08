@@ -30,6 +30,10 @@ const Login: React.FC = () => {
         window.location.href = '/api/auth/microsoft';
     };
 
+    const handleGoogleLogin = () => {
+        window.location.href = '/api/auth/google';
+    };
+
     const handleAdminLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
@@ -59,15 +63,19 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-grx-bg dark:bg-grx-dark flex flex-col items-center justify-center p-4 relative overflow-hidden">
-            {/* Decorative background shapes */}
+        <div className="min-h-screen grx-mesh-bg flex flex-col items-center justify-center p-4 relative overflow-hidden">
+            {/* Animated decorative orbs */}
             <div
-                className="absolute top-0 left-0 w-96 h-96 rounded-full opacity-[0.04]"
-                style={{ background: 'var(--grx10-primary)', filter: 'blur(120px)', transform: 'translate(-40%, -40%)' }}
+                className="absolute top-0 left-0 w-[500px] h-[500px] rounded-full"
+                style={{ background: 'radial-gradient(circle, rgba(58,47,120,0.15) 0%, transparent 70%)', filter: 'blur(60px)', transform: 'translate(-30%, -30%)', animation: 'grx-fade-in 2s ease both' }}
             />
             <div
-                className="absolute bottom-0 right-0 w-96 h-96 rounded-full opacity-[0.04]"
-                style={{ background: 'var(--grx10-accent)', filter: 'blur(120px)', transform: 'translate(40%, 40%)' }}
+                className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full"
+                style={{ background: 'radial-gradient(circle, rgba(230,0,126,0.1) 0%, transparent 70%)', filter: 'blur(60px)', transform: 'translate(30%, 30%)', animation: 'grx-fade-in 2s ease 0.3s both' }}
+            />
+            <div
+                className="absolute top-1/2 left-1/2 w-[400px] h-[400px] rounded-full"
+                style={{ background: 'radial-gradient(circle, rgba(97,82,203,0.08) 0%, transparent 70%)', filter: 'blur(80px)', transform: 'translate(-50%, -50%)', animation: 'grx-fade-in 2s ease 0.6s both' }}
             />
 
             <div className="grx-animate-scale-in w-full max-w-md relative z-10">
@@ -78,8 +86,8 @@ const Login: React.FC = () => {
                 </div>
 
                 {/* Card */}
-                <div className="bg-white dark:bg-grx-dark-surface p-8 rounded-2xl border border-slate-200 dark:border-grx-primary-800"
-                     style={{ boxShadow: 'var(--shadow-lg)' }}>
+                <div className="grx-glass-strong p-8 rounded-2xl"
+                     style={{ boxShadow: '0 8px 32px rgba(58, 47, 120, 0.08), inset 0 1px 0 rgba(255,255,255,0.6)' }}>
                     <div className="text-center mb-6">
                         <div className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4 grx-gradient">
                             <ShieldCheck size={28} className="text-white" />
@@ -119,7 +127,7 @@ const Login: React.FC = () => {
                     )}
 
                     {loginMethod === 'sso' ? (
-                        <div className="grx-animate-fade-in">
+                        <div className="grx-animate-fade-in space-y-3">
                             <button
                                 onClick={handleMicrosoftLogin}
                                 className="w-full bg-grx-text dark:bg-white text-white dark:text-grx-text py-3 px-4 rounded-lg font-semibold hover:opacity-90 transition-all duration-200 flex items-center justify-center gap-3 grx-btn-press grx-focus-ring"
@@ -128,11 +136,19 @@ const Login: React.FC = () => {
                                 <img src="https://learn.microsoft.com/en-us/entra/identity-platform/media/howto-add-branding-in-apps/ms-symbollockup_mssymbol_19.png" alt="Microsoft" className="w-5 h-5" />
                                 Sign in with Microsoft 365
                             </button>
+                            <button
+                                onClick={handleGoogleLogin}
+                                className="w-full bg-white dark:bg-grx-dark-surface text-grx-text dark:text-white py-3 px-4 rounded-lg font-semibold border border-slate-200 dark:border-grx-primary-700 hover:bg-slate-50 dark:hover:bg-grx-primary-800 transition-all duration-200 flex items-center justify-center gap-3 grx-btn-press grx-focus-ring"
+                                style={{ boxShadow: 'var(--shadow-md)' }}
+                            >
+                                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
+                                Sign in with Google
+                            </button>
                         </div>
                     ) : (
                         <form onSubmit={handleAdminLogin} className="space-y-4 grx-animate-fade-in">
                             <div>
-                                <label className="block text-left text-sm font-medium text-grx-text dark:text-slate-200 mb-1.5">
+                                <label className="block text-left text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1.5">
                                     Email / Employee ID
                                 </label>
                                 <div className="relative">
@@ -141,10 +157,10 @@ const Login: React.FC = () => {
                                         type="text"
                                         value={username}
                                         onChange={(e) => { setUsername(e.target.value); setFieldErrors(prev => ({ ...prev, username: undefined })); }}
-                                        className={`w-full pl-10 pr-4 py-2.5 bg-grx-bg dark:bg-grx-primary-800 border rounded-lg text-grx-text dark:text-white placeholder-grx-muted outline-none transition-all duration-200 grx-focus-ring ${
+                                        className={`grx-input w-full pl-10 pr-4 py-2.5 bg-grx-bg dark:bg-grx-primary-800 border rounded-lg text-grx-text dark:text-white placeholder-grx-muted outline-none transition-all duration-200 grx-focus-ring ${
                                             fieldErrors.username
                                                 ? 'border-red-400 dark:border-red-600'
-                                                : 'border-slate-200 dark:border-grx-primary-700 focus:border-grx-primary dark:focus:border-grx-primary-400'
+                                                : 'border-grx-primary-100 dark:border-grx-primary-700 focus:border-grx-primary dark:focus:border-grx-primary-400'
                                         }`}
                                         placeholder="Enter email or employee ID"
                                         autoComplete="username"
@@ -155,7 +171,7 @@ const Login: React.FC = () => {
                                 )}
                             </div>
                             <div>
-                                <label className="block text-left text-sm font-medium text-grx-text dark:text-slate-200 mb-1.5">
+                                <label className="block text-left text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1.5">
                                     Password
                                 </label>
                                 <div className="relative">
@@ -164,10 +180,10 @@ const Login: React.FC = () => {
                                         type={showPassword ? 'text' : 'password'}
                                         value={password}
                                         onChange={(e) => { setPassword(e.target.value); setFieldErrors(prev => ({ ...prev, password: undefined })); }}
-                                        className={`w-full pl-10 pr-10 py-2.5 bg-grx-bg dark:bg-grx-primary-800 border rounded-lg text-grx-text dark:text-white placeholder-grx-muted outline-none transition-all duration-200 grx-focus-ring ${
+                                        className={`grx-input w-full pl-10 pr-10 py-2.5 bg-grx-bg dark:bg-grx-primary-800 border rounded-lg text-grx-text dark:text-white placeholder-grx-muted outline-none transition-all duration-200 grx-focus-ring ${
                                             fieldErrors.password
                                                 ? 'border-red-400 dark:border-red-600'
-                                                : 'border-slate-200 dark:border-grx-primary-700 focus:border-grx-primary dark:focus:border-grx-primary-400'
+                                                : 'border-grx-primary-100 dark:border-grx-primary-700 focus:border-grx-primary dark:focus:border-grx-primary-400'
                                         }`}
                                         placeholder="Enter password"
                                         autoComplete="current-password"

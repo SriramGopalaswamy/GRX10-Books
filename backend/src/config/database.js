@@ -706,6 +706,7 @@ const ApprovalHistory = sequelize.define('ApprovalHistory', {
     actionDate: { type: DataTypes.DATE, defaultValue: DataTypes.NOW }
 });
 
+
 // Relationships
 Customer.hasMany(Invoice, { foreignKey: 'customerId' });
 Invoice.belongsTo(Customer, { foreignKey: 'customerId' });

@@ -41,7 +41,7 @@ export const GeminiChat: React.FC = () => {
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 ${isOpen ? 'bg-slate-800 text-white rotate-90' : 'bg-brand-600 text-white hover:bg-brand-700'}`}
+        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 ${isOpen ? 'bg-grx-dark-surface text-white rotate-90' : 'bg-brand-600 text-white hover:bg-brand-700'}`}
       >
         {isOpen ? <X size={24} /> : <Sparkles size={24} />}
       </button>
@@ -50,13 +50,13 @@ export const GeminiChat: React.FC = () => {
       {isOpen && (
         <div className="fixed bottom-24 right-6 z-50 w-96 h-[500px] bg-white rounded-2xl shadow-2xl flex flex-col border border-gray-200 animate-in slide-in-from-bottom-4 fade-in duration-300">
           {/* Header */}
-          <div className="p-4 bg-gradient-to-r from-slate-800 to-slate-900 rounded-t-2xl flex items-center gap-3 text-white">
+          <div className="p-4 bg-gradient-to-r from-grx-primary-800 to-grx-dark rounded-t-2xl flex items-center gap-3 text-white">
              <div className="p-2 bg-white/10 rounded-lg">
                 <Sparkles size={18} className="text-brand-400" />
              </div>
              <div>
                 <h3 className="font-bold text-sm">GRX10 Assistant</h3>
-                <p className="text-xs text-slate-400">Powered by Gemini</p>
+                <p className="text-xs text-grx-muted">Powered by Gemini</p>
              </div>
           </div>
 

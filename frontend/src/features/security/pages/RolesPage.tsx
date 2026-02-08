@@ -80,23 +80,23 @@ export const RolesPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">System Roles</h2>
-        <p className="text-slate-500 dark:text-slate-400 mb-6">Manage system roles. Use the Security & Approvals section to assign permissions to roles.</p>
-        <div className="text-sm text-slate-600 dark:text-slate-400">
+      <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-6">
+        <h2 className="text-2xl font-bold text-grx-text dark:text-white mb-4">System Roles</h2>
+        <p className="text-grx-muted dark:text-grx-muted mb-6">Manage system roles. Use the Security & Approvals section to assign permissions to roles.</p>
+        <div className="text-sm text-grx-muted dark:text-grx-muted">
           <p>Roles are managed through the Security & Approvals → Roles section.</p>
           <p className="mt-2">To create or edit roles, please use the dedicated Roles management page.</p>
         </div>
       </div>
 
       {/* Permission Assignment */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">Assign Permissions to Roles</h3>
+      <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-6">
+        <h3 className="text-lg font-semibold text-grx-text dark:text-white mb-4">Assign Permissions to Roles</h3>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Select Role</label>
+            <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Select Role</label>
             <select
-              className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
               value={selectedRole?.id || ''}
               onChange={e => {
                 const role = roles.find(r => r.id === e.target.value);
@@ -113,9 +113,9 @@ export const RolesPage: React.FC = () => {
 
           {showPermissionModal && selectedRole && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white dark:bg-slate-800 rounded-xl shadow-xl p-6 max-w-4xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+              <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-xl p-6 max-w-4xl w-full mx-4 max-h-[80vh] overflow-y-auto">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+                  <h3 className="text-xl font-semibold text-grx-text dark:text-white">
                     Permissions for {selectedRole.name}
                   </h3>
                   <button
@@ -123,7 +123,7 @@ export const RolesPage: React.FC = () => {
                       setShowPermissionModal(false);
                       setSelectedRole(null);
                     }}
-                    className="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
+                    className="text-grx-muted dark:text-grx-muted hover:text-grx-text dark:hover:text-grx-primary-200"
                   >
                     <X size={24} />
                   </button>
@@ -131,13 +131,13 @@ export const RolesPage: React.FC = () => {
 
                 <div className="space-y-6">
                   {Object.entries(groupedPermissions).map(([key, perms]) => (
-                    <div key={key} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4">
-                      <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-3">{key}</h4>
+                    <div key={key} className="border border-grx-primary-100 dark:border-grx-primary-800 rounded-lg p-4">
+                      <h4 className="font-semibold text-grx-text dark:text-white mb-3">{key}</h4>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                         {perms.map(perm => (
                           <label
                             key={perm.id}
-                            className="flex items-center space-x-2 cursor-pointer p-2 rounded hover:bg-slate-50 dark:hover:bg-slate-700"
+                            className="flex items-center space-x-2 cursor-pointer p-2 rounded hover:bg-grx-bg dark:hover:bg-grx-primary-800"
                           >
                             <input
                               type="checkbox"
@@ -149,9 +149,9 @@ export const RolesPage: React.FC = () => {
                                   setRolePermissions(rolePermissions.filter(id => id !== perm.id));
                                 }
                               }}
-                              className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                              className="rounded border-grx-primary-100 text-indigo-600 focus:ring-indigo-500"
                             />
-                            <span className="text-sm text-slate-700 dark:text-slate-300">{perm.action}</span>
+                            <span className="text-sm text-grx-text dark:text-grx-primary-200">{perm.action}</span>
                           </label>
                         ))}
                       </div>
@@ -165,7 +165,7 @@ export const RolesPage: React.FC = () => {
                       setShowPermissionModal(false);
                       setSelectedRole(null);
                     }}
-                    className="px-4 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                    className="px-4 py-2 text-grx-text dark:text-grx-primary-200 hover:bg-grx-primary-50 dark:hover:bg-grx-primary-800 rounded-lg transition-colors"
                   >
                     Cancel
                   </button>

@@ -37,7 +37,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange
       className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
         activeTab === id 
           ? 'bg-brand-50 text-brand-700 font-medium' 
-          : 'text-slate-600 hover:bg-gray-50'
+          : 'text-grx-muted hover:bg-gray-50'
       }`}
     >
       <Icon size={20} />
@@ -46,7 +46,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange
   );
 
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden relative">
+    <div className="flex h-screen bg-grx-bg overflow-hidden relative">
       {/* Sidebar */}
       <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-200 ease-in-out md:relative md:translate-x-0 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex flex-col h-full">
@@ -54,7 +54,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange
             <div className="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white font-bold">
               <Sun size={18} />
             </div>
-            <span className="text-xl font-bold text-slate-800 tracking-tight">GRX10 <span className="text-brand-600">OS</span></span>
+            <span className="text-xl font-bold text-grx-text tracking-tight">GRX10 <span className="text-brand-600">OS</span></span>
           </div>
 
           <nav className="flex-1 p-4 space-y-1">
@@ -96,7 +96,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange
                     <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden text-gray-600">
                         <Menu />
                     </button>
-                    <h2 className="text-lg font-semibold text-slate-800 capitalize">
+                    <h2 className="text-lg font-semibold text-grx-text capitalize">
                         {activeTab}
                     </h2>
                 </div>
@@ -120,8 +120,8 @@ export const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange
                             <>
                                 <div className="fixed inset-0 z-30" onClick={() => setIsNotifOpen(false)}></div>
                                 <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-100 z-40 overflow-hidden animate-in fade-in slide-in-from-top-2">
-                                    <div className="p-3 border-b border-gray-100 flex justify-between items-center bg-slate-50">
-                                        <h3 className="text-sm font-bold text-slate-800">Notifications</h3>
+                                    <div className="p-3 border-b border-gray-100 flex justify-between items-center bg-grx-bg">
+                                        <h3 className="text-sm font-bold text-grx-text">Notifications</h3>
                                         {unreadCount > 0 && (
                                             <button onClick={markAllNotificationsRead} className="text-xs text-brand-600 hover:text-brand-700 font-medium">
                                                 Mark all read
@@ -150,7 +150,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, activeTab, onTabChange
                                                             {notif.type === 'alert' ? <AlertCircle size={16} /> : <Check size={16} />}
                                                         </div>
                                                         <div>
-                                                            <p className="text-sm font-medium text-slate-800">{notif.title}</p>
+                                                            <p className="text-sm font-medium text-grx-text">{notif.title}</p>
                                                             <p className="text-xs text-gray-500 mt-1 line-clamp-2">{notif.message}</p>
                                                             <p className="text-[10px] text-gray-400 mt-2">{notif.timestamp}</p>
                                                         </div>

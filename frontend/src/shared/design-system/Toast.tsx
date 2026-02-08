@@ -83,7 +83,7 @@ const ToastItem: React.FC<{ toast: Toast; onRemove: (id: string) => void }> = ({
           {toast.title}
         </p>
         {toast.message && (
-          <p className="text-xs text-grx-muted dark:text-slate-400 mt-0.5">
+          <p className="text-xs text-grx-muted dark:text-grx-muted mt-0.5">
             {toast.message}
           </p>
         )}
