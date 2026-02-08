@@ -262,19 +262,19 @@ export const Attendance: React.FC = () => {
       {/* Header & Actions */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Attendance Management</h2>
-          <p className="text-slate-500 dark:text-slate-400">Track attendance and manage regularization</p>
+          <h2 className="text-2xl font-bold text-grx-text dark:text-white">Attendance Management</h2>
+          <p className="text-grx-muted dark:text-grx-muted">Track attendance and manage regularization</p>
         </div>
         
         {user && (
-          <div className="bg-white dark:bg-slate-800 px-5 py-3 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 flex items-center gap-6">
+          <div className="bg-white dark:bg-grx-dark-surface px-5 py-3 rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 flex items-center gap-6">
             <div>
-               <p className="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold tracking-wide">Current Time</p>
-               <p className="text-xl font-mono font-bold text-slate-900 dark:text-slate-100 leading-none mt-1">
+               <p className="text-xs text-grx-muted dark:text-grx-muted uppercase font-semibold tracking-wide">Current Time</p>
+               <p className="text-xl font-mono font-bold text-grx-text dark:text-white leading-none mt-1">
                  {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                </p>
             </div>
-            <div className="h-8 w-px bg-slate-200 dark:bg-slate-700"></div>
+            <div className="h-8 w-px bg-grx-primary-100 dark:bg-grx-primary-800"></div>
             <button 
               onClick={handleCheckIn}
               disabled={checkInLoading || isCheckedOut || !user}
@@ -319,11 +319,11 @@ export const Attendance: React.FC = () => {
       )}
 
       {/* Tabs */}
-      <div className="border-b border-slate-200 dark:border-slate-700 flex gap-6">
+      <div className="border-b border-grx-primary-100 dark:border-grx-primary-800 flex gap-6">
         <button 
           onClick={() => setActiveTab('logs')}
           className={`pb-3 font-medium text-sm transition-colors relative ${
-            activeTab === 'logs' ? 'text-indigo-600' : 'text-slate-500 hover:text-slate-700'
+            activeTab === 'logs' ? 'text-indigo-600' : 'text-grx-muted hover:text-grx-text'
           }`}
         >
           {user?.role === Role.ADMIN || user?.role === Role.HR 
@@ -336,7 +336,7 @@ export const Attendance: React.FC = () => {
         <button 
           onClick={() => setActiveTab('requests')}
           className={`pb-3 font-medium text-sm transition-colors relative ${
-            activeTab === 'requests' ? 'text-indigo-600' : 'text-slate-500 hover:text-slate-700'
+            activeTab === 'requests' ? 'text-indigo-600' : 'text-grx-muted hover:text-grx-text'
           }`}
         >
           Regularization Requests
@@ -346,7 +346,7 @@ export const Attendance: React.FC = () => {
           <button 
             onClick={() => setActiveTab('approvals')}
             className={`pb-3 font-medium text-sm transition-colors relative ${
-              activeTab === 'approvals' ? 'text-indigo-600' : 'text-slate-500 hover:text-slate-700'
+              activeTab === 'approvals' ? 'text-indigo-600' : 'text-grx-muted hover:text-grx-text'
             }`}
           >
             Approvals
@@ -360,18 +360,18 @@ export const Attendance: React.FC = () => {
 
       {/* Tab Content: My Attendance Logs */}
       {activeTab === 'logs' && (
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
+        <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-50 dark:border-grx-primary-800 overflow-hidden">
           {loading ? (
             <div className="p-8 text-center">
               <Loader2 className="animate-spin text-indigo-600 mx-auto" size={32} />
-              <p className="text-slate-500 mt-2">Loading attendance logs...</p>
+              <p className="text-grx-muted mt-2">Loading attendance logs...</p>
             </div>
           ) : error ? (
             <div className="p-8 text-center text-rose-600">{error}</div>
           ) : attendanceLogs.length === 0 ? (
             <div className="p-8 text-center">
-              <div className="text-slate-500 dark:text-slate-400 mb-4">No attendance records found.</div>
-              <div className="text-sm text-slate-400 dark:text-slate-500">
+              <div className="text-grx-muted dark:text-grx-muted mb-4">No attendance records found.</div>
+              <div className="text-sm text-grx-muted dark:text-grx-muted">
                 {user ? 'Click "Check In" above to start tracking your attendance.' : 'Please log in to view attendance records.'}
               </div>
             </div>
@@ -379,34 +379,34 @@ export const Attendance: React.FC = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
-                  <tr className="bg-slate-50 dark:bg-slate-700 border-b border-slate-200 dark:border-slate-600">
+                  <tr className="bg-grx-bg dark:bg-grx-primary-800 border-b border-grx-primary-100 dark:border-grx-primary-700">
                     {(user?.role === Role.ADMIN || user?.role === Role.HR || user?.role === Role.MANAGER) && (
-                      <th className="px-6 py-4 font-medium text-slate-500 dark:text-slate-300 text-sm">Employee</th>
+                      <th className="px-6 py-4 font-medium text-grx-muted dark:text-grx-primary-200 text-sm">Employee</th>
                     )}
-                    <th className="px-6 py-4 font-medium text-slate-500 dark:text-slate-300 text-sm">Date</th>
-                    <th className="px-6 py-4 font-medium text-slate-500 dark:text-slate-300 text-sm">First Punch</th>
-                    <th className="px-6 py-4 font-medium text-slate-500 dark:text-slate-300 text-sm">Last Punch</th>
-                    <th className="px-6 py-4 font-medium text-slate-500 dark:text-slate-300 text-sm">Total Hours</th>
-                    <th className="px-6 py-4 font-medium text-slate-500 dark:text-slate-300 text-sm">Status</th>
+                    <th className="px-6 py-4 font-medium text-grx-muted dark:text-grx-primary-200 text-sm">Date</th>
+                    <th className="px-6 py-4 font-medium text-grx-muted dark:text-grx-primary-200 text-sm">First Punch</th>
+                    <th className="px-6 py-4 font-medium text-grx-muted dark:text-grx-primary-200 text-sm">Last Punch</th>
+                    <th className="px-6 py-4 font-medium text-grx-muted dark:text-grx-primary-200 text-sm">Total Hours</th>
+                    <th className="px-6 py-4 font-medium text-grx-muted dark:text-grx-primary-200 text-sm">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
+                <tbody className="divide-y divide-grx-primary-50 dark:divide-grx-primary-800">
                   {attendanceLogs.map((record) => (
-                    <tr key={record.id} className="hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <tr key={record.id} className="hover:bg-grx-bg dark:hover:bg-grx-primary-800">
                       {(user?.role === Role.ADMIN || user?.role === Role.HR || user?.role === Role.MANAGER) && (
-                        <td className="px-6 py-4 text-sm text-slate-900 dark:text-slate-100">
+                        <td className="px-6 py-4 text-sm text-grx-text dark:text-white">
                           {record.Employee?.name || record.employeeId}
                         </td>
                       )}
-                      <td className="px-6 py-4 flex items-center gap-2 text-sm text-slate-900 dark:text-slate-100">
-                        <CalendarIcon size={16} className="text-slate-400" />
+                      <td className="px-6 py-4 flex items-center gap-2 text-sm text-grx-text dark:text-white">
+                        <CalendarIcon size={16} className="text-grx-muted" />
                         {record.date}
                       </td>
-                      <td className="px-6 py-4 font-mono text-sm text-slate-600 dark:text-slate-300">{record.checkIn || '--:--'}</td>
-                      <td className="px-6 py-4 font-mono text-sm text-slate-600 dark:text-slate-300">{record.checkOut || '--:--'}</td>
-                      <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-300">
+                      <td className="px-6 py-4 font-mono text-sm text-grx-muted dark:text-grx-primary-200">{record.checkIn || '--:--'}</td>
+                      <td className="px-6 py-4 font-mono text-sm text-grx-muted dark:text-grx-primary-200">{record.checkOut || '--:--'}</td>
+                      <td className="px-6 py-4 text-sm text-grx-muted dark:text-grx-primary-200">
                         <div className="flex items-center gap-2">
-                          <Clock size={16} className="text-slate-400" />
+                          <Clock size={16} className="text-grx-muted" />
                           {record.durationHours ? `${record.durationHours} hrs` : '--'}
                         </div>
                       </td>
@@ -442,32 +442,32 @@ export const Attendance: React.FC = () => {
             </button>
           </div>
           
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+          <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-50 overflow-hidden">
             {myRequests.length === 0 ? (
-              <div className="p-8 text-center text-slate-500">No regularization requests found.</div>
+              <div className="p-8 text-center text-grx-muted">No regularization requests found.</div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left">
                   <thead>
-                    <tr className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
-                      <th className="px-6 py-4 font-medium text-slate-500 text-sm">Date</th>
-                      <th className="px-6 py-4 font-medium text-slate-500 text-sm">Type</th>
-                      <th className="px-6 py-4 font-medium text-slate-500 text-sm">Details</th>
-                      <th className="px-6 py-4 font-medium text-slate-500 text-sm">Reason</th>
-                      <th className="px-6 py-4 font-medium text-slate-500 text-sm">Status</th>
+                    <tr className="bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-100 dark:border-grx-primary-800">
+                      <th className="px-6 py-4 font-medium text-grx-muted text-sm">Date</th>
+                      <th className="px-6 py-4 font-medium text-grx-muted text-sm">Type</th>
+                      <th className="px-6 py-4 font-medium text-grx-muted text-sm">Details</th>
+                      <th className="px-6 py-4 font-medium text-grx-muted text-sm">Reason</th>
+                      <th className="px-6 py-4 font-medium text-grx-muted text-sm">Status</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                  <tbody className="divide-y divide-grx-primary-100 dark:divide-grx-primary-800">
                     {myRequests.map((req) => (
-                      <tr key={req.id} className="hover:bg-slate-50 dark:hover:bg-slate-700">
-                        <td className="px-6 py-4 text-sm text-slate-900 dark:text-slate-100">{req.date}</td>
-                        <td className="px-6 py-4 text-sm text-slate-900 dark:text-slate-100">
-                          <span className="bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded text-xs font-medium text-slate-700 dark:text-slate-300">{req.type}</span>
+                      <tr key={req.id} className="hover:bg-grx-bg dark:hover:bg-grx-primary-800">
+                        <td className="px-6 py-4 text-sm text-grx-text dark:text-white">{req.date}</td>
+                        <td className="px-6 py-4 text-sm text-grx-text dark:text-white">
+                          <span className="bg-grx-primary-50 dark:bg-grx-primary-800 px-2 py-1 rounded text-xs font-medium text-grx-text dark:text-grx-primary-200">{req.type}</span>
                         </td>
-                        <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-300 font-mono">
+                        <td className="px-6 py-4 text-sm text-grx-muted dark:text-grx-primary-200 font-mono">
                           {req.type === RegularizationType.WFH ? 'N/A' : `${req.newCheckIn} - ${req.newCheckOut}`}
                         </td>
-                        <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-300 max-w-xs truncate">{req.reason}</td>
+                        <td className="px-6 py-4 text-sm text-grx-muted dark:text-grx-primary-200 max-w-xs truncate">{req.reason}</td>
                         <td className="px-6 py-4">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                             req.status === LeaveStatus.APPROVED ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300' :
@@ -489,35 +489,35 @@ export const Attendance: React.FC = () => {
 
       {/* Tab Content: Approvals */}
       {activeTab === 'approvals' && (
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+        <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
           {pendingApprovals.length === 0 ? (
-            <div className="p-8 text-center text-slate-500 dark:text-slate-400">No pending approvals. Good job!</div>
+            <div className="p-8 text-center text-grx-muted dark:text-grx-muted">No pending approvals. Good job!</div>
           ) : (
             <table className="w-full text-left">
               <thead>
-                <tr className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
-                  <th className="px-6 py-4 font-medium text-slate-500 dark:text-slate-400 text-sm">Employee</th>
-                  <th className="px-6 py-4 font-medium text-slate-500 dark:text-slate-400 text-sm">Date & Type</th>
-                  <th className="px-6 py-4 font-medium text-slate-500 dark:text-slate-400 text-sm">Correction</th>
-                  <th className="px-6 py-4 font-medium text-slate-500 dark:text-slate-400 text-sm">Reason</th>
-                  <th className="px-6 py-4 font-medium text-slate-500 dark:text-slate-400 text-sm text-right">Actions</th>
+                <tr className="bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-100 dark:border-grx-primary-800">
+                  <th className="px-6 py-4 font-medium text-grx-muted dark:text-grx-muted text-sm">Employee</th>
+                  <th className="px-6 py-4 font-medium text-grx-muted dark:text-grx-muted text-sm">Date & Type</th>
+                  <th className="px-6 py-4 font-medium text-grx-muted dark:text-grx-muted text-sm">Correction</th>
+                  <th className="px-6 py-4 font-medium text-grx-muted dark:text-grx-muted text-sm">Reason</th>
+                  <th className="px-6 py-4 font-medium text-grx-muted dark:text-grx-muted text-sm text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+              <tbody className="divide-y divide-grx-primary-100 dark:divide-grx-primary-800">
                 {pendingApprovals.map((req) => (
-                  <tr key={req.id} className="hover:bg-slate-50 dark:hover:bg-slate-700">
+                  <tr key={req.id} className="hover:bg-grx-bg dark:hover:bg-grx-primary-800">
                     <td className="px-6 py-4">
-                      <div className="font-medium text-sm text-slate-900 dark:text-slate-100">{req.employeeName}</div>
-                      <div className="text-xs text-slate-500 dark:text-slate-400">ID: {req.employeeId}</div>
+                      <div className="font-medium text-sm text-grx-text dark:text-white">{req.employeeName}</div>
+                      <div className="text-xs text-grx-muted dark:text-grx-muted">ID: {req.employeeId}</div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm text-slate-900 dark:text-slate-100">{req.date}</div>
-                      <div className="text-xs text-slate-500 dark:text-slate-400">{req.type}</div>
+                      <div className="text-sm text-grx-text dark:text-white">{req.date}</div>
+                      <div className="text-xs text-grx-muted dark:text-grx-muted">{req.type}</div>
                     </td>
-                    <td className="px-6 py-4 font-mono text-sm text-slate-600 dark:text-slate-300">
+                    <td className="px-6 py-4 font-mono text-sm text-grx-muted dark:text-grx-primary-200">
                       {req.type === RegularizationType.WFH ? 'Work From Home' : `${req.newCheckIn} -> ${req.newCheckOut}`}
                     </td>
-                    <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-300 max-w-xs">{req.reason}</td>
+                    <td className="px-6 py-4 text-sm text-grx-muted dark:text-grx-primary-200 max-w-xs">{req.reason}</td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <button 
@@ -547,23 +547,23 @@ export const Attendance: React.FC = () => {
       {/* Modal */}
       {showRegModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-slate-800 rounded-xl w-full max-w-lg p-6 shadow-2xl border border-slate-200 dark:border-slate-700">
-            <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100">Request Regularization</h3>
+          <div className="bg-white dark:bg-grx-dark-surface rounded-xl w-full max-w-lg p-6 shadow-2xl border border-grx-primary-100 dark:border-grx-primary-800">
+            <h3 className="text-lg font-bold mb-4 text-grx-text dark:text-white">Request Regularization</h3>
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Date</label>
+                   <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">Date</label>
                    <input 
                     type="date" 
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
                     value={newReg.date}
                     onChange={e => setNewReg({...newReg, date: e.target.value})}
                    />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Type</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">Type</label>
                   <select 
-                    className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
                     value={newReg.type}
                     onChange={e => setNewReg({...newReg, type: e.target.value as RegularizationType})}
                   >
@@ -573,21 +573,21 @@ export const Attendance: React.FC = () => {
               </div>
 
               {newReg.type !== RegularizationType.WFH && (
-                <div className="grid grid-cols-2 gap-4 p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                <div className="grid grid-cols-2 gap-4 p-4 bg-grx-bg dark:bg-grx-dark rounded-lg border border-grx-primary-100 dark:border-grx-primary-800">
                   <div>
-                     <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Correct Check-in</label>
+                     <label className="block text-xs font-medium text-grx-muted dark:text-grx-muted mb-1">Correct Check-in</label>
                      <input 
                       type="time" 
-                      className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2 text-sm"
+                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2 text-sm"
                       value={newReg.newCheckIn}
                       onChange={e => setNewReg({...newReg, newCheckIn: e.target.value})}
                      />
                   </div>
                   <div>
-                     <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Correct Check-out</label>
+                     <label className="block text-xs font-medium text-grx-muted dark:text-grx-muted mb-1">Correct Check-out</label>
                      <input 
                       type="time" 
-                      className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2 text-sm"
+                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2 text-sm"
                       value={newReg.newCheckOut}
                       onChange={e => setNewReg({...newReg, newCheckOut: e.target.value})}
                      />
@@ -596,9 +596,9 @@ export const Attendance: React.FC = () => {
               )}
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Reason</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">Reason</label>
                 <textarea 
-                  className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-3 text-sm h-24 focus:ring-2 focus:ring-indigo-500 outline-none resize-none" 
+                  className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-3 text-sm h-24 focus:ring-2 focus:ring-indigo-500 outline-none resize-none" 
                   placeholder="Please explain why regularisation is needed..."
                   value={newReg.reason}
                   onChange={e => setNewReg({...newReg, reason: e.target.value})}
@@ -608,7 +608,7 @@ export const Attendance: React.FC = () => {
               <div className="flex gap-3 pt-2">
                 <button 
                   onClick={() => setShowRegModal(false)} 
-                  className="flex-1 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 font-medium transition-colors"
+                  className="flex-1 bg-white dark:bg-grx-primary-800 border border-grx-primary-100 dark:border-grx-primary-700 text-grx-text dark:text-grx-primary-200 py-2.5 rounded-lg hover:bg-grx-bg dark:hover:bg-grx-primary-700 font-medium transition-colors"
                 >
                   Cancel
                 </button>

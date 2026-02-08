@@ -34,9 +34,9 @@ const Accounting: React.FC = () => {
   };
 
   const renderCoA = () => (
-    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+    <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
         <table className="w-full text-sm text-left">
-           <thead className="bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-700 text-slate-500 dark:text-slate-400 uppercase">
+           <thead className="bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-50 dark:border-grx-primary-800 text-grx-muted dark:text-grx-muted uppercase">
               <tr>
                  <th className="px-6 py-4">Code</th>
                  <th className="px-6 py-4">Account Name</th>
@@ -44,11 +44,11 @@ const Accounting: React.FC = () => {
                  <th className="px-6 py-4 text-right">Balance (₹)</th>
               </tr>
            </thead>
-           <tbody className="divide-y divide-slate-100 dark:divide-slate-700 bg-white dark:bg-slate-800">
+           <tbody className="divide-y divide-grx-primary-50 dark:divide-grx-primary-800 bg-white dark:bg-grx-dark-surface">
               {accounts.map(acc => (
-                 <tr key={acc.id} className="hover:bg-slate-50 dark:hover:bg-slate-700">
-                    <td className="px-6 py-4 font-mono text-slate-500 dark:text-slate-400">{acc.code}</td>
-                    <td className="px-6 py-4 font-medium text-slate-800 dark:text-slate-100">{acc.name}</td>
+                 <tr key={acc.id} className="hover:bg-grx-bg dark:hover:bg-grx-primary-800">
+                    <td className="px-6 py-4 font-mono text-grx-muted dark:text-grx-muted">{acc.code}</td>
+                    <td className="px-6 py-4 font-medium text-grx-text dark:text-white">{acc.name}</td>
                     <td className="px-6 py-4">
                        <span className={`px-2 py-1 rounded text-xs font-semibold
                           ${acc.type === 'Asset' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400' :
@@ -69,18 +69,18 @@ const Accounting: React.FC = () => {
 
   const renderJournal = () => (
      <div className="space-y-6">
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
-           <h3 className="font-semibold text-slate-800 dark:text-slate-100 mb-4">Post Manual Journal</h3>
+        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800">
+           <h3 className="font-semibold text-grx-text dark:text-white mb-4">Post Manual Journal</h3>
            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
-                 <label className="text-xs font-semibold text-slate-500 dark:text-slate-400">Date</label>
-                 <input type="date" className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded p-2 text-sm" defaultValue={new Date().toISOString().split('T')[0]} />
+                 <label className="text-xs font-semibold text-grx-muted dark:text-grx-muted">Date</label>
+                 <input type="date" className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded p-2 text-sm" defaultValue={new Date().toISOString().split('T')[0]} />
               </div>
               <div>
-                 <label className="text-xs font-semibold text-slate-500 dark:text-slate-400">Description</label>
+                 <label className="text-xs font-semibold text-grx-muted dark:text-grx-muted">Description</label>
                  <input 
                    type="text" 
-                   className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded p-2 text-sm" 
+                   className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded p-2 text-sm" 
                    placeholder="e.g. Depreciation Adjustment" 
                    value={journalDesc} 
                    onChange={e => setJournalDesc(e.target.value)} 
@@ -88,24 +88,24 @@ const Accounting: React.FC = () => {
               </div>
            </div>
            
-           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 p-4 bg-slate-50 dark:bg-slate-900 rounded border border-slate-100 dark:border-slate-700">
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 p-4 bg-grx-bg dark:bg-grx-dark rounded border border-grx-primary-50 dark:border-grx-primary-800">
               <div>
-                 <label className="text-xs font-semibold text-slate-500 dark:text-slate-400">Debit Account</label>
-                 <select className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded p-2 text-sm" value={drAccount} onChange={e => setDrAccount(e.target.value)}>
+                 <label className="text-xs font-semibold text-grx-muted dark:text-grx-muted">Debit Account</label>
+                 <select className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded p-2 text-sm" value={drAccount} onChange={e => setDrAccount(e.target.value)}>
                     <option value="">Select Account</option>
                     {accounts.map(a => <option key={a.id} value={a.id}>{a.name}</option>)}
                  </select>
               </div>
               <div>
-                 <label className="text-xs font-semibold text-slate-500 dark:text-slate-400">Credit Account</label>
-                 <select className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded p-2 text-sm" value={crAccount} onChange={e => setCrAccount(e.target.value)}>
+                 <label className="text-xs font-semibold text-grx-muted dark:text-grx-muted">Credit Account</label>
+                 <select className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded p-2 text-sm" value={crAccount} onChange={e => setCrAccount(e.target.value)}>
                     <option value="">Select Account</option>
                     {accounts.map(a => <option key={a.id} value={a.id}>{a.name}</option>)}
                  </select>
               </div>
               <div>
-                 <label className="text-xs font-semibold text-slate-500 dark:text-slate-400">Amount (₹)</label>
-                 <input type="number" className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded p-2 text-sm" placeholder="0.00" value={amount} onChange={e => setAmount(e.target.value)} />
+                 <label className="text-xs font-semibold text-grx-muted dark:text-grx-muted">Amount (₹)</label>
+                 <input type="number" className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded p-2 text-sm" placeholder="0.00" value={amount} onChange={e => setAmount(e.target.value)} />
               </div>
            </div>
            
@@ -115,15 +115,15 @@ const Accounting: React.FC = () => {
         </div>
 
         <div className="space-y-2">
-           <h3 className="font-semibold text-slate-800 dark:text-slate-100">Recent Journals</h3>
-           {journals.length === 0 ? <p className="text-slate-400 dark:text-slate-500 text-sm">No recent entries posted.</p> : 
+           <h3 className="font-semibold text-grx-text dark:text-white">Recent Journals</h3>
+           {journals.length === 0 ? <p className="text-grx-muted dark:text-grx-muted text-sm">No recent entries posted.</p> : 
              journals.map(j => (
-                <div key={j.id} className="bg-white dark:bg-slate-800 p-4 rounded border border-slate-200 dark:border-slate-700 text-sm">
+                <div key={j.id} className="bg-white dark:bg-grx-dark-surface p-4 rounded border border-grx-primary-100 dark:border-grx-primary-800 text-sm">
                    <div className="flex justify-between mb-2">
                       <span className="font-semibold">{j.description}</span>
-                      <span className="text-slate-500 dark:text-slate-400">{j.date}</span>
+                      <span className="text-grx-muted dark:text-grx-muted">{j.date}</span>
                    </div>
-                   <div className="flex justify-between text-xs text-slate-600 dark:text-slate-400">
+                   <div className="flex justify-between text-xs text-grx-muted dark:text-grx-muted">
                       <span>Total: ₹{j.total}</span>
                       <span>ID: {j.id}</span>
                    </div>
@@ -137,10 +137,10 @@ const Accounting: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-         <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Accounting</h2>
-         <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
-            <button onClick={() => setActiveTab('coa')} className={`px-4 py-1.5 rounded text-sm font-medium ${activeTab === 'coa' ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-slate-100' : 'text-slate-500 dark:text-slate-400'}`}>Chart of Accounts</button>
-            <button onClick={() => setActiveTab('journal')} className={`px-4 py-1.5 rounded text-sm font-medium ${activeTab === 'journal' ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-slate-100' : 'text-slate-500 dark:text-slate-400'}`}>Manual Journals</button>
+         <h2 className="text-2xl font-bold text-grx-text dark:text-white">Accounting</h2>
+         <div className="flex bg-grx-primary-50 dark:bg-grx-dark-surface p-1 rounded-lg">
+            <button onClick={() => setActiveTab('coa')} className={`px-4 py-1.5 rounded text-sm font-medium ${activeTab === 'coa' ? 'bg-white dark:bg-grx-primary-800 shadow-sm text-grx-text dark:text-white' : 'text-grx-muted dark:text-grx-muted'}`}>Chart of Accounts</button>
+            <button onClick={() => setActiveTab('journal')} className={`px-4 py-1.5 rounded text-sm font-medium ${activeTab === 'journal' ? 'bg-white dark:bg-grx-primary-800 shadow-sm text-grx-text dark:text-white' : 'text-grx-muted dark:text-grx-muted'}`}>Manual Journals</button>
          </div>
       </div>
       {activeTab === 'coa' ? renderCoA() : renderJournal()}

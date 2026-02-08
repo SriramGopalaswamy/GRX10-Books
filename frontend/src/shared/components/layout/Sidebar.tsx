@@ -158,10 +158,9 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, onCollapse
 
   return (
     <div
-      className={`bg-grx-primary dark:bg-grx-primary-900 text-white h-screen flex flex-col fixed left-0 top-16 z-40 overflow-y-auto transition-all duration-300 ${
+      className={`grx-glass-sidebar text-white h-screen flex flex-col fixed left-0 top-16 z-40 overflow-y-auto transition-all duration-300 ${
         isCollapsed ? 'w-16' : 'w-64'
       }`}
-      style={{ boxShadow: '1px 0 0 rgba(255,255,255,0.06)' }}
     >
       {/* Navigation Sections */}
       <nav className={`flex-1 py-4 space-y-1 ${isCollapsed ? 'px-2' : 'px-3'}`}>

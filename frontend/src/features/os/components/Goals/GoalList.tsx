@@ -38,7 +38,7 @@ export const GoalList: React.FC = () => {
       case GoalStatus.AT_RISK: return 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800';
       case GoalStatus.OFF_TRACK: return 'bg-red-50 text-red-700 border-red-200 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800';
       case GoalStatus.COMPLETED: return 'bg-grx-primary-50 text-grx-primary border-grx-primary-200 dark:bg-grx-primary-800 dark:text-grx-primary-300 dark:border-grx-primary-700';
-      default: return 'bg-slate-50 text-slate-700 dark:bg-slate-800 dark:text-slate-300';
+      default: return 'bg-grx-bg text-grx-text dark:bg-grx-dark-surface dark:text-grx-primary-200';
     }
   };
 
@@ -48,7 +48,7 @@ export const GoalList: React.FC = () => {
       case GoalStatus.AT_RISK: return 'bg-amber-500';
       case GoalStatus.OFF_TRACK: return 'bg-red-500';
       case GoalStatus.COMPLETED: return 'bg-grx-primary';
-      default: return 'bg-slate-400';
+      default: return 'bg-grx-primary-300';
     }
   };
 
@@ -119,8 +119,8 @@ export const GoalList: React.FC = () => {
         </button>
       </div>
 
-      <div className="bg-white dark:bg-grx-dark-surface rounded-xl border border-slate-100 dark:border-grx-primary-800 overflow-hidden" style={{ boxShadow: 'var(--shadow-sm)' }}>
-        <table className="min-w-full divide-y divide-slate-100 dark:divide-grx-primary-800">
+      <div className="bg-white dark:bg-grx-dark-surface rounded-xl border border-grx-primary-50 dark:border-grx-primary-800 overflow-hidden" style={{ boxShadow: 'var(--shadow-sm)' }}>
+        <table className="min-w-full divide-y divide-grx-primary-50 dark:divide-grx-primary-800">
           <thead className="bg-grx-primary-50 dark:bg-grx-primary-900">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted uppercase tracking-wider">Goal Title</th>
@@ -130,7 +130,7 @@ export const GoalList: React.FC = () => {
               <th className="px-6 py-3 text-right text-xs font-semibold text-grx-muted uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
-          <tbody className="bg-white dark:bg-grx-dark-surface divide-y divide-slate-50 dark:divide-grx-primary-800">
+          <tbody className="bg-white dark:bg-grx-dark-surface divide-y divide-grx-primary-50 dark:divide-grx-primary-800">
             {visibleGoals.map((goal) => {
               const progress = ((goal.current - goal.baseline) / (goal.target - goal.baseline)) * 100;
               const clampedProgress = Math.min(Math.max(progress, 0), 100);
@@ -151,7 +151,7 @@ export const GoalList: React.FC = () => {
                     <div className="text-xs text-grx-muted">Current: {goal.current}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap w-48">
-                    <div className="w-full bg-slate-100 dark:bg-grx-primary-800 rounded-full h-2 mb-1.5">
+                    <div className="w-full bg-grx-primary-50 dark:bg-grx-primary-800 rounded-full h-2 mb-1.5">
                       <div
                         className={`h-2 rounded-full transition-all duration-500 ${getProgressBarColor(goal.status)}`}
                         style={{ width: `${clampedProgress}%` }}
@@ -187,7 +187,7 @@ export const GoalList: React.FC = () => {
             style={{ boxShadow: 'var(--shadow-xl)' }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-6 border-b border-slate-100 dark:border-grx-primary-800 flex justify-between items-center">
+            <div className="p-6 border-b border-grx-primary-50 dark:border-grx-primary-800 flex justify-between items-center">
               <h2 className="text-xl font-bold text-grx-text dark:text-white">
                 {editingGoal.id && goals.find(g => g.id === editingGoal.id) ? 'Edit Goal' : 'New Goal'}
               </h2>
@@ -220,81 +220,81 @@ export const GoalList: React.FC = () => {
                   </button>
                 </div>
                 {aiSuggestion && (
-                  <div className="mt-3 p-3 bg-white dark:bg-grx-dark-surface rounded-lg border border-grx-primary-200 dark:border-grx-primary-700 text-sm text-grx-text dark:text-slate-300 font-mono whitespace-pre-wrap grx-animate-fade-in-up">
+                  <div className="mt-3 p-3 bg-white dark:bg-grx-dark-surface rounded-lg border border-grx-primary-200 dark:border-grx-primary-700 text-sm text-grx-text dark:text-grx-primary-200 font-mono whitespace-pre-wrap grx-animate-fade-in-up">
                     {aiSuggestion}
                   </div>
                 )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-grx-text dark:text-slate-200 mb-1.5">Goal Title</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1.5">Goal Title</label>
                 <input
                   type="text"
                   value={editingGoal.title || ''}
                   onChange={e => setEditingGoal({...editingGoal, title: e.target.value})}
-                  className="w-full rounded-lg border border-slate-200 dark:border-grx-primary-700 bg-grx-bg dark:bg-grx-primary-800 px-3 py-2.5 text-grx-text dark:text-white placeholder-grx-muted outline-none transition-all duration-200 grx-focus-ring focus:border-grx-primary dark:focus:border-grx-primary-400"
+                  className="w-full rounded-lg border border-grx-primary-100 dark:border-grx-primary-700 bg-grx-bg dark:bg-grx-primary-800 px-3 py-2.5 text-grx-text dark:text-white placeholder-grx-muted outline-none transition-all duration-200 grx-focus-ring focus:border-grx-primary dark:focus:border-grx-primary-400"
                   placeholder="e.g. Increase qualified leads by 20%"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-grx-text dark:text-slate-200 mb-1.5">Metric Unit</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1.5">Metric Unit</label>
                   <input
                     type="text"
                     value={editingGoal.metric || ''}
                     onChange={e => setEditingGoal({...editingGoal, metric: e.target.value})}
-                    className="w-full rounded-lg border border-slate-200 dark:border-grx-primary-700 bg-grx-bg dark:bg-grx-primary-800 px-3 py-2.5 text-grx-text dark:text-white placeholder-grx-muted outline-none transition-all duration-200 grx-focus-ring focus:border-grx-primary dark:focus:border-grx-primary-400"
+                    className="w-full rounded-lg border border-grx-primary-100 dark:border-grx-primary-700 bg-grx-bg dark:bg-grx-primary-800 px-3 py-2.5 text-grx-text dark:text-white placeholder-grx-muted outline-none transition-all duration-200 grx-focus-ring focus:border-grx-primary dark:focus:border-grx-primary-400"
                     placeholder="e.g. Leads, Revenue ($)"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-grx-text dark:text-slate-200 mb-1.5">Timeline (Date)</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1.5">Timeline (Date)</label>
                   <input
                     type="date"
                     value={editingGoal.timeline || ''}
                     onChange={e => setEditingGoal({...editingGoal, timeline: e.target.value})}
-                    className="w-full rounded-lg border border-slate-200 dark:border-grx-primary-700 bg-grx-bg dark:bg-grx-primary-800 px-3 py-2.5 text-grx-text dark:text-white outline-none transition-all duration-200 grx-focus-ring focus:border-grx-primary dark:focus:border-grx-primary-400"
+                    className="w-full rounded-lg border border-grx-primary-100 dark:border-grx-primary-700 bg-grx-bg dark:bg-grx-primary-800 px-3 py-2.5 text-grx-text dark:text-white outline-none transition-all duration-200 grx-focus-ring focus:border-grx-primary dark:focus:border-grx-primary-400"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-grx-text dark:text-slate-200 mb-1.5">Baseline</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1.5">Baseline</label>
                   <input
                     type="number"
                     value={editingGoal.baseline || 0}
                     onChange={e => setEditingGoal({...editingGoal, baseline: Number(e.target.value)})}
-                    className="w-full rounded-lg border border-slate-200 dark:border-grx-primary-700 bg-grx-bg dark:bg-grx-primary-800 px-3 py-2.5 text-grx-text dark:text-white outline-none transition-all duration-200 grx-focus-ring focus:border-grx-primary dark:focus:border-grx-primary-400"
+                    className="w-full rounded-lg border border-grx-primary-100 dark:border-grx-primary-700 bg-grx-bg dark:bg-grx-primary-800 px-3 py-2.5 text-grx-text dark:text-white outline-none transition-all duration-200 grx-focus-ring focus:border-grx-primary dark:focus:border-grx-primary-400"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-grx-text dark:text-slate-200 mb-1.5">Target</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1.5">Target</label>
                   <input
                     type="number"
                     value={editingGoal.target || 0}
                     onChange={e => setEditingGoal({...editingGoal, target: Number(e.target.value)})}
-                    className="w-full rounded-lg border border-slate-200 dark:border-grx-primary-700 bg-grx-bg dark:bg-grx-primary-800 px-3 py-2.5 text-grx-text dark:text-white outline-none transition-all duration-200 grx-focus-ring focus:border-grx-primary dark:focus:border-grx-primary-400"
+                    className="w-full rounded-lg border border-grx-primary-100 dark:border-grx-primary-700 bg-grx-bg dark:bg-grx-primary-800 px-3 py-2.5 text-grx-text dark:text-white outline-none transition-all duration-200 grx-focus-ring focus:border-grx-primary dark:focus:border-grx-primary-400"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-grx-text dark:text-slate-200 mb-1.5">Current Actuals</label>
+                  <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1.5">Current Actuals</label>
                   <input
                     type="number"
                     value={editingGoal.current || 0}
                     onChange={e => setEditingGoal({...editingGoal, current: Number(e.target.value)})}
-                    className="w-full rounded-lg border border-slate-200 dark:border-grx-primary-700 bg-grx-bg dark:bg-grx-primary-800 px-3 py-2.5 text-grx-text dark:text-white outline-none transition-all duration-200 grx-focus-ring focus:border-grx-primary dark:focus:border-grx-primary-400"
+                    className="w-full rounded-lg border border-grx-primary-100 dark:border-grx-primary-700 bg-grx-bg dark:bg-grx-primary-800 px-3 py-2.5 text-grx-text dark:text-white outline-none transition-all duration-200 grx-focus-ring focus:border-grx-primary dark:focus:border-grx-primary-400"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-grx-text dark:text-slate-200 mb-1.5">Status</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1.5">Status</label>
                 <select
                   value={editingGoal.status}
                   onChange={e => setEditingGoal({...editingGoal, status: e.target.value as GoalStatus})}
-                  className="w-full rounded-lg border border-slate-200 dark:border-grx-primary-700 bg-grx-bg dark:bg-grx-primary-800 px-3 py-2.5 text-grx-text dark:text-white outline-none transition-all duration-200 grx-focus-ring focus:border-grx-primary dark:focus:border-grx-primary-400"
+                  className="w-full rounded-lg border border-grx-primary-100 dark:border-grx-primary-700 bg-grx-bg dark:bg-grx-primary-800 px-3 py-2.5 text-grx-text dark:text-white outline-none transition-all duration-200 grx-focus-ring focus:border-grx-primary dark:focus:border-grx-primary-400"
                 >
                   {Object.values(GoalStatus).map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
@@ -302,7 +302,7 @@ export const GoalList: React.FC = () => {
 
               {/* Comments Section */}
               {editingGoal.id && goals.find(g => g.id === editingGoal.id) && (
-                <div className="border-t border-slate-100 dark:border-grx-primary-800 pt-5">
+                <div className="border-t border-grx-primary-50 dark:border-grx-primary-800 pt-5">
                   <h3 className="text-sm font-bold text-grx-text dark:text-white mb-4 flex items-center gap-2">
                     <MessageSquare size={16} className="text-grx-primary" /> Discussion & Feedback
                   </h3>
@@ -321,7 +321,7 @@ export const GoalList: React.FC = () => {
                               <span className="text-sm font-semibold text-grx-text dark:text-white">{author?.name || 'Unknown'}</span>
                               <span className="text-xs text-grx-muted">{comment.timestamp}</span>
                             </div>
-                            <p className="text-sm text-grx-muted mt-1 bg-white dark:bg-grx-dark-surface p-2.5 rounded-lg border border-slate-100 dark:border-grx-primary-800">
+                            <p className="text-sm text-grx-muted mt-1 bg-white dark:bg-grx-dark-surface p-2.5 rounded-lg border border-grx-primary-50 dark:border-grx-primary-800">
                               {comment.text}
                             </p>
                           </div>
@@ -336,7 +336,7 @@ export const GoalList: React.FC = () => {
                       value={newComment}
                       onChange={(e) => setNewComment(e.target.value)}
                       placeholder="Ask a question or leave feedback..."
-                      className="flex-1 rounded-lg border border-slate-200 dark:border-grx-primary-700 bg-grx-bg dark:bg-grx-primary-800 px-3 py-2 text-sm text-grx-text dark:text-white placeholder-grx-muted outline-none grx-focus-ring focus:border-grx-primary dark:focus:border-grx-primary-400 transition-all duration-200"
+                      className="flex-1 rounded-lg border border-grx-primary-100 dark:border-grx-primary-700 bg-grx-bg dark:bg-grx-primary-800 px-3 py-2 text-sm text-grx-text dark:text-white placeholder-grx-muted outline-none grx-focus-ring focus:border-grx-primary dark:focus:border-grx-primary-400 transition-all duration-200"
                       onKeyDown={(e) => e.key === 'Enter' && handleAddComment()}
                     />
                     <button
@@ -352,10 +352,10 @@ export const GoalList: React.FC = () => {
               )}
             </div>
 
-            <div className="p-6 bg-grx-bg dark:bg-grx-primary-900/50 border-t border-slate-100 dark:border-grx-primary-800 flex justify-end gap-3 rounded-b-2xl">
+            <div className="p-6 bg-grx-bg dark:bg-grx-primary-900/50 border-t border-grx-primary-50 dark:border-grx-primary-800 flex justify-end gap-3 rounded-b-2xl">
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="px-4 py-2.5 text-grx-text dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-grx-primary-800 rounded-lg transition-colors grx-btn-press grx-focus-ring font-medium"
+                className="px-4 py-2.5 text-grx-text dark:text-grx-primary-200 hover:bg-grx-primary-50 dark:hover:bg-grx-primary-800 rounded-lg transition-colors grx-btn-press grx-focus-ring font-medium"
               >
                 Cancel
               </button>

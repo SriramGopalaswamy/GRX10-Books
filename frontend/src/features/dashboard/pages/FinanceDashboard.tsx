@@ -64,7 +64,7 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-96">
-        <div className="text-slate-400 dark:text-slate-500">Loading dashboard...</div>
+        <div className="text-grx-muted dark:text-grx-muted">Loading dashboard...</div>
       </div>
     );
   }
@@ -86,10 +86,10 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
       {/* Header */}
       <div className="flex justify-between items-end">
         <div>
-          <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100">Financial Dashboard</h2>
-          <p className="text-slate-500 dark:text-slate-400 mt-1">Financial overview and key metrics</p>
+          <h2 className="text-3xl font-bold text-grx-text dark:text-white">Financial Dashboard</h2>
+          <p className="text-grx-muted dark:text-grx-muted mt-1">Financial overview and key metrics</p>
         </div>
-        <div className="text-sm text-slate-500 dark:text-slate-400">
+        <div className="text-sm text-grx-muted dark:text-grx-muted">
           {new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
         </div>
       </div>
@@ -98,19 +98,19 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Receivables */}
         <div 
-          className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all cursor-pointer group"
+          className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 hover:shadow-md transition-all cursor-pointer group"
           onClick={() => onChangeView(View.INVOICES)}
         >
           <div className="flex justify-between items-start mb-3">
             <div>
-              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Total Receivables</p>
-              <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mt-1">{formatINR(stats.financial.totalReceivables)}</h3>
+              <p className="text-sm font-medium text-grx-muted dark:text-grx-muted">Total Receivables</p>
+              <h3 className="text-2xl font-bold text-grx-text dark:text-white mt-1">{formatINR(stats.financial.totalReceivables)}</h3>
             </div>
             <div className="p-2.5 bg-purple-50 dark:bg-purple-900/30 rounded-lg text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform">
               <Receipt size={20} />
             </div>
           </div>
-          <div className="flex items-center text-xs text-slate-400 dark:text-slate-500">
+          <div className="flex items-center text-xs text-grx-muted dark:text-grx-muted">
             <AlertCircle size={12} className="mr-1 text-amber-500" />
             <span>{stats.financial.overdueInvoices} overdue invoices</span>
           </div>
@@ -118,19 +118,19 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
 
         {/* Revenue This Month */}
         <div 
-          className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all cursor-pointer group"
+          className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 hover:shadow-md transition-all cursor-pointer group"
           onClick={() => onChangeView(View.ACCOUNTING)}
         >
           <div className="flex justify-between items-start mb-3">
             <div>
-              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Revenue (This Month)</p>
+              <p className="text-sm font-medium text-grx-muted dark:text-grx-muted">Revenue (This Month)</p>
               <h3 className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">{formatINR(stats.financial.revenueThisMonth)}</h3>
             </div>
             <div className="p-2.5 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform">
               <TrendingUp size={20} />
             </div>
           </div>
-          <div className="flex items-center text-xs text-slate-400 dark:text-slate-500">
+          <div className="flex items-center text-xs text-grx-muted dark:text-grx-muted">
             <BarChart3 size={12} className="mr-1" />
             <span>{stats.financial.paidInvoices} paid invoices</span>
           </div>
@@ -138,38 +138,38 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
 
         {/* Total Invoices */}
         <div 
-          className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all cursor-pointer group"
+          className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 hover:shadow-md transition-all cursor-pointer group"
           onClick={() => onChangeView(View.INVOICES)}
         >
           <div className="flex justify-between items-start mb-3">
             <div>
-              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Total Invoices</p>
+              <p className="text-sm font-medium text-grx-muted dark:text-grx-muted">Total Invoices</p>
               <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mt-1">{stats.financial.totalInvoices}</h3>
             </div>
             <div className="p-2.5 bg-blue-50 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform">
               <FileText size={20} />
             </div>
           </div>
-          <div className="flex items-center text-xs text-slate-400 dark:text-slate-500">
+          <div className="flex items-center text-xs text-grx-muted dark:text-grx-muted">
             <span>{stats.financial.pendingInvoices} pending</span>
           </div>
         </div>
 
         {/* Collection Rate */}
         <div 
-          className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all cursor-pointer group"
+          className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 hover:shadow-md transition-all cursor-pointer group"
           onClick={() => onChangeView(View.INVOICES)}
         >
           <div className="flex justify-between items-start mb-3">
             <div>
-              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Collection Rate</p>
+              <p className="text-sm font-medium text-grx-muted dark:text-grx-muted">Collection Rate</p>
               <h3 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400 mt-1">{collectionRate}%</h3>
             </div>
             <div className="p-2.5 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform">
               <CreditCard size={20} />
             </div>
           </div>
-          <div className="flex items-center text-xs text-slate-400 dark:text-slate-500">
+          <div className="flex items-center text-xs text-grx-muted dark:text-grx-muted">
             <span>{stats.financial.paidInvoices} of {stats.financial.totalInvoices} collected</span>
           </div>
         </div>
@@ -179,12 +179,12 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Paid Invoices */}
         <div 
-          className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all cursor-pointer group"
+          className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 hover:shadow-md transition-all cursor-pointer group"
           onClick={() => onChangeView(View.INVOICES)}
         >
           <div className="flex justify-between items-center">
             <div>
-              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Paid Invoices</p>
+              <p className="text-sm font-medium text-grx-muted dark:text-grx-muted">Paid Invoices</p>
               <h3 className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">{stats.financial.paidInvoices}</h3>
             </div>
             <div className="p-2.5 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400">
@@ -195,12 +195,12 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
 
         {/* Pending Invoices */}
         <div 
-          className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all cursor-pointer group"
+          className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 hover:shadow-md transition-all cursor-pointer group"
           onClick={() => onChangeView(View.INVOICES)}
         >
           <div className="flex justify-between items-center">
             <div>
-              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Pending Invoices</p>
+              <p className="text-sm font-medium text-grx-muted dark:text-grx-muted">Pending Invoices</p>
               <h3 className="text-2xl font-bold text-amber-600 dark:text-amber-400 mt-1">{stats.financial.pendingInvoices}</h3>
             </div>
             <div className="p-2.5 bg-amber-50 dark:bg-amber-900/30 rounded-lg text-amber-600 dark:text-amber-400">
@@ -211,12 +211,12 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
 
         {/* Overdue Invoices */}
         <div 
-          className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all cursor-pointer group"
+          className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 hover:shadow-md transition-all cursor-pointer group"
           onClick={() => onChangeView(View.INVOICES)}
         >
           <div className="flex justify-between items-center">
             <div>
-              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Overdue Invoices</p>
+              <p className="text-sm font-medium text-grx-muted dark:text-grx-muted">Overdue Invoices</p>
               <h3 className="text-2xl font-bold text-red-600 dark:text-red-400 mt-1">{stats.financial.overdueInvoices}</h3>
             </div>
             <div className="p-2.5 bg-red-50 dark:bg-red-900/30 rounded-lg text-red-600 dark:text-red-400">
@@ -227,10 +227,10 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+      <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">Quick Actions</h3>
-          <DollarSign size={18} className="text-slate-400 dark:text-slate-500" />
+          <h3 className="text-lg font-semibold text-grx-text dark:text-white">Quick Actions</h3>
+          <DollarSign size={18} className="text-grx-muted dark:text-grx-muted" />
         </div>
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -239,8 +239,8 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
             className="p-4 bg-purple-50 dark:bg-purple-900/30 hover:bg-purple-100 dark:hover:bg-purple-900/50 rounded-lg text-left transition-colors group"
           >
             <FileText size={20} className="text-purple-600 dark:text-purple-400 mb-2" />
-            <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Create Invoice</p>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Generate new invoice</p>
+            <p className="text-sm font-medium text-grx-text dark:text-white">Create Invoice</p>
+            <p className="text-xs text-grx-muted dark:text-grx-muted mt-1">Generate new invoice</p>
           </button>
 
           <button
@@ -248,8 +248,8 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
             className="p-4 bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-900/50 rounded-lg text-left transition-colors group"
           >
             <Users size={20} className="text-blue-600 dark:text-blue-400 mb-2" />
-            <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Manage Customers</p>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">View customer list</p>
+            <p className="text-sm font-medium text-grx-text dark:text-white">Manage Customers</p>
+            <p className="text-xs text-grx-muted dark:text-grx-muted mt-1">View customer list</p>
           </button>
 
           <button
@@ -257,8 +257,8 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
             className="p-4 bg-emerald-50 dark:bg-emerald-900/30 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 rounded-lg text-left transition-colors group"
           >
             <BarChart3 size={20} className="text-emerald-600 dark:text-emerald-400 mb-2" />
-            <p className="text-sm font-medium text-slate-800 dark:text-slate-100">View Reports</p>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Financial reports</p>
+            <p className="text-sm font-medium text-grx-text dark:text-white">View Reports</p>
+            <p className="text-xs text-grx-muted dark:text-grx-muted mt-1">Financial reports</p>
           </button>
 
           <button
@@ -266,8 +266,8 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
             className="p-4 bg-indigo-50 dark:bg-indigo-900/30 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 rounded-lg text-left transition-colors group"
           >
             <Wallet size={20} className="text-indigo-600 dark:text-indigo-400 mb-2" />
-            <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Banking</p>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Bank transactions</p>
+            <p className="text-sm font-medium text-grx-text dark:text-white">Banking</p>
+            <p className="text-xs text-grx-muted dark:text-grx-muted mt-1">Bank transactions</p>
           </button>
         </div>
       </div>

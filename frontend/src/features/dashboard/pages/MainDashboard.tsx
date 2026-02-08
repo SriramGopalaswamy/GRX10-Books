@@ -163,8 +163,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
         {/* Total Employees */}
         {(isAdmin || isManager) && (
           <div
-            className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-slate-100 dark:border-grx-primary-800 hover:border-grx-primary-200 dark:hover:border-grx-primary-600 transition-all duration-200 cursor-pointer group"
-            style={{ boxShadow: 'var(--shadow-sm)' }}
+            className="grx-glass-card p-5 rounded-xl cursor-pointer group"
             onClick={() => onChangeView(View.EMPLOYEES)}
           >
             <div className="flex justify-between items-start mb-3">
@@ -187,8 +186,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
 
         {/* Attendance Rate */}
         <div
-          className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-slate-100 dark:border-grx-primary-800 hover:border-grx-primary-200 dark:hover:border-grx-primary-600 transition-all duration-200 cursor-pointer group"
-          style={{ boxShadow: 'var(--shadow-sm)' }}
+          className="grx-glass-card p-5 rounded-xl cursor-pointer group"
           onClick={() => onChangeView(View.ATTENDANCE)}
         >
           <div className="flex justify-between items-start mb-3">
@@ -211,8 +209,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
         {/* Total Receivables */}
         {isAdmin && (
           <div
-            className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-slate-100 dark:border-grx-primary-800 hover:border-grx-primary-200 dark:hover:border-grx-primary-600 transition-all duration-200 cursor-pointer group"
-            style={{ boxShadow: 'var(--shadow-sm)' }}
+            className="grx-glass-card p-5 rounded-xl cursor-pointer group"
             onClick={() => onChangeView(View.INVOICES)}
           >
             <div className="flex justify-between items-start mb-3">
@@ -234,8 +231,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
         {/* Revenue This Month */}
         {isAdmin && (
           <div
-            className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-slate-100 dark:border-grx-primary-800 hover:border-grx-primary-200 dark:hover:border-grx-primary-600 transition-all duration-200 cursor-pointer group"
-            style={{ boxShadow: 'var(--shadow-sm)' }}
+            className="grx-glass-card p-5 rounded-xl cursor-pointer group"
             onClick={() => onChangeView(View.ACCOUNTING)}
           >
             <div className="flex justify-between items-start mb-3">
@@ -257,8 +253,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
         {/* My Leave Balance */}
         {isEmployee && (
           <div
-            className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-slate-100 dark:border-grx-primary-800 hover:border-grx-primary-200 dark:hover:border-grx-primary-600 transition-all duration-200 cursor-pointer group"
-            style={{ boxShadow: 'var(--shadow-sm)' }}
+            className="grx-glass-card p-5 rounded-xl cursor-pointer group"
             onClick={() => onChangeView(View.LEAVES)}
           >
             <div className="flex justify-between items-start mb-3">
@@ -280,8 +275,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
         {/* My Payroll */}
         {isEmployee && (
           <div
-            className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-slate-100 dark:border-grx-primary-800 hover:border-grx-primary-200 dark:hover:border-grx-primary-600 transition-all duration-200 cursor-pointer group"
-            style={{ boxShadow: 'var(--shadow-sm)' }}
+            className="grx-glass-card p-5 rounded-xl cursor-pointer group"
             onClick={() => onChangeView(View.PAYROLL)}
           >
             <div className="flex justify-between items-start mb-3">
@@ -305,8 +299,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
         {/* Pending Leaves */}
         {(isAdmin || isManager) && (
           <div
-            className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-slate-100 dark:border-grx-primary-800 hover:border-grx-primary-200 dark:hover:border-grx-primary-600 transition-all duration-200 cursor-pointer group"
-            style={{ boxShadow: 'var(--shadow-sm)' }}
+            className="grx-glass-card p-5 rounded-xl cursor-pointer group"
             onClick={() => onChangeView(View.LEAVES)}
           >
             <div className="flex justify-between items-center">
@@ -326,8 +319,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
         {/* Payroll This Month */}
         {(isAdmin || isManager) && (
           <div
-            className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-slate-100 dark:border-grx-primary-800 hover:border-grx-primary-200 dark:hover:border-grx-primary-600 transition-all duration-200 cursor-pointer group"
-            style={{ boxShadow: 'var(--shadow-sm)' }}
+            className="grx-glass-card p-5 rounded-xl cursor-pointer group"
             onClick={() => onChangeView(View.PAYROLL)}
           >
             <div className="flex justify-between items-center">
@@ -349,8 +341,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
 
         {/* Goal Completion */}
         <div
-          className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-slate-100 dark:border-grx-primary-800 hover:border-grx-primary-200 dark:hover:border-grx-primary-600 transition-all duration-200 cursor-pointer group"
-          style={{ boxShadow: 'var(--shadow-sm)' }}
+          className="grx-glass-card p-5 rounded-xl cursor-pointer group"
           onClick={() => onChangeView(View.GOALS)}
         >
           <div className="flex justify-between items-center">
@@ -373,7 +364,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
       {/* Recent Activity & Quick Actions */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Activity */}
-        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl border border-slate-100 dark:border-grx-primary-800" style={{ boxShadow: 'var(--shadow-sm)' }}>
+        <div className="grx-glass-card p-6 rounded-xl">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-semibold text-grx-text dark:text-white">Recent Activity</h3>
             <Clock size={18} className="text-grx-muted" />
@@ -416,7 +407,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl border border-slate-100 dark:border-grx-primary-800" style={{ boxShadow: 'var(--shadow-sm)' }}>
+        <div className="grx-glass-card p-6 rounded-xl">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-semibold text-grx-text dark:text-white">Quick Actions</h3>
             <Briefcase size={18} className="text-grx-muted" />

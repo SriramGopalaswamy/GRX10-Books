@@ -273,7 +273,7 @@ export const Leaves: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Leave Management</h2>
+        <h2 className="text-2xl font-bold text-grx-text dark:text-white">Leave Management</h2>
         {user && (
           <button 
             onClick={() => setShowModal(true)}
@@ -287,18 +287,18 @@ export const Leaves: React.FC = () => {
 
       {/* Balance Cards */}
       {!user ? (
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 p-8 text-center">
-          <p className="text-slate-500 dark:text-slate-400">Please log in to view your leave balances.</p>
+        <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-50 dark:border-grx-primary-800 p-8 text-center">
+          <p className="text-grx-muted dark:text-grx-muted">Please log in to view your leave balances.</p>
         </div>
       ) : balanceLoading ? (
         <div className="flex items-center justify-center p-8">
           <Loader2 className="animate-spin text-indigo-600" size={32} />
-          <span className="ml-2 text-slate-500 dark:text-slate-400">Loading leave balances...</span>
+          <span className="ml-2 text-grx-muted dark:text-grx-muted">Loading leave balances...</span>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {Object.keys(leaveBalances).length === 0 ? (
-            <div className="col-span-full text-center text-slate-500 dark:text-slate-400 p-4">
+            <div className="col-span-full text-center text-grx-muted dark:text-grx-muted p-4">
               No leave balances available. Please contact HR to set up your leave entitlements.
             </div>
           ) : (
@@ -311,15 +311,15 @@ export const Leaves: React.FC = () => {
                                 'bg-emerald-500';
               
               return (
-                <div key={leaveType} className="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm">
-                  <p className="text-slate-500 dark:text-slate-400 text-sm mb-1">{leaveType}</p>
-                  <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
-                    {balance.balance} <span className="text-sm font-normal text-slate-400">/ {balance.entitlement}</span>
+                <div key={leaveType} className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-grx-primary-50 dark:border-grx-primary-800 shadow-sm">
+                  <p className="text-grx-muted dark:text-grx-muted text-sm mb-1">{leaveType}</p>
+                  <p className="text-2xl font-bold text-grx-text dark:text-white">
+                    {balance.balance} <span className="text-sm font-normal text-grx-muted">/ {balance.entitlement}</span>
                   </p>
-                  <div className="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full mt-3 overflow-hidden">
+                  <div className="w-full bg-grx-primary-50 dark:bg-grx-primary-800 h-1.5 rounded-full mt-3 overflow-hidden">
                     <div className={`${colorClass} h-full transition-all`} style={{width: `${Math.min(percentage, 100)}%`}}></div>
                   </div>
-                  <p className="text-xs text-slate-400 mt-2">Used: {balance.used} days</p>
+                  <p className="text-xs text-grx-muted mt-2">Used: {balance.used} days</p>
                 </div>
               );
             })
@@ -328,23 +328,23 @@ export const Leaves: React.FC = () => {
       )}
 
       {/* Leave History */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
-        <div className="p-4 border-b border-slate-100 dark:border-slate-700 font-medium text-slate-700 dark:text-slate-300">Request History</div>
+      <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-50 dark:border-grx-primary-800 overflow-hidden">
+        <div className="p-4 border-b border-grx-primary-50 dark:border-grx-primary-800 font-medium text-grx-text dark:text-grx-primary-200">Request History</div>
         {!user ? (
-          <div className="p-8 text-center text-slate-500 dark:text-slate-400">Please log in to view your leave requests.</div>
+          <div className="p-8 text-center text-grx-muted dark:text-grx-muted">Please log in to view your leave requests.</div>
         ) : loading ? (
           <div className="p-8 text-center">
             <Loader2 className="animate-spin text-indigo-600 mx-auto" size={32} />
-            <p className="text-slate-500 dark:text-slate-400 mt-2">Loading leave requests...</p>
+            <p className="text-grx-muted dark:text-grx-muted mt-2">Loading leave requests...</p>
           </div>
         ) : error ? (
           <div className="p-8 text-center text-rose-600 dark:text-rose-400">{error}</div>
         ) : leaveRequests.length === 0 ? (
-          <div className="p-8 text-center text-slate-500 dark:text-slate-400">No leave requests found.</div>
+          <div className="p-8 text-center text-grx-muted dark:text-grx-muted">No leave requests found.</div>
         ) : (
           <table className="w-full text-left">
             <thead>
-               <tr className="bg-slate-50 dark:bg-slate-700 text-slate-500 dark:text-slate-300 text-sm">
+               <tr className="bg-grx-bg dark:bg-grx-primary-800 text-grx-muted dark:text-grx-primary-200 text-sm">
                  {(user?.role === Role.ADMIN || user?.role === Role.HR || user?.role === Role.MANAGER) && (
                    <th className="px-6 py-3">Employee</th>
                  )}
@@ -356,23 +356,23 @@ export const Leaves: React.FC = () => {
                  <th className="px-6 py-3">Actions</th>
                </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
+            <tbody className="divide-y divide-grx-primary-50 dark:divide-grx-primary-800">
               {leaveRequests.map((leave) => (
-                <tr key={leave.id} className="text-sm hover:bg-slate-50 dark:hover:bg-slate-700">
+                <tr key={leave.id} className="text-sm hover:bg-grx-bg dark:hover:bg-grx-primary-800">
                   {(user?.role === Role.ADMIN || user?.role === Role.HR || user?.role === Role.MANAGER) && (
-                    <td className="px-6 py-4 text-slate-900 dark:text-slate-100">
+                    <td className="px-6 py-4 text-grx-text dark:text-white">
                       {leave.Employee?.name || leave.employeeId}
                     </td>
                   )}
-                  <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">{leave.type}</td>
-                  <td className="px-6 py-4 text-slate-600 dark:text-slate-300">{leave.startDate} to {leave.endDate}</td>
-                  <td className="px-6 py-4 text-slate-600 dark:text-slate-300 max-w-xs truncate">{leave.reason || '-'}</td>
-                  <td className="px-6 py-4 text-slate-500 dark:text-slate-400">{leave.appliedOn}</td>
+                  <td className="px-6 py-4 font-medium text-grx-text dark:text-white">{leave.type}</td>
+                  <td className="px-6 py-4 text-grx-muted dark:text-grx-primary-200">{leave.startDate} to {leave.endDate}</td>
+                  <td className="px-6 py-4 text-grx-muted dark:text-grx-primary-200 max-w-xs truncate">{leave.reason || '-'}</td>
+                  <td className="px-6 py-4 text-grx-muted dark:text-grx-muted">{leave.appliedOn}</td>
                   <td className="px-6 py-4">
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                       leave.status === LeaveStatus.APPROVED ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300' :
                       leave.status === LeaveStatus.REJECTED ? 'bg-rose-100 text-rose-700 dark:bg-rose-900 dark:text-rose-300' :
-                      leave.status === LeaveStatus.CANCELLED ? 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300' :
+                      leave.status === LeaveStatus.CANCELLED ? 'bg-grx-primary-50 text-grx-muted dark:bg-grx-primary-800 dark:text-grx-primary-200' :
                       'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300'
                     }`}>
                       {leave.status}
@@ -437,12 +437,12 @@ export const Leaves: React.FC = () => {
             )}
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Leave Type *</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">Leave Type *</label>
                 <select 
-                  className={`w-full border rounded-lg p-2.5 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none ${
+                  className={`w-full border rounded-lg p-2.5 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none ${
                     formErrors.type 
                       ? 'border-red-300 dark:border-red-700' 
-                      : 'border-slate-300 dark:border-slate-600'
+                      : 'border-grx-primary-100 dark:border-grx-primary-700'
                   }`}
                   value={newLeave.type}
                   onChange={e => {
@@ -470,13 +470,13 @@ export const Leaves: React.FC = () => {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Start Date *</label>
+                   <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">Start Date *</label>
                    <input 
                     type="date" 
-                    className={`w-full border rounded-lg p-2.5 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none ${
+                    className={`w-full border rounded-lg p-2.5 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none ${
                       formErrors.startDate 
                         ? 'border-red-300 dark:border-red-700' 
-                        : 'border-slate-300 dark:border-slate-600'
+                        : 'border-grx-primary-100 dark:border-grx-primary-700'
                     }`}
                     value={newLeave.startDate}
                     onChange={e => {
@@ -497,13 +497,13 @@ export const Leaves: React.FC = () => {
                    )}
                 </div>
                 <div>
-                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">End Date *</label>
+                   <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">End Date *</label>
                    <input 
                     type="date" 
-                    className={`w-full border rounded-lg p-2.5 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none ${
+                    className={`w-full border rounded-lg p-2.5 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none ${
                       formErrors.endDate 
                         ? 'border-red-300 dark:border-red-700' 
-                        : 'border-slate-300 dark:border-slate-600'
+                        : 'border-grx-primary-100 dark:border-grx-primary-700'
                     }`}
                     value={newLeave.endDate}
                     onChange={e => {
@@ -525,9 +525,9 @@ export const Leaves: React.FC = () => {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Reason</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">Reason</label>
                 <textarea 
-                  className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 h-24 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none resize-none" 
+                  className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2.5 h-24 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none resize-none" 
                   placeholder="Enter reason for leave..."
                   value={newLeave.reason}
                   onChange={e => setNewLeave({...newLeave, reason: e.target.value})}
@@ -542,7 +542,7 @@ export const Leaves: React.FC = () => {
                     setEditingLeaveId(null);
                     setNewLeave({ type: leaveTypes[0]?.name || '', startDate: '', endDate: '', reason: '' });
                   }}
-                  className="flex-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 py-2.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 font-medium transition-colors"
+                  className="flex-1 bg-grx-primary-50 dark:bg-grx-primary-800 text-grx-text dark:text-grx-primary-200 py-2.5 rounded-lg hover:bg-grx-primary-100 dark:hover:bg-grx-primary-700 font-medium transition-colors"
                 >
                   Cancel
                 </button>
