@@ -33,13 +33,13 @@ interface FiscalYear {
 
 const PERIOD_STATUS_STYLES: Record<string, string> = {
   Open: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400',
-  Closed: 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300',
+  Closed: 'bg-grx-primary-50 dark:bg-grx-primary-800 text-grx-muted dark:text-grx-primary-200',
   Locked: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400',
 };
 
 const FY_STATUS_STYLES: Record<string, string> = {
   Active: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400',
-  Closed: 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300',
+  Closed: 'bg-grx-primary-50 dark:bg-grx-primary-800 text-grx-muted dark:text-grx-primary-200',
   Locked: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400',
 };
 
@@ -139,15 +139,15 @@ const FiscalYearsPage: React.FC = () => {
         <div className="flex items-center gap-4">
           <button
             onClick={() => setIsCreating(false)}
-            className="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full transition-colors"
+            className="p-2 hover:bg-grx-primary-100 dark:hover:bg-grx-primary-800 rounded-full transition-colors"
           >
-            <ArrowLeft size={20} className="text-slate-600 dark:text-slate-300" />
+            <ArrowLeft size={20} className="text-grx-muted dark:text-grx-primary-200" />
           </button>
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+            <h2 className="text-2xl font-bold text-grx-text dark:text-white">
               New Fiscal Year
             </h2>
-            <p className="text-slate-500 dark:text-slate-400">
+            <p className="text-grx-muted dark:text-grx-muted">
               Define the fiscal year and its accounting periods
             </p>
           </div>
@@ -160,9 +160,9 @@ const FiscalYearsPage: React.FC = () => {
           </div>
         )}
 
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 space-y-6">
+        <div className="grx-glass-card rounded-xl p-6 space-y-6">
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+            <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">
               Fiscal Year Name
             </label>
             <input
@@ -170,30 +170,30 @@ const FiscalYearsPage: React.FC = () => {
               value={formName}
               onChange={(e) => setFormName(e.target.value)}
               placeholder="e.g. FY 2025-26"
-              className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
             />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 grx-stagger">
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">
                 Start Date
               </label>
               <input
                 type="date"
                 value={formStartDate}
                 onChange={(e) => setFormStartDate(e.target.value)}
-                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+                className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">
                 End Date
               </label>
               <input
                 type="date"
                 value={formEndDate}
                 onChange={(e) => setFormEndDate(e.target.value)}
-                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+                className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
               />
             </div>
           </div>
@@ -201,14 +201,14 @@ const FiscalYearsPage: React.FC = () => {
           <div className="pt-4 flex justify-end gap-3">
             <button
               onClick={() => setIsCreating(false)}
-              className="px-4 py-2 text-slate-600 dark:text-slate-400 font-medium hover:bg-slate-50 dark:hover:bg-slate-700 rounded-lg"
+              className="px-4 py-2 text-grx-muted dark:text-grx-muted font-medium hover:bg-grx-bg dark:hover:bg-grx-primary-800 rounded-lg"
             >
               Cancel
             </button>
             <button
               onClick={handleCreateFiscalYear}
               disabled={submitting}
-              className="bg-indigo-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-indigo-700 flex items-center gap-2 disabled:opacity-50 transition-colors"
+              className="bg-grx-primary-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-grx-primary-700 flex items-center gap-2 disabled:opacity-50 transition-colors"
             >
               {submitting ? <Loader2 className="animate-spin" size={18} /> : <Save size={18} />}
               Create Fiscal Year
@@ -221,17 +221,17 @@ const FiscalYearsPage: React.FC = () => {
 
   // List view
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Fiscal Years</h2>
-          <p className="text-slate-500 dark:text-slate-400">
+          <h2 className="text-2xl font-bold text-grx-text dark:text-white">Fiscal Years</h2>
+          <p className="text-grx-muted dark:text-grx-muted">
             Manage fiscal years and accounting periods
           </p>
         </div>
         <button
           onClick={() => setIsCreating(true)}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-lg flex items-center gap-2 text-sm font-medium shadow-sm transition-colors"
+          className="bg-grx-primary-600 hover:bg-grx-primary-700 text-white grx-btn-press px-4 py-2.5 rounded-lg flex items-center gap-2 text-sm font-medium shadow-sm transition-colors"
         >
           <Plus size={18} /> New Fiscal Year
         </button>
@@ -245,13 +245,13 @@ const FiscalYearsPage: React.FC = () => {
 
       {loading ? (
         <div className="flex items-center justify-center h-64">
-          <Loader2 className="animate-spin text-indigo-600" size={32} />
-          <span className="ml-2 text-slate-500 dark:text-slate-400">Loading fiscal years...</span>
+          <Loader2 className="animate-spin text-grx-primary-600" size={32} />
+          <span className="ml-2 text-grx-muted dark:text-grx-muted">Loading fiscal years...</span>
         </div>
       ) : fiscalYears.length === 0 ? (
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-12 text-center">
-          <Calendar size={48} className="mx-auto text-slate-300 dark:text-slate-600 mb-4" />
-          <p className="text-slate-500 dark:text-slate-400">
+        <div className="grx-glass-card rounded-xl p-12 text-center">
+          <Calendar size={48} className="mx-auto text-grx-primary-200 dark:text-grx-muted mb-4" />
+          <p className="text-grx-muted dark:text-grx-muted">
             No fiscal years configured. Create one to get started.
           </p>
         </div>
@@ -260,28 +260,28 @@ const FiscalYearsPage: React.FC = () => {
           {fiscalYears.map((fy) => (
             <div
               key={fy.id}
-              className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden"
+              className="grx-glass-card rounded-xl overflow-hidden"
             >
               {/* Fiscal Year Header */}
               <div
-                className="p-4 flex items-center justify-between cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors"
+                className="p-4 flex items-center justify-between cursor-pointer hover:bg-grx-bg dark:hover:bg-grx-primary-800/50 transition-colors"
                 onClick={() => toggleExpand(fy.id)}
               >
                 <div className="flex items-center gap-3">
                   {expandedId === fy.id ? (
-                    <ChevronDown size={20} className="text-slate-400" />
+                    <ChevronDown size={20} className="text-grx-muted" />
                   ) : (
-                    <ChevronRight size={20} className="text-slate-400" />
+                    <ChevronRight size={20} className="text-grx-muted" />
                   )}
                   <div>
-                    <h3 className="font-semibold text-slate-900 dark:text-slate-100">{fy.name}</h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                    <h3 className="font-semibold text-grx-text dark:text-white">{fy.name}</h3>
+                    <p className="text-sm text-grx-muted dark:text-grx-muted">
                       {fy.startDate} to {fy.endDate}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-sm text-slate-500 dark:text-slate-400">
+                  <span className="text-sm text-grx-muted dark:text-grx-muted">
                     {fy.periods?.length || 0} periods
                   </span>
                   <span
@@ -294,40 +294,40 @@ const FiscalYearsPage: React.FC = () => {
 
               {/* Periods Table (expanded) */}
               {expandedId === fy.id && fy.periods && fy.periods.length > 0 && (
-                <div className="border-t border-slate-200 dark:border-slate-700">
+                <div className="border-t border-grx-primary-100 dark:border-grx-primary-800">
                   <table className="w-full text-sm">
-                    <thead className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
+                    <thead className="bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-100 dark:border-grx-primary-800">
                       <tr>
-                        <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">
+                        <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">
                           Period
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">
+                        <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">
                           Start Date
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">
+                        <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">
                           End Date
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">
+                        <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">
                           Status
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">
+                        <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">
                           Actions
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                    <tbody className="divide-y divide-grx-primary-100 dark:divide-grx-primary-800">
                       {fy.periods.map((period) => (
                         <tr
                           key={period.id}
-                          className="hover:bg-slate-50 dark:hover:bg-slate-700"
+                          className="hover:bg-grx-bg dark:hover:bg-grx-primary-800"
                         >
-                          <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">
+                          <td className="px-6 py-4 font-medium text-grx-text dark:text-white">
                             {period.name}
                           </td>
-                          <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
+                          <td className="px-6 py-4 text-grx-muted dark:text-grx-muted">
                             {period.startDate}
                           </td>
-                          <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
+                          <td className="px-6 py-4 text-grx-muted dark:text-grx-muted">
                             {period.endDate}
                           </td>
                           <td className="px-6 py-4">
@@ -344,7 +344,7 @@ const FiscalYearsPage: React.FC = () => {
                                   onClick={() =>
                                     handlePeriodAction(fy.id, period.id, 'close')
                                   }
-                                  className="text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 text-xs font-semibold flex items-center gap-1"
+                                  className="text-grx-muted dark:text-grx-muted hover:text-grx-text dark:hover:text-grx-primary-200 text-xs font-semibold flex items-center gap-1"
                                 >
                                   <XCircle size={14} /> Close
                                 </button>
@@ -370,7 +370,7 @@ const FiscalYearsPage: React.FC = () => {
                                 </>
                               )}
                               {period.status === 'Locked' && (
-                                <span className="text-xs text-slate-400 dark:text-slate-500 flex items-center gap-1">
+                                <span className="text-xs text-grx-muted dark:text-grx-muted flex items-center gap-1">
                                   <Lock size={14} /> Permanently locked
                                 </span>
                               )}
@@ -384,7 +384,7 @@ const FiscalYearsPage: React.FC = () => {
               )}
 
               {expandedId === fy.id && (!fy.periods || fy.periods.length === 0) && (
-                <div className="border-t border-slate-200 dark:border-slate-700 p-6 text-center text-slate-500 dark:text-slate-400 text-sm">
+                <div className="border-t border-grx-primary-100 dark:border-grx-primary-800 p-6 text-center text-grx-muted dark:text-grx-muted text-sm">
                   No accounting periods defined for this fiscal year.
                 </div>
               )}

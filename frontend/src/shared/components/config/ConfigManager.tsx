@@ -211,7 +211,7 @@ export const ConfigManager: React.FC<ConfigManagerProps> = ({
             onClick={() => setFilterActive(!filterActive)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filterActive
-                ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400'
+                ? 'bg-grx-primary-100 dark:bg-grx-primary-900/30 text-grx-primary-700 dark:text-grx-primary-400'
                 : 'bg-grx-primary-50 dark:bg-grx-primary-800 text-grx-text dark:text-grx-primary-200'
             }`}
           >
@@ -222,7 +222,7 @@ export const ConfigManager: React.FC<ConfigManagerProps> = ({
               setShowAddForm(true);
               setFormData({ isActive: true });
             }}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2 transition-colors"
+            className="bg-grx-primary-600 text-white px-4 py-2 rounded-lg hover:bg-grx-primary-700 flex items-center gap-2 transition-colors"
           >
             <Plus size={18} />
             Add New
@@ -232,9 +232,9 @@ export const ConfigManager: React.FC<ConfigManagerProps> = ({
 
       {/* Add Form */}
       {showAddForm && (
-        <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-6">
+        <div className="grx-glass-card rounded-xl p-6">
           <h3 className="text-lg font-semibold text-grx-text dark:text-white mb-4">Add New {title.slice(0, -1)}</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 grx-stagger">
             {fields.map(field => (
               <div key={field.key}>
                 <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">
@@ -242,7 +242,7 @@ export const ConfigManager: React.FC<ConfigManagerProps> = ({
                 </label>
                 {field.type === 'select' ? (
                   <select
-                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none ${
+                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none ${
                       errors[field.key] 
                         ? 'border-red-300 dark:border-red-700 bg-white dark:bg-grx-primary-800' 
                         : 'border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800'
@@ -265,7 +265,7 @@ export const ConfigManager: React.FC<ConfigManagerProps> = ({
                 ) : field.type === 'textarea' ? (
                   <textarea
                     rows={3}
-                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none ${
+                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none ${
                       errors[field.key] 
                         ? 'border-red-300 dark:border-red-700 bg-white dark:bg-grx-primary-800' 
                         : 'border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800'
@@ -283,7 +283,7 @@ export const ConfigManager: React.FC<ConfigManagerProps> = ({
                 ) : (
                   <input
                     type={field.type}
-                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none ${
+                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none ${
                       errors[field.key] 
                         ? 'border-red-300 dark:border-red-700 bg-white dark:bg-grx-primary-800' 
                         : 'border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800'
@@ -322,7 +322,7 @@ export const ConfigManager: React.FC<ConfigManagerProps> = ({
             </button>
             <button
               onClick={handleAdd}
-              className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2 transition-colors"
+              className="bg-grx-primary-600 text-white px-4 py-2 rounded-lg hover:bg-grx-primary-700 flex items-center gap-2 transition-colors"
             >
               <Save size={18} />
               Save
@@ -362,7 +362,7 @@ export const ConfigManager: React.FC<ConfigManagerProps> = ({
                           <td key={field.key} className="px-6 py-4 max-w-xs">
                             {field.type === 'select' ? (
                               <select
-                                className={`w-full border rounded p-2 text-sm focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none ${
+                                className={`w-full border rounded p-2 text-sm focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none ${
                                   errors[field.key] 
                                     ? 'border-red-300 dark:border-red-700 bg-white dark:bg-grx-primary-800' 
                                     : 'border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800'
@@ -385,7 +385,7 @@ export const ConfigManager: React.FC<ConfigManagerProps> = ({
                             ) : field.type === 'textarea' ? (
                               <textarea
                                 rows={2}
-                                className={`w-full border rounded p-2 text-sm focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none ${
+                                className={`w-full border rounded p-2 text-sm focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none ${
                                   errors[field.key] 
                                     ? 'border-red-300 dark:border-red-700 bg-white dark:bg-grx-primary-800' 
                                     : 'border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800'
@@ -403,7 +403,7 @@ export const ConfigManager: React.FC<ConfigManagerProps> = ({
                             ) : (
                               <input
                                 type={field.type}
-                                className={`w-full border rounded p-2 text-sm focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none ${
+                                className={`w-full border rounded p-2 text-sm focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none ${
                                   errors[field.key] 
                                     ? 'border-red-300 dark:border-red-700 bg-white dark:bg-grx-primary-800' 
                                     : 'border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800'
@@ -481,7 +481,7 @@ export const ConfigManager: React.FC<ConfigManagerProps> = ({
                           <div className="flex gap-2">
                             <button
                               onClick={() => startEdit(item)}
-                              className="text-indigo-600 hover:text-indigo-700"
+                              className="text-grx-primary-600 hover:text-grx-primary-700"
                               title="Edit"
                             >
                               <Edit2 size={18} />

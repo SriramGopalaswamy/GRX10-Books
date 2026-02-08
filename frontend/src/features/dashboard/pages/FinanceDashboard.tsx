@@ -82,7 +82,7 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
     : '0';
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6 grx-animate-fade-in-up">
       {/* Header */}
       <div className="flex justify-between items-end">
         <div>
@@ -95,10 +95,10 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
       </div>
 
       {/* Key Financial Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 grx-stagger">
         {/* Total Receivables */}
         <div 
-          className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 hover:shadow-md transition-all cursor-pointer group"
+          className="grx-glass-card p-5 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800 hover:shadow-md transition-all cursor-pointer group"
           onClick={() => onChangeView(View.INVOICES)}
         >
           <div className="flex justify-between items-start mb-3">
@@ -118,7 +118,7 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
 
         {/* Revenue This Month */}
         <div 
-          className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 hover:shadow-md transition-all cursor-pointer group"
+          className="grx-glass-card p-5 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800 hover:shadow-md transition-all cursor-pointer group"
           onClick={() => onChangeView(View.ACCOUNTING)}
         >
           <div className="flex justify-between items-start mb-3">
@@ -138,7 +138,7 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
 
         {/* Total Invoices */}
         <div 
-          className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 hover:shadow-md transition-all cursor-pointer group"
+          className="grx-glass-card p-5 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800 hover:shadow-md transition-all cursor-pointer group"
           onClick={() => onChangeView(View.INVOICES)}
         >
           <div className="flex justify-between items-start mb-3">
@@ -157,15 +157,15 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
 
         {/* Collection Rate */}
         <div 
-          className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 hover:shadow-md transition-all cursor-pointer group"
+          className="grx-glass-card p-5 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800 hover:shadow-md transition-all cursor-pointer group"
           onClick={() => onChangeView(View.INVOICES)}
         >
           <div className="flex justify-between items-start mb-3">
             <div>
               <p className="text-sm font-medium text-grx-muted dark:text-grx-muted">Collection Rate</p>
-              <h3 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400 mt-1">{collectionRate}%</h3>
+              <h3 className="text-2xl font-bold text-grx-primary-600 dark:text-grx-primary-400 mt-1">{collectionRate}%</h3>
             </div>
-            <div className="p-2.5 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform">
+            <div className="p-2.5 bg-grx-primary-50 dark:bg-grx-primary-900/30 rounded-lg text-grx-primary-600 dark:text-grx-primary-400 group-hover:scale-110 transition-transform">
               <CreditCard size={20} />
             </div>
           </div>
@@ -176,10 +176,10 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
       </div>
 
       {/* Secondary Financial Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 grx-stagger">
         {/* Paid Invoices */}
         <div 
-          className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 hover:shadow-md transition-all cursor-pointer group"
+          className="grx-glass-card p-5 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800 hover:shadow-md transition-all cursor-pointer group"
           onClick={() => onChangeView(View.INVOICES)}
         >
           <div className="flex justify-between items-center">
@@ -195,7 +195,7 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
 
         {/* Pending Invoices */}
         <div 
-          className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 hover:shadow-md transition-all cursor-pointer group"
+          className="grx-glass-card p-5 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800 hover:shadow-md transition-all cursor-pointer group"
           onClick={() => onChangeView(View.INVOICES)}
         >
           <div className="flex justify-between items-center">
@@ -211,7 +211,7 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
 
         {/* Overdue Invoices */}
         <div 
-          className="bg-white dark:bg-grx-dark-surface p-5 rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 hover:shadow-md transition-all cursor-pointer group"
+          className="grx-glass-card p-5 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800 hover:shadow-md transition-all cursor-pointer group"
           onClick={() => onChangeView(View.INVOICES)}
         >
           <div className="flex justify-between items-center">
@@ -227,7 +227,7 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800">
+      <div className="grx-glass-card p-6 rounded-xl">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold text-grx-text dark:text-white">Quick Actions</h3>
           <DollarSign size={18} className="text-grx-muted dark:text-grx-muted" />
@@ -263,9 +263,9 @@ const FinanceDashboard: React.FC<FinanceDashboardProps> = ({ onChangeView }) => 
 
           <button
             onClick={() => onChangeView(View.BANKING)}
-            className="p-4 bg-indigo-50 dark:bg-indigo-900/30 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 rounded-lg text-left transition-colors group"
+            className="p-4 bg-grx-primary-50 dark:bg-grx-primary-900/30 hover:bg-grx-primary-100 dark:hover:bg-grx-primary-900/50 rounded-lg text-left transition-colors group"
           >
-            <Wallet size={20} className="text-indigo-600 dark:text-indigo-400 mb-2" />
+            <Wallet size={20} className="text-grx-primary-600 dark:text-grx-primary-400 mb-2" />
             <p className="text-sm font-medium text-grx-text dark:text-white">Banking</p>
             <p className="text-xs text-grx-muted dark:text-grx-muted mt-1">Bank transactions</p>
           </button>

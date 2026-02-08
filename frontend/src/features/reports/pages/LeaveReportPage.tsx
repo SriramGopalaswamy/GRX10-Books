@@ -140,7 +140,7 @@ export const LeaveReportPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold text-grx-text dark:text-white">Leave Report</h2>
@@ -149,7 +149,7 @@ export const LeaveReportPage: React.FC = () => {
         <button
           onClick={handleDownload}
           disabled={!data}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2 transition-colors disabled:opacity-50"
+          className="bg-grx-primary-600 text-white px-4 py-2 rounded-lg hover:bg-grx-primary-700 flex items-center gap-2 transition-colors disabled:opacity-50"
         >
           <Download size={18} />
           Export CSV
@@ -157,7 +157,7 @@ export const LeaveReportPage: React.FC = () => {
       </div>
 
       {/* Filters */}
-      <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-4">
+      <div className="grx-glass-card rounded-xl p-4">
         <div className="flex items-center gap-2 mb-4">
           <Filter size={18} className="text-grx-muted" />
           <h3 className="font-semibold text-grx-text dark:text-white">Filters</h3>
@@ -169,7 +169,7 @@ export const LeaveReportPage: React.FC = () => {
               type="date"
               value={startDate}
               onChange={e => setStartDate(e.target.value)}
-              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
             />
           </div>
           <div>
@@ -178,7 +178,7 @@ export const LeaveReportPage: React.FC = () => {
               type="date"
               value={endDate}
               onChange={e => setEndDate(e.target.value)}
-              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
             />
           </div>
           <div>
@@ -186,7 +186,7 @@ export const LeaveReportPage: React.FC = () => {
             <select
               value={filters.department}
               onChange={e => setFilters({ ...filters, department: e.target.value })}
-              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
             >
               <option value="">All Departments</option>
               {getActiveDepartments().map(dept => (
@@ -199,7 +199,7 @@ export const LeaveReportPage: React.FC = () => {
             <select
               value={filters.status}
               onChange={e => setFilters({ ...filters, status: e.target.value })}
-              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
             >
               <option value="">All Status</option>
               <option value="Pending">Pending</option>
@@ -218,14 +218,14 @@ export const LeaveReportPage: React.FC = () => {
 
       {loading ? (
         <div className="flex items-center justify-center h-64">
-          <Loader2 className="animate-spin text-indigo-600" size={32} />
+          <Loader2 className="animate-spin text-grx-primary-600" size={32} />
           <span className="ml-2 text-grx-muted">Loading leave report...</span>
         </div>
       ) : data ? (
-        <div className="space-y-6">
+        <div className="space-y-6 grx-animate-fade-in-up">
           {/* Summary Cards */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            <div className="bg-white dark:bg-grx-dark-surface p-4 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800">
+            <div className="grx-glass-card p-4 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800">
               <p className="text-sm text-grx-muted dark:text-grx-muted mb-1">Total Requests</p>
               <p className="text-2xl font-bold text-grx-text dark:text-white">{data.summary.totalRequests}</p>
             </div>
@@ -249,7 +249,7 @@ export const LeaveReportPage: React.FC = () => {
 
           {/* By Type Summary */}
           {Object.keys(data.summary.byType).length > 0 && (
-            <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-4">
+            <div className="grx-glass-card rounded-xl p-4">
               <h3 className="font-semibold text-grx-text dark:text-white mb-4">By Leave Type</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {Object.entries(data.summary.byType).map(([type, stats]) => (
@@ -264,7 +264,7 @@ export const LeaveReportPage: React.FC = () => {
           )}
 
           {/* Records Table */}
-          <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
+          <div className="grx-glass-card rounded-xl overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead className="bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-100 dark:border-grx-primary-800">
@@ -312,7 +312,7 @@ export const LeaveReportPage: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-8 text-center text-grx-muted">
+        <div className="grx-glass-card rounded-xl p-8 text-center text-grx-muted">
           No data available.
         </div>
       )}

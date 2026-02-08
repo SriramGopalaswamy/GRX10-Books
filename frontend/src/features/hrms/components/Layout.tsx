@@ -26,7 +26,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, to, active }) =>
     to={to} 
     className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
       active 
-        ? 'bg-indigo-600 text-white' 
+        ? 'bg-grx-primary-600 text-white' 
         : 'text-grx-muted hover:bg-grx-dark-surface hover:text-white'
     }`}
   >
@@ -62,7 +62,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          className="fixed inset-0 grx-modal-backdrop z-40 lg:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
@@ -73,7 +73,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         <div className="p-6 flex items-center gap-3 border-b border-grx-primary-800">
-          <div className="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center font-bold text-white">
+          <div className="w-8 h-8 bg-grx-primary-500 rounded-lg flex items-center justify-center font-bold text-white">
             G
           </div>
           <h1 className="text-xl font-bold tracking-tight">GRX10 HRMS</h1>

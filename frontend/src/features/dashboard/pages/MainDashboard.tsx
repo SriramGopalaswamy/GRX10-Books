@@ -134,7 +134,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
           <p className="text-grx-muted font-medium">Failed to load dashboard data</p>
           <button
             onClick={() => { setLoading(true); fetchDashboardStats(); }}
-            className="mt-3 px-4 py-2 bg-grx-primary text-white rounded-lg text-sm grx-btn-press grx-focus-ring hover:bg-grx-primary-600 transition-colors"
+            className="mt-3 px-4 py-2 bg-grx-primary text-white grx-btn-press rounded-lg text-sm grx-btn-press grx-focus-ring hover:bg-grx-primary-600 transition-colors"
           >
             Retry
           </button>

@@ -112,19 +112,19 @@ export const BudgetVsActualPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Budget vs Actual</h2>
-          <p className="text-slate-500 dark:text-slate-400">Compare budgeted and actual amounts</p>
+          <h2 className="text-2xl font-bold text-grx-text dark:text-white">Budget vs Actual</h2>
+          <p className="text-grx-muted dark:text-grx-muted">Compare budgeted and actual amounts</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <Calendar size={18} className="text-slate-400" />
+            <Calendar size={18} className="text-grx-muted" />
             <select
               value={fiscalYearId}
               onChange={(e) => setFiscalYearId(e.target.value)}
-              className="border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
+              className="border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg px-3 py-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none text-sm"
             >
               <option value="">Select fiscal year</option>
               {fiscalYears.map((fy) => (
@@ -137,7 +137,7 @@ export const BudgetVsActualPage: React.FC = () => {
           <button
             onClick={handleDownload}
             disabled={!data}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2 transition-colors disabled:opacity-50 text-sm font-medium"
+            className="bg-grx-primary-600 text-white px-4 py-2 rounded-lg hover:bg-grx-primary-700 flex items-center gap-2 transition-colors disabled:opacity-50 text-sm font-medium"
           >
             <Download size={18} />
             Export CSV
@@ -153,27 +153,27 @@ export const BudgetVsActualPage: React.FC = () => {
 
       {loading ? (
         <div className="flex items-center justify-center h-64">
-          <Loader2 className="animate-spin text-indigo-600" size={32} />
-          <span className="ml-2 text-slate-500 dark:text-slate-400">Loading report...</span>
+          <Loader2 className="animate-spin text-grx-primary-600" size={32} />
+          <span className="ml-2 text-grx-muted dark:text-grx-muted">Loading report...</span>
         </div>
       ) : data ? (
         <>
           {/* Summary Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700">
-              <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Total Budget</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+            <div className="grx-glass-card p-5 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800">
+              <p className="text-xs text-grx-muted dark:text-grx-muted mb-1">Total Budget</p>
+              <p className="text-2xl font-bold text-grx-text dark:text-white">
                 ₹{formatINR(data.totals.totalBudget)}
               </p>
             </div>
-            <div className="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700">
-              <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Total Actual</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+            <div className="grx-glass-card p-5 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800">
+              <p className="text-xs text-grx-muted dark:text-grx-muted mb-1">Total Actual</p>
+              <p className="text-2xl font-bold text-grx-text dark:text-white">
                 ₹{formatINR(data.totals.totalActual)}
               </p>
             </div>
-            <div className="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700">
-              <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Variance</p>
+            <div className="grx-glass-card p-5 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800">
+              <p className="text-xs text-grx-muted dark:text-grx-muted mb-1">Variance</p>
               <p
                 className={`text-2xl font-bold ${
                   data.totals.totalVariance >= 0
@@ -184,8 +184,8 @@ export const BudgetVsActualPage: React.FC = () => {
                 ₹{formatINR(Math.abs(data.totals.totalVariance))}
               </p>
             </div>
-            <div className="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700">
-              <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Variance %</p>
+            <div className="grx-glass-card p-5 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800">
+              <p className="text-xs text-grx-muted dark:text-grx-muted mb-1">Variance %</p>
               <p
                 className={`text-2xl font-bold ${
                   data.totals.variancePercent >= 0
@@ -199,14 +199,14 @@ export const BudgetVsActualPage: React.FC = () => {
           </div>
 
           {/* Report Table */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-            <div className="p-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+          <div className="grx-glass-card rounded-xl overflow-hidden">
+            <div className="p-4 border-b border-grx-primary-100 dark:border-grx-primary-800 bg-grx-bg dark:bg-grx-dark">
               <div className="flex justify-between items-center">
                 <div>
-                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">
+                  <h3 className="font-semibold text-grx-text dark:text-white">
                     {data.fiscalYearName}
                   </h3>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">
+                  <p className="text-sm text-grx-muted dark:text-grx-muted">
                     {data.periodStart} to {data.periodEnd}
                   </p>
                 </div>
@@ -214,44 +214,44 @@ export const BudgetVsActualPage: React.FC = () => {
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
+                <thead className="bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-100 dark:border-grx-primary-800">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">
                       Account Code
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">
                       Account Name
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">
+                    <th className="px-6 py-3 text-right text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">
                       Budget Amount (₹)
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">
+                    <th className="px-6 py-3 text-right text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">
                       Actual Amount (₹)
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">
+                    <th className="px-6 py-3 text-right text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">
                       Variance (₹)
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">
+                    <th className="px-6 py-3 text-right text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">
                       Variance %
                     </th>
-                    <th className="px-6 py-3 text-center text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">
+                    <th className="px-6 py-3 text-center text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">
                       Status
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                <tbody className="divide-y divide-grx-primary-100 dark:divide-grx-primary-800">
                   {data.items.map((item, idx) => (
-                    <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-700">
-                      <td className="px-6 py-4 font-mono text-slate-600 dark:text-slate-300">
+                    <tr key={idx} className="hover:bg-grx-bg dark:hover:bg-grx-primary-800">
+                      <td className="px-6 py-4 font-mono text-grx-muted dark:text-grx-primary-200">
                         {item.accountCode}
                       </td>
-                      <td className="px-6 py-4 text-slate-900 dark:text-slate-100">
+                      <td className="px-6 py-4 text-grx-text dark:text-white">
                         {item.accountName}
                       </td>
-                      <td className="px-6 py-4 text-right font-mono text-slate-700 dark:text-slate-300">
+                      <td className="px-6 py-4 text-right font-mono text-grx-text dark:text-grx-primary-200">
                         {formatINR(item.budgetAmount)}
                       </td>
-                      <td className="px-6 py-4 text-right font-mono text-slate-700 dark:text-slate-300">
+                      <td className="px-6 py-4 text-right font-mono text-grx-text dark:text-grx-primary-200">
                         {formatINR(item.actualAmount)}
                       </td>
                       <td
@@ -291,7 +291,7 @@ export const BudgetVsActualPage: React.FC = () => {
                               </span>
                             </>
                           ) : (
-                            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                            <span className="text-xs font-medium text-grx-muted dark:text-grx-muted">
                               On Track
                             </span>
                           )}
@@ -299,14 +299,14 @@ export const BudgetVsActualPage: React.FC = () => {
                       </td>
                     </tr>
                   ))}
-                  <tr className="bg-slate-50 dark:bg-slate-900 font-bold border-t-2 border-slate-300 dark:border-slate-600">
-                    <td colSpan={2} className="px-6 py-4 text-slate-900 dark:text-slate-100">
+                  <tr className="bg-grx-bg dark:bg-grx-dark font-bold border-t-2 border-grx-primary-100 dark:border-grx-primary-700">
+                    <td colSpan={2} className="px-6 py-4 text-grx-text dark:text-white">
                       TOTAL
                     </td>
-                    <td className="px-6 py-4 text-right font-mono text-slate-900 dark:text-slate-100">
+                    <td className="px-6 py-4 text-right font-mono text-grx-text dark:text-white">
                       {formatINR(data.totals.totalBudget)}
                     </td>
-                    <td className="px-6 py-4 text-right font-mono text-slate-900 dark:text-slate-100">
+                    <td className="px-6 py-4 text-right font-mono text-grx-text dark:text-white">
                       {formatINR(data.totals.totalActual)}
                     </td>
                     <td
@@ -337,9 +337,9 @@ export const BudgetVsActualPage: React.FC = () => {
           </div>
         </>
       ) : (
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-12 text-center">
-          <FileSpreadsheet size={48} className="mx-auto text-slate-300 dark:text-slate-600 mb-4" />
-          <p className="text-slate-500 dark:text-slate-400">
+        <div className="grx-glass-card rounded-xl p-12 text-center">
+          <FileSpreadsheet size={48} className="mx-auto text-grx-primary-200 dark:text-grx-muted mb-4" />
+          <p className="text-grx-muted dark:text-grx-muted">
             {fiscalYearId
               ? 'No data available. Please ensure a budget exists for this fiscal year.'
               : 'Please select a fiscal year to view the report.'}

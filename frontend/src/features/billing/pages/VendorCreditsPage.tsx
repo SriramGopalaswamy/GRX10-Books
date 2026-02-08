@@ -48,7 +48,7 @@ const STATUS_STYLES: Record<string, string> = {
   Draft: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400',
   Approved: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400',
   Applied: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400',
-  Void: 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400',
+  Void: 'bg-grx-primary-50 dark:bg-grx-primary-800 text-grx-muted dark:text-grx-muted',
 };
 
 export const VendorCreditsPage: React.FC = () => {
@@ -238,13 +238,13 @@ export const VendorCreditsPage: React.FC = () => {
               setIsCreating(false);
               resetForm();
             }}
-            className="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full transition-colors"
+            className="p-2 hover:bg-grx-primary-100 dark:hover:bg-grx-primary-800 rounded-full transition-colors"
           >
-            <ArrowLeft size={20} className="text-slate-600 dark:text-slate-300" />
+            <ArrowLeft size={20} className="text-grx-muted dark:text-grx-primary-200" />
           </button>
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">New Vendor Credit</h2>
-            <p className="text-slate-500 dark:text-slate-400">Record a credit from vendor</p>
+            <h2 className="text-2xl font-bold text-grx-text dark:text-white">New Vendor Credit</h2>
+            <p className="text-grx-muted dark:text-grx-muted">Record a credit from vendor</p>
           </div>
         </div>
 
@@ -255,16 +255,16 @@ export const VendorCreditsPage: React.FC = () => {
           </div>
         )}
 
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grx-glass-card rounded-xl p-6 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 grx-stagger">
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">
                 Vendor
               </label>
               <select
                 value={formVendorId}
                 onChange={(e) => setFormVendorId(e.target.value)}
-                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+                className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
               >
                 <option value="">Select vendor</option>
                 {vendors.map((v) => (
@@ -275,14 +275,14 @@ export const VendorCreditsPage: React.FC = () => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">
                 Linked Bill (Optional)
               </label>
               <select
                 value={formBillId}
                 onChange={(e) => setFormBillId(e.target.value)}
                 disabled={!formVendorId}
-                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none disabled:opacity-50"
+                className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none disabled:opacity-50"
               >
                 <option value="">None</option>
                 {filteredBills.map((bill) => (
@@ -294,20 +294,20 @@ export const VendorCreditsPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 grx-stagger">
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">
                 Date
               </label>
               <input
                 type="date"
                 value={formDate}
                 onChange={(e) => setFormDate(e.target.value)}
-                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+                className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">
                 Reason
               </label>
               <input
@@ -315,7 +315,7 @@ export const VendorCreditsPage: React.FC = () => {
                 value={formReason}
                 onChange={(e) => setFormReason(e.target.value)}
                 placeholder="e.g., Product return, Overcharge adjustment"
-                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+                className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
               />
             </div>
           </div>
@@ -323,38 +323,38 @@ export const VendorCreditsPage: React.FC = () => {
           {/* Line Items */}
           <div>
             <div className="flex justify-between items-center mb-3">
-              <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Line Items</h3>
+              <h3 className="text-sm font-semibold text-grx-text dark:text-grx-primary-200">Line Items</h3>
               <button
                 onClick={addLine}
-                className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 text-sm font-medium flex items-center gap-1"
+                className="text-grx-primary-600 dark:text-grx-primary-400 hover:text-grx-primary-800 dark:hover:text-grx-primary-300 text-sm font-medium flex items-center gap-1"
               >
                 <Plus size={16} /> Add Line
               </button>
             </div>
 
-            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+            <div className="bg-grx-bg dark:bg-grx-dark rounded-lg border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
               <table className="w-full text-sm">
-                <thead className="bg-slate-100 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
+                <thead className="bg-grx-primary-50 dark:bg-grx-dark border-b border-grx-primary-100 dark:border-grx-primary-800">
                   <tr>
-                    <th className="px-3 py-2 text-left text-xs font-semibold text-slate-600 dark:text-slate-400">
+                    <th className="px-3 py-2 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted">
                       Description
                     </th>
-                    <th className="px-3 py-2 text-left text-xs font-semibold text-slate-600 dark:text-slate-400">
+                    <th className="px-3 py-2 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted">
                       Account
                     </th>
-                    <th className="px-3 py-2 text-right text-xs font-semibold text-slate-600 dark:text-slate-400">
+                    <th className="px-3 py-2 text-right text-xs font-semibold text-grx-muted dark:text-grx-muted">
                       Qty
                     </th>
-                    <th className="px-3 py-2 text-right text-xs font-semibold text-slate-600 dark:text-slate-400">
+                    <th className="px-3 py-2 text-right text-xs font-semibold text-grx-muted dark:text-grx-muted">
                       Unit Price
                     </th>
-                    <th className="px-3 py-2 text-right text-xs font-semibold text-slate-600 dark:text-slate-400">
+                    <th className="px-3 py-2 text-right text-xs font-semibold text-grx-muted dark:text-grx-muted">
                       Amount
                     </th>
                     <th className="px-3 py-2 w-10"></th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                <tbody className="divide-y divide-grx-primary-100 dark:divide-grx-primary-800">
                   {formLines.map((line) => {
                     const qty = parseFloat(line.quantity) || 0;
                     const price = parseFloat(line.unitPrice) || 0;
@@ -368,14 +368,14 @@ export const VendorCreditsPage: React.FC = () => {
                             value={line.description}
                             onChange={(e) => updateLine(line.id, 'description', e.target.value)}
                             placeholder="Item description"
-                            className="w-full border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                            className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded px-2 py-1.5 text-sm bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white"
                           />
                         </td>
                         <td className="px-3 py-2">
                           <select
                             value={line.accountId}
                             onChange={(e) => updateLine(line.id, 'accountId', e.target.value)}
-                            className="w-full border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                            className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded px-2 py-1.5 text-sm bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white"
                           >
                             <option value="">Select account</option>
                             {accounts.map((a) => (
@@ -391,7 +391,7 @@ export const VendorCreditsPage: React.FC = () => {
                             value={line.quantity}
                             onChange={(e) => updateLine(line.id, 'quantity', e.target.value)}
                             min="1"
-                            className="w-16 border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 text-sm text-right bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                            className="w-16 border border-grx-primary-100 dark:border-grx-primary-700 rounded px-2 py-1.5 text-sm text-right bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white"
                           />
                         </td>
                         <td className="px-3 py-2">
@@ -402,17 +402,17 @@ export const VendorCreditsPage: React.FC = () => {
                             placeholder="0.00"
                             min="0"
                             step="0.01"
-                            className="w-24 border border-slate-300 dark:border-slate-600 rounded px-2 py-1.5 text-sm text-right bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                            className="w-24 border border-grx-primary-100 dark:border-grx-primary-700 rounded px-2 py-1.5 text-sm text-right bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white"
                           />
                         </td>
-                        <td className="px-3 py-2 text-right font-mono text-sm text-slate-700 dark:text-slate-300">
+                        <td className="px-3 py-2 text-right font-mono text-sm text-grx-text dark:text-grx-primary-200">
                           ₹{formatINR(lineAmount)}
                         </td>
                         <td className="px-3 py-2 text-center">
                           <button
                             onClick={() => removeLine(line.id)}
                             disabled={formLines.length <= 1}
-                            className="text-slate-400 hover:text-red-500 disabled:opacity-30 disabled:cursor-not-allowed"
+                            className="text-grx-muted hover:text-red-500 disabled:opacity-30 disabled:cursor-not-allowed"
                           >
                             <Trash2 size={16} />
                           </button>
@@ -421,12 +421,12 @@ export const VendorCreditsPage: React.FC = () => {
                     );
                   })}
                 </tbody>
-                <tfoot className="bg-slate-100 dark:bg-slate-900 border-t-2 border-slate-300 dark:border-slate-600">
-                  <tr className="bg-indigo-50 dark:bg-indigo-900/20">
-                    <td colSpan={4} className="px-3 py-3 text-sm font-bold text-right text-indigo-700 dark:text-indigo-400">
+                <tfoot className="bg-grx-primary-50 dark:bg-grx-dark border-t-2 border-grx-primary-100 dark:border-grx-primary-700">
+                  <tr className="bg-grx-primary-50 dark:bg-grx-primary-900/20">
+                    <td colSpan={4} className="px-3 py-3 text-sm font-bold text-right text-grx-primary-700 dark:text-grx-primary-400">
                       Total Credit
                     </td>
-                    <td className="px-3 py-3 text-right font-mono font-bold text-indigo-900 dark:text-indigo-100">
+                    <td className="px-3 py-3 text-right font-mono font-bold text-grx-primary-900 dark:text-grx-primary-100">
                       ₹{formatINR(formSubTotal)}
                     </td>
                     <td></td>
@@ -442,14 +442,14 @@ export const VendorCreditsPage: React.FC = () => {
                 setIsCreating(false);
                 resetForm();
               }}
-              className="px-4 py-2 text-slate-600 dark:text-slate-400 font-medium hover:bg-slate-50 dark:hover:bg-slate-700 rounded-lg"
+              className="px-4 py-2 text-grx-muted dark:text-grx-muted font-medium hover:bg-grx-bg dark:hover:bg-grx-primary-800 rounded-lg"
             >
               Cancel
             </button>
             <button
               onClick={handleSubmit}
               disabled={submitting || formSubTotal <= 0}
-              className="bg-indigo-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-indigo-700 flex items-center gap-2 disabled:opacity-50 transition-colors"
+              className="bg-grx-primary-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-grx-primary-700 flex items-center gap-2 disabled:opacity-50 transition-colors"
             >
               {submitting ? <Loader2 className="animate-spin" size={18} /> : <Save size={18} />}
               Save Vendor Credit
@@ -462,15 +462,15 @@ export const VendorCreditsPage: React.FC = () => {
 
   // List view
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Vendor Credits</h2>
-          <p className="text-slate-500 dark:text-slate-400">Manage vendor credit notes</p>
+          <h2 className="text-2xl font-bold text-grx-text dark:text-white">Vendor Credits</h2>
+          <p className="text-grx-muted dark:text-grx-muted">Manage vendor credit notes</p>
         </div>
         <button
           onClick={() => setIsCreating(true)}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-lg flex items-center gap-2 text-sm font-medium shadow-sm transition-colors"
+          className="bg-grx-primary-600 hover:bg-grx-primary-700 text-white grx-btn-press px-4 py-2.5 rounded-lg flex items-center gap-2 text-sm font-medium shadow-sm transition-colors"
         >
           <Plus size={18} /> New Vendor Credit
         </button>
@@ -483,34 +483,34 @@ export const VendorCreditsPage: React.FC = () => {
       )}
 
       {/* Vendor Credits Table */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-        <div className="p-4 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/50">
+      <div className="grx-glass-card rounded-xl overflow-hidden">
+        <div className="p-4 border-b border-grx-primary-50 dark:border-grx-primary-800 bg-grx-bg/50 dark:bg-grx-dark/50">
           <div className="relative max-w-sm w-full">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-grx-muted" size={18} />
             <input
               type="text"
               placeholder="Search vendor credits..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && fetchVendorCredits()}
-              className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
+              className="w-full pl-10 pr-4 py-2 rounded-lg border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none text-sm"
             />
           </div>
         </div>
 
         {loading ? (
           <div className="flex items-center justify-center h-64">
-            <Loader2 className="animate-spin text-indigo-600" size={32} />
-            <span className="ml-2 text-slate-500 dark:text-slate-400">Loading vendor credits...</span>
+            <Loader2 className="animate-spin text-grx-primary-600" size={32} />
+            <span className="ml-2 text-grx-muted dark:text-grx-muted">Loading vendor credits...</span>
           </div>
         ) : vendorCredits.length === 0 ? (
           <div className="p-12 text-center">
-            <FileText size={48} className="mx-auto text-slate-300 dark:text-slate-600 mb-4" />
-            <p className="text-slate-500 dark:text-slate-400">No vendor credits found.</p>
+            <FileText size={48} className="mx-auto text-grx-primary-200 dark:text-grx-muted mb-4" />
+            <p className="text-grx-muted dark:text-grx-muted">No vendor credits found.</p>
           </div>
         ) : (
           <table className="w-full text-sm text-left">
-            <thead className="text-xs text-slate-500 dark:text-slate-400 uppercase bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-700">
+            <thead className="text-xs text-grx-muted dark:text-grx-muted uppercase bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-50 dark:border-grx-primary-800">
               <tr>
                 <th className="px-6 py-4">Number</th>
                 <th className="px-6 py-4">Vendor</th>
@@ -521,19 +521,19 @@ export const VendorCreditsPage: React.FC = () => {
                 <th className="px-6 py-4">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-700 bg-white dark:bg-slate-800">
+            <tbody className="divide-y divide-grx-primary-50 dark:divide-grx-primary-800 bg-white dark:bg-grx-dark-surface">
               {vendorCredits.map((vc) => (
-                <tr key={vc.id} className="hover:bg-slate-50 dark:hover:bg-slate-700">
-                  <td className="px-6 py-4 font-medium text-indigo-600 dark:text-indigo-400">
+                <tr key={vc.id} className="hover:bg-grx-bg dark:hover:bg-grx-primary-800">
+                  <td className="px-6 py-4 font-medium text-grx-primary-600 dark:text-grx-primary-400">
                     {vc.creditNumber}
                   </td>
-                  <td className="px-6 py-4 text-slate-800 dark:text-slate-100 font-medium">
+                  <td className="px-6 py-4 text-grx-text dark:text-white font-medium">
                     {vc.vendorName}
                   </td>
-                  <td className="px-6 py-4 text-slate-500 dark:text-slate-400 text-xs">
+                  <td className="px-6 py-4 text-grx-muted dark:text-grx-muted text-xs">
                     {vc.billNumber || '-'}
                   </td>
-                  <td className="px-6 py-4 text-slate-500 dark:text-slate-400">{vc.date}</td>
+                  <td className="px-6 py-4 text-grx-muted dark:text-grx-muted">{vc.date}</td>
                   <td className="px-6 py-4">
                     <span
                       className={`px-2 py-0.5 rounded-full text-xs font-medium ${
@@ -543,7 +543,7 @@ export const VendorCreditsPage: React.FC = () => {
                       {vc.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-right font-semibold text-slate-700 dark:text-slate-300">
+                  <td className="px-6 py-4 text-right font-semibold text-grx-text dark:text-grx-primary-200">
                     ₹{formatINR(vc.total)}
                   </td>
                   <td className="px-6 py-4">

@@ -258,7 +258,7 @@ export const Attendance: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
       {/* Header & Actions */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -303,11 +303,11 @@ export const Attendance: React.FC = () => {
 
       {/* P2-08: Shift Timing Info */}
       {shiftInfo && (
-        <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800 rounded-lg px-4 py-2.5 flex items-center gap-4 text-sm">
-          <Clock size={16} className="text-indigo-600 dark:text-indigo-400 shrink-0" />
-          <span className="text-indigo-700 dark:text-indigo-300">
+        <div className="bg-grx-primary-50 dark:bg-grx-primary-900/20 border border-grx-primary-100 dark:border-grx-primary-800 rounded-lg px-4 py-2.5 flex items-center gap-4 text-sm">
+          <Clock size={16} className="text-grx-primary-600 dark:text-grx-primary-400 shrink-0" />
+          <span className="text-grx-primary-700 dark:text-grx-primary-300">
             <span className="font-medium">{shiftInfo.name}:</span> {shiftInfo.startTime} - {shiftInfo.endTime}
-            <span className="text-indigo-500 dark:text-indigo-400 ml-2">({shiftInfo.graceMinutes} min grace period)</span>
+            <span className="text-grx-primary-500 dark:text-grx-primary-400 ml-2">({shiftInfo.graceMinutes} min grace period)</span>
           </span>
         </div>
       )}
@@ -323,7 +323,7 @@ export const Attendance: React.FC = () => {
         <button 
           onClick={() => setActiveTab('logs')}
           className={`pb-3 font-medium text-sm transition-colors relative ${
-            activeTab === 'logs' ? 'text-indigo-600' : 'text-grx-muted hover:text-grx-text'
+            activeTab === 'logs' ? 'text-grx-primary-600' : 'text-grx-muted hover:text-grx-text'
           }`}
         >
           {user?.role === Role.ADMIN || user?.role === Role.HR 
@@ -331,39 +331,39 @@ export const Attendance: React.FC = () => {
             : user?.role === Role.MANAGER 
             ? 'Team Attendance Logs' 
             : 'My Attendance Logs'}
-          {activeTab === 'logs' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-600 rounded-t-full"></div>}
+          {activeTab === 'logs' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-grx-primary-600 rounded-t-full"></div>}
         </button>
         <button 
           onClick={() => setActiveTab('requests')}
           className={`pb-3 font-medium text-sm transition-colors relative ${
-            activeTab === 'requests' ? 'text-indigo-600' : 'text-grx-muted hover:text-grx-text'
+            activeTab === 'requests' ? 'text-grx-primary-600' : 'text-grx-muted hover:text-grx-text'
           }`}
         >
           Regularization Requests
-          {activeTab === 'requests' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-600 rounded-t-full"></div>}
+          {activeTab === 'requests' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-grx-primary-600 rounded-t-full"></div>}
         </button>
         {user && (user.role === Role.MANAGER || user.role === Role.HR || user.role === Role.ADMIN) && (
           <button 
             onClick={() => setActiveTab('approvals')}
             className={`pb-3 font-medium text-sm transition-colors relative ${
-              activeTab === 'approvals' ? 'text-indigo-600' : 'text-grx-muted hover:text-grx-text'
+              activeTab === 'approvals' ? 'text-grx-primary-600' : 'text-grx-muted hover:text-grx-text'
             }`}
           >
             Approvals
             {pendingApprovals.length > 0 && (
               <span className="ml-2 bg-rose-500 text-white text-xs px-1.5 py-0.5 rounded-full">{pendingApprovals.length}</span>
             )}
-            {activeTab === 'approvals' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-600 rounded-t-full"></div>}
+            {activeTab === 'approvals' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-grx-primary-600 rounded-t-full"></div>}
           </button>
         )}
       </div>
 
       {/* Tab Content: My Attendance Logs */}
       {activeTab === 'logs' && (
-        <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-50 dark:border-grx-primary-800 overflow-hidden">
+        <div className="grx-glass-card rounded-xl overflow-hidden">
           {loading ? (
             <div className="p-8 text-center">
-              <Loader2 className="animate-spin text-indigo-600 mx-auto" size={32} />
+              <Loader2 className="animate-spin text-grx-primary-600 mx-auto" size={32} />
               <p className="text-grx-muted mt-2">Loading attendance logs...</p>
             </div>
           ) : error ? (
@@ -435,14 +435,14 @@ export const Attendance: React.FC = () => {
           <div className="flex justify-end">
             <button 
               onClick={() => setShowRegModal(true)}
-              className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2 text-sm font-medium transition-colors"
+              className="bg-grx-primary-600 text-white px-4 py-2 rounded-lg hover:bg-grx-primary-700 flex items-center gap-2 text-sm font-medium transition-colors"
             >
               <FileText size={16} />
               New Request
             </button>
           </div>
           
-          <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-50 overflow-hidden">
+          <div className="grx-glass-card rounded-xl border border-grx-primary-50 overflow-hidden">
             {myRequests.length === 0 ? (
               <div className="p-8 text-center text-grx-muted">No regularization requests found.</div>
             ) : (
@@ -489,7 +489,7 @@ export const Attendance: React.FC = () => {
 
       {/* Tab Content: Approvals */}
       {activeTab === 'approvals' && (
-        <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
+        <div className="grx-glass-card rounded-xl overflow-hidden">
           {pendingApprovals.length === 0 ? (
             <div className="p-8 text-center text-grx-muted dark:text-grx-muted">No pending approvals. Good job!</div>
           ) : (
@@ -546,8 +546,8 @@ export const Attendance: React.FC = () => {
 
       {/* Modal */}
       {showRegModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-grx-dark-surface rounded-xl w-full max-w-lg p-6 shadow-2xl border border-grx-primary-100 dark:border-grx-primary-800">
+        <div className="fixed inset-0 grx-modal-backdrop flex items-center justify-center z-50 p-4">
+          <div className="grx-glass-card rounded-xl w-full max-w-lg p-6 shadow-2xl border border-grx-primary-100 dark:border-grx-primary-800">
             <h3 className="text-lg font-bold mb-4 text-grx-text dark:text-white">Request Regularization</h3>
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
@@ -555,7 +555,7 @@ export const Attendance: React.FC = () => {
                    <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">Date</label>
                    <input 
                     type="date" 
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-grx-primary outline-none"
                     value={newReg.date}
                     onChange={e => setNewReg({...newReg, date: e.target.value})}
                    />
@@ -563,7 +563,7 @@ export const Attendance: React.FC = () => {
                 <div>
                   <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">Type</label>
                   <select 
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-grx-primary outline-none"
                     value={newReg.type}
                     onChange={e => setNewReg({...newReg, type: e.target.value as RegularizationType})}
                   >
@@ -598,7 +598,7 @@ export const Attendance: React.FC = () => {
               <div>
                 <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">Reason</label>
                 <textarea 
-                  className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-3 text-sm h-24 focus:ring-2 focus:ring-indigo-500 outline-none resize-none" 
+                  className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-3 text-sm h-24 focus:ring-2 focus:ring-grx-primary outline-none resize-none" 
                   placeholder="Please explain why regularisation is needed..."
                   value={newReg.reason}
                   onChange={e => setNewReg({...newReg, reason: e.target.value})}
@@ -615,7 +615,7 @@ export const Attendance: React.FC = () => {
                 <button 
                   onClick={handleSubmitRegularization} 
                   disabled={!newReg.date || !newReg.reason}
-                  className="flex-1 bg-indigo-600 text-white py-2.5 rounded-lg hover:bg-indigo-700 font-medium disabled:opacity-50 transition-colors"
+                  className="flex-1 bg-grx-primary-600 text-white py-2.5 rounded-lg hover:bg-grx-primary-700 font-medium disabled:opacity-50 transition-colors"
                 >
                   Submit Request
                 </button>

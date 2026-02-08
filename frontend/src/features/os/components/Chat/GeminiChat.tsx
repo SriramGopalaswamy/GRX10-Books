@@ -48,7 +48,7 @@ export const GeminiChat: React.FC = () => {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 w-96 h-[500px] bg-white rounded-2xl shadow-2xl flex flex-col border border-gray-200 animate-in slide-in-from-bottom-4 fade-in duration-300">
+        <div className="fixed bottom-24 right-6 z-50 w-96 h-[500px] bg-white rounded-2xl shadow-2xl flex flex-col border border-grx-primary-100 animate-in slide-in-from-bottom-4 fade-in duration-300">
           {/* Header */}
           <div className="p-4 bg-gradient-to-r from-grx-primary-800 to-grx-dark rounded-t-2xl flex items-center gap-3 text-white">
              <div className="p-2 bg-white/10 rounded-lg">
@@ -61,13 +61,13 @@ export const GeminiChat: React.FC = () => {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-grx-bg">
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[85%] p-3 rounded-xl text-sm ${
                   msg.role === 'user' 
                     ? 'bg-brand-600 text-white rounded-br-none' 
-                    : 'bg-white text-gray-800 border border-gray-200 rounded-bl-none shadow-sm'
+                    : 'bg-white text-grx-text border border-grx-primary-100 rounded-bl-none shadow-sm'
                 }`}>
                   {msg.text}
                 </div>
@@ -75,7 +75,7 @@ export const GeminiChat: React.FC = () => {
             ))}
             {isLoading && (
               <div className="flex justify-start">
-                <div className="bg-white p-3 rounded-xl border border-gray-200 rounded-bl-none shadow-sm">
+                <div className="bg-white p-3 rounded-xl border border-grx-primary-100 rounded-bl-none shadow-sm">
                    <Loader2 className="animate-spin text-brand-600" size={18} />
                 </div>
               </div>
@@ -84,7 +84,7 @@ export const GeminiChat: React.FC = () => {
           </div>
 
           {/* Input */}
-          <div className="p-4 bg-white border-t border-gray-200 rounded-b-2xl">
+          <div className="p-4 bg-white border-t border-grx-primary-100 rounded-b-2xl">
             <div className="flex items-center gap-2">
               <input
                 type="text"
@@ -92,7 +92,7 @@ export const GeminiChat: React.FC = () => {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                 placeholder="Ask about goals or memos..."
-                className="flex-1 bg-gray-100 border-0 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none"
+                className="flex-1 bg-grx-primary-50 border-0 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none"
               />
               <button 
                 onClick={handleSend}

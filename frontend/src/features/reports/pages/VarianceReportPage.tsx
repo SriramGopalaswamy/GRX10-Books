@@ -140,18 +140,18 @@ export const VarianceReportPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Variance Analysis</h2>
-          <p className="text-slate-500 dark:text-slate-400">
+          <h2 className="text-2xl font-bold text-grx-text dark:text-white">Variance Analysis</h2>
+          <p className="text-grx-muted dark:text-grx-muted">
             Compare financial performance across periods
           </p>
         </div>
         <button
           onClick={handleDownload}
           disabled={!data}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2 transition-colors disabled:opacity-50 text-sm font-medium"
+          className="bg-grx-primary-600 text-white px-4 py-2 rounded-lg hover:bg-grx-primary-700 flex items-center gap-2 transition-colors disabled:opacity-50 text-sm font-medium"
         >
           <Download size={18} />
           Export CSV
@@ -165,63 +165,63 @@ export const VarianceReportPage: React.FC = () => {
       )}
 
       {/* Period Selector */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grx-glass-card rounded-xl p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 grx-stagger">
           <div>
-            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">
+            <h3 className="text-sm font-semibold text-grx-text dark:text-grx-primary-200 mb-3">
               Current Period
             </h3>
             <div className="flex items-center gap-3">
               <div className="flex-1">
-                <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">
+                <label className="block text-xs text-grx-muted dark:text-grx-muted mb-1">
                   Start Date
                 </label>
                 <input
                   type="date"
                   value={currentStart}
                   onChange={(e) => setCurrentStart(e.target.value)}
-                  className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
                 />
               </div>
               <div className="flex-1">
-                <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">
+                <label className="block text-xs text-grx-muted dark:text-grx-muted mb-1">
                   End Date
                 </label>
                 <input
                   type="date"
                   value={currentEnd}
                   onChange={(e) => setCurrentEnd(e.target.value)}
-                  className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
                 />
               </div>
             </div>
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">
+            <h3 className="text-sm font-semibold text-grx-text dark:text-grx-primary-200 mb-3">
               Comparison Period
             </h3>
             <div className="flex items-center gap-3">
               <div className="flex-1">
-                <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">
+                <label className="block text-xs text-grx-muted dark:text-grx-muted mb-1">
                   Start Date
                 </label>
                 <input
                   type="date"
                   value={previousStart}
                   onChange={(e) => setPreviousStart(e.target.value)}
-                  className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
                 />
               </div>
               <div className="flex-1">
-                <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">
+                <label className="block text-xs text-grx-muted dark:text-grx-muted mb-1">
                   End Date
                 </label>
                 <input
                   type="date"
                   value={previousEnd}
                   onChange={(e) => setPreviousEnd(e.target.value)}
-                  className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
                 />
               </div>
             </div>
@@ -231,27 +231,27 @@ export const VarianceReportPage: React.FC = () => {
 
       {loading ? (
         <div className="flex items-center justify-center h-64">
-          <Loader2 className="animate-spin text-indigo-600" size={32} />
-          <span className="ml-2 text-slate-500 dark:text-slate-400">Loading report...</span>
+          <Loader2 className="animate-spin text-grx-primary-600" size={32} />
+          <span className="ml-2 text-grx-muted dark:text-grx-muted">Loading report...</span>
         </div>
       ) : data ? (
         <>
           {/* Summary Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700">
-              <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Current Period</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+            <div className="grx-glass-card p-5 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800">
+              <p className="text-xs text-grx-muted dark:text-grx-muted mb-1">Current Period</p>
+              <p className="text-2xl font-bold text-grx-text dark:text-white">
                 ₹{formatINR(data.totals.currentPeriodTotal)}
               </p>
             </div>
-            <div className="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700">
-              <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Previous Period</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+            <div className="grx-glass-card p-5 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800">
+              <p className="text-xs text-grx-muted dark:text-grx-muted mb-1">Previous Period</p>
+              <p className="text-2xl font-bold text-grx-text dark:text-white">
                 ₹{formatINR(data.totals.previousPeriodTotal)}
               </p>
             </div>
-            <div className="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700">
-              <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Change</p>
+            <div className="grx-glass-card p-5 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800">
+              <p className="text-xs text-grx-muted dark:text-grx-muted mb-1">Change</p>
               <p
                 className={`text-2xl font-bold ${
                   data.totals.totalChange >= 0
@@ -262,8 +262,8 @@ export const VarianceReportPage: React.FC = () => {
                 {data.totals.totalChange >= 0 ? '+' : ''}₹{formatINR(Math.abs(data.totals.totalChange))}
               </p>
             </div>
-            <div className="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700">
-              <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Change %</p>
+            <div className="grx-glass-card p-5 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800">
+              <p className="text-xs text-grx-muted dark:text-grx-muted mb-1">Change %</p>
               <p
                 className={`text-2xl font-bold ${
                   data.totals.changePercent >= 0
@@ -278,14 +278,14 @@ export const VarianceReportPage: React.FC = () => {
           </div>
 
           {/* Report Table */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-            <div className="p-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+          <div className="grx-glass-card rounded-xl overflow-hidden">
+            <div className="p-4 border-b border-grx-primary-100 dark:border-grx-primary-800 bg-grx-bg dark:bg-grx-dark">
               <div className="flex justify-between items-center">
                 <div>
-                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">
+                  <h3 className="font-semibold text-grx-text dark:text-white">
                     Variance Analysis
                   </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  <p className="text-xs text-grx-muted dark:text-grx-muted mt-1">
                     Current: {data.currentPeriodStart} to {data.currentPeriodEnd} | Previous:{' '}
                     {data.previousPeriodStart} to {data.previousPeriodEnd}
                   </p>
@@ -294,41 +294,41 @@ export const VarianceReportPage: React.FC = () => {
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
+                <thead className="bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-100 dark:border-grx-primary-800">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">
                       Account Code
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">
                       Account Name
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">
                       Type
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">
+                    <th className="px-6 py-3 text-right text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">
                       Current Period (₹)
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">
+                    <th className="px-6 py-3 text-right text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">
                       Previous Period (₹)
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">
+                    <th className="px-6 py-3 text-right text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">
                       Change (₹)
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">
+                    <th className="px-6 py-3 text-right text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">
                       Change %
                     </th>
-                    <th className="px-6 py-3 text-center text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">
+                    <th className="px-6 py-3 text-center text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">
                       Direction
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                <tbody className="divide-y divide-grx-primary-100 dark:divide-grx-primary-800">
                   {data.items.map((item, idx) => (
-                    <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-700">
-                      <td className="px-6 py-4 font-mono text-slate-600 dark:text-slate-300">
+                    <tr key={idx} className="hover:bg-grx-bg dark:hover:bg-grx-primary-800">
+                      <td className="px-6 py-4 font-mono text-grx-muted dark:text-grx-primary-200">
                         {item.accountCode}
                       </td>
-                      <td className="px-6 py-4 text-slate-900 dark:text-slate-100">
+                      <td className="px-6 py-4 text-grx-text dark:text-white">
                         {item.accountName}
                       </td>
                       <td className="px-6 py-4">
@@ -348,10 +348,10 @@ export const VarianceReportPage: React.FC = () => {
                           {item.accountType}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-right font-mono text-slate-700 dark:text-slate-300">
+                      <td className="px-6 py-4 text-right font-mono text-grx-text dark:text-grx-primary-200">
                         {formatINR(item.currentPeriod)}
                       </td>
-                      <td className="px-6 py-4 text-right font-mono text-slate-700 dark:text-slate-300">
+                      <td className="px-6 py-4 text-right font-mono text-grx-text dark:text-grx-primary-200">
                         {formatINR(item.previousPeriod)}
                       </td>
                       <td
@@ -381,20 +381,20 @@ export const VarianceReportPage: React.FC = () => {
                           ) : item.direction === 'Decrease' ? (
                             <TrendingDown size={18} className="text-red-600 dark:text-red-400" />
                           ) : (
-                            <Minus size={18} className="text-slate-400" />
+                            <Minus size={18} className="text-grx-muted" />
                           )}
                         </div>
                       </td>
                     </tr>
                   ))}
-                  <tr className="bg-slate-50 dark:bg-slate-900 font-bold border-t-2 border-slate-300 dark:border-slate-600">
-                    <td colSpan={3} className="px-6 py-4 text-slate-900 dark:text-slate-100">
+                  <tr className="bg-grx-bg dark:bg-grx-dark font-bold border-t-2 border-grx-primary-100 dark:border-grx-primary-700">
+                    <td colSpan={3} className="px-6 py-4 text-grx-text dark:text-white">
                       TOTAL
                     </td>
-                    <td className="px-6 py-4 text-right font-mono text-slate-900 dark:text-slate-100">
+                    <td className="px-6 py-4 text-right font-mono text-grx-text dark:text-white">
                       {formatINR(data.totals.currentPeriodTotal)}
                     </td>
-                    <td className="px-6 py-4 text-right font-mono text-slate-900 dark:text-slate-100">
+                    <td className="px-6 py-4 text-right font-mono text-grx-text dark:text-white">
                       {formatINR(data.totals.previousPeriodTotal)}
                     </td>
                     <td
@@ -425,9 +425,9 @@ export const VarianceReportPage: React.FC = () => {
           </div>
         </>
       ) : (
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-12 text-center">
-          <FileSpreadsheet size={48} className="mx-auto text-slate-300 dark:text-slate-600 mb-4" />
-          <p className="text-slate-500 dark:text-slate-400">
+        <div className="grx-glass-card rounded-xl p-12 text-center">
+          <FileSpreadsheet size={48} className="mx-auto text-grx-primary-200 dark:text-grx-muted mb-4" />
+          <p className="text-grx-muted dark:text-grx-muted">
             Please select period dates to view the variance analysis.
           </p>
         </div>

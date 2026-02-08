@@ -79,8 +79,8 @@ export const RolesPage: React.FC = () => {
   }, {} as Record<string, any[]>);
 
   return (
-    <div className="space-y-6">
-      <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
+      <div className="grx-glass-card rounded-xl p-6">
         <h2 className="text-2xl font-bold text-grx-text dark:text-white mb-4">System Roles</h2>
         <p className="text-grx-muted dark:text-grx-muted mb-6">Manage system roles. Use the Security & Approvals section to assign permissions to roles.</p>
         <div className="text-sm text-grx-muted dark:text-grx-muted">
@@ -90,13 +90,13 @@ export const RolesPage: React.FC = () => {
       </div>
 
       {/* Permission Assignment */}
-      <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-6">
+      <div className="grx-glass-card rounded-xl p-6">
         <h3 className="text-lg font-semibold text-grx-text dark:text-white mb-4">Assign Permissions to Roles</h3>
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Select Role</label>
             <select
-              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
               value={selectedRole?.id || ''}
               onChange={e => {
                 const role = roles.find(r => r.id === e.target.value);
@@ -112,8 +112,8 @@ export const RolesPage: React.FC = () => {
           </div>
 
           {showPermissionModal && selectedRole && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-xl p-6 max-w-4xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+            <div className="fixed inset-0 grx-modal-backdrop flex items-center justify-center z-50">
+              <div className="grx-glass-card rounded-xl shadow-xl p-6 max-w-4xl w-full mx-4 max-h-[80vh] overflow-y-auto">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-xl font-semibold text-grx-text dark:text-white">
                     Permissions for {selectedRole.name}
@@ -129,7 +129,7 @@ export const RolesPage: React.FC = () => {
                   </button>
                 </div>
 
-                <div className="space-y-6">
+                <div className="space-y-6 grx-animate-fade-in-up">
                   {Object.entries(groupedPermissions).map(([key, perms]) => (
                     <div key={key} className="border border-grx-primary-100 dark:border-grx-primary-800 rounded-lg p-4">
                       <h4 className="font-semibold text-grx-text dark:text-white mb-3">{key}</h4>
@@ -149,7 +149,7 @@ export const RolesPage: React.FC = () => {
                                   setRolePermissions(rolePermissions.filter(id => id !== perm.id));
                                 }
                               }}
-                              className="rounded border-grx-primary-100 text-indigo-600 focus:ring-indigo-500"
+                              className="rounded border-grx-primary-100 text-grx-primary-600 focus:ring-grx-primary"
                             />
                             <span className="text-sm text-grx-text dark:text-grx-primary-200">{perm.action}</span>
                           </label>
@@ -171,7 +171,7 @@ export const RolesPage: React.FC = () => {
                   </button>
                   <button
                     onClick={handleSavePermissions}
-                    className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2 transition-colors"
+                    className="bg-grx-primary-600 text-white px-4 py-2 rounded-lg hover:bg-grx-primary-700 flex items-center gap-2 transition-colors"
                   >
                     <CheckCircle2 size={18} />
                     Save Permissions

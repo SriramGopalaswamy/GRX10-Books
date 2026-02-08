@@ -93,7 +93,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
           {onBack && (
             <button
               onClick={onBack}
-              className="text-indigo-600 hover:text-indigo-700 flex items-center gap-2 mx-auto"
+              className="text-grx-primary-600 hover:text-grx-primary-700 flex items-center gap-2 mx-auto"
             >
               <ArrowLeft size={18} />
               Back to Employees
@@ -235,14 +235,14 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
     switch (activeSection) {
       case 'org':
         return (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-6 grx-animate-fade-in-up">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 grx-stagger">
               <div>
                 <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Employee ID</label>
                 {isEditing ? (
                   <input
                     type="text"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.id || ''}
                     disabled
                   />
@@ -254,7 +254,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Department</label>
                 {isEditing ? (
                   <select
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.department || ''}
                     onChange={e => handleChange('department', e.target.value)}
                   >
@@ -271,7 +271,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Employee Position/Role</label>
                 {isEditing ? (
                   <select
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.employeePosition || ''}
                     onChange={e => handleChange('employeePosition', e.target.value)}
                   >
@@ -289,7 +289,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 {isEditing ? (
                   <input
                     type="text"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.designation || ''}
                     onChange={e => handleChange('designation', e.target.value)}
                   />
@@ -301,7 +301,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Employee Type</label>
                 {isEditing ? (
                   <select
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.employeeType || ''}
                     onChange={e => handleChange('employeeType', e.target.value)}
                   >
@@ -326,7 +326,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Status</label>
                 {isEditing ? (
                   <select
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.status || 'Active'}
                     onChange={e => handleChange('status', e.target.value)}
                   >
@@ -350,7 +350,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 {isEditing ? (
                   <input
                     type="date"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.joinDate || ''}
                     onChange={e => handleChange('joinDate', e.target.value)}
                   />
@@ -363,7 +363,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 {isEditing ? (
                   <input
                     type="date"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.terminationDate || ''}
                     onChange={e => handleChange('terminationDate', e.target.value)}
                   />
@@ -375,7 +375,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Manager</label>
                 {isEditing ? (
                   <select
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.managerId || ''}
                     onChange={e => handleChange('managerId', e.target.value)}
                   >
@@ -392,7 +392,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Work Location</label>
                 {isEditing ? (
                   <select
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.workLocation || ''}
                     onChange={e => handleChange('workLocation', e.target.value)}
                   >
@@ -424,14 +424,14 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
 
       case 'personal':
         return (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-6 grx-animate-fade-in-up">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 grx-stagger">
               <div>
                 <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Full Name</label>
                 {isEditing ? (
                   <input
                     type="text"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.name || ''}
                     onChange={e => handleChange('name', e.target.value)}
                   />
@@ -444,7 +444,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 {isEditing ? (
                   <input
                     type="date"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.dateOfBirth || ''}
                     onChange={e => handleChange('dateOfBirth', e.target.value)}
                   />
@@ -457,7 +457,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 {isEditing ? (
                   <input
                     type="email"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.email || ''}
                     onChange={e => handleChange('email', e.target.value)}
                   />
@@ -470,7 +470,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 {isEditing ? (
                   <input
                     type="tel"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.phone || ''}
                     onChange={e => handleChange('phone', e.target.value)}
                   />
@@ -483,7 +483,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 {isEditing ? (
                   <textarea
                     rows={3}
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.address || ''}
                     onChange={e => handleChange('address', e.target.value)}
                   />
@@ -496,7 +496,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 {isEditing ? (
                   <input
                     type="text"
-                    className="w-full border border-grx-primary-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none uppercase"
+                    className="w-full border border-grx-primary-100 rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary outline-none uppercase"
                     value={formData.pan || ''}
                     onChange={e => handleChange('pan', e.target.value.toUpperCase())}
                     maxLength={10}
@@ -510,7 +510,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 {isEditing ? (
                   <input
                     type="text"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.aadhar || ''}
                     onChange={e => handleChange('aadhar', e.target.value)}
                     maxLength={12}
@@ -524,7 +524,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 {isEditing ? (
                   <input
                     type="text"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.pfNumber || ''}
                     onChange={e => handleChange('pfNumber', e.target.value)}
                   />
@@ -552,12 +552,12 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     </button>
                   )}
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 grx-stagger">
                   <div>
                     <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Level</label>
                     {isEditing ? (
                       <select
-                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                         value={edu.level}
                         onChange={e => handleNestedChange('educationDetails', index, 'level', e.target.value)}
                       >
@@ -576,7 +576,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     {isEditing ? (
                       <input
                         type="text"
-                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                         value={edu.institution}
                         onChange={e => handleNestedChange('educationDetails', index, 'institution', e.target.value)}
                       />
@@ -589,7 +589,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     {isEditing ? (
                       <input
                         type="text"
-                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                         value={edu.field}
                         onChange={e => handleNestedChange('educationDetails', index, 'field', e.target.value)}
                       />
@@ -602,7 +602,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     {isEditing ? (
                       <input
                         type="text"
-                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                         value={edu.year}
                         onChange={e => handleNestedChange('educationDetails', index, 'year', e.target.value)}
                       />
@@ -615,7 +615,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     {isEditing ? (
                       <input
                         type="text"
-                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                         value={edu.percentage || edu.grade || ''}
                         onChange={e => {
                           const isNumeric = !isNaN(parseFloat(e.target.value));
@@ -636,7 +636,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
             {isEditing && (
               <button
                 onClick={handleAddEducation}
-                className="w-full border-2 border-dashed border-grx-primary-100 rounded-lg p-4 text-grx-muted hover:border-indigo-500 hover:text-indigo-600 transition-colors flex items-center justify-center gap-2"
+                className="w-full border-2 border-dashed border-grx-primary-100 rounded-lg p-4 text-grx-muted hover:border-grx-primary-500 hover:text-grx-primary-600 transition-colors flex items-center justify-center gap-2"
               >
                 <Plus size={18} />
                 Add Education
@@ -664,13 +664,13 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     </button>
                   )}
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 grx-stagger">
                   <div>
                     <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Company</label>
                     {isEditing ? (
                       <input
                         type="text"
-                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                         value={exp.company}
                         onChange={e => handleNestedChange('experienceDetails', index, 'company', e.target.value)}
                       />
@@ -683,7 +683,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     {isEditing ? (
                       <input
                         type="text"
-                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                         value={exp.position}
                         onChange={e => handleNestedChange('experienceDetails', index, 'position', e.target.value)}
                       />
@@ -696,7 +696,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     {isEditing ? (
                       <input
                         type="date"
-                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                         value={exp.startDate}
                         onChange={e => handleNestedChange('experienceDetails', index, 'startDate', e.target.value)}
                       />
@@ -709,7 +709,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     {isEditing ? (
                       <input
                         type="date"
-                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                         value={exp.endDate}
                         onChange={e => handleNestedChange('experienceDetails', index, 'endDate', e.target.value)}
                       />
@@ -722,7 +722,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     {isEditing ? (
                       <textarea
                         rows={3}
-                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                         value={exp.responsibilities || ''}
                         onChange={e => handleNestedChange('experienceDetails', index, 'responsibilities', e.target.value)}
                       />
@@ -736,7 +736,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
             {isEditing && (
               <button
                 onClick={handleAddExperience}
-                className="w-full border-2 border-dashed border-grx-primary-100 rounded-lg p-4 text-grx-muted hover:border-indigo-500 hover:text-indigo-600 transition-colors flex items-center justify-center gap-2"
+                className="w-full border-2 border-dashed border-grx-primary-100 rounded-lg p-4 text-grx-muted hover:border-grx-primary-500 hover:text-grx-primary-600 transition-colors flex items-center justify-center gap-2"
               >
                 <Plus size={18} />
                 Add Experience
@@ -750,9 +750,9 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
 
       case 'salary':
         return (
-          <div className="space-y-6">
+          <div className="space-y-6 grx-animate-fade-in-up">
             {canViewSensitive ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 grx-stagger">
                 <div>
                   <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Base Salary</label>
                   {isEditing ? (
@@ -760,7 +760,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-grx-muted">₹</span>
                       <input
                         type="number"
-                        className="w-full border border-grx-primary-100 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+                        className="w-full border border-grx-primary-100 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-grx-primary outline-none"
                         value={formData.salaryBreakdown?.base || ''}
                         onChange={e => handleChange('salaryBreakdown', {
                           ...formData.salaryBreakdown,
@@ -779,7 +779,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-grx-muted">₹</span>
                       <input
                         type="number"
-                        className="w-full border border-grx-primary-100 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+                        className="w-full border border-grx-primary-100 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-grx-primary outline-none"
                         value={formData.salaryBreakdown?.hra || ''}
                         onChange={e => handleChange('salaryBreakdown', {
                           ...formData.salaryBreakdown,
@@ -798,7 +798,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-grx-muted">₹</span>
                       <input
                         type="number"
-                        className="w-full border border-grx-primary-100 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+                        className="w-full border border-grx-primary-100 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-grx-primary outline-none"
                         value={formData.salaryBreakdown?.specialAllowance || ''}
                         onChange={e => handleChange('salaryBreakdown', {
                           ...formData.salaryBreakdown,
@@ -817,7 +817,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-grx-muted">₹</span>
                       <input
                         type="number"
-                        className="w-full border border-grx-primary-100 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+                        className="w-full border border-grx-primary-100 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-grx-primary outline-none"
                         value={formData.salaryBreakdown?.pf || ''}
                         onChange={e => handleChange('salaryBreakdown', {
                           ...formData.salaryBreakdown,
@@ -836,7 +836,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-grx-muted">₹</span>
                       <input
                         type="number"
-                        className="w-full border border-grx-primary-100 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+                        className="w-full border border-grx-primary-100 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-grx-primary outline-none"
                         value={formData.salaryBreakdown?.esi || ''}
                         onChange={e => handleChange('salaryBreakdown', {
                           ...formData.salaryBreakdown,
@@ -855,7 +855,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-grx-muted">₹</span>
                       <input
                         type="number"
-                        className="w-full border border-grx-primary-100 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+                        className="w-full border border-grx-primary-100 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-grx-primary outline-none"
                         value={formData.salaryBreakdown?.professionalTax || ''}
                         onChange={e => handleChange('salaryBreakdown', {
                           ...formData.salaryBreakdown,
@@ -874,7 +874,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-grx-muted">₹</span>
                       <input
                         type="number"
-                        className="w-full border border-grx-primary-100 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+                        className="w-full border border-grx-primary-100 rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-grx-primary outline-none"
                         value={formData.salaryBreakdown?.otherDeductions || ''}
                         onChange={e => handleChange('salaryBreakdown', {
                           ...formData.salaryBreakdown,
@@ -907,14 +907,14 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
 
       case 'leave':
         return (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-6 grx-animate-fade-in-up">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 grx-stagger">
               <div>
                 <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Casual Leave</label>
                 {isEditing ? (
                   <input
                     type="number"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.leaveEntitlements?.casual || ''}
                     onChange={e => handleChange('leaveEntitlements', {
                       ...formData.leaveEntitlements,
@@ -930,7 +930,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 {isEditing ? (
                   <input
                     type="number"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.leaveEntitlements?.sick || ''}
                     onChange={e => handleChange('leaveEntitlements', {
                       ...formData.leaveEntitlements,
@@ -946,7 +946,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 {isEditing ? (
                   <input
                     type="number"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.leaveEntitlements?.earned || ''}
                     onChange={e => handleChange('leaveEntitlements', {
                       ...formData.leaveEntitlements,
@@ -962,7 +962,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 {isEditing ? (
                   <input
                     type="number"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.leaveEntitlements?.maternity || ''}
                     onChange={e => handleChange('leaveEntitlements', {
                       ...formData.leaveEntitlements,
@@ -978,7 +978,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 {isEditing ? (
                   <input
                     type="number"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.leaveEntitlements?.paternity || ''}
                     onChange={e => handleChange('leaveEntitlements', {
                       ...formData.leaveEntitlements,
@@ -994,7 +994,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 {isEditing ? (
                   <input
                     type="number"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.leaveEntitlements?.compOff || ''}
                     onChange={e => handleChange('leaveEntitlements', {
                       ...formData.leaveEntitlements,
@@ -1030,13 +1030,13 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     </button>
                   )}
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 grx-stagger">
                   <div>
                     <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Certification Name</label>
                     {isEditing ? (
                       <input
                         type="text"
-                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                         value={cert.name}
                         onChange={e => {
                           const updated = [...(formData.certifications || [])];
@@ -1053,7 +1053,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     {isEditing ? (
                       <input
                         type="text"
-                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                         value={cert.issuer}
                         onChange={e => {
                           const updated = [...(formData.certifications || [])];
@@ -1070,7 +1070,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     {isEditing ? (
                       <input
                         type="date"
-                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                         value={cert.issueDate}
                         onChange={e => {
                           const updated = [...(formData.certifications || [])];
@@ -1087,7 +1087,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     {isEditing ? (
                       <input
                         type="date"
-                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                         value={cert.expiryDate || ''}
                         onChange={e => {
                           const updated = [...(formData.certifications || [])];
@@ -1104,7 +1104,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                     {isEditing ? (
                       <input
                         type="text"
-                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                        className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                         value={cert.certificateNumber || ''}
                         onChange={e => {
                           const updated = [...(formData.certifications || [])];
@@ -1122,7 +1122,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                       <label className="flex items-center gap-2 cursor-pointer">
                         <input
                           type="checkbox"
-                          className="w-4 h-4 text-indigo-600 rounded focus:ring-indigo-500"
+                          className="w-4 h-4 text-grx-primary-600 rounded focus:ring-grx-primary"
                           checked={cert.isMandatory}
                           onChange={e => {
                             const updated = [...(formData.certifications || [])];
@@ -1142,7 +1142,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
             {isEditing && (
               <button
                 onClick={handleAddCertification}
-                className="w-full border-2 border-dashed border-grx-primary-100 rounded-lg p-4 text-grx-muted hover:border-indigo-500 hover:text-indigo-600 transition-colors flex items-center justify-center gap-2"
+                className="w-full border-2 border-dashed border-grx-primary-100 rounded-lg p-4 text-grx-muted hover:border-grx-primary-500 hover:text-grx-primary-600 transition-colors flex items-center justify-center gap-2"
               >
                 <Plus size={18} />
                 Add Certification
@@ -1156,19 +1156,19 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
 
       case 'contact':
         return (
-          <div className="space-y-6">
+          <div className="space-y-6 grx-animate-fade-in-up">
             <div>
               <h4 className="text-md font-semibold text-grx-text mb-4 flex items-center gap-2">
                 <AlertCircle size={18} />
                 Emergency Contact
               </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 grx-stagger">
                 <div>
                   <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Contact Name</label>
                   {isEditing ? (
                     <input
                       type="text"
-                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                       value={formData.emergencyContactName || ''}
                       onChange={e => handleChange('emergencyContactName', e.target.value)}
                     />
@@ -1181,7 +1181,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                   {isEditing ? (
                     <input
                       type="text"
-                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                       value={formData.emergencyContactRelation || ''}
                       onChange={e => handleChange('emergencyContactRelation', e.target.value)}
                       placeholder="e.g. Spouse, Parent, Sibling"
@@ -1195,7 +1195,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                   {isEditing ? (
                     <input
                       type="tel"
-                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                       value={formData.emergencyContactPhone || ''}
                       onChange={e => handleChange('emergencyContactPhone', e.target.value)}
                     />
@@ -1211,13 +1211,13 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 <Banknote size={18} />
                 Bank Account Details
               </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 grx-stagger">
                 <div>
                   <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Account Number</label>
                   {isEditing ? (
                     <input
                       type="text"
-                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                       value={formData.bankAccountNumber || ''}
                       onChange={e => handleChange('bankAccountNumber', e.target.value)}
                     />
@@ -1230,7 +1230,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                   {isEditing ? (
                     <input
                       type="text"
-                      className="w-full border border-grx-primary-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none uppercase"
+                      className="w-full border border-grx-primary-100 rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary outline-none uppercase"
                       value={formData.bankIFSC || ''}
                       onChange={e => handleChange('bankIFSC', e.target.value.toUpperCase())}
                       maxLength={11}
@@ -1244,7 +1244,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                   {isEditing ? (
                     <input
                       type="text"
-                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                       value={formData.bankName || ''}
                       onChange={e => handleChange('bankName', e.target.value)}
                     />
@@ -1257,7 +1257,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                   {isEditing ? (
                     <input
                       type="text"
-                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                       value={formData.bankBranch || ''}
                       onChange={e => handleChange('bankBranch', e.target.value)}
                     />
@@ -1272,13 +1272,13 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
 
       case 'additional':
         return (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-6 grx-animate-fade-in-up">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 grx-stagger">
               <div>
                 <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Blood Group</label>
                 {isEditing ? (
                   <select
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.bloodGroup || ''}
                     onChange={e => handleChange('bloodGroup', e.target.value)}
                   >
@@ -1300,7 +1300,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Marital Status</label>
                 {isEditing ? (
                   <select
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.maritalStatus || ''}
                     onChange={e => handleChange('maritalStatus', e.target.value)}
                   >
@@ -1320,7 +1320,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                   {isEditing ? (
                     <input
                       type="text"
-                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                      className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                       value={formData.spouseName || ''}
                       onChange={e => handleChange('spouseName', e.target.value)}
                     />
@@ -1334,7 +1334,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 {isEditing ? (
                   <input
                     type="date"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.probationEndDate || ''}
                     onChange={e => handleChange('probationEndDate', e.target.value)}
                   />
@@ -1347,7 +1347,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 {isEditing ? (
                   <input
                     type="number"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.noticePeriod || 30}
                     onChange={e => handleChange('noticePeriod', parseInt(e.target.value) || 30)}
                   />
@@ -1360,7 +1360,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 {isEditing ? (
                   <input
                     type="date"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.lastWorkingDay || ''}
                     onChange={e => handleChange('lastWorkingDay', e.target.value)}
                   />
@@ -1373,7 +1373,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 {isEditing ? (
                   <input
                     type="date"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.exitInterviewDate || ''}
                     onChange={e => handleChange('exitInterviewDate', e.target.value)}
                   />
@@ -1385,7 +1385,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Referred By</label>
                 {isEditing ? (
                   <select
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={formData.employeeReferralId || ''}
                     onChange={e => handleChange('employeeReferralId', e.target.value)}
                   >
@@ -1407,7 +1407,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 {isEditing ? (
                   <input
                     type="text"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={(formData.skills || []).join(', ')}
                     onChange={e => handleChange('skills', e.target.value.split(',').map(s => s.trim()).filter(Boolean))}
                     placeholder="e.g. React, Node.js, Python (comma separated)"
@@ -1421,7 +1421,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 {isEditing ? (
                   <input
                     type="text"
-                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none"
+                    className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2.5 focus:ring-2 focus:ring-grx-primary dark:focus:ring-grx-primary-400 outline-none"
                     value={(formData.languages || []).join(', ')}
                     onChange={e => handleChange('languages', e.target.value.split(',').map(l => l.trim()).filter(Boolean))}
                     placeholder="e.g. English, Hindi, Tamil (comma separated)"
@@ -1506,7 +1506,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
       {/* Header */}
       <div className="flex items-center justify-between">
         <button
@@ -1521,7 +1521,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
             {!isEditing ? (
               <button 
                 onClick={() => setIsEditing(true)}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2"
+                className="bg-grx-primary-600 hover:bg-grx-primary-700 text-white grx-btn-press px-4 py-2 rounded-lg transition-colors flex items-center gap-2"
               >
                 <Edit2 size={18} />
                 <span>Edit</span>
@@ -1581,7 +1581,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
       </div>
 
       {/* Profile Header Card */}
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 text-white">
+      <div className="bg-gradient-to-r from-grx-primary-600 to-purple-600 rounded-2xl p-8 text-white">
         <div className="flex flex-col md:flex-row items-start md:items-end gap-6">
           <img 
             src={employee.avatar} 
@@ -1608,7 +1608,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
       </div>
 
       {/* Section Navigation */}
-      <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-4">
+      <div className="grx-glass-card rounded-xl p-4">
         <div className="flex flex-wrap gap-2">
           {sections.map((section) => {
             const Icon = section.icon;
@@ -1618,7 +1618,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
                 onClick={() => setActiveSection(section.id)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   activeSection === section.id
-                    ? 'bg-indigo-600 text-white'
+                    ? 'bg-grx-primary-600 text-white'
                     : 'bg-grx-primary-50 dark:bg-grx-primary-800 text-grx-text dark:text-grx-primary-200 hover:bg-grx-primary-100 dark:hover:bg-grx-primary-700'
                 }`}
               >
@@ -1633,7 +1633,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employeeId, on
       {/* Section Content */}
       <div className="bg-white rounded-xl shadow-sm border border-grx-primary-100 p-6">
         <h3 className="text-lg font-bold text-grx-text dark:text-white mb-6 flex items-center gap-2">
-          {React.createElement(sections.find(s => s.id === activeSection)?.icon || User, { size: 20, className: "text-indigo-600" })}
+          {React.createElement(sections.find(s => s.id === activeSection)?.icon || User, { size: 20, className: "text-grx-primary-600" })}
           {sections.find(s => s.id === activeSection)?.label}
         </h3>
         {renderSection()}

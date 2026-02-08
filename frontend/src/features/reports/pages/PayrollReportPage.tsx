@@ -122,7 +122,7 @@ export const PayrollReportPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold text-grx-text dark:text-white">Payroll Report</h2>
@@ -131,7 +131,7 @@ export const PayrollReportPage: React.FC = () => {
         <button
           onClick={handleDownload}
           disabled={!data}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2 transition-colors disabled:opacity-50"
+          className="bg-grx-primary-600 text-white px-4 py-2 rounded-lg hover:bg-grx-primary-700 flex items-center gap-2 transition-colors disabled:opacity-50"
         >
           <Download size={18} />
           Export CSV
@@ -139,19 +139,19 @@ export const PayrollReportPage: React.FC = () => {
       </div>
 
       {/* Filters */}
-      <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-4">
+      <div className="grx-glass-card rounded-xl p-4">
         <div className="flex items-center gap-2 mb-4">
           <Filter size={18} className="text-grx-muted" />
           <h3 className="font-semibold text-grx-text dark:text-white">Filters</h3>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 grx-stagger">
           <div>
             <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Month</label>
             <input
               type="month"
               value={month}
               onChange={e => setMonth(e.target.value)}
-              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
             />
           </div>
           <div>
@@ -159,7 +159,7 @@ export const PayrollReportPage: React.FC = () => {
             <select
               value={department}
               onChange={e => setDepartment(e.target.value)}
-              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
             >
               <option value="">All Departments</option>
               {getActiveDepartments().map(dept => (
@@ -178,14 +178,14 @@ export const PayrollReportPage: React.FC = () => {
 
       {loading ? (
         <div className="flex items-center justify-center h-64">
-          <Loader2 className="animate-spin text-indigo-600" size={32} />
+          <Loader2 className="animate-spin text-grx-primary-600" size={32} />
           <span className="ml-2 text-grx-muted">Loading payroll report...</span>
         </div>
       ) : data ? (
-        <div className="space-y-6">
+        <div className="space-y-6 grx-animate-fade-in-up">
           {/* Summary Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-white dark:bg-grx-dark-surface p-4 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800">
+            <div className="grx-glass-card p-4 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800">
               <p className="text-sm text-grx-muted dark:text-grx-muted mb-1">Total Employees</p>
               <p className="text-2xl font-bold text-grx-text dark:text-white">{data.summary.totalEmployees}</p>
             </div>
@@ -211,9 +211,9 @@ export const PayrollReportPage: React.FC = () => {
 
           {/* By Department Summary */}
           {Object.keys(data.summary.byDepartment).length > 0 && (
-            <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-4">
+            <div className="grx-glass-card rounded-xl p-4">
               <h3 className="font-semibold text-grx-text dark:text-white mb-4">By Department</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 grx-stagger">
                 {Object.entries(data.summary.byDepartment).map(([dept, stats]) => (
                   <div key={dept} className="p-4 bg-grx-bg dark:bg-grx-dark rounded-lg">
                     <p className="text-sm text-grx-muted dark:text-grx-muted">{dept}</p>
@@ -228,7 +228,7 @@ export const PayrollReportPage: React.FC = () => {
           )}
 
           {/* Records Table */}
-          <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
+          <div className="grx-glass-card rounded-xl overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead className="bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-100 dark:border-grx-primary-800">
@@ -298,7 +298,7 @@ export const PayrollReportPage: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-8 text-center text-grx-muted">
+        <div className="grx-glass-card rounded-xl p-8 text-center text-grx-muted">
           No data available.
         </div>
       )}

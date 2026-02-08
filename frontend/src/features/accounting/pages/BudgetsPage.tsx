@@ -26,7 +26,7 @@ interface Budget {
 const STATUS_STYLES: Record<string, string> = {
   Draft: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400',
   Active: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400',
-  Closed: 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400',
+  Closed: 'bg-grx-primary-50 dark:bg-grx-primary-800 text-grx-muted dark:text-grx-muted',
 };
 
 export const BudgetsPage: React.FC = () => {
@@ -163,13 +163,13 @@ export const BudgetsPage: React.FC = () => {
               setIsCreating(false);
               resetForm();
             }}
-            className="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full transition-colors"
+            className="p-2 hover:bg-grx-primary-100 dark:hover:bg-grx-primary-800 rounded-full transition-colors"
           >
-            <ArrowLeft size={20} className="text-slate-600 dark:text-slate-300" />
+            <ArrowLeft size={20} className="text-grx-muted dark:text-grx-primary-200" />
           </button>
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">New Budget</h2>
-            <p className="text-slate-500 dark:text-slate-400">Create a new budget plan</p>
+            <h2 className="text-2xl font-bold text-grx-text dark:text-white">New Budget</h2>
+            <p className="text-grx-muted dark:text-grx-muted">Create a new budget plan</p>
           </div>
         </div>
 
@@ -180,9 +180,9 @@ export const BudgetsPage: React.FC = () => {
           </div>
         )}
 
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 space-y-6">
+        <div className="grx-glass-card rounded-xl p-6 space-y-6">
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+            <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">
               Budget Name
             </label>
             <input
@@ -190,18 +190,18 @@ export const BudgetsPage: React.FC = () => {
               value={formBudgetName}
               onChange={(e) => setFormBudgetName(e.target.value)}
               placeholder="e.g., Marketing Budget 2024"
-              className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+            <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">
               Fiscal Year
             </label>
             <select
               value={formFiscalYearId}
               onChange={(e) => handleFiscalYearChange(e.target.value)}
-              className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
             >
               <option value="">Select fiscal year</option>
               {fiscalYears.map((fy) => (
@@ -212,33 +212,33 @@ export const BudgetsPage: React.FC = () => {
             </select>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 grx-stagger">
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">
                 Start Date
               </label>
               <input
                 type="date"
                 value={formStartDate}
                 onChange={(e) => setFormStartDate(e.target.value)}
-                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+                className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">
                 End Date
               </label>
               <input
                 type="date"
                 value={formEndDate}
                 onChange={(e) => setFormEndDate(e.target.value)}
-                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+                className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+            <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">
               Description (Optional)
             </label>
             <textarea
@@ -246,7 +246,7 @@ export const BudgetsPage: React.FC = () => {
               onChange={(e) => setFormDescription(e.target.value)}
               rows={3}
               placeholder="Budget description..."
-              className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
             />
           </div>
 
@@ -256,14 +256,14 @@ export const BudgetsPage: React.FC = () => {
                 setIsCreating(false);
                 resetForm();
               }}
-              className="px-4 py-2 text-slate-600 dark:text-slate-400 font-medium hover:bg-slate-50 dark:hover:bg-slate-700 rounded-lg"
+              className="px-4 py-2 text-grx-muted dark:text-grx-muted font-medium hover:bg-grx-bg dark:hover:bg-grx-primary-800 rounded-lg"
             >
               Cancel
             </button>
             <button
               onClick={handleSubmit}
               disabled={submitting}
-              className="bg-indigo-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-indigo-700 flex items-center gap-2 disabled:opacity-50 transition-colors"
+              className="bg-grx-primary-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-grx-primary-700 flex items-center gap-2 disabled:opacity-50 transition-colors"
             >
               {submitting ? <Loader2 className="animate-spin" size={18} /> : <Save size={18} />}
               Save Budget
@@ -276,17 +276,17 @@ export const BudgetsPage: React.FC = () => {
 
   // List view
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Budgets</h2>
-          <p className="text-slate-500 dark:text-slate-400">
+          <h2 className="text-2xl font-bold text-grx-text dark:text-white">Budgets</h2>
+          <p className="text-grx-muted dark:text-grx-muted">
             Create and manage organizational budgets
           </p>
         </div>
         <button
           onClick={() => setIsCreating(true)}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-lg flex items-center gap-2 text-sm font-medium shadow-sm transition-colors"
+          className="bg-grx-primary-600 hover:bg-grx-primary-700 text-white grx-btn-press px-4 py-2.5 rounded-lg flex items-center gap-2 text-sm font-medium shadow-sm transition-colors"
         >
           <Plus size={18} /> New Budget
         </button>
@@ -299,40 +299,40 @@ export const BudgetsPage: React.FC = () => {
       )}
 
       {/* Budgets Table */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-        <div className="p-4 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/50">
+      <div className="grx-glass-card rounded-xl overflow-hidden">
+        <div className="p-4 border-b border-grx-primary-50 dark:border-grx-primary-800 bg-grx-bg/50 dark:bg-grx-dark/50">
           <div className="relative max-w-sm w-full">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-grx-muted" size={18} />
             <input
               type="text"
               placeholder="Search budgets..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && fetchBudgets()}
-              className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
+              className="w-full pl-10 pr-4 py-2 rounded-lg border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none text-sm"
             />
           </div>
         </div>
 
         {loading ? (
           <div className="flex items-center justify-center h-64">
-            <Loader2 className="animate-spin text-indigo-600" size={32} />
-            <span className="ml-2 text-slate-500 dark:text-slate-400">Loading budgets...</span>
+            <Loader2 className="animate-spin text-grx-primary-600" size={32} />
+            <span className="ml-2 text-grx-muted dark:text-grx-muted">Loading budgets...</span>
           </div>
         ) : budgets.length === 0 ? (
           <div className="p-12 text-center">
-            <FileText size={48} className="mx-auto text-slate-300 dark:text-slate-600 mb-4" />
-            <p className="text-slate-500 dark:text-slate-400">No budgets found.</p>
+            <FileText size={48} className="mx-auto text-grx-primary-200 dark:text-grx-muted mb-4" />
+            <p className="text-grx-muted dark:text-grx-muted">No budgets found.</p>
             <button
               onClick={() => setIsCreating(true)}
-              className="mt-4 text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 text-sm font-medium"
+              className="mt-4 text-grx-primary-600 dark:text-grx-primary-400 hover:text-grx-primary-800 dark:hover:text-grx-primary-300 text-sm font-medium"
             >
               Create your first budget
             </button>
           </div>
         ) : (
           <table className="w-full text-sm text-left">
-            <thead className="text-xs text-slate-500 dark:text-slate-400 uppercase bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-700">
+            <thead className="text-xs text-grx-muted dark:text-grx-muted uppercase bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-50 dark:border-grx-primary-800">
               <tr>
                 <th className="px-6 py-4">Budget Name</th>
                 <th className="px-6 py-4">Fiscal Year</th>
@@ -342,16 +342,16 @@ export const BudgetsPage: React.FC = () => {
                 <th className="px-6 py-4">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-700 bg-white dark:bg-slate-800">
+            <tbody className="divide-y divide-grx-primary-50 dark:divide-grx-primary-800 bg-white dark:bg-grx-dark-surface">
               {budgets.map((budget) => (
-                <tr key={budget.id} className="hover:bg-slate-50 dark:hover:bg-slate-700">
-                  <td className="px-6 py-4 text-slate-900 dark:text-slate-100 font-medium">
+                <tr key={budget.id} className="hover:bg-grx-bg dark:hover:bg-grx-primary-800">
+                  <td className="px-6 py-4 text-grx-text dark:text-white font-medium">
                     {budget.budgetName}
                   </td>
-                  <td className="px-6 py-4 text-slate-600 dark:text-slate-400">
+                  <td className="px-6 py-4 text-grx-muted dark:text-grx-muted">
                     {budget.fiscalYearName}
                   </td>
-                  <td className="px-6 py-4 text-slate-500 dark:text-slate-400 text-xs">
+                  <td className="px-6 py-4 text-grx-muted dark:text-grx-muted text-xs">
                     {budget.startDate} to {budget.endDate}
                   </td>
                   <td className="px-6 py-4">
@@ -363,13 +363,13 @@ export const BudgetsPage: React.FC = () => {
                       {budget.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-right font-semibold text-slate-700 dark:text-slate-300">
+                  <td className="px-6 py-4 text-right font-semibold text-grx-text dark:text-grx-primary-200">
                     ₹{formatINR(budget.totalAmount)}
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
                       <button
-                        className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300"
+                        className="text-grx-primary-600 dark:text-grx-primary-400 hover:text-grx-primary-800 dark:hover:text-grx-primary-300"
                         title="Edit"
                       >
                         <Edit2 size={14} />

@@ -317,7 +317,7 @@ export const Payroll: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 grx-animate-fade-in-up">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-grx-text dark:text-white">Payroll & Compensation</h2>
         <button
@@ -327,7 +327,7 @@ export const Payroll: React.FC = () => {
             setGenerateMonth(currentMonth);
             setShowGenerateModal(true);
           }}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2 transition-colors"
+          className="bg-grx-primary-600 text-white px-4 py-2 rounded-lg hover:bg-grx-primary-700 flex items-center gap-2 transition-colors"
         >
           <Plus size={18} />
           Generate Payslip
@@ -341,24 +341,24 @@ export const Payroll: React.FC = () => {
       )}
 
       {user?.role === Role.FINANCE && (
-         <div className="bg-indigo-900 rounded-xl p-6 text-white mb-8">
+         <div className="bg-grx-primary-900 rounded-xl p-6 text-white mb-8">
            <div className="flex justify-between items-center mb-4">
              <h3 className="text-xl font-semibold">Finance Overview</h3>
-             <button className="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+             <button className="bg-grx-primary-600 hover:bg-grx-primary-500 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                Run Payroll Batch
              </button>
            </div>
            <div className="grid grid-cols-3 gap-8">
              <div>
-               <p className="text-indigo-300 text-sm">Total Payroll Cost</p>
+               <p className="text-grx-primary-300 text-sm">Total Payroll Cost</p>
                <p className="text-2xl font-bold mt-1">$142,500</p>
              </div>
              <div>
-               <p className="text-indigo-300 text-sm">Pending Approvals</p>
+               <p className="text-grx-primary-300 text-sm">Pending Approvals</p>
                <p className="text-2xl font-bold mt-1">4</p>
              </div>
              <div>
-               <p className="text-indigo-300 text-sm">Tax Deductions</p>
+               <p className="text-grx-primary-300 text-sm">Tax Deductions</p>
                <p className="text-2xl font-bold mt-1">$22,400</p>
              </div>
            </div>
@@ -367,7 +367,7 @@ export const Payroll: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Salary Structure Card */}
-        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl shadow-sm border border-grx-primary-50 dark:border-grx-primary-800 lg:col-span-1">
+        <div className="grx-glass-card p-6 rounded-xl lg:col-span-1">
           <h3 className="font-semibold text-grx-text dark:text-white mb-4 flex items-center gap-2">
             <DollarSign size={20} className="text-emerald-500" />
             Current Salary Structure
@@ -393,11 +393,11 @@ export const Payroll: React.FC = () => {
         </div>
 
         {/* Payslips List */}
-        <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-50 dark:border-grx-primary-800 lg:col-span-2 overflow-hidden">
+        <div className="grx-glass-card rounded-xl lg:col-span-2 overflow-hidden">
           <div className="p-6 border-b border-grx-primary-50 dark:border-grx-primary-800 font-semibold text-grx-text dark:text-white">Recent Payslips</div>
           {loading ? (
             <div className="p-8 text-center">
-              <Loader2 className="animate-spin text-indigo-600 mx-auto" size={32} />
+              <Loader2 className="animate-spin text-grx-primary-600 mx-auto" size={32} />
               <p className="text-grx-muted mt-2">Loading payslips...</p>
             </div>
           ) : payslips.length === 0 ? (
@@ -413,7 +413,7 @@ export const Payroll: React.FC = () => {
                 return (
                   <div key={slip.id} className="p-4 flex items-center justify-between hover:bg-grx-bg dark:hover:bg-grx-primary-800 transition-colors">
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                      <div className="w-10 h-10 bg-grx-primary-50 dark:bg-grx-primary-900/20 rounded-lg flex items-center justify-center text-grx-primary-600 dark:text-grx-primary-400">
                         <FileText size={20} />
                       </div>
                       <div>
@@ -430,7 +430,7 @@ export const Payroll: React.FC = () => {
                       <span className="font-mono font-medium text-grx-text dark:text-grx-primary-200">₹{slip.netPay.toLocaleString('en-IN')}</span>
                       <button 
                         onClick={() => handleDownload(slip)}
-                        className="text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 p-2 rounded-full transition-colors"
+                        className="text-grx-primary-600 dark:text-grx-primary-400 hover:bg-grx-primary-50 dark:hover:bg-grx-primary-900/20 p-2 rounded-full transition-colors"
                         title="Download Payslip"
                       >
                         <Download size={20} />
@@ -446,8 +446,8 @@ export const Payroll: React.FC = () => {
 
       {/* Generate Payslip Modal */}
       {showGenerateModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-grx-dark-surface rounded-xl w-full max-w-md p-6 shadow-2xl">
+        <div className="fixed inset-0 grx-modal-backdrop flex items-center justify-center z-50 p-4">
+          <div className="grx-glass-card rounded-xl w-full max-w-md p-6 shadow-2xl grx-modal-enter">
             <h3 className="text-lg font-bold mb-4 text-grx-text dark:text-white">Generate Payslip</h3>
             {error && (
               <div className="mb-4 p-3 bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 rounded-lg text-sm text-rose-700 dark:text-rose-300">
@@ -459,7 +459,7 @@ export const Payroll: React.FC = () => {
                 <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">Month *</label>
                 <input
                   type="month"
-                  className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2.5 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2.5 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-grx-primary outline-none"
                   value={generateMonth}
                   onChange={e => setGenerateMonth(e.target.value)}
                   max={`${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`}
@@ -479,7 +479,7 @@ export const Payroll: React.FC = () => {
                 <button
                   onClick={handleGeneratePayslip}
                   disabled={generating || !generateMonth}
-                  className="flex-1 bg-indigo-600 text-white py-2.5 rounded-lg hover:bg-indigo-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                  className="flex-1 bg-grx-primary-600 text-white py-2.5 rounded-lg hover:bg-grx-primary-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
                 >
                   {generating ? (
                     <>

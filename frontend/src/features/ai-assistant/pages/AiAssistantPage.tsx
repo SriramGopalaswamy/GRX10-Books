@@ -83,11 +83,11 @@ const AiAssistant: React.FC<AiAssistantProps> = ({ invoices }) => {
   };
 
   return (
-    <div className="h-[calc(100vh-2rem)] flex flex-col bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
+    <div className="h-[calc(100vh-2rem)] flex flex-col grx-glass-card rounded-xl overflow-hidden">
       {/* Header */}
       <div className="p-4 border-b border-grx-primary-50 dark:border-grx-primary-800 bg-grx-bg/50 dark:bg-grx-dark/50 flex justify-between items-center">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center text-white">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-grx-primary to-purple-600 flex items-center justify-center text-white">
             <Sparkles size={20} />
           </div>
           <div>
@@ -111,7 +111,7 @@ const AiAssistant: React.FC<AiAssistantProps> = ({ invoices }) => {
             className={`flex gap-4 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
           >
             <div className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center mt-1 
-              ${msg.role === 'user' ? 'bg-grx-primary-100 dark:bg-grx-primary-800 text-grx-muted dark:text-grx-primary-200' : 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400'}`}>
+              ${msg.role === 'user' ? 'bg-grx-primary-100 dark:bg-grx-primary-800 text-grx-muted dark:text-grx-primary-200' : 'bg-grx-primary-100 dark:bg-grx-primary-900/30 text-grx-primary-600 dark:text-grx-primary-400'}`}>
               {msg.role === 'user' ? <User size={16} /> : <Bot size={18} />}
             </div>
 
@@ -134,11 +134,11 @@ const AiAssistant: React.FC<AiAssistantProps> = ({ invoices }) => {
 
         {isLoading && (
           <div className="flex gap-4">
-            <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex-shrink-0 flex items-center justify-center mt-1">
+            <div className="w-8 h-8 rounded-full bg-grx-primary-100 text-grx-primary-600 flex-shrink-0 flex items-center justify-center mt-1">
               <Bot size={18} />
             </div>
-            <div className="bg-white dark:bg-grx-dark-surface border border-grx-primary-100 dark:border-grx-primary-800 px-4 py-3 rounded-2xl rounded-tl-sm shadow-sm flex items-center gap-2">
-              <Loader2 className="animate-spin text-indigo-500 dark:text-indigo-400" size={16} />
+            <div className="grx-glass border border-grx-primary-100 dark:border-grx-primary-800 px-4 py-3 rounded-2xl rounded-tl-sm shadow-sm flex items-center gap-2">
+              <Loader2 className="animate-spin text-grx-primary-500 dark:text-grx-primary-400" size={16} />
               <span className="text-xs text-grx-muted dark:text-grx-muted font-medium">Analyzing financial data...</span>
             </div>
           </div>
@@ -147,8 +147,8 @@ const AiAssistant: React.FC<AiAssistantProps> = ({ invoices }) => {
       </div>
 
       {/* Input Area */}
-      <div className="p-4 bg-white dark:bg-grx-dark-surface border-t border-grx-primary-50 dark:border-grx-primary-800">
-        <div className="relative flex items-end gap-2 bg-grx-bg dark:bg-grx-dark border border-grx-primary-100 dark:border-grx-primary-800 rounded-xl p-2 focus-within:ring-2 focus-within:ring-indigo-100 dark:focus-within:ring-indigo-900/50 focus-within:border-indigo-400 dark:focus-within:border-indigo-500 transition-all">
+      <div className="p-4 grx-glass border-t border-grx-primary-50 dark:border-grx-primary-800">
+        <div className="relative flex items-end gap-2 bg-grx-bg dark:bg-grx-dark border border-grx-primary-100 dark:border-grx-primary-800 rounded-xl p-2 focus-within:ring-2 focus-within:ring-grx-primary-100 dark:focus-within:ring-grx-primary-900/50 focus-within:border-grx-primary-400 dark:focus-within:border-grx-primary-500 transition-all">
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -161,7 +161,7 @@ const AiAssistant: React.FC<AiAssistantProps> = ({ invoices }) => {
           <button
             onClick={handleSend}
             disabled={!input.trim() || isLoading}
-            className="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex-shrink-0"
+            className="p-2 bg-grx-primary-600 text-white rounded-lg hover:bg-grx-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex-shrink-0"
           >
             <Send size={18} />
           </button>
