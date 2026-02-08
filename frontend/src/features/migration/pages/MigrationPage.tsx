@@ -88,35 +88,35 @@ const Migration: React.FC<MigrationProps> = ({ onImport }) => {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100">Migrate from Zoho Books</h2>
-        <p className="text-slate-500 dark:text-slate-400">Seamlessly import your Customers, Invoices, and Ledger history.</p>
+        <h2 className="text-3xl font-bold text-grx-text dark:text-white">Migrate from Zoho Books</h2>
+        <p className="text-grx-muted dark:text-grx-muted">Seamlessly import your Customers, Invoices, and Ledger history.</p>
       </div>
 
       {/* Steps */}
       <div className="flex justify-between items-center relative">
-        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-slate-200 dark:bg-slate-700 -z-10"></div>
+        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-grx-primary-100 dark:bg-grx-primary-800 -z-10"></div>
         {[
           { step: 1, label: "Upload Export" },
           { step: 2, label: "Map Fields" },
           { step: 3, label: "Verify Data" },
           { step: 4, label: "Finish" }
         ].map((s, idx) => (
-          <div key={s.step} className="flex flex-col items-center bg-slate-50 dark:bg-slate-800 px-2">
+          <div key={s.step} className="flex flex-col items-center bg-grx-bg dark:bg-grx-dark-surface px-2">
             <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold 
-                ${status === 'success' || (status !== 'idle' && s.step <= 2) ? 'bg-emerald-600 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400'}`}>
+                ${status === 'success' || (status !== 'idle' && s.step <= 2) ? 'bg-emerald-600 text-white' : 'bg-grx-primary-100 dark:bg-grx-primary-800 text-grx-muted dark:text-grx-muted'}`}>
               {s.step}
             </div>
-            <span className="text-xs font-medium text-slate-600 dark:text-slate-400 mt-1">{s.label}</span>
+            <span className="text-xs font-medium text-grx-muted dark:text-grx-muted mt-1">{s.label}</span>
           </div>
         ))}
       </div>
 
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+      <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-lg border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
 
         {status === 'idle' && (
           <div
             className={`p-12 flex flex-col items-center justify-center border-2 border-dashed transition-colors
-              ${dragActive ? "border-emerald-500 dark:border-emerald-400 bg-emerald-50 dark:bg-emerald-900/20" : "border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900"}`}
+              ${dragActive ? "border-emerald-500 dark:border-emerald-400 bg-emerald-50 dark:bg-emerald-900/20" : "border-grx-primary-100 dark:border-grx-primary-700 bg-grx-bg dark:bg-grx-dark"}`}
             onDragEnter={handleDrag}
             onDragLeave={handleDrag}
             onDragOver={handleDrag}
@@ -128,8 +128,8 @@ const Migration: React.FC<MigrationProps> = ({ onImport }) => {
 
             {file ? (
               <div className="text-center space-y-3">
-                <p className="font-medium text-slate-800 dark:text-slate-100 text-lg">{file.name}</p>
-                <p className="text-sm text-slate-500 dark:text-slate-400">{(file.size / 1024).toFixed(2)} KB</p>
+                <p className="font-medium text-grx-text dark:text-white text-lg">{file.name}</p>
+                <p className="text-sm text-grx-muted dark:text-grx-muted">{(file.size / 1024).toFixed(2)} KB</p>
                 <button
                   onClick={simulateMigration}
                   className="bg-emerald-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-emerald-700 transition-colors"
@@ -140,8 +140,8 @@ const Migration: React.FC<MigrationProps> = ({ onImport }) => {
               </div>
             ) : (
               <div className="text-center space-y-2">
-                <p className="text-lg font-medium text-slate-700 dark:text-slate-300">Drag & drop your Zoho Books export here</p>
-                <p className="text-sm text-slate-500 dark:text-slate-400">Supports .CSV, .XLS, .JSON</p>
+                <p className="text-lg font-medium text-grx-text dark:text-grx-primary-200">Drag & drop your Zoho Books export here</p>
+                <p className="text-sm text-grx-muted dark:text-grx-muted">Supports .CSV, .XLS, .JSON</p>
                 <div className="relative mt-4">
                   <input id="file-upload" type="file" className="hidden" onChange={handleChange} accept=".csv,.json,.xls,.xlsx" />
                   <label htmlFor="file-upload" className="cursor-pointer text-emerald-600 font-semibold hover:underline">Browse files</label>
@@ -154,10 +154,10 @@ const Migration: React.FC<MigrationProps> = ({ onImport }) => {
         {(status === 'uploading' || status === 'mapping') && (
           <div className="p-16 flex flex-col items-center text-center">
             <Loader2 className="animate-spin text-emerald-600 mb-4" size={48} />
-            <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-100">
+            <h3 className="text-xl font-semibold text-grx-text dark:text-white">
               {status === 'uploading' ? 'Analysing File Structure...' : 'Mapping Ledger Accounts...'}
             </h3>
-            <p className="text-slate-500 dark:text-slate-400 mt-2 max-w-md">
+            <p className="text-grx-muted dark:text-grx-muted mt-2 max-w-md">
               Our AI is identifying GSTINs, customer balances, and mapping Zoho chart of accounts to GRX10 standard structure.
             </p>
           </div>
@@ -168,18 +168,18 @@ const Migration: React.FC<MigrationProps> = ({ onImport }) => {
             <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-4">
               <Check size={32} />
             </div>
-            <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Migration Complete!</h3>
-            <p className="text-slate-500 dark:text-slate-400 mt-2 mb-6">
+            <h3 className="text-2xl font-bold text-grx-text dark:text-white">Migration Complete!</h3>
+            <p className="text-grx-muted dark:text-grx-muted mt-2 mb-6">
               Successfully imported 143 Customers, 1,205 Invoices, and FY2023 Opening Balances.
             </p>
-            <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg text-left text-sm text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 w-full max-w-md mb-6">
-              <div className="flex justify-between py-1"><span>Invoices Imported:</span> <span className="font-medium text-slate-900 dark:text-slate-100">1,205</span></div>
-              <div className="flex justify-between py-1"><span>Customers Created:</span> <span className="font-medium text-slate-900 dark:text-slate-100">143</span></div>
+            <div className="bg-grx-bg dark:bg-grx-dark p-4 rounded-lg text-left text-sm text-grx-muted dark:text-grx-muted border border-grx-primary-100 dark:border-grx-primary-800 w-full max-w-md mb-6">
+              <div className="flex justify-between py-1"><span>Invoices Imported:</span> <span className="font-medium text-grx-text dark:text-white">1,205</span></div>
+              <div className="flex justify-between py-1"><span>Customers Created:</span> <span className="font-medium text-grx-text dark:text-white">143</span></div>
               <div className="flex justify-between py-1"><span>Errors:</span> <span className="font-medium text-emerald-600">0</span></div>
             </div>
             <button
               onClick={() => setStatus('idle')}
-              className="bg-slate-900 text-white px-6 py-2 rounded-lg font-medium hover:bg-slate-800"
+              className="bg-grx-dark text-white px-6 py-2 rounded-lg font-medium hover:bg-grx-dark-surface"
             >
               Perform Another Migration
             </button>

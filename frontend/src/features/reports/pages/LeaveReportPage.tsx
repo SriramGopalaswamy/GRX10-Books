@@ -143,8 +143,8 @@ export const LeaveReportPage: React.FC = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Leave Report</h2>
-          <p className="text-slate-500 dark:text-slate-400">Employee leave requests and statistics</p>
+          <h2 className="text-2xl font-bold text-grx-text dark:text-white">Leave Report</h2>
+          <p className="text-grx-muted dark:text-grx-muted">Employee leave requests and statistics</p>
         </div>
         <button
           onClick={handleDownload}
@@ -157,36 +157,36 @@ export const LeaveReportPage: React.FC = () => {
       </div>
 
       {/* Filters */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4">
+      <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-4">
         <div className="flex items-center gap-2 mb-4">
-          <Filter size={18} className="text-slate-400" />
-          <h3 className="font-semibold text-slate-900 dark:text-slate-100">Filters</h3>
+          <Filter size={18} className="text-grx-muted" />
+          <h3 className="font-semibold text-grx-text dark:text-white">Filters</h3>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Start Date</label>
+            <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Start Date</label>
             <input
               type="date"
               value={startDate}
               onChange={e => setStartDate(e.target.value)}
-              className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">End Date</label>
+            <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">End Date</label>
             <input
               type="date"
               value={endDate}
               onChange={e => setEndDate(e.target.value)}
-              className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Department</label>
+            <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Department</label>
             <select
               value={filters.department}
               onChange={e => setFilters({ ...filters, department: e.target.value })}
-              className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
             >
               <option value="">All Departments</option>
               {getActiveDepartments().map(dept => (
@@ -195,11 +195,11 @@ export const LeaveReportPage: React.FC = () => {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Status</label>
+            <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Status</label>
             <select
               value={filters.status}
               onChange={e => setFilters({ ...filters, status: e.target.value })}
-              className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
             >
               <option value="">All Status</option>
               <option value="Pending">Pending</option>
@@ -219,15 +219,15 @@ export const LeaveReportPage: React.FC = () => {
       {loading ? (
         <div className="flex items-center justify-center h-64">
           <Loader2 className="animate-spin text-indigo-600" size={32} />
-          <span className="ml-2 text-slate-500">Loading leave report...</span>
+          <span className="ml-2 text-grx-muted">Loading leave report...</span>
         </div>
       ) : data ? (
         <div className="space-y-6">
           {/* Summary Cards */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
-              <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Total Requests</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{data.summary.totalRequests}</p>
+            <div className="bg-white dark:bg-grx-dark-surface p-4 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800">
+              <p className="text-sm text-grx-muted dark:text-grx-muted mb-1">Total Requests</p>
+              <p className="text-2xl font-bold text-grx-text dark:text-white">{data.summary.totalRequests}</p>
             </div>
             <div className="bg-emerald-50 dark:bg-emerald-900/20 p-4 rounded-xl border border-emerald-200 dark:border-emerald-800">
               <p className="text-sm text-emerald-700 dark:text-emerald-300 mb-1">Approved</p>
@@ -249,14 +249,14 @@ export const LeaveReportPage: React.FC = () => {
 
           {/* By Type Summary */}
           {Object.keys(data.summary.byType).length > 0 && (
-            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4">
-              <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">By Leave Type</h3>
+            <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-4">
+              <h3 className="font-semibold text-grx-text dark:text-white mb-4">By Leave Type</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {Object.entries(data.summary.byType).map(([type, stats]) => (
-                  <div key={type} className="p-3 bg-slate-50 dark:bg-slate-900 rounded-lg">
-                    <p className="text-sm text-slate-600 dark:text-slate-400">{type}</p>
-                    <p className="text-lg font-bold text-slate-900 dark:text-slate-100">{stats.count} requests</p>
-                    <p className="text-xs text-slate-500 dark:text-slate-500">{stats.days} days</p>
+                  <div key={type} className="p-3 bg-grx-bg dark:bg-grx-dark rounded-lg">
+                    <p className="text-sm text-grx-muted dark:text-grx-muted">{type}</p>
+                    <p className="text-lg font-bold text-grx-text dark:text-white">{stats.count} requests</p>
+                    <p className="text-xs text-grx-muted dark:text-grx-muted">{stats.days} days</p>
                   </div>
                 ))}
               </div>
@@ -264,35 +264,35 @@ export const LeaveReportPage: React.FC = () => {
           )}
 
           {/* Records Table */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
+                <thead className="bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-100 dark:border-grx-primary-800">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Employee</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Department</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Type</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Start Date</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">End Date</th>
-                    <th className="px-6 py-3 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Days</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Reason</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Employee</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Department</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Type</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Start Date</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">End Date</th>
+                    <th className="px-6 py-3 text-right text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Days</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Status</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Reason</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                <tbody className="divide-y divide-grx-primary-100 dark:divide-grx-primary-800">
                   {data.leaves.length === 0 ? (
                     <tr>
-                      <td colSpan={8} className="px-6 py-8 text-center text-slate-500">No leave requests found</td>
+                      <td colSpan={8} className="px-6 py-8 text-center text-grx-muted">No leave requests found</td>
                     </tr>
                   ) : (
                     data.leaves.map(leave => (
-                      <tr key={leave.id} className="hover:bg-slate-50 dark:hover:bg-slate-700">
-                        <td className="px-6 py-4 text-slate-900 dark:text-slate-100">{leave.Employee?.name || 'N/A'}</td>
-                        <td className="px-6 py-4 text-slate-700 dark:text-slate-300">{leave.Employee?.department || 'N/A'}</td>
-                        <td className="px-6 py-4 text-slate-700 dark:text-slate-300">{leave.type}</td>
-                        <td className="px-6 py-4 text-slate-700 dark:text-slate-300">{leave.startDate}</td>
-                        <td className="px-6 py-4 text-slate-700 dark:text-slate-300">{leave.endDate}</td>
-                        <td className="px-6 py-4 text-right font-mono text-slate-700 dark:text-slate-300">{leave.days}</td>
+                      <tr key={leave.id} className="hover:bg-grx-bg dark:hover:bg-grx-primary-800">
+                        <td className="px-6 py-4 text-grx-text dark:text-white">{leave.Employee?.name || 'N/A'}</td>
+                        <td className="px-6 py-4 text-grx-text dark:text-grx-primary-200">{leave.Employee?.department || 'N/A'}</td>
+                        <td className="px-6 py-4 text-grx-text dark:text-grx-primary-200">{leave.type}</td>
+                        <td className="px-6 py-4 text-grx-text dark:text-grx-primary-200">{leave.startDate}</td>
+                        <td className="px-6 py-4 text-grx-text dark:text-grx-primary-200">{leave.endDate}</td>
+                        <td className="px-6 py-4 text-right font-mono text-grx-text dark:text-grx-primary-200">{leave.days}</td>
                         <td className="px-6 py-4">
                           <span className={`px-2 py-1 rounded text-xs font-medium ${
                             leave.status === 'Approved' ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' :
@@ -302,7 +302,7 @@ export const LeaveReportPage: React.FC = () => {
                             {leave.status}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-slate-700 dark:text-slate-300 max-w-xs truncate">{leave.reason}</td>
+                        <td className="px-6 py-4 text-grx-text dark:text-grx-primary-200 max-w-xs truncate">{leave.reason}</td>
                       </tr>
                     ))
                   )}
@@ -312,7 +312,7 @@ export const LeaveReportPage: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 text-center text-slate-500">
+        <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-8 text-center text-grx-muted">
           No data available.
         </div>
       )}

@@ -28,7 +28,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
 /** Skeleton for a metric/stat card */
 export const SkeletonCard: React.FC<{ className?: string }> = ({ className = '' }) => (
   <div
-    className={`bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-slate-100 dark:border-grx-dark-surface ${className}`}
+    className={`bg-white dark:bg-grx-dark-surface p-5 rounded-xl border border-grx-primary-50 dark:border-grx-dark-surface ${className}`}
   >
     <div className="flex justify-between items-start mb-3">
       <div className="space-y-2 flex-1">
@@ -85,7 +85,7 @@ export const SkeletonDashboard: React.FC = () => (
 
     {/* Content area */}
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl border border-slate-100 dark:border-grx-dark-surface">
+      <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl border border-grx-primary-50 dark:border-grx-dark-surface">
         <Skeleton width="40%" height={20} className="mb-4" />
         <div className="space-y-3">
           <Skeleton height={48} />
@@ -93,7 +93,7 @@ export const SkeletonDashboard: React.FC = () => (
           <Skeleton height={48} />
         </div>
       </div>
-      <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl border border-slate-100 dark:border-grx-dark-surface">
+      <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl border border-grx-primary-50 dark:border-grx-dark-surface">
         <Skeleton width="40%" height={20} className="mb-4" />
         <div className="grid grid-cols-2 gap-3">
           <Skeleton height={80} />
@@ -111,7 +111,7 @@ export const SkeletonTable: React.FC<{ rows?: number; columns?: number }> = ({
   rows = 5,
   columns = 5,
 }) => (
-  <div className="bg-white dark:bg-grx-dark-surface rounded-xl border border-slate-100 dark:border-grx-dark-surface overflow-hidden grx-animate-fade-in">
+  <div className="bg-white dark:bg-grx-dark-surface rounded-xl border border-grx-primary-50 dark:border-grx-dark-surface overflow-hidden grx-animate-fade-in">
     {/* Table header skeleton */}
     <div className="bg-grx-primary-50 dark:bg-grx-primary-900 px-6 py-3 flex gap-8">
       {Array.from({ length: columns }).map((_, i) => (
