@@ -37,7 +37,11 @@ export async function bootstrapAdminUser() {
         });
 
         if (adminCount > 0) {
-            console.log('🔒 Bootstrap: Admin user(s) already exist, skipping bootstrap');
+            // Check if FORCE_ADMIN_RESET is enabled (opt-in via ENV)
+            if (process.env.FORCE_ADMIN_RESET === 'true') {
+                return await resetAdminFromEnv();
+            }
+            console.log('[bootstrap] Admin exists, skipped');
             return { bootstrapped: false, message: 'Admin user already exists' };
         }
 
@@ -102,10 +106,10 @@ export async function bootstrapAdminUser() {
             employeeType: 'Full Time'
         });
 
-        console.log('✅ Bootstrap: Initial admin user created successfully');
+        console.log('[bootstrap] Admin created');
         console.log(`   Email: ${adminEmail}`);
         console.log('   Role: Admin');
-        console.log('   ⚠️  Please change the admin password after first login');
+        console.log('   Please change the admin password after first login');
 
         return {
             bootstrapped: true,
@@ -117,6 +121,59 @@ export async function bootstrapAdminUser() {
         // Don't throw - bootstrap failure shouldn't prevent server startup
         return { bootstrapped: false, message: `Bootstrap error: ${error.message}` };
     }
+}
+
+/**
+ * Reset existing admin credentials from environment variables.
+ * Only called when FORCE_ADMIN_RESET=true is set.
+ */
+async function resetAdminFromEnv() {
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminPassword = process.env.ADMIN_PASSWORD;
+    const adminName = process.env.ADMIN_NAME;
+
+    if (!adminEmail || !adminPassword) {
+        console.warn('[bootstrap] FORCE_ADMIN_RESET is set but ADMIN_EMAIL/ADMIN_PASSWORD missing');
+        return { bootstrapped: false, message: 'Missing ADMIN_EMAIL or ADMIN_PASSWORD for reset' };
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(adminEmail)) {
+        console.error('[bootstrap] FORCE_ADMIN_RESET failed: invalid ADMIN_EMAIL format');
+        return { bootstrapped: false, message: 'Invalid ADMIN_EMAIL format' };
+    }
+
+    if (adminPassword.length < 8) {
+        console.error('[bootstrap] FORCE_ADMIN_RESET failed: ADMIN_PASSWORD must be at least 8 characters');
+        return { bootstrapped: false, message: 'ADMIN_PASSWORD too short (minimum 8 characters)' };
+    }
+
+    // Find the first active admin to reset
+    const existingAdmin = await Employee.findOne({
+        where: { role: 'Admin', status: 'Active' }
+    });
+
+    if (!existingAdmin) {
+        console.warn('[bootstrap] FORCE_ADMIN_RESET: no active admin found to reset');
+        return { bootstrapped: false, message: 'No active admin found to reset' };
+    }
+
+    const passwordHash = await bcrypt.hash(adminPassword, BCRYPT_SALT_ROUNDS);
+
+    const updateFields = {
+        email: adminEmail,
+        password: passwordHash,
+    };
+    if (adminName) {
+        updateFields.name = adminName;
+    }
+
+    await existingAdmin.update(updateFields);
+
+    console.log('[bootstrap] Admin credentials reset from ENV');
+    console.log(`   Admin ID: ${existingAdmin.id}`);
+    console.log(`   Email updated to: ${adminEmail}`);
+    return { bootstrapped: true, message: 'Admin reset from ENV' };
 }
 
 export default { bootstrapAdminUser };

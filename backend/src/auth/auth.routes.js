@@ -101,8 +101,8 @@ passport.use(new MicrosoftStrategy({
             });
 
             if (!employee) {
-                console.log(`🚫 Access denied: Employee not found or inactive for email: ${email}`);
-                return done(null, false, { message: 'Access denied. Employee not found or account is inactive.' });
+                console.log(`[auth] SSO denied: employee not found or inactive for ${email}`);
+                return done(null, false, { message: 'User not found. Please contact admin.' });
             }
 
             console.log(`✅ SSO authentication successful for employee: ${employee.email} (${employee.id})`);
@@ -119,7 +119,7 @@ passport.use(new MicrosoftStrategy({
             return done(null, sessionUser);
         } catch (err) {
             console.error('SSO authentication error:', err);
-            return done(err);
+            return done(null, false, { message: 'Authentication failed. Please try again.' });
         }
     }
 ));
@@ -139,14 +139,31 @@ router.get('/microsoft', passport.authenticate('microsoft', {
     prompt: 'select_account',
 }));
 
-// 2. Callback
-router.get('/microsoft/callback',
-    passport.authenticate('microsoft', { failureRedirect: '/login?error=access_denied' }),
-    (req, res) => {
-        // Successful authentication
-        res.redirect('/');
-    }
-);
+// 2. Callback — custom handler to return explicit HTTP status codes
+router.get('/microsoft/callback', (req, res, next) => {
+    passport.authenticate('microsoft', (err, user, info) => {
+        if (err) {
+            console.error('[auth] SSO callback error:', err);
+            return res.redirect('/login?error=server_error');
+        }
+        if (!user) {
+            const message = (info && info.message) || 'Access denied';
+            console.log(`[auth] SSO login failed: ${message}`);
+            // Return 401 for API clients, redirect for browsers
+            if (req.accepts('json') && !req.accepts('html')) {
+                return res.status(401).json({ error: message });
+            }
+            return res.redirect(`/login?error=access_denied&message=${encodeURIComponent(message)}`);
+        }
+        req.login(user, (loginErr) => {
+            if (loginErr) {
+                console.error('[auth] SSO session creation failed:', loginErr);
+                return res.redirect('/login?error=session_error');
+            }
+            res.redirect('/');
+        });
+    })(req, res, next);
+});
 
 // 3. Status Check (for Frontend)
 router.get('/status', (req, res) => {
@@ -208,8 +225,8 @@ router.post('/admin/login', loginRateLimiter, async (req, res) => {
             res.json({ success: true, user: sessionUser });
         });
     } catch (error) {
-        console.error('Employee login error:', error);
-        res.status(500).json({ error: 'Login failed' });
+        console.error('[auth] Login error:', error.message);
+        res.status(500).json({ error: 'Internal server error during login' });
     }
 });
 
