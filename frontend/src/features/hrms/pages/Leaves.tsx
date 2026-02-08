@@ -428,8 +428,8 @@ export const Leaves: React.FC = () => {
        {/* Leave Application Modal */}
        {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-slate-800 rounded-xl w-full max-w-md p-6 shadow-2xl">
-            <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100">{editingLeaveId ? 'Edit Leave Request' : 'Apply for Leave'}</h3>
+          <div className="bg-white dark:bg-grx-dark-surface rounded-xl w-full max-w-md p-6 shadow-2xl">
+            <h3 className="text-lg font-bold mb-4 text-grx-text dark:text-white">{editingLeaveId ? 'Edit Leave Request' : 'Apply for Leave'}</h3>
             {error && (
               <div className="mb-4 p-3 bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 rounded-lg text-sm text-rose-700 dark:text-rose-300">
                 {error}

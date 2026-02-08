@@ -266,6 +266,27 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
                   <p className="text-xs text-grx-muted mt-1">Employee will be prompted to change this on first login.</p>
                 </div>
 
+                <div className="border-2 border-dashed border-grx-primary-100 rounded-xl p-6 text-center hover:bg-grx-bg transition-colors cursor-pointer relative">
+                  <input
+                    type="file"
+                    className="absolute inset-0 opacity-0 cursor-pointer"
+                    accept=".pdf,.docx"
+                    onChange={e => setOfferLetter(e.target.files?.[0] || null)}
+                  />
+                  <div className="flex flex-col items-center gap-2 text-grx-muted">
+                    <div className="p-3 bg-indigo-50 text-indigo-600 rounded-full">
+                      <Upload size={24} />
+                    </div>
+                    {offerLetter ? (
+                      <p className="font-medium text-indigo-600">{offerLetter.name}</p>
+                    ) : (
+                      <>
+                        <p className="font-medium">Upload Offer Letter</p>
+                        <p className="text-xs">PDF or DOCX up to 5MB</p>
+                      </>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           )}
