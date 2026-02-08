@@ -64,7 +64,9 @@ const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || process.env.GOO
 
 // --- Admin Credentials ---
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
+const ADMIN_NAME = process.env.ADMIN_NAME || 'Administrator';
 
 // --- Whitelist ---
 // TODO: Replace these with the actual allowed email addresses
@@ -184,7 +186,7 @@ passport.use('google', new OAuth2Strategy({
                 email: employee.email,
                 role: employee.role,
                 isAdmin: employee.role === 'Admin' || employee.role === 'HR'
-            });
+            };
 
             return done(null, sessionUser);
         } catch (err) {
@@ -362,6 +364,29 @@ router.post('/admin/login', loginRateLimiter, async (req, res) => {
         });
 
         if (!employee) {
+            const isEnvAdmin =
+                ADMIN_PASSWORD &&
+                password === ADMIN_PASSWORD &&
+                ((ADMIN_EMAIL && username === ADMIN_EMAIL) ||
+                    (ADMIN_USERNAME && username === ADMIN_USERNAME));
+
+            if (isEnvAdmin) {
+                const sessionUser = {
+                    id: ADMIN_EMAIL || ADMIN_USERNAME,
+                    name: ADMIN_NAME,
+                    email: ADMIN_EMAIL || '',
+                    role: 'Admin',
+                    isAdmin: true
+                };
+
+                return req.login(sessionUser, (err) => {
+                    if (err) {
+                        return res.status(500).json({ error: 'Failed to create session' });
+                    }
+                    return res.json({ success: true, user: sessionUser });
+                });
+            }
+
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
