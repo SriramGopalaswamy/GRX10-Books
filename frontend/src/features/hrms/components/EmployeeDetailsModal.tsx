@@ -131,7 +131,7 @@ export const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ empl
         </div>
 
         {/* Profile Header */}
-        <div className="px-8 relative pb-6 border-b border-slate-100">
+        <div className="px-8 relative pb-6 border-b border-grx-primary-50">
            <div className="flex flex-col md:flex-row items-start md:items-end -mt-12 mb-4 gap-6">
               <img 
                 src={employee.avatar} 
@@ -142,13 +142,13 @@ export const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ empl
                 {isEditing ? (
                     <div className="space-y-2">
                         <input 
-                            className="text-2xl font-bold text-slate-900 border-b border-slate-300 focus:border-indigo-500 outline-none bg-transparent w-full"
+                            className="text-2xl font-bold text-grx-text border-b border-grx-primary-100 focus:border-indigo-500 outline-none bg-transparent w-full"
                             value={formData.name || ''}
                             onChange={e => handleChange('name', e.target.value)}
                             placeholder="Employee Name"
                         />
                          <input 
-                            className="text-slate-500 font-medium border-b border-slate-300 focus:border-indigo-500 outline-none bg-transparent w-full"
+                            className="text-grx-muted font-medium border-b border-grx-primary-100 focus:border-indigo-500 outline-none bg-transparent w-full"
                             value={formData.designation || ''}
                             onChange={e => handleChange('designation', e.target.value)}
                             placeholder="Designation"
@@ -156,8 +156,8 @@ export const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ empl
                     </div>
                 ) : (
                     <>
-                        <h2 className="text-2xl font-bold text-slate-900">{employee.name}</h2>
-                        <p className="text-slate-500 font-medium">{employee.designation}</p>
+                        <h2 className="text-2xl font-bold text-grx-text">{employee.name}</h2>
+                        <p className="text-grx-muted font-medium">{employee.designation}</p>
                     </>
                 )}
               </div>
@@ -165,7 +165,7 @@ export const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ empl
                  {isEditing ? (
                     <>
                        <select 
-                        className="text-xs rounded-lg border border-slate-300 p-1.5 bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                        className="text-xs rounded-lg border border-grx-primary-100 p-1.5 bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
                         value={formData.status}
                         onChange={e => handleChange('status', e.target.value)}
                        >
@@ -173,7 +173,7 @@ export const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ empl
                            <option value="Exited">Exited</option>
                        </select>
                        <select 
-                        className="text-xs rounded-lg border border-slate-300 p-1.5 bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                        className="text-xs rounded-lg border border-grx-primary-100 p-1.5 bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
                         value={formData.role}
                         onChange={e => handleChange('role', e.target.value)}
                        >
@@ -189,7 +189,7 @@ export const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ empl
                         }`}>
                         {employee.status}
                         </span>
-                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-grx-primary-50 text-grx-muted border border-grx-primary-100">
                         {employee.role}
                         </span>
                     </>
@@ -204,24 +204,24 @@ export const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ empl
             
             {/* Personal Info */}
             <div className="space-y-6">
-              <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <h3 className="text-lg font-bold text-grx-text flex items-center gap-2">
                 <User size={20} className="text-indigo-600" />
                 Personal Details
               </h3>
               <div className="space-y-4">
-                 <div className="flex items-center gap-3 text-slate-600">
-                   <Hash size={18} className="text-slate-400" />
-                   <span>ID: <span className="font-mono text-slate-800">{employee.id}</span></span>
+                 <div className="flex items-center gap-3 text-grx-muted">
+                   <Hash size={18} className="text-grx-muted" />
+                   <span>ID: <span className="font-mono text-grx-text">{employee.id}</span></span>
                  </div>
-                 <div className="flex items-center gap-3 text-slate-600">
-                   <Mail size={18} className="text-slate-400" />
+                 <div className="flex items-center gap-3 text-grx-muted">
+                   <Mail size={18} className="text-grx-muted" />
                    <span>{employee.email}</span>
                  </div>
-                 <div className="flex items-center gap-3 text-slate-600">
-                   <Briefcase size={18} className="text-slate-400" />
+                 <div className="flex items-center gap-3 text-grx-muted">
+                   <Briefcase size={18} className="text-grx-muted" />
                    {isEditing ? (
                        <input 
-                        className="border-b border-slate-300 focus:border-indigo-500 outline-none bg-transparent flex-1"
+                        className="border-b border-grx-primary-100 focus:border-indigo-500 outline-none bg-transparent flex-1"
                         value={formData.department || ''}
                         onChange={e => handleChange('department', e.target.value)}
                         placeholder="Department"
@@ -230,26 +230,26 @@ export const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ empl
                        <span>{employee.department}</span>
                    )}
                  </div>
-                 <div className="flex items-center gap-3 text-slate-600">
-                   <Calendar size={18} className="text-slate-400" />
+                 <div className="flex items-center gap-3 text-grx-muted">
+                   <Calendar size={18} className="text-grx-muted" />
                    <span>Joined {new Date(employee.joinDate).toLocaleDateString()}</span>
                  </div>
-                 <div className="flex items-center gap-3 text-slate-600">
-                   <MapPin size={18} className="text-slate-400" />
+                 <div className="flex items-center gap-3 text-grx-muted">
+                   <MapPin size={18} className="text-grx-muted" />
                    <span>Headquarters (San Francisco)</span>
                  </div>
                  {manager && !isEditing && (
-                    <div className="flex items-center gap-3 text-slate-600">
-                      <Shield size={18} className="text-slate-400" />
-                      <span>Reports to: <span className="font-medium text-slate-900">{manager.name}</span></span>
+                    <div className="flex items-center gap-3 text-grx-muted">
+                      <Shield size={18} className="text-grx-muted" />
+                      <span>Reports to: <span className="font-medium text-grx-text">{manager.name}</span></span>
                     </div>
                  )}
               </div>
 
               {/* Compensation (Restricted) */}
               {canViewSensitive && (
-                <div className="pt-6 border-t border-slate-100">
-                   <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 mb-3">
+                <div className="pt-6 border-t border-grx-primary-50">
+                   <h3 className="text-sm font-bold text-grx-text flex items-center gap-2 mb-3">
                       <DollarSign size={16} className="text-emerald-600" />
                       Compensation
                    </h3>
@@ -274,25 +274,25 @@ export const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ empl
 
               {/* Reports (HR/Admin Only) */}
               {canGenerateReports && (
-                <div className="pt-6 border-t border-slate-100">
-                   <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 mb-3">
+                <div className="pt-6 border-t border-grx-primary-50">
+                   <h3 className="text-sm font-bold text-grx-text flex items-center gap-2 mb-3">
                       <FileText size={16} className="text-blue-600" />
                       Generate Reports
                    </h3>
                    <div className="grid grid-cols-2 gap-3">
                       <button 
                         onClick={() => generateReport('attendance')}
-                        className="flex flex-col items-center justify-center p-3 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors group"
+                        className="flex flex-col items-center justify-center p-3 border border-grx-primary-100 rounded-lg hover:bg-grx-bg transition-colors group"
                       >
-                         <Clock size={20} className="text-slate-400 group-hover:text-blue-600 mb-1" />
-                         <span className="text-xs font-medium text-slate-600 group-hover:text-slate-900">Attendance CSV</span>
+                         <Clock size={20} className="text-grx-muted group-hover:text-blue-600 mb-1" />
+                         <span className="text-xs font-medium text-grx-muted group-hover:text-grx-text">Attendance CSV</span>
                       </button>
                       <button 
                         onClick={() => generateReport('leaves')}
-                        className="flex flex-col items-center justify-center p-3 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors group"
+                        className="flex flex-col items-center justify-center p-3 border border-grx-primary-100 rounded-lg hover:bg-grx-bg transition-colors group"
                       >
-                         <Calendar size={20} className="text-slate-400 group-hover:text-blue-600 mb-1" />
-                         <span className="text-xs font-medium text-slate-600 group-hover:text-slate-900">Leave CSV</span>
+                         <Calendar size={20} className="text-grx-muted group-hover:text-blue-600 mb-1" />
+                         <span className="text-xs font-medium text-grx-muted group-hover:text-grx-text">Leave CSV</span>
                       </button>
                    </div>
                 </div>
@@ -301,39 +301,39 @@ export const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ empl
 
             {/* Activity Feed */}
             <div className="space-y-6">
-              <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <h3 className="text-lg font-bold text-grx-text flex items-center gap-2">
                 <Clock size={20} className="text-indigo-600" />
                 Recent Activity
               </h3>
               
               <div className="space-y-4">
                  {/* Attendance Snippet */}
-                 <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-                    <h4 className="text-sm font-semibold text-slate-700 mb-3">Last 3 Days Attendance</h4>
+                 <div className="bg-grx-bg rounded-xl p-4 border border-grx-primary-50">
+                    <h4 className="text-sm font-semibold text-grx-text mb-3">Last 3 Days Attendance</h4>
                     {recentAttendance.length > 0 ? (
                       <div className="space-y-2">
                         {recentAttendance.map(rec => (
                           <div key={rec.id} className="flex justify-between text-sm">
-                             <span className="text-slate-600">{rec.date}</span>
-                             <span className="font-mono text-slate-800">{rec.checkIn} - {rec.checkOut || 'Active'}</span>
+                             <span className="text-grx-muted">{rec.date}</span>
+                             <span className="font-mono text-grx-text">{rec.checkIn} - {rec.checkOut || 'Active'}</span>
                           </div>
                         ))}
                       </div>
                     ) : (
-                      <p className="text-sm text-slate-400 italic">No recent records found.</p>
+                      <p className="text-sm text-grx-muted italic">No recent records found.</p>
                     )}
                  </div>
 
                  {/* Leaves Snippet */}
-                 <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-                    <h4 className="text-sm font-semibold text-slate-700 mb-3">Recent Leave Requests</h4>
+                 <div className="bg-grx-bg rounded-xl p-4 border border-grx-primary-50">
+                    <h4 className="text-sm font-semibold text-grx-text mb-3">Recent Leave Requests</h4>
                     {recentLeaves.length > 0 ? (
                       <div className="space-y-2">
                         {recentLeaves.map(leave => (
                           <div key={leave.id} className="flex justify-between items-center text-sm">
                              <div className="flex flex-col">
-                               <span className="text-slate-900 font-medium">{leave.type}</span>
-                               <span className="text-xs text-slate-500">{leave.startDate}</span>
+                               <span className="text-grx-text font-medium">{leave.type}</span>
+                               <span className="text-xs text-grx-muted">{leave.startDate}</span>
                              </div>
                              <span className={`px-2 py-0.5 rounded text-xs ${
                                leave.status === 'Approved' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
@@ -344,7 +344,7 @@ export const EmployeeDetailsModal: React.FC<EmployeeDetailsModalProps> = ({ empl
                         ))}
                       </div>
                     ) : (
-                      <p className="text-sm text-slate-400 italic">No recent leave requests.</p>
+                      <p className="text-sm text-grx-muted italic">No recent leave requests.</p>
                     )}
                  </div>
               </div>

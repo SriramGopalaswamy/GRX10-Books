@@ -11,7 +11,7 @@ import { GeminiService } from '../../../shared/services/gemini/geminiService';
 type Tab = 'uploads' | 'templates' | 'agreements' | 'msa';
 
 const MOCK_TEMPLATES: InvoiceTemplate[] = [
-  { id: 'Professional GST Standard', name: 'Professional GST Standard', thumbnailColor: 'bg-slate-200', tags: ['Professional', 'GST Compliant'] },
+  { id: 'Professional GST Standard', name: 'Professional GST Standard', thumbnailColor: 'bg-grx-primary-100', tags: ['Professional', 'GST Compliant'] },
   { id: 'Creative Digital', name: 'Creative Digital', thumbnailColor: 'bg-indigo-100', tags: ['Modern', 'Freelancer'] },
   { id: 'Corporate Blue', name: 'Corporate Blue', thumbnailColor: 'bg-blue-100', tags: ['Corporate', 'Clean'] },
   { id: 'Minimalist Mono', name: 'Minimalist Mono', thumbnailColor: 'bg-gray-100', tags: ['Simple', 'B&W'] },
@@ -285,48 +285,48 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
     <div className="space-y-6 animate-fade-in">
       <div 
         className={`p-8 border-2 border-dashed rounded-xl transition-colors text-center cursor-pointer
-          ${dragActive ? "border-emerald-500 bg-emerald-50" : "border-slate-300 bg-slate-50 hover:bg-slate-100"}`}
+          ${dragActive ? "border-emerald-500 bg-emerald-50" : "border-grx-primary-100 bg-grx-bg hover:bg-grx-primary-50"}`}
         onDragEnter={handleDrag} onDragLeave={handleDrag} onDragOver={handleDrag} onDrop={handleDrop}
         onClick={() => document.getElementById('doc-upload')?.click()}
       >
         <div className="w-12 h-12 bg-white rounded-full shadow-sm flex items-center justify-center mx-auto mb-3 text-emerald-600">
             <Upload size={24} />
         </div>
-        <p className="font-medium text-slate-700">Click to upload or drag and drop</p>
-        <p className="text-sm text-slate-500 mt-1">Supported: JPEG, PNG, PDF</p>
+        <p className="font-medium text-grx-text">Click to upload or drag and drop</p>
+        <p className="text-sm text-grx-muted mt-1">Supported: JPEG, PNG, PDF</p>
         <input id="doc-upload" type="file" className="hidden" multiple onChange={handleFileInput} accept="image/jpeg,image/png,image/webp,application/pdf" />
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
-        <div className="p-4 border-b border-slate-100 font-semibold text-slate-700 bg-slate-50/50 flex justify-between items-center">
+      <div className="bg-white rounded-xl shadow-sm border border-grx-primary-100 overflow-hidden flex flex-col">
+        <div className="p-4 border-b border-grx-primary-50 font-semibold text-grx-text bg-grx-bg/50 flex justify-between items-center">
            <span>Recent Uploads ({documents.length})</span>
            {documents.length > 0 && <button onClick={() => setDocuments([])} className="text-xs text-red-500 hover:text-red-600 font-medium">Clear All</button>}
         </div>
         
         <div className="overflow-y-auto p-4 space-y-3 max-h-[500px]">
           {documents.length === 0 ? (
-             <div className="py-12 flex flex-col items-center justify-center text-slate-400">
+             <div className="py-12 flex flex-col items-center justify-center text-grx-muted">
                 <FileText size={48} className="mb-3 opacity-50"/>
                 <p>No documents uploaded yet.</p>
              </div>
           ) : (
             documents.map((doc) => (
-              <div key={doc.id} className="border border-slate-200 rounded-lg p-4 flex gap-4 items-start hover:shadow-sm transition-shadow bg-white">
-                 <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0 text-slate-500">
+              <div key={doc.id} className="border border-grx-primary-100 rounded-lg p-4 flex gap-4 items-start hover:shadow-sm transition-shadow bg-white">
+                 <div className="w-12 h-12 bg-grx-primary-50 rounded-lg flex items-center justify-center flex-shrink-0 text-grx-muted">
                     {doc.type === 'application/pdf' ? <FileText size={24} /> : <FileImage size={24} />}
                  </div>
                  <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-start">
                        <div>
-                          <h4 className="font-medium text-slate-800 truncate pr-4" title={doc.name}>{doc.name}</h4>
-                          <p className="text-xs text-slate-500 mt-0.5">{formatBytes(doc.size)} • Uploaded {doc.uploadDate}</p>
+                          <h4 className="font-medium text-grx-text truncate pr-4" title={doc.name}>{doc.name}</h4>
+                          <p className="text-xs text-grx-muted mt-0.5">{formatBytes(doc.size)} • Uploaded {doc.uploadDate}</p>
                        </div>
-                       <button onClick={() => setDocuments(prev => prev.filter(d => d.id !== doc.id))} className="text-slate-400 hover:text-red-500"><Trash2 size={16} /></button>
+                       <button onClick={() => setDocuments(prev => prev.filter(d => d.id !== doc.id))} className="text-grx-muted hover:text-red-500"><Trash2 size={16} /></button>
                     </div>
-                    <div className="mt-3 pt-3 border-t border-slate-100">
+                    <div className="mt-3 pt-3 border-t border-grx-primary-50">
                        {doc.ocrStatus === 'idle' && (
                           <div className="flex items-center justify-between">
-                             <span className="text-xs text-slate-500">Analysis pending</span>
+                             <span className="text-xs text-grx-muted">Analysis pending</span>
                              <button onClick={() => runOCR(doc.id)} className="flex items-center gap-2 text-xs font-medium bg-indigo-600 text-white px-3 py-1.5 rounded-md hover:bg-indigo-700 transition-colors">
                                 <ScanLine size={14} /> Run Auto-OCR
                              </button>
@@ -337,15 +337,15 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
                           <div className="bg-emerald-50/50 rounded-md p-3 border border-emerald-100">
                              <div className="flex items-center gap-2 mb-2 text-emerald-700 font-medium text-xs"><CheckCircle size={14} /> Data Extracted</div>
                              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
-                                <div><span className="block text-slate-400 mb-1">Vendor</span><span className="font-semibold text-slate-700">{doc.extractedData.vendor_name || 'N/A'}</span></div>
-                                <div><span className="block text-slate-400 mb-1">Date</span><span className="font-semibold text-slate-700">{doc.extractedData.invoice_date || 'N/A'}</span></div>
-                                <div><span className="block text-slate-400 mb-1">Total</span><span className="font-semibold text-slate-700">{formatCurrency(doc.extractedData.total_amount)}</span></div>
-                                <div><span className="block text-slate-400 mb-1">GST</span><span className="font-semibold text-slate-700">{formatCurrency(doc.extractedData.gst_amount)}</span></div>
+                                <div><span className="block text-grx-muted mb-1">Vendor</span><span className="font-semibold text-grx-text">{doc.extractedData.vendor_name || 'N/A'}</span></div>
+                                <div><span className="block text-grx-muted mb-1">Date</span><span className="font-semibold text-grx-text">{doc.extractedData.invoice_date || 'N/A'}</span></div>
+                                <div><span className="block text-grx-muted mb-1">Total</span><span className="font-semibold text-grx-text">{formatCurrency(doc.extractedData.total_amount)}</span></div>
+                                <div><span className="block text-grx-muted mb-1">GST</span><span className="font-semibold text-grx-text">{formatCurrency(doc.extractedData.gst_amount)}</span></div>
                              </div>
                              {doc.extractedData.summary && (
                                <div className="mt-3 text-xs bg-white p-3 rounded border border-emerald-100/50 shadow-sm">
-                                  <div className="flex items-center gap-1.5 mb-1 text-slate-500 font-medium"><Info size={14} className="text-emerald-600"/><span>Document Summary</span></div>
-                                  <p className="text-slate-700 leading-relaxed pl-5 border-l-2 border-emerald-200">{doc.extractedData.summary}</p>
+                                  <div className="flex items-center gap-1.5 mb-1 text-grx-muted font-medium"><Info size={14} className="text-emerald-600"/><span>Document Summary</span></div>
+                                  <p className="text-grx-text leading-relaxed pl-5 border-l-2 border-emerald-200">{doc.extractedData.summary}</p>
                                </div>
                              )}
                           </div>
@@ -363,26 +363,26 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
 
   const renderTemplates = () => (
     <div className="space-y-6 animate-fade-in">
-      <p className="text-sm text-slate-600">Select a pre-made, GST-compliant template for your next invoice.</p>
+      <p className="text-sm text-grx-muted">Select a pre-made, GST-compliant template for your next invoice.</p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {MOCK_TEMPLATES.map(template => (
-          <div key={template.id} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden group hover:shadow-md transition-shadow cursor-pointer">
+          <div key={template.id} className="bg-white rounded-xl shadow-sm border border-grx-primary-100 overflow-hidden group hover:shadow-md transition-shadow cursor-pointer">
              <div className={`h-48 ${template.thumbnailColor} w-full flex items-center justify-center relative`}>
-                <LayoutTemplate className="text-slate-400 opacity-50" size={48} />
+                <LayoutTemplate className="text-grx-muted opacity-50" size={48} />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors flex items-center justify-center">
                    <button 
                      onClick={() => onUseTemplate?.(template.id)}
-                     className="bg-white text-slate-800 px-4 py-2 rounded-full text-sm font-medium shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all hover:bg-emerald-600 hover:text-white"
+                     className="bg-white text-grx-text px-4 py-2 rounded-full text-sm font-medium shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all hover:bg-emerald-600 hover:text-white"
                    >
                      Use Template
                    </button>
                 </div>
              </div>
              <div className="p-4">
-                <h3 className="font-semibold text-slate-800">{template.name}</h3>
+                <h3 className="font-semibold text-grx-text">{template.name}</h3>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {template.tags.map(tag => (
-                    <span key={tag} className="px-2 py-1 bg-slate-100 text-slate-500 text-[10px] rounded-full uppercase tracking-wide font-medium">{tag}</span>
+                    <span key={tag} className="px-2 py-1 bg-grx-primary-50 text-grx-muted text-[10px] rounded-full uppercase tracking-wide font-medium">{tag}</span>
                   ))}
                 </div>
              </div>
@@ -400,55 +400,55 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
       
       {/* Mock Signing Modal */}
       {signingAgreement && (
-        <div className="fixed inset-0 bg-slate-900 z-[60] flex flex-col animate-fade-in">
+        <div className="fixed inset-0 bg-grx-dark z-[60] flex flex-col animate-fade-in">
            {/* Header */}
-           <div className="bg-white dark:bg-slate-800 p-4 flex justify-between items-center shadow-md z-10">
+           <div className="bg-white dark:bg-grx-dark-surface p-4 flex justify-between items-center shadow-md z-10">
               <div className="flex items-center gap-3">
                  <div className="w-8 h-8 bg-indigo-600 rounded text-white flex items-center justify-center font-bold">G</div>
-                 <div className="h-6 w-px bg-slate-300"></div>
+                 <div className="h-6 w-px bg-grx-primary-200"></div>
                  <div>
-                    <h3 className="font-bold text-slate-800 text-sm">GRX10 Secure Sign</h3>
-                    <p className="text-xs text-slate-500">Reviewing: {signingAgreement.type} for {signingAgreement.customerName}</p>
+                    <h3 className="font-bold text-grx-text text-sm">GRX10 Secure Sign</h3>
+                    <p className="text-xs text-grx-muted">Reviewing: {signingAgreement.type} for {signingAgreement.customerName}</p>
                  </div>
               </div>
-              <button onClick={() => setSigningAgreement(null)} className="text-slate-500 hover:text-slate-800 text-sm font-medium">Cancel & Close</button>
+              <button onClick={() => setSigningAgreement(null)} className="text-grx-muted hover:text-grx-text text-sm font-medium">Cancel & Close</button>
            </div>
 
            {/* Document Body (Mock) */}
-           <div className="flex-1 bg-slate-100 p-8 overflow-y-auto flex justify-center">
-              <div className="bg-white dark:bg-slate-800 shadow-xl w-full max-w-3xl min-h-[800px] p-12 text-slate-800 relative">
+           <div className="flex-1 bg-grx-primary-50 p-8 overflow-y-auto flex justify-center">
+              <div className="bg-white dark:bg-grx-dark-surface shadow-xl w-full max-w-3xl min-h-[800px] p-12 text-grx-text relative">
                   <h1 className="text-2xl font-bold uppercase text-center mb-8 border-b pb-4">{signingAgreement.type}</h1>
                   <div className="space-y-6 text-justify text-sm leading-relaxed">
                      <p>This Agreement is made on <strong>{new Date().toLocaleDateString()}</strong> between GRX10 Solutions and <strong>{signingAgreement.customerName}</strong>.</p>
-                     <div className="h-4 bg-slate-100 rounded w-full"></div>
-                     <div className="h-4 bg-slate-100 rounded w-5/6"></div>
-                     <div className="h-4 bg-slate-100 rounded w-full"></div>
+                     <div className="h-4 bg-grx-primary-50 rounded w-full"></div>
+                     <div className="h-4 bg-grx-primary-50 rounded w-5/6"></div>
+                     <div className="h-4 bg-grx-primary-50 rounded w-full"></div>
                      <p><strong>Terms and Conditions:</strong> The parties agree to the terms set forth in this document. This agreement is legally binding once signed.</p>
-                     <div className="h-32 bg-slate-50 border-2 border-dashed border-slate-200 rounded flex items-center justify-center text-slate-400">
+                     <div className="h-32 bg-grx-bg border-2 border-dashed border-grx-primary-100 rounded flex items-center justify-center text-grx-muted">
                         [Contract Body Content Placeholder]
                      </div>
                   </div>
 
                   <div className="mt-20 border-t pt-8 flex justify-between">
                       <div className="w-1/3">
-                         <div className="h-12 border-b border-slate-900 mb-2"></div>
+                         <div className="h-12 border-b border-grx-primary-800 mb-2"></div>
                          <p className="font-bold">Authorized Signatory</p>
-                         <p className="text-xs text-slate-500">GRX10 Solutions Pvt Ltd</p>
+                         <p className="text-xs text-grx-muted">GRX10 Solutions Pvt Ltd</p>
                       </div>
                       <div className="w-1/3 relative group cursor-pointer" onClick={handleSignAgreement}>
-                         <div className="h-12 border-b border-slate-900 mb-2 bg-yellow-50 flex items-center justify-center text-yellow-700 font-handwriting text-xl relative overflow-hidden">
+                         <div className="h-12 border-b border-grx-primary-800 mb-2 bg-yellow-50 flex items-center justify-center text-yellow-700 font-handwriting text-xl relative overflow-hidden">
                              {isSigning ? <Loader2 className="animate-spin text-indigo-600"/> : <span className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 font-sans text-xs bg-indigo-600 text-white px-2 py-1 rounded shadow-lg absolute top-[-10px]">Click to Sign</span>}
                          </div>
                          <p className="font-bold">{signingAgreement.customerName}</p>
-                         <p className="text-xs text-slate-500">Client / Customer</p>
+                         <p className="text-xs text-grx-muted">Client / Customer</p>
                       </div>
                   </div>
               </div>
            </div>
 
            {/* Footer Action */}
-           <div className="bg-white dark:bg-slate-800 p-4 border-t border-slate-200 flex justify-end gap-4">
-              <button onClick={() => setSigningAgreement(null)} className="px-6 py-2 text-slate-600 font-medium hover:bg-slate-50 rounded-lg">Decline</button>
+           <div className="bg-white dark:bg-grx-dark-surface p-4 border-t border-grx-primary-100 flex justify-end gap-4">
+              <button onClick={() => setSigningAgreement(null)} className="px-6 py-2 text-grx-muted font-medium hover:bg-grx-bg rounded-lg">Decline</button>
               <button 
                  onClick={handleSignAgreement} 
                  disabled={isSigning}
@@ -463,23 +463,23 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
       {/* Audit Trail Modal */}
       {viewingAudit && (
         <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-           <div className="bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-lg w-full overflow-hidden animate-scale-in">
-              <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+           <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-xl max-w-lg w-full overflow-hidden animate-scale-in">
+              <div className="p-6 border-b border-grx-primary-50 flex justify-between items-center bg-grx-bg/50">
                  <div>
-                   <h3 className="font-bold text-slate-800 flex items-center gap-2"><History size={18} className="text-indigo-600"/> Audit Trail</h3>
-                   <p className="text-xs text-slate-500">{viewingAudit.uniqueLink}</p>
+                   <h3 className="font-bold text-grx-text flex items-center gap-2"><History size={18} className="text-indigo-600"/> Audit Trail</h3>
+                   <p className="text-xs text-grx-muted">{viewingAudit.uniqueLink}</p>
                  </div>
-                 <button onClick={() => setViewAuditId(null)} className="text-slate-400 hover:text-slate-600"><X size={20}/></button>
+                 <button onClick={() => setViewAuditId(null)} className="text-grx-muted hover:text-grx-muted"><X size={20}/></button>
               </div>
               <div className="p-6 max-h-[400px] overflow-y-auto bg-white">
                  <div className="relative border-l-2 border-indigo-100 ml-3 space-y-8 pl-6 pb-2">
                     {viewingAudit.auditTrail.map((event, idx) => (
                       <div key={event.id} className="relative">
                          <span className={`absolute -left-[31px] w-4 h-4 rounded-full border-2 border-white shadow-sm 
-                           ${idx === viewingAudit.auditTrail.length - 1 ? 'bg-indigo-600' : 'bg-slate-300'}`}></span>
-                         <p className="text-xs font-semibold text-slate-500 mb-0.5">{event.timestamp}</p>
-                         <h4 className="text-sm font-bold text-slate-800">{event.action}</h4>
-                         <p className="text-sm text-slate-600 mt-1">{event.details}</p>
+                           ${idx === viewingAudit.auditTrail.length - 1 ? 'bg-indigo-600' : 'bg-grx-primary-200'}`}></span>
+                         <p className="text-xs font-semibold text-grx-muted mb-0.5">{event.timestamp}</p>
+                         <h4 className="text-sm font-bold text-grx-text">{event.action}</h4>
+                         <p className="text-sm text-grx-muted mt-1">{event.details}</p>
                       </div>
                     ))}
                  </div>
@@ -491,23 +491,23 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
       {/* Send Modal */}
       {isSendModalOpen && (
          <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-md w-full p-6 animate-scale-in">
+            <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-xl max-w-md w-full p-6 animate-scale-in">
                 <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-bold text-slate-800">Send Agreement</h3>
-                    <button onClick={() => setIsSendModalOpen(false)} className="text-slate-400 hover:text-slate-600"><X size={20}/></button>
+                    <h3 className="text-lg font-bold text-grx-text">Send Agreement</h3>
+                    <button onClick={() => setIsSendModalOpen(false)} className="text-grx-muted hover:text-grx-muted"><X size={20}/></button>
                 </div>
                 <div className="space-y-4">
                     <div>
-                        <label className="block text-xs font-semibold text-slate-500 mb-1">Customer Name</label>
-                        <input type="text" className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="e.g. TechFlow India" value={sendForm.customerName} onChange={e => setSendForm({...sendForm, customerName: e.target.value})} />
+                        <label className="block text-xs font-semibold text-grx-muted mb-1">Customer Name</label>
+                        <input type="text" className="w-full border border-grx-primary-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="e.g. TechFlow India" value={sendForm.customerName} onChange={e => setSendForm({...sendForm, customerName: e.target.value})} />
                     </div>
                     <div>
-                        <label className="block text-xs font-semibold text-slate-500 mb-1">Recipient Email</label>
-                        <input type="email" className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="signer@company.com" value={sendForm.email} onChange={e => setSendForm({...sendForm, email: e.target.value})} />
+                        <label className="block text-xs font-semibold text-grx-muted mb-1">Recipient Email</label>
+                        <input type="email" className="w-full border border-grx-primary-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="signer@company.com" value={sendForm.email} onChange={e => setSendForm({...sendForm, email: e.target.value})} />
                     </div>
                      <div>
-                        <label className="block text-xs font-semibold text-slate-500 mb-1">Agreement Type</label>
-                        <select className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 outline-none bg-white" value={sendForm.type} onChange={e => setSendForm({...sendForm, type: e.target.value})}>
+                        <label className="block text-xs font-semibold text-grx-muted mb-1">Agreement Type</label>
+                        <select className="w-full border border-grx-primary-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 outline-none bg-white" value={sendForm.type} onChange={e => setSendForm({...sendForm, type: e.target.value})}>
                             <option value="MSA">Master Services Agreement (MSA)</option>
                             <option value="NDA">Non-Disclosure Agreement (NDA)</option>
                             <option value="Service Contract">Service Contract</option>
@@ -524,7 +524,7 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
 
       <div className="flex justify-between items-center">
          <div className="flex flex-col gap-1">
-            <p className="text-sm text-slate-600">Manage e-signatures and contracts sent to customers.</p>
+            <p className="text-sm text-grx-muted">Manage e-signatures and contracts sent to customers.</p>
             <div className="flex items-center gap-2 text-xs text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md border border-emerald-100 w-fit">
                 <Wifi size={12} className="animate-pulse" /> Real-time Tracking Active
             </div>
@@ -534,9 +534,9 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
          </button>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="bg-white rounded-xl shadow-sm border border-grx-primary-100 overflow-hidden">
         <table className="w-full text-sm text-left">
-          <thead className="bg-slate-50 text-slate-500 font-medium border-b border-slate-100">
+          <thead className="bg-grx-bg text-grx-muted font-medium border-b border-grx-primary-50">
             <tr>
               <th className="px-6 py-4">Customer & Details</th>
               <th className="px-6 py-4">Status</th>
@@ -545,18 +545,18 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
               <th className="px-6 py-4 text-center">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-grx-primary-50">
             {agreements.map((agreement) => (
-              <tr key={agreement.id} className="hover:bg-slate-50 transition-colors duration-300">
+              <tr key={agreement.id} className="hover:bg-grx-bg transition-colors duration-300">
                 <td className="px-6 py-4">
-                   <div className="font-medium text-slate-800">{agreement.customerName}</div>
-                   <div className="text-xs text-slate-500">{agreement.type} • {agreement.recipientEmail}</div>
+                   <div className="font-medium text-grx-text">{agreement.customerName}</div>
+                   <div className="text-xs text-grx-muted">{agreement.type} • {agreement.recipientEmail}</div>
                 </td>
                 <td className="px-6 py-4">
                    <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium border flex items-center gap-1 w-fit transition-all duration-300
                      ${agreement.status === 'Signed' ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : 
                        agreement.status === 'Viewed' ? 'bg-blue-100 text-blue-700 border-blue-200' : 
-                       agreement.status === 'Expired' ? 'bg-slate-100 text-slate-500 border-slate-200' :
+                       agreement.status === 'Expired' ? 'bg-grx-primary-50 text-grx-muted border-grx-primary-100' :
                        'bg-amber-100 text-amber-700 border-amber-200'}`}>
                      {agreement.status === 'Signed' && <ShieldCheck size={12}/>}
                      {agreement.status === 'Viewed' && <Eye size={12}/>}
@@ -567,7 +567,7 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
                 </td>
                 <td className="px-6 py-4">
                    <div className="flex items-center gap-2">
-                    <button onClick={() => copyLink(agreement.uniqueLink, agreement.id)} className="flex items-center gap-2 text-xs bg-white border border-slate-200 px-2 py-1 rounded hover:bg-slate-50 text-slate-600 transition-colors" title="Copy Link">
+                    <button onClick={() => copyLink(agreement.uniqueLink, agreement.id)} className="flex items-center gap-2 text-xs bg-white border border-grx-primary-100 px-2 py-1 rounded hover:bg-grx-bg text-grx-muted transition-colors" title="Copy Link">
                        <Link size={12} /> {copiedLinkId === agreement.id ? 'Copied!' : 'Copy'}
                     </button>
                     {agreement.status !== 'Signed' && agreement.status !== 'Expired' && (
@@ -577,13 +577,13 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
                     )}
                    </div>
                 </td>
-                <td className="px-6 py-4 text-slate-500 text-xs">{agreement.lastActivity}</td>
+                <td className="px-6 py-4 text-grx-muted text-xs">{agreement.lastActivity}</td>
                 <td className="px-6 py-4 text-center flex justify-center gap-2">
-                   <button onClick={() => setViewAuditId(agreement.id)} className="text-slate-500 hover:text-indigo-600 p-2 rounded-full hover:bg-indigo-50 transition-colors" title="View Audit Trail">
+                   <button onClick={() => setViewAuditId(agreement.id)} className="text-grx-muted hover:text-indigo-600 p-2 rounded-full hover:bg-indigo-50 transition-colors" title="View Audit Trail">
                       <History size={16} />
                    </button>
                    {agreement.status === 'Signed' ? (
-                      <button className="text-slate-500 hover:text-emerald-600 p-2 rounded-full hover:bg-emerald-50 transition-colors" title="Download Signed PDF">
+                      <button className="text-grx-muted hover:text-emerald-600 p-2 rounded-full hover:bg-emerald-50 transition-colors" title="Download Signed PDF">
                          <Download size={16} />
                       </button>
                    ) : (
@@ -600,24 +600,24 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
   };
 
   const renderMSA = () => (
-    <div className="animate-fade-in bg-white rounded-xl shadow-sm border border-slate-200 p-8 max-w-4xl mx-auto">
-      <div className="flex justify-between items-start mb-8 pb-8 border-b border-slate-100">
+    <div className="animate-fade-in bg-white rounded-xl shadow-sm border border-grx-primary-100 p-8 max-w-4xl mx-auto">
+      <div className="flex justify-between items-start mb-8 pb-8 border-b border-grx-primary-50">
          <div>
-           <h1 className="text-2xl font-bold text-slate-900">Master Services Agreement</h1>
-           <p className="text-slate-500 text-sm mt-1">Reference Version 1.4 • Updated Jan 2024</p>
+           <h1 className="text-2xl font-bold text-grx-text">Master Services Agreement</h1>
+           <p className="text-grx-muted text-sm mt-1">Reference Version 1.4 • Updated Jan 2024</p>
          </div>
          <button onClick={() => window.print()} className="text-indigo-600 text-sm font-medium border border-indigo-200 px-4 py-2 rounded-lg hover:bg-indigo-50">Download PDF</button>
       </div>
-      <div className="prose prose-slate prose-sm max-w-none text-justify text-slate-700 space-y-4">
+      <div className="prose prose-slate prose-sm max-w-none text-justify text-grx-text space-y-4">
         <p><strong>1. PARTIES.</strong> This Master Services Agreement (hereinafter referred to as "Agreement") is entered into by and between GRX10 Solutions Pvt Ltd (the "Service Provider") and the Client (the "Customer").</p>
         <p><strong>2. SERVICES.</strong> Service Provider agrees to perform for Customer the services listed in the applicable Statement of Work (SOW). All Services shall be performed in a professional manner.</p>
         <p><strong>3. PAYMENT TERMS.</strong> Invoices will be issued upon completion of milestones. Payment shall be made within 30 days of invoice date.</p>
         <p><strong>4. CONFIDENTIALITY.</strong> Each party acknowledges that it will have access to certain confidential information.</p>
         <p><strong>5. GOVERNING LAW.</strong> This Agreement shall be governed by the laws of India.</p>
       </div>
-      <div className="mt-12 p-6 bg-slate-50 rounded-lg border border-slate-200">
-         <h4 className="font-semibold text-slate-800 text-sm mb-2">Usage Note</h4>
-         <p className="text-xs text-slate-500">To send this to a customer for signature, please go to the "Agreements & E-Sign" tab.</p>
+      <div className="mt-12 p-6 bg-grx-bg rounded-lg border border-grx-primary-100">
+         <h4 className="font-semibold text-grx-text text-sm mb-2">Usage Note</h4>
+         <p className="text-xs text-grx-muted">To send this to a customer for signature, please go to the "Agreements & E-Sign" tab.</p>
       </div>
     </div>
   );
@@ -626,17 +626,17 @@ const Documents: React.FC<DocumentsProps> = ({ onUseTemplate }) => {
     <div className="space-y-6 h-full flex flex-col">
        <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Document Hub</h2>
-          <p className="text-slate-500 dark:text-slate-400">Central repository for receipts, templates, and legal agreements.</p>
+          <h2 className="text-2xl font-bold text-grx-text dark:text-white">Document Hub</h2>
+          <p className="text-grx-muted dark:text-grx-muted">Central repository for receipts, templates, and legal agreements.</p>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl w-fit">
-         <button onClick={() => setActiveTab('uploads')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'uploads' ? 'bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'}`}><Upload size={16}/> Uploads & OCR</button>
-         <button onClick={() => setActiveTab('templates')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'templates' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}><LayoutTemplate size={16}/> Invoice Templates</button>
-         <button onClick={() => setActiveTab('agreements')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'agreements' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}><PenTool size={16}/> Agreements & E-Sign</button>
-         <button onClick={() => setActiveTab('msa')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'msa' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}><BookOpen size={16}/> MSA Reference</button>
+      <div className="flex gap-1 bg-grx-primary-50 dark:bg-grx-dark-surface p-1 rounded-xl w-fit">
+         <button onClick={() => setActiveTab('uploads')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'uploads' ? 'bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white shadow-sm' : 'text-grx-muted dark:text-grx-muted hover:text-grx-text dark:hover:text-grx-primary-200'}`}><Upload size={16}/> Uploads & OCR</button>
+         <button onClick={() => setActiveTab('templates')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'templates' ? 'bg-white text-grx-text shadow-sm' : 'text-grx-muted hover:text-grx-text'}`}><LayoutTemplate size={16}/> Invoice Templates</button>
+         <button onClick={() => setActiveTab('agreements')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'agreements' ? 'bg-white text-grx-text shadow-sm' : 'text-grx-muted hover:text-grx-text'}`}><PenTool size={16}/> Agreements & E-Sign</button>
+         <button onClick={() => setActiveTab('msa')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'msa' ? 'bg-white text-grx-text shadow-sm' : 'text-grx-muted hover:text-grx-text'}`}><BookOpen size={16}/> MSA Reference</button>
       </div>
 
       {/* Content Area */}

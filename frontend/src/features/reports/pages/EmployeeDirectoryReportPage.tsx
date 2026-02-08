@@ -98,8 +98,8 @@ export const EmployeeDirectoryReportPage: React.FC = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Employee Directory Report</h2>
-          <p className="text-slate-500 dark:text-slate-400">Complete list of employees with filters</p>
+          <h2 className="text-2xl font-bold text-grx-text dark:text-white">Employee Directory Report</h2>
+          <p className="text-grx-muted dark:text-grx-muted">Complete list of employees with filters</p>
         </div>
         <button
           onClick={handleDownload}
@@ -112,18 +112,18 @@ export const EmployeeDirectoryReportPage: React.FC = () => {
       </div>
 
       {/* Filters */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4">
+      <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-4">
         <div className="flex items-center gap-2 mb-4">
-          <Filter size={18} className="text-slate-400" />
-          <h3 className="font-semibold text-slate-900 dark:text-slate-100">Filters</h3>
+          <Filter size={18} className="text-grx-muted" />
+          <h3 className="font-semibold text-grx-text dark:text-white">Filters</h3>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Department</label>
+            <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Department</label>
             <select
               value={filters.department}
               onChange={e => setFilters({ ...filters, department: e.target.value })}
-              className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
             >
               <option value="">All Departments</option>
               {getActiveDepartments().map(dept => (
@@ -132,11 +132,11 @@ export const EmployeeDirectoryReportPage: React.FC = () => {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Status</label>
+            <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Status</label>
             <select
               value={filters.status}
               onChange={e => setFilters({ ...filters, status: e.target.value })}
-              className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
             >
               <option value="">All Status</option>
               <option value="Active">Active</option>
@@ -144,11 +144,11 @@ export const EmployeeDirectoryReportPage: React.FC = () => {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Employee Type</label>
+            <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Employee Type</label>
             <select
               value={filters.employeeType}
               onChange={e => setFilters({ ...filters, employeeType: e.target.value })}
-              className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
             >
               <option value="">All Types</option>
               {getActiveEmployeeTypes().map(type => (
@@ -168,43 +168,43 @@ export const EmployeeDirectoryReportPage: React.FC = () => {
       {loading ? (
         <div className="flex items-center justify-center h-64">
           <Loader2 className="animate-spin text-indigo-600" size={32} />
-          <span className="ml-2 text-slate-500">Loading employee directory...</span>
+          <span className="ml-2 text-grx-muted">Loading employee directory...</span>
         </div>
       ) : data ? (
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-          <div className="p-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
-            <p className="text-sm text-slate-600 dark:text-slate-400">
-              Total Employees: <span className="font-semibold text-slate-900 dark:text-slate-100">{data.totalEmployees}</span>
+        <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
+          <div className="p-4 border-b border-grx-primary-100 dark:border-grx-primary-800 bg-grx-bg dark:bg-grx-dark">
+            <p className="text-sm text-grx-muted dark:text-grx-muted">
+              Total Employees: <span className="font-semibold text-grx-text dark:text-white">{data.totalEmployees}</span>
             </p>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
+              <thead className="bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-100 dark:border-grx-primary-800">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">ID</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Name</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Email</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Department</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Designation</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Type</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Join Date</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">ID</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Name</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Email</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Department</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Designation</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Type</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Status</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Join Date</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+              <tbody className="divide-y divide-grx-primary-100 dark:divide-grx-primary-800">
                 {data.employees.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="px-6 py-8 text-center text-slate-500">No employees found</td>
+                    <td colSpan={8} className="px-6 py-8 text-center text-grx-muted">No employees found</td>
                   </tr>
                 ) : (
                   data.employees.map(emp => (
-                    <tr key={emp.id} className="hover:bg-slate-50 dark:hover:bg-slate-700">
-                      <td className="px-6 py-4 font-mono text-slate-600 dark:text-slate-300">{emp.id}</td>
-                      <td className="px-6 py-4 text-slate-900 dark:text-slate-100">{emp.name}</td>
-                      <td className="px-6 py-4 text-slate-700 dark:text-slate-300">{emp.email}</td>
-                      <td className="px-6 py-4 text-slate-700 dark:text-slate-300">{emp.department}</td>
-                      <td className="px-6 py-4 text-slate-700 dark:text-slate-300">{emp.designation}</td>
-                      <td className="px-6 py-4 text-slate-700 dark:text-slate-300">{emp.employeeType}</td>
+                    <tr key={emp.id} className="hover:bg-grx-bg dark:hover:bg-grx-primary-800">
+                      <td className="px-6 py-4 font-mono text-grx-muted dark:text-grx-primary-200">{emp.id}</td>
+                      <td className="px-6 py-4 text-grx-text dark:text-white">{emp.name}</td>
+                      <td className="px-6 py-4 text-grx-text dark:text-grx-primary-200">{emp.email}</td>
+                      <td className="px-6 py-4 text-grx-text dark:text-grx-primary-200">{emp.department}</td>
+                      <td className="px-6 py-4 text-grx-text dark:text-grx-primary-200">{emp.designation}</td>
+                      <td className="px-6 py-4 text-grx-text dark:text-grx-primary-200">{emp.employeeType}</td>
                       <td className="px-6 py-4">
                         <span className={`px-2 py-1 rounded text-xs font-medium ${
                           emp.status === 'Active' 
@@ -214,7 +214,7 @@ export const EmployeeDirectoryReportPage: React.FC = () => {
                           {emp.status}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-slate-700 dark:text-slate-300">{emp.joinDate}</td>
+                      <td className="px-6 py-4 text-grx-text dark:text-grx-primary-200">{emp.joinDate}</td>
                     </tr>
                   ))
                 )}
@@ -223,7 +223,7 @@ export const EmployeeDirectoryReportPage: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 text-center text-slate-500">
+        <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-8 text-center text-grx-muted">
           No data available.
         </div>
       )}

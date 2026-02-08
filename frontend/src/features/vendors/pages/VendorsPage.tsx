@@ -56,11 +56,11 @@ const Vendors: React.FC = () => {
     <div className="space-y-6">
        <div className="flex justify-between items-center">
          <div>
-            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Vendors & Bills</h2>
-            <p className="text-slate-500 dark:text-slate-400">Manage expenses and supplier payments</p>
+            <h2 className="text-2xl font-bold text-grx-text dark:text-white">Vendors & Bills</h2>
+            <p className="text-grx-muted dark:text-grx-muted">Manage expenses and supplier payments</p>
          </div>
          <div className="flex gap-2">
-            <button className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700 relative overflow-hidden">
+            <button className="bg-white dark:bg-grx-dark-surface border border-grx-primary-100 dark:border-grx-primary-700 text-grx-text dark:text-grx-primary-200 px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-grx-bg dark:hover:bg-grx-primary-800 relative overflow-hidden">
                <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={handleFileUpload} accept="image/*,application/pdf" />
                {isProcessing ? <Loader2 className="animate-spin" size={18} /> : <Upload size={18} />}
                Upload Bill (AI)
@@ -73,18 +73,18 @@ const Vendors: React.FC = () => {
 
        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Vendors List */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-             <div className="p-4 bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-700 font-semibold text-slate-700 dark:text-slate-300">Your Vendors</div>
-             <div className="divide-y divide-slate-100 dark:divide-slate-700">
+          <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
+             <div className="p-4 bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-50 dark:border-grx-primary-800 font-semibold text-grx-text dark:text-grx-primary-200">Your Vendors</div>
+             <div className="divide-y divide-grx-primary-50 dark:divide-grx-primary-800">
                 {vendors.map(v => (
-                   <div key={v.id} className="p-4 flex justify-between items-center hover:bg-slate-50 dark:hover:bg-slate-700">
+                   <div key={v.id} className="p-4 flex justify-between items-center hover:bg-grx-bg dark:hover:bg-grx-primary-800">
                       <div>
-                         <h4 className="font-medium text-slate-800 dark:text-slate-100">{v.name}</h4>
-                         <p className="text-xs text-slate-500 dark:text-slate-400">GSTIN: {v.gstin}</p>
+                         <h4 className="font-medium text-grx-text dark:text-white">{v.name}</h4>
+                         <p className="text-xs text-grx-muted dark:text-grx-muted">GSTIN: {v.gstin}</p>
                       </div>
                       <div className="text-right">
-                         <span className="text-xs text-slate-400 dark:text-slate-500">Payable</span>
-                         <p className="font-semibold text-slate-800 dark:text-slate-100">₹{v.balance.toLocaleString('en-IN')}</p>
+                         <span className="text-xs text-grx-muted dark:text-grx-muted">Payable</span>
+                         <p className="font-semibold text-grx-text dark:text-white">₹{v.balance.toLocaleString('en-IN')}</p>
                       </div>
                    </div>
                 ))}
@@ -92,18 +92,18 @@ const Vendors: React.FC = () => {
           </div>
 
           {/* Bills List */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-             <div className="p-4 bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-700 font-semibold text-slate-700 dark:text-slate-300 flex justify-between">
+          <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
+             <div className="p-4 bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-50 dark:border-grx-primary-800 font-semibold text-grx-text dark:text-grx-primary-200 flex justify-between">
                 <span>Recent Bills</span>
              </div>
-             <div className="divide-y divide-slate-100 dark:divide-slate-700 max-h-[400px] overflow-y-auto">
+             <div className="divide-y divide-grx-primary-50 dark:divide-grx-primary-800 max-h-[400px] overflow-y-auto">
                 {bills.map(b => (
-                   <div key={b.id} className="p-4 hover:bg-slate-50 dark:hover:bg-slate-700">
+                   <div key={b.id} className="p-4 hover:bg-grx-bg dark:hover:bg-grx-primary-800">
                       <div className="flex justify-between mb-1">
-                         <span className="font-medium text-slate-800 dark:text-slate-100">{b.vendorName}</span>
+                         <span className="font-medium text-grx-text dark:text-white">{b.vendorName}</span>
                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${b.status === 'Paid' ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' : 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400'}`}>{b.status}</span>
                       </div>
-                      <div className="flex justify-between text-sm text-slate-600 dark:text-slate-400">
+                      <div className="flex justify-between text-sm text-grx-muted dark:text-grx-muted">
                          <span>#{b.billNumber} • {b.date}</span>
                          <span className="font-semibold">₹{b.amount.toLocaleString('en-IN')}</span>
                       </div>
