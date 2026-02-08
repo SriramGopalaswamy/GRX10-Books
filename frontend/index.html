@@ -78,6 +78,8 @@
         --grx10-text: #FFFFFF;
         --grx10-bg: #F8F8F8;
         --grx10-muted: #6C6C8A;
+        --grx10-border: rgba(58, 47, 120, 0.12);
+        --grx10-surface-muted: #F5F4FA;
 
         --grx10-primary-50: #EEEDFA;
         --grx10-primary-100: #D4D0F2;
@@ -104,6 +106,21 @@
         --grx10-error: #EF4444;
         --grx10-info: #3B82F6;
 
+        /* Typography */
+        --font-display: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        --font-body: 'Inter', 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        --text-xs: 0.75rem;
+        --text-sm: 0.875rem;
+        --text-base: 1rem;
+        --text-lg: 1.125rem;
+        --text-xl: 1.25rem;
+        --text-2xl: 1.5rem;
+        --text-3xl: 1.875rem;
+        --text-4xl: 2.25rem;
+        --leading-tight: 1.15;
+        --leading-snug: 1.35;
+        --leading-normal: 1.55;
+
         /* Motion tokens */
         --motion-instant: 75ms;
         --motion-fast: 150ms;
@@ -116,18 +133,75 @@
         --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
         --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
+        /* Layout tokens */
+        --space-1: 4px;
+        --space-2: 8px;
+        --space-3: 12px;
+        --space-4: 16px;
+        --space-5: 20px;
+        --space-6: 24px;
+        --space-7: 28px;
+        --space-8: 32px;
+        --radius-xs: 6px;
+        --radius-sm: 10px;
+        --radius-md: 14px;
+        --radius-lg: 18px;
+        --radius-xl: 24px;
+
         /* Shadows */
-        --shadow-sm: 0 1px 2px 0 rgba(58, 47, 120, 0.05);
-        --shadow-md: 0 4px 6px -1px rgba(58, 47, 120, 0.08), 0 2px 4px -1px rgba(58, 47, 120, 0.04);
-        --shadow-lg: 0 10px 15px -3px rgba(58, 47, 120, 0.08), 0 4px 6px -2px rgba(58, 47, 120, 0.04);
-        --shadow-header: 0 2px 8px rgba(58, 47, 120, 0.12);
+        --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.06);
+        --shadow-md: 0 6px 16px rgba(15, 23, 42, 0.08);
+        --shadow-lg: 0 18px 40px rgba(15, 23, 42, 0.12);
+        --shadow-card: 0 12px 30px rgba(58, 47, 120, 0.12);
+        --shadow-header: 0 8px 24px rgba(15, 23, 42, 0.14);
       }
 
       body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        font-family: var(--font-body);
         background-color: var(--grx10-bg);
+        color: var(--grx10-text);
+        font-size: var(--text-base);
+        line-height: var(--leading-normal);
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
       .dark body { background-color: var(--grx10-dark); }
+
+      h1, h2, h3, h4, h5, h6 {
+        font-family: var(--font-display);
+        letter-spacing: -0.01em;
+      }
+      h1 { font-size: var(--text-4xl); line-height: var(--leading-tight); }
+      h2 { font-size: var(--text-3xl); line-height: var(--leading-tight); }
+      h3 { font-size: var(--text-2xl); line-height: var(--leading-snug); }
+      h4 { font-size: var(--text-xl); line-height: var(--leading-snug); }
+      p { line-height: var(--leading-normal); }
+
+      a {
+        color: inherit;
+        transition: color var(--motion-fast) var(--ease-out),
+          opacity var(--motion-fast) var(--ease-out);
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        transition: border-color var(--motion-fast) var(--ease-out),
+          box-shadow var(--motion-fast) var(--ease-out),
+          background-color var(--motion-fast) var(--ease-out),
+          transform var(--motion-fast) var(--ease-out);
+      }
+
+      input::placeholder,
+      textarea::placeholder {
+        color: rgba(108, 108, 138, 0.8);
+      }
+      .dark input::placeholder,
+      .dark textarea::placeholder {
+        color: rgba(203, 213, 225, 0.55);
+      }
 
       /* ── Scrollbar ──────────────────────────────────────────────── */
       ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -271,7 +345,12 @@
       /* ── Button Press Effect ────────────────────────────────────── */
       .grx-btn-press {
         transition: transform var(--motion-instant) var(--ease-default),
-                    box-shadow var(--motion-fast) var(--ease-default);
+                    box-shadow var(--motion-fast) var(--ease-default),
+                    background-color var(--motion-fast) var(--ease-default);
+      }
+      .grx-btn-press:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
       }
       .grx-btn-press:active {
         transform: scale(0.97);
@@ -281,6 +360,59 @@
       .grx-focus-ring:focus-visible {
         outline: 2px solid var(--grx10-accent);
         outline-offset: 2px;
+      }
+
+      .grx-card {
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--grx10-border);
+        background: var(--grx10-surface);
+        box-shadow: var(--shadow-sm);
+      }
+      .dark .grx-card {
+        background: var(--grx10-dark-surface);
+        border-color: rgba(148, 163, 184, 0.18);
+      }
+      .grx-card-elevated {
+        box-shadow: var(--shadow-card);
+      }
+      .grx-glass {
+        backdrop-filter: blur(14px);
+        background: linear-gradient(135deg, rgba(58, 47, 120, 0.85), rgba(30, 30, 47, 0.92));
+      }
+      .dark .grx-glass {
+        background: linear-gradient(135deg, rgba(31, 26, 72, 0.9), rgba(22, 19, 56, 0.95));
+      }
+      .grx-input {
+        border-radius: var(--radius-md);
+        border: 1px solid var(--grx10-border);
+        background: var(--grx10-surface);
+        padding: 0.6rem 0.9rem;
+        font-size: var(--text-sm);
+      }
+      .grx-input:focus {
+        border-color: var(--grx10-primary-400);
+        box-shadow: 0 0 0 3px rgba(97, 82, 203, 0.2);
+      }
+      .dark .grx-input {
+        background: rgba(30, 30, 47, 0.6);
+        border-color: rgba(148, 163, 184, 0.2);
+        color: #f8fafc;
+      }
+      .grx-sidebar {
+        background: linear-gradient(180deg, rgba(58, 47, 120, 0.96) 0%, rgba(31, 26, 72, 0.98) 65%, rgba(22, 19, 56, 1) 100%);
+        border-right: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .dark .grx-sidebar {
+        background: linear-gradient(180deg, rgba(31, 26, 72, 0.98) 0%, rgba(22, 19, 56, 1) 100%);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
       }
 
       /* ── Page transition wrapper ────────────────────────────────── */

@@ -9,16 +9,23 @@ import {
     OSGoal,
     OSMemo
 } from '../../config/database.js';
+import { requirePermission } from '../../security/requirePermission.js';
 
 const router = express.Router();
 
 // Get dashboard summary statistics
-router.get('/summary', async (req, res) => {
+router.get('/summary', requirePermission('dashboard.read'), async (req, res) => {
     try {
         const user = req.user; // From session
         if (!user) {
             return res.status(401).json({ error: 'Unauthorized' });
         }
+
+        const permissions = Array.isArray(user.permissions) ? user.permissions : [];
+        const hasPermission = (code) => permissions.includes(code);
+
+        const canReadAllEmployees = hasPermission('hrms.employee.read.all');
+        const canReadTeamEmployees = hasPermission('hrms.employee.read.team');
 
         const currentDate = new Date();
         const currentMonth = currentDate.getMonth() + 1;
@@ -30,18 +37,18 @@ router.get('/summary', async (req, res) => {
 
         // Determine employee filter based on role
         let employeeFilter = {};
-        if (user.role === 'Employee') {
-            employeeFilter = { id: user.id };
-        } else if (user.role === 'Manager') {
-            // Get reportees
-            const reportees = await Employee.findAll({ 
-                where: { managerId: user.id },
-                attributes: ['id']
-            });
-            const reporteeIds = reportees.map(r => r.id);
-            employeeFilter = { id: { [Op.in]: [user.id, ...reporteeIds] } };
+        if (!canReadAllEmployees) {
+            if (canReadTeamEmployees) {
+                const reportees = await Employee.findAll({
+                    where: { managerId: user.id },
+                    attributes: ['id']
+                });
+                const reporteeIds = reportees.map(r => r.id);
+                employeeFilter = { id: { [Op.in]: [user.id, ...reporteeIds] } };
+            } else {
+                employeeFilter = { id: user.id };
+            }
         }
-        // Admin/HR/Finance see all (no filter)
 
         // ============================================
         // HRMS Statistics
@@ -60,9 +67,9 @@ router.get('/summary', async (req, res) => {
         const attendanceWhere = {
             date: { [Op.between]: [startOfMonth, endOfMonth] }
         };
-        if (user.role === 'Employee') {
+        if (!canReadAllEmployees && !canReadTeamEmployees) {
             attendanceWhere.employeeId = user.id;
-        } else if (user.role === 'Manager') {
+        } else if (!canReadAllEmployees && canReadTeamEmployees) {
             const reportees = await Employee.findAll({ 
                 where: { managerId: user.id },
                 attributes: ['id']
@@ -79,9 +86,9 @@ router.get('/summary', async (req, res) => {
 
         // Leave requests (pending)
         const leaveWhere = { status: 'Pending' };
-        if (user.role === 'Employee') {
+        if (!canReadAllEmployees && !canReadTeamEmployees) {
             leaveWhere.employeeId = user.id;
-        } else if (user.role === 'Manager') {
+        } else if (!canReadAllEmployees && canReadTeamEmployees) {
             const reportees = await Employee.findAll({ 
                 where: { managerId: user.id },
                 attributes: ['id']
@@ -97,9 +104,9 @@ router.get('/summary', async (req, res) => {
         const payrollWhere = {
             month: monthString
         };
-        if (user.role === 'Employee') {
+        if (!canReadAllEmployees && !canReadTeamEmployees) {
             payrollWhere.employeeId = user.id;
-        } else if (user.role === 'Manager') {
+        } else if (!canReadAllEmployees && canReadTeamEmployees) {
             const reportees = await Employee.findAll({ 
                 where: { managerId: user.id },
                 attributes: ['id']
@@ -147,9 +154,9 @@ router.get('/summary', async (req, res) => {
         // OS Statistics
         // ============================================
         const goalWhere = {};
-        if (user.role === 'Employee') {
+        if (!canReadAllEmployees && !canReadTeamEmployees) {
             goalWhere.employeeId = user.id;
-        } else if (user.role === 'Manager') {
+        } else if (!canReadAllEmployees && canReadTeamEmployees) {
             const reportees = await Employee.findAll({ 
                 where: { managerId: user.id },
                 attributes: ['id']
@@ -169,9 +176,9 @@ router.get('/summary', async (req, res) => {
             : 0;
 
         const memoWhere = {};
-        if (user.role === 'Employee') {
+        if (!canReadAllEmployees && !canReadTeamEmployees) {
             memoWhere.createdBy = user.id;
-        } else if (user.role === 'Manager') {
+        } else if (!canReadAllEmployees && canReadTeamEmployees) {
             const reportees = await Employee.findAll({ 
                 where: { managerId: user.id },
                 attributes: ['id']
@@ -274,4 +281,3 @@ router.get('/summary', async (req, res) => {
 });
 
 export default router;
-
