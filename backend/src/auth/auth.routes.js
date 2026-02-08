@@ -130,75 +130,73 @@ passport.use(new MicrosoftStrategy({
     }
 ));
 
-if (GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET) {
-    passport.use('google', new OAuth2Strategy({
-        clientID: GOOGLE_CLIENT_ID,
-        clientSecret: GOOGLE_CLIENT_SECRET,
-        callbackURL: '/api/auth/google/callback',
-        authorizationURL: 'https://accounts.google.com/o/oauth2/v2/auth',
-        tokenURL: 'https://oauth2.googleapis.com/token'
-    },
-        async (accessToken, refreshToken, params, done) => {
-            try {
-                const profileResponse = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`
-                    }
-                });
-
-                if (!profileResponse.ok) {
-                    console.error('Google SSO profile fetch failed:', profileResponse.statusText);
-                    return done(null, false, { message: 'Unable to fetch Google profile.' });
+passport.use('google', new OAuth2Strategy({
+    clientID: GOOGLE_CLIENT_ID || 'MISSING_ID',
+    clientSecret: GOOGLE_CLIENT_SECRET || 'MISSING_SECRET',
+    callbackURL: '/api/auth/google/callback',
+    authorizationURL: 'https://accounts.google.com/o/oauth2/v2/auth',
+    tokenURL: 'https://oauth2.googleapis.com/token'
+},
+    async (accessToken, refreshToken, params, done) => {
+        try {
+            const profileResponse = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
                 }
+            });
 
-                const profile = await profileResponse.json();
-                const email = profile.email ? profile.email.toLowerCase() : null;
-
-                if (!email) {
-                    return done(null, false, { message: 'No email found in profile.' });
-                }
-
-                if (email === 'sgopalaswamy@gmail.com') {
-                    const sessionUser = {
-                        id: email,
-                        name: profile.name || 'SG Opalaswamy',
-                        email,
-                        role: 'Admin',
-                        isAdmin: true
-                    };
-                    return done(null, sessionUser);
-                }
-
-                const employee = await Employee.findOne({
-                    where: {
-                        email: email.toLowerCase(),
-                        status: 'Active'
-                    }
-                });
-
-                if (!employee) {
-                    console.log(`[auth] Google SSO denied: employee not found or inactive for ${email}`);
-                    return done(null, false, { message: 'User not found. Please contact admin.' });
-                }
-
-                console.log(`✅ Google SSO authentication successful for employee: ${employee.email} (${employee.id})`);
-
-                const sessionUser = {
-                    id: employee.id,
-                    name: employee.name,
-                    email: employee.email,
-                    role: employee.role,
-                    isAdmin: employee.role === 'Admin' || employee.role === 'HR'
-                };
-
-                return done(null, sessionUser);
-            } catch (err) {
-                console.error('Google SSO authentication error:', err);
-                return done(null, false, { message: 'Authentication failed. Please try again.' });
+            if (!profileResponse.ok) {
+                console.error('Google SSO profile fetch failed:', profileResponse.statusText);
+                return done(null, false, { message: 'Unable to fetch Google profile.' });
             }
+
+            const profile = await profileResponse.json();
+            const email = profile.email ? profile.email.toLowerCase() : null;
+
+            if (!email) {
+                return done(null, false, { message: 'No email found in profile.' });
+            }
+
+            if (email === 'sgopalaswamy@gmail.com') {
+                const sessionUser = {
+                    id: email,
+                    name: profile.name || 'SG Opalaswamy',
+                    email,
+                    role: 'Admin',
+                    isAdmin: true
+                };
+                return done(null, sessionUser);
+            }
+
+            const employee = await Employee.findOne({
+                where: {
+                    email: email.toLowerCase(),
+                    status: 'Active'
+                }
+            });
+
+            if (!employee) {
+                console.log(`[auth] Google SSO denied: employee not found or inactive for ${email}`);
+                return done(null, false, { message: 'User not found. Please contact admin.' });
+            }
+
+            console.log(`✅ Google SSO authentication successful for employee: ${employee.email} (${employee.id})`);
+
+            const sessionUser = {
+                id: employee.id,
+                name: employee.name,
+                email: employee.email,
+                role: employee.role,
+                isAdmin: employee.role === 'Admin' || employee.role === 'HR'
+            };
+
+            return done(null, sessionUser);
+        } catch (err) {
+            console.error('Google SSO authentication error:', err);
+            return done(null, false, { message: 'Authentication failed. Please try again.' });
         }
-    ));
-}
+    }
+));
 
 passport.serializeUser((user, done) => {
     done(null, user);
@@ -215,15 +213,10 @@ router.get('/microsoft', passport.authenticate('microsoft', {
     prompt: 'select_account',
 }));
 
-router.get('/google', (req, res, next) => {
-    if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
-        return res.status(503).json({ error: 'Google OAuth is not configured.' });
-    }
-    return passport.authenticate('google', {
-        scope: ['profile', 'email'],
-        prompt: 'select_account'
-    })(req, res, next);
-});
+router.get('/google', passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    prompt: 'select_account'
+}));
 
 // 2. Callback — custom handler to return explicit HTTP status codes
 router.get('/microsoft/callback', (req, res, next) => {
@@ -252,9 +245,6 @@ router.get('/microsoft/callback', (req, res, next) => {
 });
 
 router.get('/google/callback', (req, res, next) => {
-    if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
-        return res.redirect('/login?error=server_error');
-    }
     passport.authenticate('google', (err, user, info) => {
         if (err) {
             console.error('[auth] Google SSO callback error:', err);
