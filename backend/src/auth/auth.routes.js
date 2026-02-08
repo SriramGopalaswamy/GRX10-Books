@@ -184,7 +184,7 @@ passport.use('google', new OAuth2Strategy({
                 email: employee.email,
                 role: employee.role,
                 isAdmin: employee.role === 'Admin' || employee.role === 'HR'
-            });
+            };
 
             return done(null, sessionUser);
         } catch (err) {
