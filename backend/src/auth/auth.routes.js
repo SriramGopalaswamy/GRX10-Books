@@ -5,7 +5,8 @@ import { Strategy as OAuth2Strategy } from 'passport-oauth2';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 import { Op } from 'sequelize';
-import { User, Employee } from '../config/database.js';
+import { Employee } from '../config/database.js';
+import { buildSessionUser } from '../security/permissionService.js';
 
 dotenv.config();
 
@@ -113,14 +114,9 @@ passport.use(new MicrosoftStrategy({
 
             console.log(`✅ SSO authentication successful for employee: ${employee.email} (${employee.id})`);
 
-            // Create session user object from employee (same structure as email/password login)
-            const sessionUser = {
-                id: employee.id,
-                name: employee.name,
-                email: employee.email,
-                role: employee.role, // 'Admin', 'HR', 'Manager', 'Employee', 'Finance'
+            const sessionUser = await buildSessionUser(employee, {
                 isAdmin: employee.role === 'Admin' || employee.role === 'HR'
-            };
+            });
 
             return done(null, sessionUser);
         } catch (err) {
@@ -312,14 +308,9 @@ router.post('/admin/login', loginRateLimiter, async (req, res) => {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        // Create session user object from employee
-        const sessionUser = {
-            id: employee.id,
-            name: employee.name,
-            email: employee.email,
-            role: employee.role, // 'Admin', 'HR', 'Manager', 'Employee', 'Finance'
+        const sessionUser = await buildSessionUser(employee, {
             isAdmin: employee.role === 'Admin' || employee.role === 'HR'
-        };
+        });
 
         req.login(sessionUser, (err) => {
             if (err) {

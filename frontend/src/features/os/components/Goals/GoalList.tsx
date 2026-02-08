@@ -1,13 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import { useStore } from '../../../../shared/contexts/StoreContext';
 import { useAuth } from '../../../../shared/contexts/AuthContext';
-import { Goal, GoalStatus, GoalComment, HRMSRole } from '../../../../shared/types';
+import { Goal, GoalStatus, GoalComment } from '../../../../shared/types';
 import { Plus, CheckCircle, AlertCircle, XCircle, TrendingUp, Edit2, MessageSquare, Send, X } from 'lucide-react';
 import { optimizeGoal } from '../../../../shared/services/gemini/geminiService';
+import { DEFAULT_PERMISSIONS } from '../../../../shared/security/permissions';
 
 export const GoalList: React.FC = () => {
   const { goals, currentUser, addGoal, updateGoal, users } = useStore();
-  const { user: authUser } = useAuth();
+  const { user: authUser, hasPermission } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingGoal, setEditingGoal] = useState<Partial<Goal>>({});
   const [aiSuggestion, setAiSuggestion] = useState<string>('');
@@ -17,11 +18,11 @@ export const GoalList: React.FC = () => {
   const visibleGoals = useMemo(() => {
     if (!authUser) return goals;
 
-    if (authUser.role === HRMSRole.HR || authUser.role === HRMSRole.ADMIN) {
+    if (hasPermission(DEFAULT_PERMISSIONS.osGoalReadAll)) {
       return goals;
     }
 
-    if (authUser.role === HRMSRole.MANAGER) {
+    if (hasPermission(DEFAULT_PERMISSIONS.osGoalReadTeam)) {
       const reporteeIds = users
         .filter(u => u.id !== authUser.id)
         .map(u => u.id);

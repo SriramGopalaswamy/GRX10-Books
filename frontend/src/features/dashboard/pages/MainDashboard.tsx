@@ -20,6 +20,7 @@ import {
 import { useAuth } from '../../../shared/contexts/AuthContext';
 import { View } from '../../../shared/types';
 import { SkeletonDashboard } from '../../../shared/design-system/SkeletonLoader';
+import { DEFAULT_PERMISSIONS } from '../../../shared/security/permissions';
 
 interface DashboardStats {
   hrms: {
@@ -76,7 +77,7 @@ interface MainDashboardProps {
 }
 
 const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
-  const { user } = useAuth();
+  const { user, hasPermission } = useAuth();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -111,10 +112,12 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onChangeView }) => {
     return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
   };
 
-  const userRole = user?.role || 'Employee';
-  const isAdmin = userRole === 'Admin' || userRole === 'HR' || userRole === 'Finance';
-  const isManager = userRole === 'Manager';
-  const isEmployee = userRole === 'Employee';
+  const canReadAllEmployees = hasPermission(DEFAULT_PERMISSIONS.hrmsEmployeeReadAll);
+  const canReadTeamEmployees = hasPermission(DEFAULT_PERMISSIONS.hrmsEmployeeReadTeam);
+  const canReadSelf = hasPermission(DEFAULT_PERMISSIONS.hrmsEmployeeReadSelf);
+  const isAdmin = canReadAllEmployees;
+  const isManager = canReadTeamEmployees && !canReadAllEmployees;
+  const isEmployee = canReadSelf && !canReadAllEmployees && !canReadTeamEmployees;
 
   const getHeaderMessage = () => {
     if (isAdmin) return "Here's what's happening with your business today";

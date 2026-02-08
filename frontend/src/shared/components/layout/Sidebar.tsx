@@ -10,6 +10,7 @@ import { View } from '../../types';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { GRX10Logo } from '../../design-system/GRX10Logo';
+import { DEFAULT_PERMISSIONS } from '../../security/permissions';
 
 interface SidebarProps {
   currentView: View;
@@ -33,7 +34,7 @@ interface MenuSection {
 
 const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, onCollapseChange, isCollapsed: externalCollapsed }) => {
   const { theme, toggleTheme } = useTheme();
-  const { logout } = useAuth();
+  const { logout, hasPermission } = useAuth();
   const [internalCollapsed, setInternalCollapsed] = useState(false);
   const isCollapsed = externalCollapsed !== undefined ? externalCollapsed : internalCollapsed;
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['financial', 'hrms', 'os', 'config', 'security', 'reports']));
@@ -164,7 +165,14 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, onCollapse
     >
       {/* Navigation Sections */}
       <nav className={`flex-1 py-4 space-y-1 ${isCollapsed ? 'px-2' : 'px-3'}`}>
-        {menuSections.map((section) => {
+        {menuSections
+          .filter(section => {
+            if (section.id === 'security') {
+              return hasPermission(DEFAULT_PERMISSIONS.securityRead);
+            }
+            return true;
+          })
+          .map((section) => {
           const SectionIcon = section.icon;
           const isExpanded = isSectionExpanded(section.id);
           const hasActiveItem = section.items.some(item => isItemActive(item.id));
