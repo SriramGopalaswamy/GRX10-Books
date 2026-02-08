@@ -186,6 +186,13 @@ app.listen(PORT, '0.0.0.0', () => {
     } catch (err) {
       console.error('Bootstrap warning:', err.message);
     }
+
+    // Ensure pre-seeded SSO users exist
+    try {
+      await ensureSSOUsers();
+    } catch (err) {
+      console.error('SSO user seed warning:', err.message);
+    }
   }).catch(err => {
     console.error('[startup] Failed during async startup:', err);
     // Don't crash - server still serves health checks and static files

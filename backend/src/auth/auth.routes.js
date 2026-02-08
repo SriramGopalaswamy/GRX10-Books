@@ -395,6 +395,11 @@ router.post('/admin/login', loginRateLimiter, async (req, res) => {
             return res.status(403).json({ error: 'Email/password login is disabled for this account. Please use SSO login.' });
         }
 
+        // Guard: employee has no password set (SSO-only account)
+        if (!employee.password) {
+            return res.status(403).json({ error: 'This account uses SSO login only. Please use Microsoft login.' });
+        }
+
         // Check password using bcrypt
         const isValidPassword = await bcrypt.compare(password, employee.password);
         if (!isValidPassword) {
