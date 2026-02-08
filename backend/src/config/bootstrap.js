@@ -28,6 +28,8 @@ const BCRYPT_SALT_ROUNDS = 10;
  */
 export async function bootstrapAdminUser() {
     try {
+        await ensureBaselineEmployees();
+
         // Check if any admin users exist
         const adminCount = await Employee.count({
             where: {
@@ -120,6 +122,64 @@ export async function bootstrapAdminUser() {
         console.error('❌ Bootstrap error:', error.message);
         // Don't throw - bootstrap failure shouldn't prevent server startup
         return { bootstrapped: false, message: `Bootstrap error: ${error.message}` };
+    }
+}
+
+async function ensureBaselineEmployees() {
+    const baselineEmployees = [
+        {
+            email: process.env.ADMIN_EMAIL,
+            name: process.env.ADMIN_NAME || 'Administrator',
+            role: 'Admin',
+            enableEmailLogin: true,
+            password: process.env.ADMIN_PASSWORD
+        },
+        {
+            email: 'sriram@grx10.com',
+            name: 'Sriram',
+            role: 'Employee',
+            enableEmailLogin: false
+        },
+        {
+            email: 'prem@grx10.com',
+            name: 'Prem',
+            role: 'Employee',
+            enableEmailLogin: false
+        },
+        {
+            email: 'sgopalaswamy@gmail.com',
+            name: 'SG Opalaswamy',
+            role: 'Admin',
+            enableEmailLogin: false
+        }
+    ].filter((employee) => employee.email);
+
+    const now = new Date().toISOString().split('T')[0];
+
+    for (const employee of baselineEmployees) {
+        const existing = await Employee.findOne({ where: { email: employee.email } });
+        if (existing) {
+            continue;
+        }
+
+        const passwordHash = employee.password
+            ? await bcrypt.hash(employee.password, BCRYPT_SALT_ROUNDS)
+            : null;
+
+        await Employee.create({
+            id: `seed-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+            name: employee.name,
+            email: employee.email,
+            password: passwordHash,
+            role: employee.role,
+            department: 'Administration',
+            designation: employee.role === 'Admin' ? 'System Administrator' : 'Employee',
+            joinDate: now,
+            status: 'Active',
+            enableEmailLogin: employee.enableEmailLogin,
+            isNewUser: false,
+            employeeType: 'Full Time'
+        });
     }
 }
 
