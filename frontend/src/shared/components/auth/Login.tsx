@@ -157,7 +157,7 @@ const Login: React.FC = () => {
                                         type="text"
                                         value={username}
                                         onChange={(e) => { setUsername(e.target.value); setFieldErrors(prev => ({ ...prev, username: undefined })); }}
-                                        className={`w-full pl-10 pr-4 py-2.5 bg-grx-bg dark:bg-grx-primary-800 border rounded-lg text-grx-text dark:text-white placeholder-grx-muted outline-none transition-all duration-200 grx-focus-ring ${
+                                        className={`grx-input w-full pl-10 pr-4 py-2.5 bg-grx-bg dark:bg-grx-primary-800 border rounded-lg text-grx-text dark:text-white placeholder-grx-muted outline-none transition-all duration-200 grx-focus-ring ${
                                             fieldErrors.username
                                                 ? 'border-red-400 dark:border-red-600'
                                                 : 'border-grx-primary-100 dark:border-grx-primary-700 focus:border-grx-primary dark:focus:border-grx-primary-400'
@@ -180,7 +180,7 @@ const Login: React.FC = () => {
                                         type={showPassword ? 'text' : 'password'}
                                         value={password}
                                         onChange={(e) => { setPassword(e.target.value); setFieldErrors(prev => ({ ...prev, password: undefined })); }}
-                                        className={`w-full pl-10 pr-10 py-2.5 bg-grx-bg dark:bg-grx-primary-800 border rounded-lg text-grx-text dark:text-white placeholder-grx-muted outline-none transition-all duration-200 grx-focus-ring ${
+                                        className={`grx-input w-full pl-10 pr-10 py-2.5 bg-grx-bg dark:bg-grx-primary-800 border rounded-lg text-grx-text dark:text-white placeholder-grx-muted outline-none transition-all duration-200 grx-focus-ring ${
                                             fieldErrors.password
                                                 ? 'border-red-400 dark:border-red-600'
                                                 : 'border-grx-primary-100 dark:border-grx-primary-700 focus:border-grx-primary dark:focus:border-grx-primary-400'
