@@ -30,6 +30,10 @@ const Login: React.FC = () => {
         window.location.href = '/api/auth/microsoft';
     };
 
+    const handleGoogleLogin = () => {
+        window.location.href = '/api/auth/google';
+    };
+
     const handleAdminLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
@@ -123,7 +127,7 @@ const Login: React.FC = () => {
                     )}
 
                     {loginMethod === 'sso' ? (
-                        <div className="grx-animate-fade-in">
+                        <div className="grx-animate-fade-in space-y-3">
                             <button
                                 onClick={handleMicrosoftLogin}
                                 className="w-full bg-grx-text dark:bg-white text-white dark:text-grx-text py-3 px-4 rounded-lg font-semibold hover:opacity-90 transition-all duration-200 flex items-center justify-center gap-3 grx-btn-press grx-focus-ring"
@@ -131,6 +135,14 @@ const Login: React.FC = () => {
                             >
                                 <img src="https://learn.microsoft.com/en-us/entra/identity-platform/media/howto-add-branding-in-apps/ms-symbollockup_mssymbol_19.png" alt="Microsoft" className="w-5 h-5" />
                                 Sign in with Microsoft 365
+                            </button>
+                            <button
+                                onClick={handleGoogleLogin}
+                                className="w-full bg-white dark:bg-grx-dark-surface text-grx-text dark:text-white py-3 px-4 rounded-lg font-semibold border border-slate-200 dark:border-grx-primary-700 hover:bg-slate-50 dark:hover:bg-grx-primary-800 transition-all duration-200 flex items-center justify-center gap-3 grx-btn-press grx-focus-ring"
+                                style={{ boxShadow: 'var(--shadow-md)' }}
+                            >
+                                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
+                                Sign in with Google
                             </button>
                         </div>
                     ) : (

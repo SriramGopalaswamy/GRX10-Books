@@ -1,6 +1,7 @@
 import express from 'express';
 import passport from 'passport';
 import { Strategy as MicrosoftStrategy } from 'passport-microsoft';
+import { Strategy as OAuth2Strategy } from 'passport-oauth2';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 import { Op } from 'sequelize';
@@ -10,11 +11,55 @@ dotenv.config();
 
 const router = express.Router();
 
+// --- Rate Limiting (P1-09) ---
+// Simple in-memory rate limiter for login endpoints
+const loginAttempts = new Map(); // key: IP, value: { count, firstAttempt }
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+const RATE_LIMIT_MAX_ATTEMPTS = 10; // max 10 attempts per window
+
+const loginRateLimiter = (req, res, next) => {
+    const ip = req.ip || req.connection.remoteAddress;
+    const now = Date.now();
+    const record = loginAttempts.get(ip);
+
+    if (record) {
+        // Reset window if expired
+        if (now - record.firstAttempt > RATE_LIMIT_WINDOW_MS) {
+            loginAttempts.set(ip, { count: 1, firstAttempt: now });
+            return next();
+        }
+        if (record.count >= RATE_LIMIT_MAX_ATTEMPTS) {
+            const retryAfter = Math.ceil((RATE_LIMIT_WINDOW_MS - (now - record.firstAttempt)) / 1000);
+            res.set('Retry-After', retryAfter.toString());
+            return res.status(429).json({
+                error: 'Too many login attempts. Please try again later.',
+                retryAfterSeconds: retryAfter
+            });
+        }
+        record.count++;
+    } else {
+        loginAttempts.set(ip, { count: 1, firstAttempt: now });
+    }
+
+    // Cleanup old entries periodically (every 100 requests)
+    if (loginAttempts.size > 1000) {
+        for (const [key, val] of loginAttempts) {
+            if (now - val.firstAttempt > RATE_LIMIT_WINDOW_MS) {
+                loginAttempts.delete(key);
+            }
+        }
+    }
+
+    next();
+};
+
 // --- Configuration ---
 // TODO: User must provide these in .env or Cloud Run secrets
 const CLIENT_ID = process.env.MICROSOFT_CLIENT_ID;
 const CLIENT_SECRET = process.env.MICROSOFT_CLIENT_SECRET;
 const TENANT_ID = process.env.MICROSOFT_TENANT_ID; // Optional, but good for single-tenant apps
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || process.env.GOOGLE_OAUTH_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || process.env.GOOGLE_OAUTH_CLIENT_SECRET;
 
 // --- Admin Credentials ---
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
@@ -30,6 +75,9 @@ const ALLOWED_EMAILS = [
 
 if (!CLIENT_ID || !CLIENT_SECRET) {
     console.warn("⚠️ Microsoft OAuth credentials not found. Login will fail.");
+}
+if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
+    console.warn('⚠️ Google OAuth credentials not found. Login will fail.');
 }
 
 // --- Passport Strategy ---
@@ -59,8 +107,8 @@ passport.use(new MicrosoftStrategy({
             });
 
             if (!employee) {
-                console.log(`🚫 Access denied: Employee not found or inactive for email: ${email}`);
-                return done(null, false, { message: 'Access denied. Employee not found or account is inactive.' });
+                console.log(`[auth] SSO denied: employee not found or inactive for ${email}`);
+                return done(null, false, { message: 'User not found. Please contact admin.' });
             }
 
             console.log(`✅ SSO authentication successful for employee: ${employee.email} (${employee.id})`);
@@ -77,7 +125,75 @@ passport.use(new MicrosoftStrategy({
             return done(null, sessionUser);
         } catch (err) {
             console.error('SSO authentication error:', err);
-            return done(err);
+            return done(null, false, { message: 'Authentication failed. Please try again.' });
+        }
+    }
+));
+
+passport.use('google', new OAuth2Strategy({
+    clientID: GOOGLE_CLIENT_ID || 'MISSING_ID',
+    clientSecret: GOOGLE_CLIENT_SECRET || 'MISSING_SECRET',
+    callbackURL: '/api/auth/google/callback',
+    authorizationURL: 'https://accounts.google.com/o/oauth2/v2/auth',
+    tokenURL: 'https://oauth2.googleapis.com/token'
+},
+    async (accessToken, refreshToken, params, done) => {
+        try {
+            const profileResponse = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            });
+
+            if (!profileResponse.ok) {
+                console.error('Google SSO profile fetch failed:', profileResponse.statusText);
+                return done(null, false, { message: 'Unable to fetch Google profile.' });
+            }
+
+            const profile = await profileResponse.json();
+            const email = profile.email ? profile.email.toLowerCase() : null;
+
+            if (!email) {
+                return done(null, false, { message: 'No email found in profile.' });
+            }
+
+            if (email === 'sgopalaswamy@gmail.com') {
+                const sessionUser = {
+                    id: email,
+                    name: profile.name || 'SG Opalaswamy',
+                    email,
+                    role: 'Admin',
+                    isAdmin: true
+                };
+                return done(null, sessionUser);
+            }
+
+            const employee = await Employee.findOne({
+                where: {
+                    email: email.toLowerCase(),
+                    status: 'Active'
+                }
+            });
+
+            if (!employee) {
+                console.log(`[auth] Google SSO denied: employee not found or inactive for ${email}`);
+                return done(null, false, { message: 'User not found. Please contact admin.' });
+            }
+
+            console.log(`✅ Google SSO authentication successful for employee: ${employee.email} (${employee.id})`);
+
+            const sessionUser = {
+                id: employee.id,
+                name: employee.name,
+                email: employee.email,
+                role: employee.role,
+                isAdmin: employee.role === 'Admin' || employee.role === 'HR'
+            };
+
+            return done(null, sessionUser);
+        } catch (err) {
+            console.error('Google SSO authentication error:', err);
+            return done(null, false, { message: 'Authentication failed. Please try again.' });
         }
     }
 ));
@@ -97,14 +213,60 @@ router.get('/microsoft', passport.authenticate('microsoft', {
     prompt: 'select_account',
 }));
 
-// 2. Callback
-router.get('/microsoft/callback',
-    passport.authenticate('microsoft', { failureRedirect: '/login?error=access_denied' }),
-    (req, res) => {
-        // Successful authentication
-        res.redirect('/');
-    }
-);
+router.get('/google', passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    prompt: 'select_account'
+}));
+
+// 2. Callback — custom handler to return explicit HTTP status codes
+router.get('/microsoft/callback', (req, res, next) => {
+    passport.authenticate('microsoft', (err, user, info) => {
+        if (err) {
+            console.error('[auth] SSO callback error:', err);
+            return res.redirect('/login?error=server_error');
+        }
+        if (!user) {
+            const message = (info && info.message) || 'Access denied';
+            console.log(`[auth] SSO login failed: ${message}`);
+            // Return 401 for API clients, redirect for browsers
+            if (req.accepts('json') && !req.accepts('html')) {
+                return res.status(401).json({ error: message });
+            }
+            return res.redirect(`/login?error=access_denied&message=${encodeURIComponent(message)}`);
+        }
+        req.login(user, (loginErr) => {
+            if (loginErr) {
+                console.error('[auth] SSO session creation failed:', loginErr);
+                return res.redirect('/login?error=session_error');
+            }
+            res.redirect('/');
+        });
+    })(req, res, next);
+});
+
+router.get('/google/callback', (req, res, next) => {
+    passport.authenticate('google', (err, user, info) => {
+        if (err) {
+            console.error('[auth] Google SSO callback error:', err);
+            return res.redirect('/login?error=server_error');
+        }
+        if (!user) {
+            const message = (info && info.message) || 'Access denied';
+            console.log(`[auth] Google SSO login failed: ${message}`);
+            if (req.accepts('json') && !req.accepts('html')) {
+                return res.status(401).json({ error: message });
+            }
+            return res.redirect(`/login?error=access_denied&message=${encodeURIComponent(message)}`);
+        }
+        req.login(user, (loginErr) => {
+            if (loginErr) {
+                console.error('[auth] Google SSO session creation failed:', loginErr);
+                return res.redirect('/login?error=session_error');
+            }
+            res.redirect('/');
+        });
+    })(req, res, next);
+});
 
 // 3. Status Check (for Frontend)
 router.get('/status', (req, res) => {
@@ -116,7 +278,7 @@ router.get('/status', (req, res) => {
 });
 
 // 4. Employee Login (Email/Password) - All employees login via Employee table
-router.post('/admin/login', async (req, res) => {
+router.post('/admin/login', loginRateLimiter, async (req, res) => {
     try {
         const { username, password } = req.body;
 
@@ -166,8 +328,8 @@ router.post('/admin/login', async (req, res) => {
             res.json({ success: true, user: sessionUser });
         });
     } catch (error) {
-        console.error('Employee login error:', error);
-        res.status(500).json({ error: 'Login failed' });
+        console.error('[auth] Login error:', error.message);
+        res.status(500).json({ error: 'Internal server error during login' });
     }
 });
 
