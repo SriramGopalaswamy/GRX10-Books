@@ -319,7 +319,7 @@ export const Payroll: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Payroll & Compensation</h2>
+        <h2 className="text-2xl font-bold text-grx-text dark:text-white">Payroll & Compensation</h2>
         <button
           onClick={() => {
             const now = new Date();
@@ -367,43 +367,43 @@ export const Payroll: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Salary Structure Card */}
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 lg:col-span-1">
-          <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
+        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl shadow-sm border border-grx-primary-50 dark:border-grx-primary-800 lg:col-span-1">
+          <h3 className="font-semibold text-grx-text dark:text-white mb-4 flex items-center gap-2">
             <DollarSign size={20} className="text-emerald-500" />
             Current Salary Structure
           </h3>
           {salaryStructure ? (
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
-                <span className="text-slate-500 dark:text-slate-400">Annual CTC</span>
-                <span className="font-medium text-slate-900 dark:text-slate-100">₹{salaryStructure.annualCTC.toLocaleString('en-IN')}</span>
+                <span className="text-grx-muted dark:text-grx-muted">Annual CTC</span>
+                <span className="font-medium text-grx-text dark:text-white">₹{salaryStructure.annualCTC.toLocaleString('en-IN')}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500 dark:text-slate-400">Monthly Gross</span>
-                <span className="font-medium text-slate-900 dark:text-slate-100">₹{Math.round(salaryStructure.monthlyGross).toLocaleString('en-IN')}</span>
+                <span className="text-grx-muted dark:text-grx-muted">Monthly Gross</span>
+                <span className="font-medium text-grx-text dark:text-white">₹{Math.round(salaryStructure.monthlyGross).toLocaleString('en-IN')}</span>
               </div>
-              <div className="h-px bg-slate-100 dark:bg-slate-700 my-2"></div>
-              <div className="text-xs text-slate-400">
+              <div className="h-px bg-grx-primary-50 dark:bg-grx-primary-800 my-2"></div>
+              <div className="text-xs text-grx-muted">
                 Breakdown calculated automatically based on CTC
               </div>
             </div>
           ) : (
-            <div className="text-sm text-slate-500">Loading salary structure...</div>
+            <div className="text-sm text-grx-muted">Loading salary structure...</div>
           )}
         </div>
 
         {/* Payslips List */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 lg:col-span-2 overflow-hidden">
-          <div className="p-6 border-b border-slate-100 dark:border-slate-700 font-semibold text-slate-900 dark:text-slate-100">Recent Payslips</div>
+        <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-50 dark:border-grx-primary-800 lg:col-span-2 overflow-hidden">
+          <div className="p-6 border-b border-grx-primary-50 dark:border-grx-primary-800 font-semibold text-grx-text dark:text-white">Recent Payslips</div>
           {loading ? (
             <div className="p-8 text-center">
               <Loader2 className="animate-spin text-indigo-600 mx-auto" size={32} />
-              <p className="text-slate-500 mt-2">Loading payslips...</p>
+              <p className="text-grx-muted mt-2">Loading payslips...</p>
             </div>
           ) : payslips.length === 0 ? (
-            <div className="p-8 text-center text-slate-500">No payslips found. Generate your first payslip to get started.</div>
+            <div className="p-8 text-center text-grx-muted">No payslips found. Generate your first payslip to get started.</div>
           ) : (
-            <div className="divide-y divide-slate-100 dark:divide-slate-700">
+            <div className="divide-y divide-grx-primary-50 dark:divide-grx-primary-800">
               {payslips.map((slip) => {
                 const [year, monthNum] = slip.month.split('-');
                 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
@@ -411,23 +411,23 @@ export const Payroll: React.FC = () => {
                 const month = monthNames[parseInt(monthNum) - 1];
                 
                 return (
-                  <div key={slip.id} className="p-4 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                  <div key={slip.id} className="p-4 flex items-center justify-between hover:bg-grx-bg dark:hover:bg-grx-primary-800 transition-colors">
                     <div className="flex items-center gap-4">
                       <div className="w-10 h-10 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg flex items-center justify-center text-indigo-600 dark:text-indigo-400">
                         <FileText size={20} />
                       </div>
                       <div>
                         {(user?.role === Role.ADMIN || user?.role === Role.HR || user?.role === Role.FINANCE || user?.role === Role.MANAGER) && (
-                          <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">
+                          <p className="text-xs text-grx-muted dark:text-grx-muted mb-1">
                             {slip.Employee?.name || slip.employeeId}
                           </p>
                         )}
-                        <p className="font-medium text-slate-900 dark:text-slate-100">{month} {year}</p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">Generated on {slip.generatedDate}</p>
+                        <p className="font-medium text-grx-text dark:text-white">{month} {year}</p>
+                        <p className="text-xs text-grx-muted dark:text-grx-muted">Generated on {slip.generatedDate}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-6">
-                      <span className="font-mono font-medium text-slate-700 dark:text-slate-300">₹{slip.netPay.toLocaleString('en-IN')}</span>
+                      <span className="font-mono font-medium text-grx-text dark:text-grx-primary-200">₹{slip.netPay.toLocaleString('en-IN')}</span>
                       <button 
                         onClick={() => handleDownload(slip)}
                         className="text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 p-2 rounded-full transition-colors"
@@ -447,8 +447,8 @@ export const Payroll: React.FC = () => {
       {/* Generate Payslip Modal */}
       {showGenerateModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-slate-800 rounded-xl w-full max-w-md p-6 shadow-2xl">
-            <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100">Generate Payslip</h3>
+          <div className="bg-white dark:bg-grx-dark-surface rounded-xl w-full max-w-md p-6 shadow-2xl">
+            <h3 className="text-lg font-bold mb-4 text-grx-text dark:text-white">Generate Payslip</h3>
             {error && (
               <div className="mb-4 p-3 bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 rounded-lg text-sm text-rose-700 dark:text-rose-300">
                 {error}
@@ -456,10 +456,10 @@ export const Payroll: React.FC = () => {
             )}
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Month *</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">Month *</label>
                 <input
                   type="month"
-                  className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2.5 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
                   value={generateMonth}
                   onChange={e => setGenerateMonth(e.target.value)}
                   max={`${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`}
@@ -472,7 +472,7 @@ export const Payroll: React.FC = () => {
                     setError(null);
                     setGenerateMonth('');
                   }}
-                  className="flex-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 py-2.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 font-medium transition-colors"
+                  className="flex-1 bg-grx-primary-50 dark:bg-grx-primary-800 text-grx-text dark:text-grx-primary-200 py-2.5 rounded-lg hover:bg-grx-primary-100 dark:hover:bg-grx-primary-700 font-medium transition-colors"
                 >
                   Cancel
                 </button>

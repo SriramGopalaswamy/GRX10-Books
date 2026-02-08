@@ -80,17 +80,17 @@ export const TrialBalancePage: React.FC = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Trial Balance</h2>
-          <p className="text-slate-500 dark:text-slate-400">Summary of all account balances</p>
+          <h2 className="text-2xl font-bold text-grx-text dark:text-white">Trial Balance</h2>
+          <p className="text-grx-muted dark:text-grx-muted">Summary of all account balances</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <Calendar size={18} className="text-slate-400" />
+            <Calendar size={18} className="text-grx-muted" />
             <input
               type="date"
               value={asOfDate}
               onChange={e => setAsOfDate(e.target.value)}
-              className="border border-slate-300 dark:border-slate-600 rounded-lg p-2 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
             />
           </div>
           <button
@@ -113,18 +113,18 @@ export const TrialBalancePage: React.FC = () => {
       {loading ? (
         <div className="flex items-center justify-center h-64">
           <Loader2 className="animate-spin text-indigo-600" size={32} />
-          <span className="ml-2 text-slate-500">Loading trial balance...</span>
+          <span className="ml-2 text-grx-muted">Loading trial balance...</span>
         </div>
       ) : data ? (
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-          <div className="p-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+        <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
+          <div className="p-4 border-b border-grx-primary-100 dark:border-grx-primary-800 bg-grx-bg dark:bg-grx-dark">
             <div className="flex justify-between items-center">
               <div>
-                <h3 className="font-semibold text-slate-900 dark:text-slate-100">Trial Balance</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400">As of {data.asOfDate}</p>
+                <h3 className="font-semibold text-grx-text dark:text-white">Trial Balance</h3>
+                <p className="text-sm text-grx-muted dark:text-grx-muted">As of {data.asOfDate}</p>
               </div>
               <div className="text-right">
-                <p className="text-sm text-slate-500 dark:text-slate-400">Difference</p>
+                <p className="text-sm text-grx-muted dark:text-grx-muted">Difference</p>
                 <p className={`text-lg font-bold ${Math.abs(data.totals.difference) < 0.01 ? 'text-emerald-600' : 'text-rose-600'}`}>
                   ₹{data.totals.difference.toFixed(2)}
                 </p>
@@ -133,21 +133,21 @@ export const TrialBalancePage: React.FC = () => {
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
+              <thead className="bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-100 dark:border-grx-primary-800">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Account Code</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Account Name</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Type</th>
-                  <th className="px-6 py-3 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Debit (₹)</th>
-                  <th className="px-6 py-3 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Credit (₹)</th>
-                  <th className="px-6 py-3 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Balance (₹)</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Account Code</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Account Name</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Type</th>
+                  <th className="px-6 py-3 text-right text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Debit (₹)</th>
+                  <th className="px-6 py-3 text-right text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Credit (₹)</th>
+                  <th className="px-6 py-3 text-right text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Balance (₹)</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+              <tbody className="divide-y divide-grx-primary-100 dark:divide-grx-primary-800">
                 {data.accounts.map((account, idx) => (
-                  <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-700">
-                    <td className="px-6 py-4 font-mono text-slate-600 dark:text-slate-300">{account.accountCode}</td>
-                    <td className="px-6 py-4 text-slate-900 dark:text-slate-100">{account.accountName}</td>
+                  <tr key={idx} className="hover:bg-grx-bg dark:hover:bg-grx-primary-800">
+                    <td className="px-6 py-4 font-mono text-grx-muted dark:text-grx-primary-200">{account.accountCode}</td>
+                    <td className="px-6 py-4 text-grx-text dark:text-white">{account.accountName}</td>
                     <td className="px-6 py-4">
                       <span className={`px-2 py-1 rounded text-xs font-medium ${
                         account.accountType === 'Asset' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400' :
@@ -159,26 +159,26 @@ export const TrialBalancePage: React.FC = () => {
                         {account.accountType}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-right font-mono text-slate-700 dark:text-slate-300">
+                    <td className="px-6 py-4 text-right font-mono text-grx-text dark:text-grx-primary-200">
                       {account.debit > 0 ? account.debit.toLocaleString('en-IN', { minimumFractionDigits: 2 }) : '-'}
                     </td>
-                    <td className="px-6 py-4 text-right font-mono text-slate-700 dark:text-slate-300">
+                    <td className="px-6 py-4 text-right font-mono text-grx-text dark:text-grx-primary-200">
                       {account.credit > 0 ? account.credit.toLocaleString('en-IN', { minimumFractionDigits: 2 }) : '-'}
                     </td>
-                    <td className="px-6 py-4 text-right font-mono font-semibold text-slate-900 dark:text-slate-100">
+                    <td className="px-6 py-4 text-right font-mono font-semibold text-grx-text dark:text-white">
                       {account.balance.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                     </td>
                   </tr>
                 ))}
-                <tr className="bg-slate-50 dark:bg-slate-900 font-bold border-t-2 border-slate-300 dark:border-slate-600">
-                  <td colSpan={3} className="px-6 py-4 text-slate-900 dark:text-slate-100">TOTAL</td>
-                  <td className="px-6 py-4 text-right font-mono text-slate-900 dark:text-slate-100">
+                <tr className="bg-grx-bg dark:bg-grx-dark font-bold border-t-2 border-grx-primary-100 dark:border-grx-primary-700">
+                  <td colSpan={3} className="px-6 py-4 text-grx-text dark:text-white">TOTAL</td>
+                  <td className="px-6 py-4 text-right font-mono text-grx-text dark:text-white">
                     {data.totals.totalDebits.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                   </td>
-                  <td className="px-6 py-4 text-right font-mono text-slate-900 dark:text-slate-100">
+                  <td className="px-6 py-4 text-right font-mono text-grx-text dark:text-white">
                     {data.totals.totalCredits.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                   </td>
-                  <td className="px-6 py-4 text-right font-mono text-slate-900 dark:text-slate-100">
+                  <td className="px-6 py-4 text-right font-mono text-grx-text dark:text-white">
                     {data.totals.difference.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                   </td>
                 </tr>
@@ -187,7 +187,7 @@ export const TrialBalancePage: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 text-center text-slate-500">
+        <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-8 text-center text-grx-muted">
           No data available. Please ensure transactions are recorded.
         </div>
       )}

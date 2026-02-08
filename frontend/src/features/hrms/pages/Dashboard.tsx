@@ -5,13 +5,13 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { Clock, Calendar, TrendingUp, Users, AlertCircle } from 'lucide-react';
 
 const StatCard: React.FC<{ title: string; value: string | number; icon: React.ReactNode; color: string }> = ({ title, value, icon, color }) => (
-  <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 flex items-center gap-4">
+  <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl shadow-sm border border-grx-primary-50 dark:border-grx-primary-800 flex items-center gap-4">
     <div className={`p-3 rounded-lg ${color} text-white`}>
       {icon}
     </div>
     <div>
-      <p className="text-sm text-slate-500 font-medium">{title}</p>
-      <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{value}</h3>
+      <p className="text-sm text-grx-muted font-medium">{title}</p>
+      <h3 className="text-2xl font-bold text-grx-text dark:text-white">{value}</h3>
     </div>
   </div>
 );
@@ -38,7 +38,7 @@ export const Dashboard: React.FC = () => {
   if (!user) {
     return (
       <div className="flex items-center justify-center h-64">
-        <p className="text-slate-500 dark:text-slate-400">Loading dashboard...</p>
+        <p className="text-grx-muted dark:text-grx-muted">Loading dashboard...</p>
       </div>
     );
   }
@@ -46,8 +46,8 @@ export const Dashboard: React.FC = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Welcome back, {user.name?.split(' ')[0] || 'User'} 👋</h2>
-        <p className="text-slate-500 dark:text-slate-400">Here's what's happening today.</p>
+        <h2 className="text-2xl font-bold text-grx-text dark:text-white">Welcome back, {user.name?.split(' ')[0] || 'User'} 👋</h2>
+        <p className="text-grx-muted dark:text-grx-muted">Here's what's happening today.</p>
       </div>
 
       {/* Summary Cards */}
@@ -100,8 +100,8 @@ export const Dashboard: React.FC = () => {
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Attendance Chart */}
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
-          <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-6">Weekly Attendance Trend</h3>
+        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl shadow-sm border border-grx-primary-50 dark:border-grx-primary-800">
+          <h3 className="text-lg font-semibold text-grx-text dark:text-white mb-6">Weekly Attendance Trend</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={attendanceData}>
@@ -116,8 +116,8 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Leave Chart or Team Status */}
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
-          <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-6">Leave Balance Distribution</h3>
+        <div className="bg-white dark:bg-grx-dark-surface p-6 rounded-xl shadow-sm border border-grx-primary-50 dark:border-grx-primary-800">
+          <h3 className="text-lg font-semibold text-grx-text dark:text-white mb-6">Leave Balance Distribution</h3>
           <div className="h-64 flex items-center justify-center">
              <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -143,7 +143,7 @@ export const Dashboard: React.FC = () => {
              {leaveDistribution.map((entry, index) => (
                <div key={index} className="flex items-center gap-2">
                  <div className="w-3 h-3 rounded-full" style={{backgroundColor: COLORS[index]}}></div>
-                 <span className="text-sm text-slate-600">{entry.name}</span>
+                 <span className="text-sm text-grx-muted">{entry.name}</span>
                </div>
              ))}
           </div>
