@@ -242,6 +242,21 @@ async function resetAdminFromEnv() {
  * Idempotent — skips users that already exist.
  */
 export async function ensureSSOUsers() {
+    const extraSsoEmails = (process.env.SSO_SEED_EMAILS || '')
+        .split(',')
+        .map((email) => email.trim().toLowerCase())
+        .filter(Boolean);
+
+    const formatName = (email) => {
+        const localPart = email.split('@')[0] || '';
+        return localPart
+            .split(/[._-]+/)
+            .filter(Boolean)
+            .map((chunk) => chunk.charAt(0).toUpperCase() + chunk.slice(1))
+            .join(' ');
+    };
+
+    const baseDate = new Date().toISOString().slice(0, 10);
     const ssoUsers = [
         {
             id: 'EMP-SSO-001',
@@ -256,9 +271,27 @@ export async function ensureSSOUsers() {
             isNewUser: false,
             employeeType: 'Full Time',
         },
+        ...extraSsoEmails.map((email, index) => ({
+            id: `EMP-SSO-${String(index + 2).padStart(3, '0')}`,
+            name: formatName(email) || email,
+            email,
+            role: process.env.SSO_SEED_ROLE || 'Employee',
+            department: 'SSO',
+            designation: 'SSO User',
+            joinDate: baseDate,
+            status: 'Active',
+            enableEmailLogin: false,
+            isNewUser: false,
+            employeeType: 'Full Time',
+        })),
     ];
 
+    const seenEmails = new Set();
     for (const user of ssoUsers) {
+        if (seenEmails.has(user.email)) {
+            continue;
+        }
+        seenEmails.add(user.email);
         const [employee, created] = await Employee.findOrCreate({
             where: { email: user.email },
             defaults: user,

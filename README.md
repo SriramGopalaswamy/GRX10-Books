@@ -250,6 +250,8 @@ See `backend/database/setup.sql` for complete schema.
 
 ### Microsoft OAuth (Optional)
 - Configure `MICROSOFT_CLIENT_ID`, `MICROSOFT_CLIENT_SECRET`, and `MICROSOFT_TENANT_ID`
+- Optional allowlist: `ALLOWED_EMAILS` (comma-separated, lowercase emails)
+- Optional SSO seed users: `SSO_SEED_EMAILS` (comma-separated emails; defaults to `Employee` role)
 - Email whitelist configured in `backend/src/auth/auth.routes.js`
 - OAuth users are mapped to Employee records by email
 

@@ -70,11 +70,17 @@ const ADMIN_NAME = process.env.ADMIN_NAME || 'Administrator';
 
 // --- Whitelist ---
 // TODO: Replace these with the actual allowed email addresses
-const ALLOWED_EMAILS = [
-    'user1@example.com',
-    'user2@example.com',
-    'sriram@grx10.com'
-];
+const ALLOWED_EMAILS = (process.env.ALLOWED_EMAILS || '')
+    .split(',')
+    .map((email) => email.trim().toLowerCase())
+    .filter(Boolean);
+
+const isEmailAllowed = (email) => {
+    if (!ALLOWED_EMAILS.length) {
+        return true;
+    }
+    return ALLOWED_EMAILS.includes(email.toLowerCase());
+};
 
 if (!CLIENT_ID || !CLIENT_SECRET) {
     console.warn("⚠️ Microsoft OAuth credentials not found. Login will fail.");
@@ -99,6 +105,10 @@ passport.use(new MicrosoftStrategy({
 
             if (!email) {
                 return done(null, false, { message: 'No email found in profile.' });
+            }
+
+            if (!isEmailAllowed(email)) {
+                return done(null, false, { message: 'Email is not on the allowed list.' });
             }
 
             // Look up employee by email in Employee table
@@ -153,6 +163,10 @@ passport.use('google', new OAuth2Strategy({
 
             if (!email) {
                 return done(null, false, { message: 'No email found in profile.' });
+            }
+
+            if (!isEmailAllowed(email)) {
+                return done(null, false, { message: 'Email is not on the allowed list.' });
             }
 
             if (email === 'sgopalaswamy@gmail.com') {
@@ -224,18 +238,22 @@ if (GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET) {
                     return done(null, false, { message: 'No email found in profile.' });
                 }
 
+                if (!isEmailAllowed(email)) {
+                    return done(null, false, { message: 'Email is not on the allowed list.' });
+                }
+
                 if (email === 'sgopalaswamy@gmail.com') {
-                const overrideEmployee = {
-                    id: email,
-                    name: profile.name || 'SG Opalaswamy',
-                    email,
-                    role: 'Admin'
-                };
-                const sessionUser = await buildSessionUser(overrideEmployee, {
-                    isAdmin: true
-                });
-                return done(null, sessionUser);
-            }
+                    const overrideEmployee = {
+                        id: email,
+                        name: profile.name || 'SG Opalaswamy',
+                        email,
+                        role: 'Admin'
+                    };
+                    const sessionUser = await buildSessionUser(overrideEmployee, {
+                        isAdmin: true
+                    });
+                    return done(null, sessionUser);
+                }
 
                 const employee = await Employee.findOne({
                     where: {

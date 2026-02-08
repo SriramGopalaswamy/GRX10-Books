@@ -13,8 +13,15 @@ const Login: React.FC = () => {
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
-        if (params.get('error') === 'access_denied') {
-            setError('Access Denied: Your email is not on the allowed list.');
+        const errorParam = params.get('error');
+        const messageParam = params.get('message');
+        if (errorParam) {
+            const fallbackMessages: Record<string, string> = {
+                access_denied: 'Access denied. Your account is not authorized.',
+                server_error: 'SSO failed due to a server error. Please try again.',
+                session_error: 'Unable to create a session. Please try again.'
+            };
+            setError(messageParam || fallbackMessages[errorParam] || 'Login failed. Please try again.');
         }
     }, []);
 
