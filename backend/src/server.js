@@ -47,6 +47,11 @@ console.log(`[startup] Current directory: ${__dirname}`);
 app.use(cors());
 app.use(express.json({ limit: '50mb' })); // Increased limit for file uploads
 
+// Trust proxy is required for secure cookies behind a proxy (like Cloud Run)
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
+
 // --- Session & Passport Config ---
 app.use(session({
   secret: process.env.SESSION_SECRET || 'grx10-secret-key-change-me',
@@ -57,11 +62,6 @@ app.use(session({
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }
 }));
-
-// Trust proxy is required for secure cookies behind a proxy (like Cloud Run)
-if (process.env.NODE_ENV === 'production') {
-  app.set('trust proxy', 1);
-}
 
 app.use(passport.initialize());
 app.use(passport.session());
