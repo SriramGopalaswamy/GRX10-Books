@@ -78,7 +78,7 @@ export const OffboardingModal: React.FC<OffboardingModalProps> = ({ isOpen, onCl
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
       <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-rose-50">
+        <div className="px-6 py-4 border-b border-grx-primary-50 flex justify-between items-center bg-rose-50">
           <h3 className="text-lg font-bold text-rose-900 flex items-center gap-2">
             <UserMinus size={20} />
             Offboard Employee
@@ -90,9 +90,9 @@ export const OffboardingModal: React.FC<OffboardingModalProps> = ({ isOpen, onCl
 
         <div className="p-6 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Select Employee</label>
+            <label className="block text-sm font-medium text-grx-text mb-1">Select Employee</label>
             <select
-              className="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-rose-500 outline-none"
+              className="w-full border border-grx-primary-100 rounded-lg p-2.5 focus:ring-2 focus:ring-rose-500 outline-none"
               value={selectedId}
               onChange={e => setSelectedId(e.target.value)}
             >
@@ -104,9 +104,9 @@ export const OffboardingModal: React.FC<OffboardingModalProps> = ({ isOpen, onCl
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Separation Type</label>
+            <label className="block text-sm font-medium text-grx-text mb-1">Separation Type</label>
             <select
-              className="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-rose-500 outline-none"
+              className="w-full border border-grx-primary-100 rounded-lg p-2.5 focus:ring-2 focus:ring-rose-500 outline-none"
               value={separationType}
               onChange={e => setSeparationType(e.target.value)}
             >
@@ -118,10 +118,10 @@ export const OffboardingModal: React.FC<OffboardingModalProps> = ({ isOpen, onCl
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Last Working Day</label>
+            <label className="block text-sm font-medium text-grx-text mb-1">Last Working Day</label>
             <input
               type="date"
-              className="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-rose-500 outline-none"
+              className="w-full border border-grx-primary-100 rounded-lg p-2.5 focus:ring-2 focus:ring-rose-500 outline-none"
               value={exitDate}
               min={todayStr}
               onChange={e => setExitDate(e.target.value)}
@@ -129,9 +129,9 @@ export const OffboardingModal: React.FC<OffboardingModalProps> = ({ isOpen, onCl
           </div>
 
           <div>
-             <label className="block text-sm font-medium text-slate-700 mb-1">Reason for Exit</label>
+             <label className="block text-sm font-medium text-grx-text mb-1">Reason for Exit</label>
              <textarea
-               className="w-full border border-slate-300 rounded-lg p-2.5 h-24 resize-none focus:ring-2 focus:ring-rose-500 outline-none"
+               className="w-full border border-grx-primary-100 rounded-lg p-2.5 h-24 resize-none focus:ring-2 focus:ring-rose-500 outline-none"
                placeholder="Provide reason for separation..."
                value={reason}
                onChange={e => setReason(e.target.value)}
@@ -158,14 +158,14 @@ export const OffboardingModal: React.FC<OffboardingModalProps> = ({ isOpen, onCl
               id="confirm"
               checked={confirm}
               onChange={e => setConfirm(e.target.checked)}
-              className="w-4 h-4 text-rose-600 rounded border-slate-300 focus:ring-rose-500"
+              className="w-4 h-4 text-rose-600 rounded border-grx-primary-100 focus:ring-rose-500"
             />
-            <label htmlFor="confirm" className="text-sm text-slate-700">I confirm this offboarding action.</label>
+            <label htmlFor="confirm" className="text-sm text-grx-text">I confirm this offboarding action.</label>
           </div>
         </div>
 
-        <div className="p-6 border-t border-slate-100 bg-slate-50 flex justify-end gap-2">
-          <button onClick={onClose} className="px-4 py-2 text-slate-600 hover:bg-slate-200 rounded-lg transition-colors">Cancel</button>
+        <div className="p-6 border-t border-grx-primary-50 bg-grx-bg flex justify-end gap-2">
+          <button onClick={onClose} className="px-4 py-2 text-grx-muted hover:bg-grx-primary-100 rounded-lg transition-colors">Cancel</button>
           <button
             onClick={handleSubmit}
             disabled={!selectedId || !exitDate || !separationType || !confirm || submitting}

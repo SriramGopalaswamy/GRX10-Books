@@ -27,7 +27,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, to, active }) =>
     className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
       active 
         ? 'bg-indigo-600 text-white' 
-        : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+        : 'text-grx-muted hover:bg-grx-dark-surface hover:text-white'
     }`}
   >
     {icon}
@@ -58,7 +58,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const filteredNav = navItems.filter(item => user && item.roles.includes(user.role));
 
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden">
+    <div className="flex h-screen bg-grx-bg overflow-hidden">
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
         <div 
@@ -69,10 +69,10 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
       {/* Sidebar */}
       <aside className={`
-        fixed lg:static inset-y-0 left-0 z-50 w-64 bg-slate-900 text-white transform transition-transform duration-200 ease-in-out
+        fixed lg:static inset-y-0 left-0 z-50 w-64 bg-grx-dark text-white transform transition-transform duration-200 ease-in-out
         ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
-        <div className="p-6 flex items-center gap-3 border-b border-slate-800">
+        <div className="p-6 flex items-center gap-3 border-b border-grx-primary-800">
           <div className="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center font-bold text-white">
             G
           </div>
@@ -89,10 +89,10 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           ))}
         </nav>
 
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-800">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-grx-primary-800">
           <button 
             onClick={handleLogout}
-            className="flex items-center gap-3 px-4 py-3 w-full rounded-lg text-slate-400 hover:bg-rose-900/20 hover:text-rose-400 transition-colors"
+            className="flex items-center gap-3 px-4 py-3 w-full rounded-lg text-grx-muted hover:bg-rose-900/20 hover:text-rose-400 transition-colors"
           >
             <LogOut size={20} />
             <span className="font-medium">Sign Out</span>
@@ -102,10 +102,10 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        <header className="bg-white h-16 border-b border-slate-200 flex items-center justify-between px-4 lg:px-8">
+        <header className="bg-white h-16 border-b border-grx-primary-100 flex items-center justify-between px-4 lg:px-8">
           <button 
             onClick={() => setIsMobileMenuOpen(true)}
-            className="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg"
+            className="lg:hidden p-2 text-grx-muted hover:bg-grx-primary-50 rounded-lg"
           >
             <Menu size={24} />
           </button>
@@ -114,13 +114,13 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
           <div className="flex items-center gap-4">
             <div className="text-right hidden sm:block">
-              <p className="text-sm font-medium text-slate-900">{user?.name}</p>
-              <p className="text-xs text-slate-500">{user?.designation}</p>
+              <p className="text-sm font-medium text-grx-text">{user?.name}</p>
+              <p className="text-xs text-grx-muted">{user?.designation}</p>
             </div>
             <img 
               src={user?.avatar || "https://picsum.photos/200"} 
               alt="Avatar" 
-              className="w-10 h-10 rounded-full border-2 border-slate-200"
+              className="w-10 h-10 rounded-full border-2 border-grx-primary-100"
             />
           </div>
         </header>

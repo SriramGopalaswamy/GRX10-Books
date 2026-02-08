@@ -214,14 +214,14 @@ export const PolicyChat: React.FC = () => {
 
   return (
     <>
-      <div className="flex flex-col h-[calc(100vh-140px)] bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-        <div className="p-4 border-b border-slate-100 bg-indigo-50 flex items-center gap-3">
+      <div className="flex flex-col h-[calc(100vh-140px)] bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
+        <div className="p-4 border-b border-grx-primary-50 bg-indigo-50 flex items-center gap-3">
           <div className="p-2 bg-indigo-100 rounded-full text-indigo-600">
             <Bot size={24} />
           </div>
           <div>
-            <h3 className="font-semibold text-slate-900 dark:text-slate-100">HR Assistant (Powered by Gemini)</h3>
-            <p className="text-xs text-slate-500">Instant answers & actions</p>
+            <h3 className="font-semibold text-grx-text dark:text-white">HR Assistant (Powered by Gemini)</h3>
+            <p className="text-xs text-grx-muted">Instant answers & actions</p>
           </div>
         </div>
 
@@ -233,7 +233,7 @@ export const PolicyChat: React.FC = () => {
             >
               <div className={`flex gap-3 max-w-[90%] md:max-w-[80%] ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                  msg.sender === 'user' ? 'bg-slate-200' : 'bg-indigo-100 text-indigo-600'
+                  msg.sender === 'user' ? 'bg-grx-primary-100' : 'bg-indigo-100 text-indigo-600'
                 }`}>
                   {msg.sender === 'user' ? <User size={16} /> : <Bot size={16} />}
                 </div>
@@ -241,26 +241,26 @@ export const PolicyChat: React.FC = () => {
                   <div className={`p-3 rounded-2xl text-sm shadow-sm ${
                     msg.sender === 'user' 
                       ? 'bg-indigo-600 text-white rounded-tr-none' 
-                      : 'bg-slate-100 text-slate-800 rounded-tl-none'
+                      : 'bg-grx-primary-50 text-grx-text rounded-tl-none'
                   }`}>
                     {msg.text}
                   </div>
                   
                   {/* Action Bubbles */}
                   {msg.payslip && (
-                    <div className="max-w-xs bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden mt-1">
-                      <div className="p-3 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+                    <div className="max-w-xs bg-white dark:bg-grx-dark-surface rounded-xl border border-grx-primary-100 dark:border-grx-primary-800 shadow-sm overflow-hidden mt-1">
+                      <div className="p-3 bg-grx-bg border-b border-grx-primary-50 flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <div className="p-1.5 bg-emerald-100 text-emerald-600 rounded-lg">
                             <FileText size={16} />
                           </div>
-                          <span className="text-sm font-medium text-slate-700">Payslip Ready</span>
+                          <span className="text-sm font-medium text-grx-text">Payslip Ready</span>
                         </div>
                       </div>
                       <div className="p-3 flex items-center justify-between gap-4">
                         <div>
-                          <p className="text-xs text-slate-500">Net Pay</p>
-                          <p className="text-lg font-bold text-slate-900 dark:text-slate-100">${msg.payslip.netPay.toLocaleString()}</p>
+                          <p className="text-xs text-grx-muted">Net Pay</p>
+                          <p className="text-lg font-bold text-grx-text dark:text-white">${msg.payslip.netPay.toLocaleString()}</p>
                         </div>
                         <button 
                           onClick={() => msg.payslip && handleDownload(msg.payslip)}
@@ -294,22 +294,22 @@ export const PolicyChat: React.FC = () => {
                   )}
 
                   {msg.showRegularizationForm && (
-                    <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 shadow-sm mt-1 w-full min-w-[280px]">
-                      <h4 className="text-sm font-bold text-slate-800 dark:text-slate-100 mb-3">New Regularization Request</h4>
+                    <div className="bg-white dark:bg-grx-dark-surface p-4 rounded-xl border border-grx-primary-100 shadow-sm mt-1 w-full min-w-[280px]">
+                      <h4 className="text-sm font-bold text-grx-text dark:text-white mb-3">New Regularization Request</h4>
                       <div className="space-y-3">
                         <div>
-                          <label className="block text-xs font-medium text-slate-500 mb-1">Date</label>
+                          <label className="block text-xs font-medium text-grx-muted mb-1">Date</label>
                           <input 
                             type="date" 
-                            className="w-full border border-slate-300 rounded-md p-2 text-sm"
+                            className="w-full border border-grx-primary-100 rounded-md p-2 text-sm"
                             value={regForm.date}
                             onChange={e => setRegForm({...regForm, date: e.target.value})}
                           />
                         </div>
                         <div>
-                          <label className="block text-xs font-medium text-slate-500 mb-1">Type</label>
+                          <label className="block text-xs font-medium text-grx-muted mb-1">Type</label>
                           <select 
-                            className="w-full border border-slate-300 rounded-md p-2 text-sm"
+                            className="w-full border border-grx-primary-100 rounded-md p-2 text-sm"
                             value={regForm.type}
                             onChange={e => setRegForm({...regForm, type: e.target.value as RegularizationType})}
                           >
@@ -317,9 +317,9 @@ export const PolicyChat: React.FC = () => {
                           </select>
                         </div>
                         <div>
-                          <label className="block text-xs font-medium text-slate-500 mb-1">Reason</label>
+                          <label className="block text-xs font-medium text-grx-muted mb-1">Reason</label>
                           <textarea 
-                            className="w-full border border-slate-300 rounded-md p-2 text-sm h-16 resize-none"
+                            className="w-full border border-grx-primary-100 rounded-md p-2 text-sm h-16 resize-none"
                             placeholder="Brief reason..."
                             value={regForm.reason}
                             onChange={e => setRegForm({...regForm, reason: e.target.value})}
@@ -337,10 +337,10 @@ export const PolicyChat: React.FC = () => {
                   )}
 
                   {msg.regularizationList && msg.regularizationList.length > 0 && (
-                    <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 shadow-sm mt-1 overflow-hidden w-full">
+                    <div className="bg-white dark:bg-grx-dark-surface rounded-xl border border-grx-primary-100 shadow-sm mt-1 overflow-hidden w-full">
                       <div className="overflow-x-auto">
                         <table className="w-full text-left text-sm">
-                          <thead className="bg-slate-50 text-slate-500">
+                          <thead className="bg-grx-bg text-grx-muted">
                             <tr>
                               <th className="px-4 py-2 font-medium">Date</th>
                               <th className="px-4 py-2 font-medium">Type</th>
@@ -349,15 +349,15 @@ export const PolicyChat: React.FC = () => {
                               {msg.isApprovalList && <th className="px-4 py-2 font-medium text-right">Actions</th>}
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-slate-100">
+                          <tbody className="divide-y divide-grx-primary-50">
                             {msg.regularizationList.map(req => (
                               <tr key={req.id}>
-                                <td className="px-4 py-3 text-slate-900 dark:text-slate-100 whitespace-nowrap">{req.date}</td>
-                                <td className="px-4 py-3 text-slate-600">
-                                  <span className="text-xs bg-slate-100 px-2 py-1 rounded">{req.type}</span>
+                                <td className="px-4 py-3 text-grx-text dark:text-white whitespace-nowrap">{req.date}</td>
+                                <td className="px-4 py-3 text-grx-muted">
+                                  <span className="text-xs bg-grx-primary-50 px-2 py-1 rounded">{req.type}</span>
                                 </td>
                                 {msg.isApprovalList && (
-                                  <td className="px-4 py-3 text-slate-900 dark:text-slate-100">{req.employeeName}</td>
+                                  <td className="px-4 py-3 text-grx-text dark:text-white">{req.employeeName}</td>
                                 )}
                                 <td className="px-4 py-3">
                                   <span className={`flex items-center gap-1 text-xs font-medium ${
@@ -405,10 +405,10 @@ export const PolicyChat: React.FC = () => {
                 <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center">
                   <Bot size={16} />
                 </div>
-                <div className="bg-slate-100 p-3 rounded-2xl rounded-tl-none flex gap-1 items-center">
-                  <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></span>
-                  <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce delay-75"></span>
-                  <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce delay-150"></span>
+                <div className="bg-grx-primary-50 p-3 rounded-2xl rounded-tl-none flex gap-1 items-center">
+                  <span className="w-2 h-2 bg-grx-primary-300 rounded-full animate-bounce"></span>
+                  <span className="w-2 h-2 bg-grx-primary-300 rounded-full animate-bounce delay-75"></span>
+                  <span className="w-2 h-2 bg-grx-primary-300 rounded-full animate-bounce delay-150"></span>
                 </div>
               </div>
             </div>
@@ -416,13 +416,13 @@ export const PolicyChat: React.FC = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        <form onSubmit={handleSend} className="p-4 border-t border-slate-100 flex gap-2">
+        <form onSubmit={handleSend} className="p-4 border-t border-grx-primary-50 flex gap-2">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Message HR Assistant... (e.g. 'Offboard employee')"
-            className="flex-1 border border-slate-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow"
+            className="flex-1 border border-grx-primary-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow"
           />
           <button 
             type="submit" 

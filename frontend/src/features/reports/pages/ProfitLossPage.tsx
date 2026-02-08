@@ -92,24 +92,24 @@ export const ProfitLossPage: React.FC = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Profit & Loss Statement</h2>
-          <p className="text-slate-500 dark:text-slate-400">Income and expenses for a period</p>
+          <h2 className="text-2xl font-bold text-grx-text dark:text-white">Profit & Loss Statement</h2>
+          <p className="text-grx-muted dark:text-grx-muted">Income and expenses for a period</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <Calendar size={18} className="text-slate-400" />
+            <Calendar size={18} className="text-grx-muted" />
             <input
               type="date"
               value={startDate}
               onChange={e => setStartDate(e.target.value)}
-              className="border border-slate-300 dark:border-slate-600 rounded-lg p-2 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
             />
-            <span className="text-slate-500">to</span>
+            <span className="text-grx-muted">to</span>
             <input
               type="date"
               value={endDate}
               onChange={e => setEndDate(e.target.value)}
-              className="border border-slate-300 dark:border-slate-600 rounded-lg p-2 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
             />
           </div>
           <button
@@ -132,7 +132,7 @@ export const ProfitLossPage: React.FC = () => {
       {loading ? (
         <div className="flex items-center justify-center h-64">
           <Loader2 className="animate-spin text-indigo-600" size={32} />
-          <span className="ml-2 text-slate-500">Loading profit & loss statement...</span>
+          <span className="ml-2 text-grx-muted">Loading profit & loss statement...</span>
         </div>
       ) : data ? (
         <div className="space-y-6">
@@ -175,36 +175,36 @@ export const ProfitLossPage: React.FC = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Income */}
-            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-              <div className="p-4 border-b border-slate-200 dark:border-slate-700 bg-emerald-50 dark:bg-emerald-900/20">
+            <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
+              <div className="p-4 border-b border-grx-primary-100 dark:border-grx-primary-800 bg-emerald-50 dark:bg-emerald-900/20">
                 <h3 className="font-bold text-emerald-900 dark:text-emerald-300">INCOME</h3>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
-                  <thead className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
+                  <thead className="bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-100 dark:border-grx-primary-800">
                     <tr>
-                      <th className="px-4 py-2 text-left text-xs font-semibold text-slate-600 dark:text-slate-400">Account</th>
-                      <th className="px-4 py-2 text-right text-xs font-semibold text-slate-600 dark:text-slate-400">Amount (₹)</th>
+                      <th className="px-4 py-2 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted">Account</th>
+                      <th className="px-4 py-2 text-right text-xs font-semibold text-grx-muted dark:text-grx-muted">Amount (₹)</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                  <tbody className="divide-y divide-grx-primary-100 dark:divide-grx-primary-800">
                     {data.income.items.length === 0 ? (
                       <tr>
-                        <td colSpan={2} className="px-4 py-8 text-center text-slate-500">No income recorded</td>
+                        <td colSpan={2} className="px-4 py-8 text-center text-grx-muted">No income recorded</td>
                       </tr>
                     ) : (
                       data.income.items.map((item, idx) => (
-                        <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-700">
-                          <td className="px-4 py-3 text-slate-900 dark:text-slate-100">{item.name}</td>
-                          <td className="px-4 py-3 text-right font-mono text-slate-700 dark:text-slate-300">
+                        <tr key={idx} className="hover:bg-grx-bg dark:hover:bg-grx-primary-800">
+                          <td className="px-4 py-3 text-grx-text dark:text-white">{item.name}</td>
+                          <td className="px-4 py-3 text-right font-mono text-grx-text dark:text-grx-primary-200">
                             {item.amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                           </td>
                         </tr>
                       ))
                     )}
-                    <tr className="bg-slate-50 dark:bg-slate-900 font-bold border-t-2 border-slate-300 dark:border-slate-600">
-                      <td className="px-4 py-3 text-slate-900 dark:text-slate-100">Total Income</td>
-                      <td className="px-4 py-3 text-right font-mono text-slate-900 dark:text-slate-100">
+                    <tr className="bg-grx-bg dark:bg-grx-dark font-bold border-t-2 border-grx-primary-100 dark:border-grx-primary-700">
+                      <td className="px-4 py-3 text-grx-text dark:text-white">Total Income</td>
+                      <td className="px-4 py-3 text-right font-mono text-grx-text dark:text-white">
                         {data.income.total.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                       </td>
                     </tr>
@@ -214,36 +214,36 @@ export const ProfitLossPage: React.FC = () => {
             </div>
 
             {/* Expenses */}
-            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-              <div className="p-4 border-b border-slate-200 dark:border-slate-700 bg-rose-50 dark:bg-rose-900/20">
+            <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
+              <div className="p-4 border-b border-grx-primary-100 dark:border-grx-primary-800 bg-rose-50 dark:bg-rose-900/20">
                 <h3 className="font-bold text-rose-900 dark:text-rose-300">EXPENSES</h3>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
-                  <thead className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
+                  <thead className="bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-100 dark:border-grx-primary-800">
                     <tr>
-                      <th className="px-4 py-2 text-left text-xs font-semibold text-slate-600 dark:text-slate-400">Account</th>
-                      <th className="px-4 py-2 text-right text-xs font-semibold text-slate-600 dark:text-slate-400">Amount (₹)</th>
+                      <th className="px-4 py-2 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted">Account</th>
+                      <th className="px-4 py-2 text-right text-xs font-semibold text-grx-muted dark:text-grx-muted">Amount (₹)</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                  <tbody className="divide-y divide-grx-primary-100 dark:divide-grx-primary-800">
                     {data.expenses.items.length === 0 ? (
                       <tr>
-                        <td colSpan={2} className="px-4 py-8 text-center text-slate-500">No expenses recorded</td>
+                        <td colSpan={2} className="px-4 py-8 text-center text-grx-muted">No expenses recorded</td>
                       </tr>
                     ) : (
                       data.expenses.items.map((item, idx) => (
-                        <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-700">
-                          <td className="px-4 py-3 text-slate-900 dark:text-slate-100">{item.name}</td>
-                          <td className="px-4 py-3 text-right font-mono text-slate-700 dark:text-slate-300">
+                        <tr key={idx} className="hover:bg-grx-bg dark:hover:bg-grx-primary-800">
+                          <td className="px-4 py-3 text-grx-text dark:text-white">{item.name}</td>
+                          <td className="px-4 py-3 text-right font-mono text-grx-text dark:text-grx-primary-200">
                             {item.amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                           </td>
                         </tr>
                       ))
                     )}
-                    <tr className="bg-slate-50 dark:bg-slate-900 font-bold border-t-2 border-slate-300 dark:border-slate-600">
-                      <td className="px-4 py-3 text-slate-900 dark:text-slate-100">Total Expenses</td>
-                      <td className="px-4 py-3 text-right font-mono text-slate-900 dark:text-slate-100">
+                    <tr className="bg-grx-bg dark:bg-grx-dark font-bold border-t-2 border-grx-primary-100 dark:border-grx-primary-700">
+                      <td className="px-4 py-3 text-grx-text dark:text-white">Total Expenses</td>
+                      <td className="px-4 py-3 text-right font-mono text-grx-text dark:text-white">
                         {data.expenses.total.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                       </td>
                     </tr>
@@ -254,7 +254,7 @@ export const ProfitLossPage: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 text-center text-slate-500">
+        <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-8 text-center text-grx-muted">
           No data available. Please ensure transactions are recorded.
         </div>
       )}

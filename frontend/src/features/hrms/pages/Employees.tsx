@@ -213,7 +213,7 @@ export const Employees: React.FC<EmployeesProps> = ({ onViewChange }) => {
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Employee Directory</h2>
+        <h2 className="text-2xl font-bold text-grx-text dark:text-white">Employee Directory</h2>
         <div className="flex gap-2">
           <button 
             onClick={() => setShowOnboarding(true)}
@@ -224,7 +224,7 @@ export const Employees: React.FC<EmployeesProps> = ({ onViewChange }) => {
           </button>
           <button 
             onClick={handleImportEmployees}
-            className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2 transition-colors"
+            className="bg-white dark:bg-grx-dark-surface border border-grx-primary-100 dark:border-grx-primary-800 text-grx-text dark:text-grx-primary-200 px-4 py-2 rounded-lg hover:bg-grx-bg dark:hover:bg-grx-primary-800 flex items-center gap-2 transition-colors"
           >
             <Upload size={18} />
             Import Employees
@@ -232,7 +232,7 @@ export const Employees: React.FC<EmployeesProps> = ({ onViewChange }) => {
           {(user?.role === Role.HR || user?.role === Role.ADMIN) && (
             <button 
               onClick={() => setShowJDModal(true)}
-              className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2 transition-colors"
+              className="bg-white dark:bg-grx-dark-surface border border-grx-primary-100 dark:border-grx-primary-800 text-grx-text dark:text-grx-primary-200 px-4 py-2 rounded-lg hover:bg-grx-bg dark:hover:bg-grx-primary-800 flex items-center gap-2 transition-colors"
             >
               <FileText size={18} />
               Generate JD
@@ -250,34 +250,34 @@ export const Employees: React.FC<EmployeesProps> = ({ onViewChange }) => {
       />
 
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 dark:text-slate-500" size={20} />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-grx-muted dark:text-grx-muted" size={20} />
         <input 
           type="text" 
           placeholder="Search by name, email, department, or designation..." 
-          className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 outline-none"
+          className="w-full pl-10 pr-4 py-3 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800 bg-white dark:bg-grx-dark-surface text-grx-text dark:text-white placeholder:text-grx-muted dark:placeholder:text-grx-muted focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 outline-none"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
 
       {/* Table View */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+      <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
+            <thead className="bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-100 dark:border-grx-primary-800">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Employee</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Department</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Email</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Role</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Join Date</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase tracking-wider">Employee</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase tracking-wider">Department</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase tracking-wider">Email</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase tracking-wider">Role</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase tracking-wider">Status</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase tracking-wider">Join Date</th>
               </tr>
             </thead>
-            <tbody className="bg-white dark:bg-slate-800 divide-y divide-slate-200 dark:divide-slate-700">
+            <tbody className="bg-white dark:bg-grx-dark-surface divide-y divide-grx-primary-100 dark:divide-grx-primary-800">
               {filteredEmployees.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
+                  <td colSpan={6} className="px-6 py-12 text-center text-grx-muted dark:text-grx-muted">
                     No employees found
                   </td>
                 </tr>
@@ -286,31 +286,31 @@ export const Employees: React.FC<EmployeesProps> = ({ onViewChange }) => {
                   <tr 
                     key={emp.id} 
                     onClick={() => handleRowClick(emp.id)}
-                    className="hover:bg-indigo-50 dark:hover:bg-slate-700 cursor-pointer transition-colors"
+                    className="hover:bg-indigo-50 dark:hover:bg-grx-primary-800 cursor-pointer transition-colors"
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <img src={emp.avatar} alt={emp.name} className="w-10 h-10 rounded-full object-cover mr-3" />
                         <div>
-                          <div className="text-sm font-medium text-slate-900 dark:text-slate-100">{emp.name}</div>
-                          <div className="text-sm text-slate-500 dark:text-slate-400">{emp.designation}</div>
+                          <div className="text-sm font-medium text-grx-text dark:text-white">{emp.name}</div>
+                          <div className="text-sm text-grx-muted dark:text-grx-muted">{emp.designation}</div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
-                        <Briefcase size={16} className="mr-2 text-slate-400 dark:text-slate-500" />
+                      <div className="flex items-center text-sm text-grx-muted dark:text-grx-primary-200">
+                        <Briefcase size={16} className="mr-2 text-grx-muted dark:text-grx-muted" />
                         {emp.department}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
-                        <Mail size={16} className="mr-2 text-slate-400 dark:text-slate-500" />
+                      <div className="flex items-center text-sm text-grx-muted dark:text-grx-primary-200">
+                        <Mail size={16} className="mr-2 text-grx-muted dark:text-grx-muted" />
                         {emp.email}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 py-1 text-xs font-medium rounded-md bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
+                      <span className="px-2 py-1 text-xs font-medium rounded-md bg-grx-primary-50 dark:bg-grx-primary-800 text-grx-text dark:text-grx-primary-200">
                         {emp.role}
                       </span>
                     </td>
@@ -323,7 +323,7 @@ export const Employees: React.FC<EmployeesProps> = ({ onViewChange }) => {
                         {emp.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-grx-muted dark:text-grx-primary-200">
                       {new Date(emp.joinDate).toLocaleDateString()}
                     </td>
                   </tr>
@@ -343,23 +343,23 @@ export const Employees: React.FC<EmployeesProps> = ({ onViewChange }) => {
       {/* JD Generator Modal */}
       {showJDModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6">
-            <h3 className="text-xl font-bold mb-4 text-slate-900 dark:text-slate-100">AI Job Description Generator</h3>
+          <div className="bg-white dark:bg-grx-dark-surface rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6">
+            <h3 className="text-xl font-bold mb-4 text-grx-text dark:text-white">AI Job Description Generator</h3>
             
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Role Title</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">Role Title</label>
                 <input 
-                  className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2" 
+                  className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2" 
                   value={jdRole} 
                   onChange={e => setJdRole(e.target.value)} 
                   placeholder="e.g. Senior React Dev"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Department</label>
+                <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">Department</label>
                 <input 
-                  className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2" 
+                  className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2" 
                   value={jdDept} 
                   onChange={e => setJdDept(e.target.value)} 
                   placeholder="e.g. Engineering"
@@ -367,9 +367,9 @@ export const Employees: React.FC<EmployeesProps> = ({ onViewChange }) => {
               </div>
             </div>
             <div className="mb-4">
-               <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Key Skills</label>
+               <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-1">Key Skills</label>
                <input 
-                  className="w-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg p-2" 
+                  className="w-full border border-grx-primary-100 dark:border-grx-primary-700 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white rounded-lg p-2" 
                   value={jdSkills} 
                   onChange={e => setJdSkills(e.target.value)} 
                   placeholder="e.g. React, TypeScript, Node.js, AWS"
@@ -377,7 +377,7 @@ export const Employees: React.FC<EmployeesProps> = ({ onViewChange }) => {
             </div>
 
             <div className="flex justify-end gap-2 mb-4">
-              <button onClick={() => setShowJDModal(false)} className="text-slate-600 dark:text-slate-400 px-4 py-2">Cancel</button>
+              <button onClick={() => setShowJDModal(false)} className="text-grx-muted dark:text-grx-muted px-4 py-2">Cancel</button>
               <button 
                 onClick={handleGenerateJD} 
                 disabled={isGenerating || !jdRole}
@@ -388,8 +388,8 @@ export const Employees: React.FC<EmployeesProps> = ({ onViewChange }) => {
             </div>
 
             {generatedJD && (
-              <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg border border-slate-200 dark:border-slate-700 mt-4">
-                <pre className="whitespace-pre-wrap text-sm font-mono text-slate-700 dark:text-slate-300">{generatedJD}</pre>
+              <div className="bg-grx-bg dark:bg-grx-dark p-4 rounded-lg border border-grx-primary-100 dark:border-grx-primary-800 mt-4">
+                <pre className="whitespace-pre-wrap text-sm font-mono text-grx-text dark:text-grx-primary-200">{generatedJD}</pre>
               </div>
             )}
           </div>

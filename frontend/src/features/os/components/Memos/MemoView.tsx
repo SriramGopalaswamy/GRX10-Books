@@ -36,17 +36,17 @@ export const MemoView: React.FC<MemoViewProps> = ({ memo, onBack }) => {
                 <ArrowLeft size={16} /> Back to List
             </button>
 
-            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-gray-200 dark:border-slate-700 overflow-hidden">
+            <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-lg border border-gray-200 dark:border-grx-primary-800 overflow-hidden">
                 {/* Header */}
-                <div className="bg-slate-50 border-b border-gray-200 p-8">
+                <div className="bg-grx-bg border-b border-gray-200 p-8">
                     <div className="flex justify-between items-start">
                         <div>
-                            <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">{memo.subject}</h1>
+                            <h1 className="text-3xl font-bold text-grx-text dark:text-white mb-4">{memo.subject}</h1>
                             <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
-                                <div className="text-gray-500 dark:text-gray-400">From: <span className="font-medium text-slate-900 dark:text-slate-100">{author?.name}</span></div>
-                                <div className="text-gray-500 dark:text-gray-400">Date: <span className="font-medium text-slate-900 dark:text-slate-100">{memo.date}</span></div>
-                                <div className="text-gray-500 dark:text-gray-400">To: <span className="font-medium text-slate-900 dark:text-slate-100">Leadership Team</span></div>
-                                <div className="text-gray-500 dark:text-gray-400">Status: <span className="font-bold text-slate-900 dark:text-slate-100">{memo.status}</span></div>
+                                <div className="text-gray-500 dark:text-gray-400">From: <span className="font-medium text-grx-text dark:text-white">{author?.name}</span></div>
+                                <div className="text-gray-500 dark:text-gray-400">Date: <span className="font-medium text-grx-text dark:text-white">{memo.date}</span></div>
+                                <div className="text-gray-500 dark:text-gray-400">To: <span className="font-medium text-grx-text dark:text-white">Leadership Team</span></div>
+                                <div className="text-gray-500 dark:text-gray-400">Status: <span className="font-bold text-grx-text dark:text-white">{memo.status}</span></div>
                             </div>
                         </div>
                         <div className="flex flex-col gap-2">
@@ -69,7 +69,7 @@ export const MemoView: React.FC<MemoViewProps> = ({ memo, onBack }) => {
                             <button 
                                 onClick={handleConvertToPdfAndEmail}
                                 disabled={isEmailing}
-                                className="px-3 py-2 bg-slate-800 text-white hover:bg-slate-900 rounded-lg flex items-center gap-2 justify-center text-sm shadow-sm"
+                                className="px-3 py-2 bg-grx-dark-surface text-white hover:bg-grx-dark rounded-lg flex items-center gap-2 justify-center text-sm shadow-sm"
                             >
                                 {isEmailing ? (
                                     <>
@@ -87,25 +87,25 @@ export const MemoView: React.FC<MemoViewProps> = ({ memo, onBack }) => {
 
                 {/* Content */}
                 <div className="p-8">
-                    <div className="prose max-w-none text-slate-800 dark:text-slate-200 whitespace-pre-wrap leading-relaxed mb-8">
+                    <div className="prose max-w-none text-grx-text dark:text-grx-primary-200 whitespace-pre-wrap leading-relaxed mb-8">
                         {memo.summary}
                     </div>
 
                     {/* Attachments Section */}
                     {memo.attachments && memo.attachments.length > 0 && (
                         <div className="border-t border-gray-100 pt-6">
-                            <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+                            <h3 className="text-sm font-bold text-grx-muted uppercase tracking-wider mb-4 flex items-center gap-2">
                                 <FileText size={16} /> Attachments ({memo.attachments.length})
                             </h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 {memo.attachments.map(file => (
                                     <div key={file.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-brand-300 transition-colors">
                                         <div className="flex items-center gap-3 overflow-hidden">
-                                            <div className="w-10 h-10 bg-white dark:bg-slate-800 rounded-md flex items-center justify-center border border-gray-200 dark:border-slate-700 text-brand-600 dark:text-brand-500">
+                                            <div className="w-10 h-10 bg-white dark:bg-grx-dark-surface rounded-md flex items-center justify-center border border-gray-200 dark:border-grx-primary-800 text-brand-600 dark:text-brand-500">
                                                 <FileText size={20} />
                                             </div>
                                             <div className="min-w-0">
-                                                <p className="text-sm font-medium text-slate-900 truncate">{file.name}</p>
+                                                <p className="text-sm font-medium text-grx-text truncate">{file.name}</p>
                                                 <p className="text-xs text-gray-500">{file.size}</p>
                                             </div>
                                         </div>

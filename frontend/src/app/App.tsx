@@ -237,7 +237,7 @@ const App: React.FC = () => {
         <EmployeeProvider>
           <AuthProvider>
             <ConfigurationProvider>
-              <div className="min-h-screen bg-grx-bg dark:bg-grx-dark">
+              <div className="min-h-screen grx-mesh-bg">
                 {/* Fixed Header */}
                 <Header
                   onNavigateHome={handleNavigateHome}

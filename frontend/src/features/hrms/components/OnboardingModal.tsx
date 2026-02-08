@@ -112,15 +112,15 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
       <div className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+        <div className="px-6 py-4 border-b border-grx-primary-50 flex justify-between items-center bg-grx-bg">
           <div>
-            <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <h3 className="text-lg font-bold text-grx-text flex items-center gap-2">
               <UserPlus size={20} className="text-indigo-600" />
               Onboard New Employee
             </h3>
-            <p className="text-xs text-slate-500">Step {step} of 3</p>
+            <p className="text-xs text-grx-muted">Step {step} of 3</p>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition-colors">
+          <button onClick={onClose} className="text-grx-muted hover:text-grx-muted transition-colors">
             <X size={20} />
           </button>
         </div>
@@ -129,20 +129,20 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
         <div className="p-6 overflow-y-auto flex-1">
           {/* Progress Bar */}
           <div className="flex gap-2 mb-6">
-            <div className={`h-1 flex-1 rounded-full ${step >= 1 ? 'bg-indigo-600' : 'bg-slate-200'}`}></div>
-            <div className={`h-1 flex-1 rounded-full ${step >= 2 ? 'bg-indigo-600' : 'bg-slate-200'}`}></div>
-            <div className={`h-1 flex-1 rounded-full ${step >= 3 ? 'bg-indigo-600' : 'bg-slate-200'}`}></div>
+            <div className={`h-1 flex-1 rounded-full ${step >= 1 ? 'bg-indigo-600' : 'bg-grx-primary-100'}`}></div>
+            <div className={`h-1 flex-1 rounded-full ${step >= 2 ? 'bg-indigo-600' : 'bg-grx-primary-100'}`}></div>
+            <div className={`h-1 flex-1 rounded-full ${step >= 3 ? 'bg-indigo-600' : 'bg-grx-primary-100'}`}></div>
           </div>
 
           {step === 1 && (
             <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
-              <h4 className="font-semibold text-slate-900">Personal Information</h4>
+              <h4 className="font-semibold text-grx-text">Personal Information</h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Full Name <span className="text-red-500">*</span></label>
+                  <label className="block text-sm font-medium text-grx-text mb-1">Full Name <span className="text-red-500">*</span></label>
                   <input
                     type="text"
-                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.name ? 'border-red-400' : 'border-slate-300'}`}
+                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.name ? 'border-red-400' : 'border-grx-primary-100'}`}
                     value={formData.name || ''}
                     onChange={e => handleChange('name', e.target.value)}
                     placeholder="e.g. John Doe"
@@ -151,10 +151,10 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
                   {validationErrors.name && <p className="text-xs text-red-500 mt-1">{validationErrors.name}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Email Address <span className="text-red-500">*</span></label>
+                  <label className="block text-sm font-medium text-grx-text mb-1">Email Address <span className="text-red-500">*</span></label>
                   <input
                     type="email"
-                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.email ? 'border-red-400' : 'border-slate-300'}`}
+                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.email ? 'border-red-400' : 'border-grx-primary-100'}`}
                     value={formData.email || ''}
                     onChange={e => handleChange('email', e.target.value)}
                     placeholder="john.doe@grx10.com"
@@ -162,10 +162,10 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
                   {validationErrors.email && <p className="text-xs text-red-500 mt-1">{validationErrors.email}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Joining Date <span className="text-red-500">*</span></label>
+                  <label className="block text-sm font-medium text-grx-text mb-1">Joining Date <span className="text-red-500">*</span></label>
                   <input
                     type="date"
-                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.joinDate ? 'border-red-400' : 'border-slate-300'}`}
+                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.joinDate ? 'border-red-400' : 'border-grx-primary-100'}`}
                     value={formData.joinDate}
                     min="2000-01-01"
                     max="2099-12-31"
@@ -179,12 +179,12 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
 
           {step === 2 && (
             <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
-              <h4 className="font-semibold text-slate-900">Role & Department</h4>
+              <h4 className="font-semibold text-grx-text">Role & Department</h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Department <span className="text-red-500">*</span></label>
+                  <label className="block text-sm font-medium text-grx-text mb-1">Department <span className="text-red-500">*</span></label>
                   <select
-                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.department ? 'border-red-400' : 'border-slate-300'}`}
+                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.department ? 'border-red-400' : 'border-grx-primary-100'}`}
                     value={formData.department || ''}
                     onChange={e => handleChange('department', e.target.value)}
                   >
@@ -196,10 +196,10 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
                   {validationErrors.department && <p className="text-xs text-red-500 mt-1">{validationErrors.department}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Designation <span className="text-red-500">*</span></label>
+                  <label className="block text-sm font-medium text-grx-text mb-1">Designation <span className="text-red-500">*</span></label>
                   <input
                     type="text"
-                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.designation ? 'border-red-400' : 'border-slate-300'}`}
+                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.designation ? 'border-red-400' : 'border-grx-primary-100'}`}
                     value={formData.designation || ''}
                     onChange={e => handleChange('designation', e.target.value)}
                     placeholder="e.g. Senior Developer"
@@ -208,9 +208,9 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
                   {validationErrors.designation && <p className="text-xs text-red-500 mt-1">{validationErrors.designation}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">System Role</label>
+                  <label className="block text-sm font-medium text-grx-text mb-1">System Role</label>
                   <select 
-                    className="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
+                    className="w-full border border-grx-primary-100 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none"
                     value={formData.role}
                     onChange={e => handleChange('role', e.target.value)}
                   >
@@ -218,9 +218,9 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Reporting Manager <span className="text-red-500">*</span></label>
+                  <label className="block text-sm font-medium text-grx-text mb-1">Reporting Manager <span className="text-red-500">*</span></label>
                   <select
-                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.managerId ? 'border-red-400' : 'border-slate-300'}`}
+                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.managerId ? 'border-red-400' : 'border-grx-primary-100'}`}
                     value={formData.managerId || ''}
                     onChange={e => handleChange('managerId', e.target.value)}
                   >
@@ -236,15 +236,15 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
 
           {step === 3 && (
             <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
-              <h4 className="font-semibold text-slate-900">Compensation & Credentials</h4>
+              <h4 className="font-semibold text-grx-text">Compensation & Credentials</h4>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Annual CTC (INR)</label>
+                  <label className="block text-sm font-medium text-grx-text mb-1">Annual CTC (INR)</label>
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">&#8377;</span>
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-grx-muted">&#8377;</span>
                     <input
                       type="number"
-                      className={`w-full border rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.salary ? 'border-red-400' : 'border-slate-300'}`}
+                      className={`w-full border rounded-lg pl-8 p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.salary ? 'border-red-400' : 'border-grx-primary-100'}`}
                       value={formData.salary || ''}
                       onChange={e => handleChange('salary', parseInt(e.target.value) || 0)}
                       min={1}
@@ -255,27 +255,27 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Initial Password</label>
+                  <label className="block text-sm font-medium text-grx-text mb-1">Initial Password</label>
                   <input
                     type="password"
-                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.password ? 'border-red-400' : 'border-slate-300'}`}
+                    className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none ${validationErrors.password ? 'border-red-400' : 'border-grx-primary-100'}`}
                     value={tempPassword}
                     onChange={e => { setTempPassword(e.target.value); if (validationErrors.password) setValidationErrors(prev => { const n = { ...prev }; delete n.password; return n; }); }}
                     placeholder="Min 8 characters"
                     minLength={8}
                   />
                   {validationErrors.password && <p className="text-xs text-red-500 mt-1">{validationErrors.password}</p>}
-                  <p className="text-xs text-slate-400 mt-1">Employee will be prompted to change this on first login.</p>
+                  <p className="text-xs text-grx-muted mt-1">Employee will be prompted to change this on first login.</p>
                 </div>
 
-                <div className="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:bg-slate-50 transition-colors cursor-pointer relative">
+                <div className="border-2 border-dashed border-grx-primary-100 rounded-xl p-6 text-center hover:bg-grx-bg transition-colors cursor-pointer relative">
                   <input
                     type="file"
                     className="absolute inset-0 opacity-0 cursor-pointer"
                     accept=".pdf,.docx"
                     onChange={e => setOfferLetter(e.target.files?.[0] || null)}
                   />
-                  <div className="flex flex-col items-center gap-2 text-slate-500">
+                  <div className="flex flex-col items-center gap-2 text-grx-muted">
                     <div className="p-3 bg-indigo-50 text-indigo-600 rounded-full">
                       <Upload size={24} />
                     </div>
@@ -295,11 +295,11 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
         </div>
 
         {/* Footer */}
-        <div className="p-6 border-t border-slate-100 bg-slate-50 flex justify-between">
+        <div className="p-6 border-t border-grx-primary-50 bg-grx-bg flex justify-between">
           {step > 1 ? (
             <button 
               onClick={() => setStep(step - 1)}
-              className="px-4 py-2 text-slate-600 font-medium hover:text-slate-900 flex items-center gap-1"
+              className="px-4 py-2 text-grx-muted font-medium hover:text-grx-text flex items-center gap-1"
             >
               <ChevronLeft size={16} /> Back
             </button>
