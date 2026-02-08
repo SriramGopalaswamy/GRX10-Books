@@ -117,6 +117,11 @@ const attachRoutes = async () => {
     app.use('/api/payments', paymentsRoutes.default);
     app.use('/api/tax', taxRoutes.default);
     app.use('/api/banking', bankingRoutes.default);
+
+    // API 404 handler (must be after all API routes)
+    app.use('/api', (req, res) => {
+      res.status(404).json({ error: 'API endpoint not found' });
+    });
   } catch (err) {
     console.error('[startup] Failed to attach routes:', err);
   }
@@ -136,10 +141,6 @@ app.get('/healthz', (req, res) => {
 // match one above, send back React's index.html file.
 // Only match non-API routes
 app.get('*', (req, res, next) => {
-  // Skip API routes
-  if (req.path.startsWith('/api/')) {
-    return res.status(404).json({ error: 'API endpoint not found' });
-  }
   console.log(`Catchall: serving index.html for ${req.url}`);
   const indexPath = path.join(__dirname, '../../frontend/dist/index.html');
   res.sendFile(indexPath, (err) => {
