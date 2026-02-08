@@ -125,8 +125,8 @@ export const AttendanceReportPage: React.FC = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Attendance Report</h2>
-          <p className="text-slate-500 dark:text-slate-400">Employee attendance records and statistics</p>
+          <h2 className="text-2xl font-bold text-grx-text dark:text-white">Attendance Report</h2>
+          <p className="text-grx-muted dark:text-grx-muted">Employee attendance records and statistics</p>
         </div>
         <button
           onClick={handleDownload}
@@ -139,36 +139,36 @@ export const AttendanceReportPage: React.FC = () => {
       </div>
 
       {/* Filters */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4">
+      <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-4">
         <div className="flex items-center gap-2 mb-4">
-          <Filter size={18} className="text-slate-400" />
-          <h3 className="font-semibold text-slate-900 dark:text-slate-100">Filters</h3>
+          <Filter size={18} className="text-grx-muted" />
+          <h3 className="font-semibold text-grx-text dark:text-white">Filters</h3>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Start Date</label>
+            <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Start Date</label>
             <input
               type="date"
               value={startDate}
               onChange={e => setStartDate(e.target.value)}
-              className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">End Date</label>
+            <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">End Date</label>
             <input
               type="date"
               value={endDate}
               onChange={e => setEndDate(e.target.value)}
-              className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Department</label>
+            <label className="block text-sm font-medium text-grx-text dark:text-grx-primary-200 mb-2">Department</label>
             <select
               value={department}
               onChange={e => setDepartment(e.target.value)}
-              className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-grx-primary-100 dark:border-grx-primary-700 rounded-lg p-2 bg-white dark:bg-grx-primary-800 text-grx-text dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
             >
               <option value="">All Departments</option>
               {getActiveDepartments().map(dept => (
@@ -188,15 +188,15 @@ export const AttendanceReportPage: React.FC = () => {
       {loading ? (
         <div className="flex items-center justify-center h-64">
           <Loader2 className="animate-spin text-indigo-600" size={32} />
-          <span className="ml-2 text-slate-500">Loading attendance report...</span>
+          <span className="ml-2 text-grx-muted">Loading attendance report...</span>
         </div>
       ) : data ? (
         <div className="space-y-6">
           {/* Summary Cards */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
-              <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Total Days</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{data.summary.totalDays}</p>
+            <div className="bg-white dark:bg-grx-dark-surface p-4 rounded-xl border border-grx-primary-100 dark:border-grx-primary-800">
+              <p className="text-sm text-grx-muted dark:text-grx-muted mb-1">Total Days</p>
+              <p className="text-2xl font-bold text-grx-text dark:text-white">{data.summary.totalDays}</p>
             </div>
             <div className="bg-emerald-50 dark:bg-emerald-900/20 p-4 rounded-xl border border-emerald-200 dark:border-emerald-800">
               <p className="text-sm text-emerald-700 dark:text-emerald-300 mb-1">Present</p>
@@ -217,33 +217,33 @@ export const AttendanceReportPage: React.FC = () => {
           </div>
 
           {/* Records Table */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
+                <thead className="bg-grx-bg dark:bg-grx-dark border-b border-grx-primary-100 dark:border-grx-primary-800">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Date</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Employee</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Department</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Check In</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Check Out</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Status</th>
-                    <th className="px-6 py-3 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Hours</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Date</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Employee</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Department</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Check In</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Check Out</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Status</th>
+                    <th className="px-6 py-3 text-right text-xs font-semibold text-grx-muted dark:text-grx-muted uppercase">Hours</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                <tbody className="divide-y divide-grx-primary-100 dark:divide-grx-primary-800">
                   {data.records.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className="px-6 py-8 text-center text-slate-500">No attendance records found</td>
+                      <td colSpan={7} className="px-6 py-8 text-center text-grx-muted">No attendance records found</td>
                     </tr>
                   ) : (
                     data.records.map(record => (
-                      <tr key={record.id} className="hover:bg-slate-50 dark:hover:bg-slate-700">
-                        <td className="px-6 py-4 text-slate-700 dark:text-slate-300">{record.date}</td>
-                        <td className="px-6 py-4 text-slate-900 dark:text-slate-100">{record.Employee?.name || 'N/A'}</td>
-                        <td className="px-6 py-4 text-slate-700 dark:text-slate-300">{record.Employee?.department || 'N/A'}</td>
-                        <td className="px-6 py-4 text-slate-700 dark:text-slate-300">{record.checkIn || '-'}</td>
-                        <td className="px-6 py-4 text-slate-700 dark:text-slate-300">{record.checkOut || '-'}</td>
+                      <tr key={record.id} className="hover:bg-grx-bg dark:hover:bg-grx-primary-800">
+                        <td className="px-6 py-4 text-grx-text dark:text-grx-primary-200">{record.date}</td>
+                        <td className="px-6 py-4 text-grx-text dark:text-white">{record.Employee?.name || 'N/A'}</td>
+                        <td className="px-6 py-4 text-grx-text dark:text-grx-primary-200">{record.Employee?.department || 'N/A'}</td>
+                        <td className="px-6 py-4 text-grx-text dark:text-grx-primary-200">{record.checkIn || '-'}</td>
+                        <td className="px-6 py-4 text-grx-text dark:text-grx-primary-200">{record.checkOut || '-'}</td>
                         <td className="px-6 py-4">
                           <span className={`px-2 py-1 rounded text-xs font-medium ${
                             record.status === 'Present' ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' :
@@ -254,7 +254,7 @@ export const AttendanceReportPage: React.FC = () => {
                             {record.status}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-right font-mono text-slate-700 dark:text-slate-300">
+                        <td className="px-6 py-4 text-right font-mono text-grx-text dark:text-grx-primary-200">
                           {record.durationHours?.toFixed(2) || '0.00'}
                         </td>
                       </tr>
@@ -266,7 +266,7 @@ export const AttendanceReportPage: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 text-center text-slate-500">
+        <div className="bg-white dark:bg-grx-dark-surface rounded-xl shadow-sm border border-grx-primary-100 dark:border-grx-primary-800 p-8 text-center text-grx-muted">
           No data available.
         </div>
       )}

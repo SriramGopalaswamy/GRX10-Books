@@ -31,8 +31,8 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 bg-grx-primary dark:bg-grx-primary-900 text-white grx-glass border-b border-white/10"
-      style={{ boxShadow: 'var(--shadow-header)' }}
+      className="fixed top-0 left-0 right-0 z-50 grx-glass-header text-white"
+      style={{ boxShadow: '0 4px 30px rgba(58, 47, 120, 0.15)' }}
     >
       <div className="flex items-center justify-between h-16 px-4">
         {/* Left: Sidebar toggle + Logo */}

@@ -445,6 +445,153 @@
         background-clip: text;
       }
 
+      /* ── Glassmorphism & 2026 UI ──────────────────────────────── */
+      .grx-glass {
+        background: rgba(255, 255, 255, 0.72);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+      }
+      .dark .grx-glass {
+        background: rgba(42, 42, 66, 0.72);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .grx-glass-strong {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(32px) saturate(200%);
+        -webkit-backdrop-filter: blur(32px) saturate(200%);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+      }
+      .dark .grx-glass-strong {
+        background: rgba(42, 42, 66, 0.85);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .grx-glass-header {
+        background: rgba(58, 47, 120, 0.88);
+        backdrop-filter: blur(24px) saturate(180%);
+        -webkit-backdrop-filter: blur(24px) saturate(180%);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      }
+      .dark .grx-glass-header {
+        background: rgba(22, 19, 56, 0.90);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .grx-glass-sidebar {
+        background: rgba(58, 47, 120, 0.92);
+        backdrop-filter: blur(24px) saturate(180%);
+        -webkit-backdrop-filter: blur(24px) saturate(180%);
+        border-right: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .dark .grx-glass-sidebar {
+        background: rgba(22, 19, 56, 0.94);
+        border-right: 1px solid rgba(255, 255, 255, 0.04);
+      }
+      .grx-glass-card {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(16px) saturate(160%);
+        -webkit-backdrop-filter: blur(16px) saturate(160%);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 8px 32px rgba(58, 47, 120, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .dark .grx-glass-card {
+        background: rgba(42, 42, 66, 0.55);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      }
+      .grx-glass-card:hover {
+        background: rgba(255, 255, 255, 0.8);
+        border-color: rgba(58, 47, 120, 0.15);
+        box-shadow: 0 12px 40px rgba(58, 47, 120, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        transform: translateY(-2px);
+      }
+      .dark .grx-glass-card:hover {
+        background: rgba(42, 42, 66, 0.7);
+        border-color: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+      .grx-glass-input {
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(58, 47, 120, 0.12);
+        transition: all 0.2s ease;
+      }
+      .dark .grx-glass-input {
+        background: rgba(42, 42, 66, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .grx-glass-input:focus {
+        background: rgba(255, 255, 255, 0.7);
+        border-color: var(--grx10-primary);
+        box-shadow: 0 0 0 3px rgba(58, 47, 120, 0.1);
+      }
+      .dark .grx-glass-input:focus {
+        background: rgba(42, 42, 66, 0.7);
+        box-shadow: 0 0 0 3px rgba(174, 166, 229, 0.15);
+      }
+      /* Gradient border glow */
+      .grx-glow-border {
+        position: relative;
+      }
+      .grx-glow-border::before {
+        content: '';
+        position: absolute;
+        inset: -1px;
+        border-radius: inherit;
+        background: linear-gradient(135deg, rgba(58, 47, 120, 0.3), rgba(230, 0, 126, 0.3));
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .grx-glow-border:hover::before {
+        opacity: 1;
+      }
+      /* Mesh gradient background */
+      .grx-mesh-bg {
+        background:
+          radial-gradient(ellipse at 20% 50%, rgba(58, 47, 120, 0.12) 0%, transparent 50%),
+          radial-gradient(ellipse at 80% 20%, rgba(230, 0, 126, 0.08) 0%, transparent 50%),
+          radial-gradient(ellipse at 40% 80%, rgba(97, 82, 203, 0.1) 0%, transparent 50%),
+          var(--grx10-bg);
+      }
+      .dark .grx-mesh-bg {
+        background:
+          radial-gradient(ellipse at 20% 50%, rgba(58, 47, 120, 0.25) 0%, transparent 50%),
+          radial-gradient(ellipse at 80% 20%, rgba(230, 0, 126, 0.12) 0%, transparent 50%),
+          radial-gradient(ellipse at 40% 80%, rgba(97, 82, 203, 0.15) 0%, transparent 50%),
+          var(--grx10-dark);
+      }
+      /* Glow button */
+      .grx-btn-glow {
+        position: relative;
+        overflow: hidden;
+      }
+      .grx-btn-glow::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%, rgba(255,255,255,0.1) 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .grx-btn-glow:hover::after {
+        opacity: 1;
+      }
+      /* Frosted modal backdrop */
+      .grx-modal-backdrop {
+        backdrop-filter: blur(8px) saturate(120%);
+        -webkit-backdrop-filter: blur(8px) saturate(120%);
+        background: rgba(30, 30, 47, 0.5);
+      }
+      /* Subtle inner glow on glass cards */
+      .grx-inner-glow {
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -1px 0 rgba(0, 0, 0, 0.02);
+      }
+      .dark .grx-inner-glow {
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+      }
+
       /* ── Toast container ────────────────────────────────────────── */
       .grx-toast-container {
         position: fixed;
