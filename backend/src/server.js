@@ -9,7 +9,7 @@ import { fileURLToPath } from 'url';
 import session from 'express-session';
 import passport from 'passport';
 import { sequelize, initDb } from './config/database.js';
-import { bootstrapAdminUser } from './config/bootstrap.js';
+import { bootstrapAdminUser, ensureSSOUsers } from './config/bootstrap.js';
 import invoiceRoutes from './modules/invoices/invoice.routes.js';
 import customerRoutes from './modules/customers/customer.routes.js';
 import aiRoutes from './modules/ai/ai.routes.js';
@@ -136,6 +136,13 @@ app.listen(PORT, '0.0.0.0', () => {
       await bootstrapAdminUser();
     } catch (err) {
       console.error('Bootstrap warning:', err.message);
+    }
+
+    // Ensure pre-seeded SSO users exist
+    try {
+      await ensureSSOUsers();
+    } catch (err) {
+      console.error('SSO user seed warning:', err.message);
     }
   }).catch(err => {
     console.error('Failed to initialize database:', err);

@@ -58,18 +58,6 @@ const CLIENT_ID = process.env.MICROSOFT_CLIENT_ID;
 const CLIENT_SECRET = process.env.MICROSOFT_CLIENT_SECRET;
 const TENANT_ID = process.env.MICROSOFT_TENANT_ID; // Optional, but good for single-tenant apps
 
-// --- Admin Credentials ---
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
-
-// --- Whitelist ---
-// TODO: Replace these with the actual allowed email addresses
-const ALLOWED_EMAILS = [
-    'user1@example.com',
-    'user2@example.com',
-    'sriram@grx10.com'
-];
-
 if (!CLIENT_ID || !CLIENT_SECRET) {
     console.warn("⚠️ Microsoft OAuth credentials not found. Login will fail.");
 }
@@ -201,6 +189,11 @@ router.post('/admin/login', loginRateLimiter, async (req, res) => {
         // Check if email/password login is enabled for this employee
         if (!employee.enableEmailLogin) {
             return res.status(403).json({ error: 'Email/password login is disabled for this account. Please use SSO login.' });
+        }
+
+        // Guard: employee has no password set (SSO-only account)
+        if (!employee.password) {
+            return res.status(403).json({ error: 'This account uses SSO login only. Please use Microsoft login.' });
         }
 
         // Check password using bcrypt

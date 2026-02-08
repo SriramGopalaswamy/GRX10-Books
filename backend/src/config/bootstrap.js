@@ -176,4 +176,39 @@ async function resetAdminFromEnv() {
     return { bootstrapped: true, message: 'Admin reset from ENV' };
 }
 
-export default { bootstrapAdminUser };
+/**
+ * Ensure pre-seeded SSO users exist in the Employee table.
+ * These users can log in via Microsoft SSO without needing a password.
+ * Idempotent — skips users that already exist.
+ */
+export async function ensureSSOUsers() {
+    const ssoUsers = [
+        {
+            id: 'EMP-SSO-001',
+            name: 'Sriram Gopalaswamy',
+            email: 'sriram@grx10.com',
+            role: 'Admin',
+            department: 'Administration',
+            designation: 'System Administrator',
+            joinDate: '2020-01-01',
+            status: 'Active',
+            enableEmailLogin: false,
+            isNewUser: false,
+            employeeType: 'Full Time',
+        },
+    ];
+
+    for (const user of ssoUsers) {
+        const [employee, created] = await Employee.findOrCreate({
+            where: { email: user.email },
+            defaults: user,
+        });
+        if (created) {
+            console.log(`[bootstrap] SSO user created: ${user.email} (${user.role})`);
+        } else {
+            console.log(`[bootstrap] SSO user exists: ${user.email}, skipped`);
+        }
+    }
+}
+
+export default { bootstrapAdminUser, ensureSSOUsers };
